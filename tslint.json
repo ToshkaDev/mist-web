@@ -51,6 +51,7 @@
       "trace"
     ],
     "no-construct": true,
+    "no-consecutive-blank-lines": true,
     "no-debugger": true,
     "no-duplicate-super": true,
     "no-empty": false,
@@ -71,7 +72,12 @@
     "no-unused-expression": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
-    "object-literal-sort-keys": false,
+    "object-literal-key-quotes": [
+      true,
+      "as-needed"
+    ],
+    "object-literal-shorthand": true,
+    "object-literal-sort-keys": true,
     "one-line": [
       true,
       "check-open-brace",
@@ -79,6 +85,16 @@
       "check-else",
       "check-whitespace"
     ],
+    "one-variable-per-declaration": [
+      true,
+      "ignore-for-loop"
+    ],
+    "only-arrow-functions": [
+      true,
+      "allow-declarations",
+      "allow-named-functions"
+    ],
+    "ordered-imports": true,
     "prefer-const": true,
     "quotemark": [
       true,
@@ -89,9 +105,17 @@
       true,
       "always"
     ],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ],
     "triple-equals": [
       true,
-      "allow-null-check"
+      "allow-null-check",
+      "allow-undefined-check"
     ],
     "typedef-whitespace": [
       true,
@@ -105,7 +129,12 @@
     ],
     "typeof-compare": true,
     "unified-signatures": true,
-    "variable-name": false,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-pascal-case"
+    ],
     "whitespace": [
       true,
       "check-branch",
@@ -117,13 +146,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      ["mist"],
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      ["app", "mist"],
       "kebab-case"
     ],
     "use-input-property-decorator": true,
