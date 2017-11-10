@@ -46,7 +46,7 @@ export class FetchDone implements Action {
 export class FetchError implements Action {
   readonly type = FETCH_ERROR;
 
-  constructor(public payload: Error) {}
+  constructor(public payload: string) {}
 }
 
 export type Actions =

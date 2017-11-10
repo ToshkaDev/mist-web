@@ -1,5 +1,9 @@
 h3 Genomes
 
 form
-  mat-form-field
-    input(matInput placeholder="Search Genomes")
+  mist-search-input(
+    [query]="query$ | async"
+    [isFetching]="isFetching$ | async"
+    [errorMessage]="errorMessage$ | async"
+    (onQueryChange)="search($event)"
+  )

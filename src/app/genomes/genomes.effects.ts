@@ -3,8 +3,10 @@ import { Http } from '@angular/http';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/takeUntil';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
@@ -20,6 +22,7 @@ export class GenomesEffects {
     .map((action) => action.payload)
     .map((query: string) => {
       const url = this.mistApi.searchGenomesUrl(query);
+      console.log('Sending out', url);
       return new genomes.Fetch(url);
     });
 
@@ -28,6 +31,8 @@ export class GenomesEffects {
     .map((action) => action.payload)
     .switchMap((url) => {
       const nextFetch$ = this.actions$.ofType<genomes.Fetch>(genomes.FETCH).skip(1);
+
+      console.log('Fetching url', url);
 
       return this.http.get(url)
         .takeUntil(nextFetch$)
@@ -41,7 +46,7 @@ export class GenomesEffects {
             matches,
           });
         })
-        .catch((error) => of(new genomes.FetchError(error)));
+        .catch((error) => of(new genomes.FetchError(error.message)));
     });
 
   @Effect()

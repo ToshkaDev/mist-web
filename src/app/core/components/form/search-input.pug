@@ -1,0 +1,5 @@
+mat-form-field
+  input(matInput [placeholder]="placeholder" [value]="query" (keyup)="onQueryChange.emit($event.target.value)")
+  //- button(*ngIf="!isFetching && query.length" matSuffix mat-button mat-icon-button (click)="onQueryChange.emit('')")
+  //-   mat-icon close
+  mat-error(*ngIf="errorMessage") {{ errorMessage }}

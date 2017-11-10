@@ -10,6 +10,21 @@ export const search = createSelector(
   (state) => state.search,
 );
 
+export const getSearchQuery = createSelector(
+  search,
+  (searchState) => searchState.query,
+);
+
+export const getSearchIsFetching = createSelector(
+  search,
+  (searchState) => searchState.isFetching,
+);
+
+export const getSearchErrorMessage = createSelector(
+  search,
+  (searchState) => searchState.errorMessage,
+);
+
 export const pageUrl = (pageType: 'first' | 'last' | 'prev' | 'next') => {
   return createSelector(
     search,
