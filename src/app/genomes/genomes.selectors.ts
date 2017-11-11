@@ -25,6 +25,11 @@ export const getSearchErrorMessage = createSelector(
   (searchState) => searchState.errorMessage,
 );
 
+export const getSearchResults = createSelector(
+  search,
+  (searchState) => searchState.matches,
+);
+
 export const pageUrl = (pageType: 'first' | 'last' | 'prev' | 'next') => {
   return createSelector(
     search,

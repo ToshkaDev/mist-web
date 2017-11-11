@@ -7,3 +7,5 @@ form
     [errorMessage]="errorMessage$ | async"
     (onQueryChange)="search($event)"
   )
+
+mist-genomes-list([genomes]="genomes$ | async")

@@ -16,15 +16,17 @@ export class GenomesComponent implements OnInit {
   query$: Observable<string>;
   isFetching$: Observable<boolean>;
   errorMessage$: Observable<string>;
+  genomes$: Observable<any[]>;
 
   constructor(
     private store: Store<any>,
   ) {}
 
   ngOnInit() {
-    this.query$ = this.store.select(fromGenomes.getSearchQuery).take(1);
+    this.query$ = this.store.select(fromGenomes.getSearchQuery);
     this.isFetching$ = this.store.select(fromGenomes.getSearchIsFetching);
     this.errorMessage$ = this.store.select(fromGenomes.getSearchErrorMessage);
+    this.genomes$ = this.store.select(fromGenomes.getSearchResults);
   }
 
   search(query: string) {

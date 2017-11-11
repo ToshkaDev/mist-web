@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/switchMap';
@@ -16,13 +17,15 @@ import { pageUrl, search } from './genomes.selectors';
 
 @Injectable()
 export class GenomesEffects {
+  static DEBOUNCE_TIME_MS = 300;
+
   @Effect()
   search$: Observable<Action> = this.actions$
     .ofType<genomes.Search>(genomes.SEARCH)
+    .debounceTime(GenomesEffects.DEBOUNCE_TIME_MS)
     .map((action) => action.payload)
     .map((query: string) => {
       const url = this.mistApi.searchGenomesUrl(query);
-      console.log('Sending out', url);
       return new genomes.Fetch(url);
     });
 
@@ -31,8 +34,6 @@ export class GenomesEffects {
     .map((action) => action.payload)
     .switchMap((url) => {
       const nextFetch$ = this.actions$.ofType<genomes.Fetch>(genomes.FETCH).skip(1);
-
-      console.log('Fetching url', url);
 
       return this.http.get(url)
         .takeUntil(nextFetch$)

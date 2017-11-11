@@ -1,0 +1,7 @@
+// Align the suffix icons to the end of the input instead of the
+// default baseline. Some margin at the bottom provides a little
+// aesthetical breathing room.
+::ng-deep .mat-form-field-suffix {
+  align-self: flex-end;
+  margin-bottom: 3px;
+}
