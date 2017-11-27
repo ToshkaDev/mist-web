@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { MatButtonModule, MatIconModule, MatInputModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatInputModule, MatProgressSpinnerModule, MatTableModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
@@ -16,6 +16,7 @@ import { MainMenuComponent } from './core/components/main-menu/main-menu.compone
 import { MistApi } from './core/services/mist-api.service';
 import { GenomesListComponent } from './genomes/genomes-list.component';
 import { GenomesComponent } from './genomes/genomes.component';
+import { GenomeComponent } from './genome/genome.component';
 import { GenomesEffects } from './genomes/genomes.effects';
 import { HomeComponent } from './home/home.component';
 
@@ -24,6 +25,7 @@ import { HomeComponent } from './home/home.component';
   declarations: [
     AppComponent,
     GenomesComponent,
+    GenomeComponent,
     GenomesListComponent,
     HomeComponent,
     MainMenuComponent,
@@ -39,6 +41,7 @@ import { HomeComponent } from './home/home.component';
     MatButtonModule,
     MatIconModule,
     MatInputModule,
+    MatTableModule,
     MatProgressSpinnerModule,
     StoreModule.forRoot(reducers, { metaReducers}),
   ],
