@@ -31,7 +31,7 @@ const initialState: State = {
   },
 };
 
-export const reducer = (state = initialState, action: Genomes.Actions) => {
+export function reducer (state = initialState, action: Genomes.Actions){
   switch (action.type) {
     case Genomes.SEARCH:
       return {

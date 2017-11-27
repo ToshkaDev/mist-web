@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
-
+import {DataSource} from '@angular/cdk/collections';
 import { Search } from './genomes.actions';
 import * as fromGenomes from './genomes.selectors';
 
@@ -17,6 +17,8 @@ export class GenomesComponent implements OnInit {
   isFetching$: Observable<boolean>;
   errorMessage$: Observable<string>;
   genomes$: Observable<any[]>;
+  dataSource = new GenomeDataSource(this.store);
+  displayedColumns: String[];
 
   constructor(
     private store: Store<any>,
@@ -27,10 +29,22 @@ export class GenomesComponent implements OnInit {
     this.isFetching$ = this.store.select(fromGenomes.getSearchIsFetching);
     this.errorMessage$ = this.store.select(fromGenomes.getSearchErrorMessage);
     this.genomes$ = this.store.select(fromGenomes.getSearchResults);
+    this.displayedColumns = null;
   }
 
   search(query: string) {
     console.log('Searching for', query);
     this.store.dispatch(new Search(query));
+    this.displayedColumns = ['Genome', 'Superkingdom', 'Phylum', 'Assembly level'];
   }
+}
+
+export class GenomeDataSource extends DataSource<any> {
+  constructor(private store: Store<any>) {
+    super();
+  }
+  connect(): Observable<any[]> {
+    return this.store.select(fromGenomes.getSearchResults);
+  }
+  disconnect() {}
 }
