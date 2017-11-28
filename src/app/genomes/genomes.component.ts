@@ -18,8 +18,9 @@ export class GenomesComponent implements OnInit {
   errorMessage$: Observable<string>;
   genomes$: Observable<any[]>;
   dataSource = new GenomeDataSource(this.store);
+  columns = ['Genome', 'Superkingdom', 'Phylum', 'Assembly level'];
   displayedColumns: String[];
-
+  
   constructor(
     private store: Store<any>,
   ) {}
@@ -29,13 +30,11 @@ export class GenomesComponent implements OnInit {
     this.isFetching$ = this.store.select(fromGenomes.getSearchIsFetching);
     this.errorMessage$ = this.store.select(fromGenomes.getSearchErrorMessage);
     this.genomes$ = this.store.select(fromGenomes.getSearchResults);
-    this.displayedColumns = null;
+    this.genomes$.subscribe(results => results.length > 0 ? this.displayedColumns = this.columns : this.displayedColumns = null);
   }
 
   search(query: string) {
-    console.log('Searching for', query);
-    this.store.dispatch(new Search(query));
-    this.displayedColumns = ['Genome', 'Superkingdom', 'Phylum', 'Assembly level'];
+    this.store.dispatch(new Search(query));   
   }
 }
 
