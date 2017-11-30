@@ -17,7 +17,9 @@ import { MistApi } from './core/services/mist-api.service';
 import { GenomesListComponent } from './genomes/genomes-list.component';
 import { GenomesComponent } from './genomes/genomes.component';
 import { GenomeComponent } from './genome/genome.component';
+import { GenomeViewComponent } from './genome/genome.view.component';
 import { GenomesEffects } from './genomes/genomes.effects';
+import { GenomeEffects } from './genome/genome.effects';
 import { HomeComponent } from './home/home.component';
 
 @NgModule({
@@ -27,6 +29,7 @@ import { HomeComponent } from './home/home.component';
     GenomesComponent,
     GenomeComponent,
     GenomesListComponent,
+    GenomeViewComponent,
     HomeComponent,
     MainMenuComponent,
     SearchInputComponent,
@@ -35,7 +38,7 @@ import { HomeComponent } from './home/home.component';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    EffectsModule.forRoot([GenomesEffects]),
+    EffectsModule.forRoot([GenomesEffects, GenomeEffects]),
     FormsModule,
     HttpModule,
     MatButtonModule,

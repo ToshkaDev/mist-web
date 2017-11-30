@@ -1,0 +1,37 @@
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import { Actions, Effect } from '@ngrx/effects';
+import { Action, Store } from '@ngrx/store';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+
+import { MistApi } from '../core/services/mist-api.service';
+import * as genome from './genome.actions';
+
+@Injectable()
+export class GenomeEffects {
+    
+    @Effect()
+    fetch$: Observable<Action> = this.actions$.ofType<genome.FetchGenome>(genome.FETCH_GENOME)
+        .map((action) => action.payload)
+        .switchMap((query: string) => {
+        const url = this.mistApi.getGenomeUrl(query);
+        return this.http.get(url)
+        .map((response) => {
+            const fetchedGenome = response.json();
+            return new genome.FetchGenomeDone({
+                fetchedGenome
+            });
+        })
+        .catch((error) => of(new genome.FetchGenomeError(error.message)));
+        });
+
+    constructor(
+    private http: Http,
+    private actions$: Actions,
+    private mistApi: MistApi,
+    private store: Store<any>,
+    ) {}
+}

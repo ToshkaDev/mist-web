@@ -14,7 +14,6 @@ import { of } from 'rxjs/observable/of';
 import { MistApi } from '../core/services/mist-api.service';
 import * as genomes from './genomes.actions';
 import { pageUrl, search } from './genomes.selectors';
-import { stringify } from 'querystring';
 
 @Injectable()
 export class GenomesEffects {
