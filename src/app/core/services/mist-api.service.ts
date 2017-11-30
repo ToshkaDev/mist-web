@@ -13,6 +13,10 @@ export class MistApi {
     return MistApi.BASE_URL + MistApi.GENOMES_ROOT + '?count&search=' + query;
   }
 
+  getGenomeUrl(query: string): string {
+    return this.genomesUrl() + "/" +  query;
+  }
+
   searchGenomes(query: string): Observable<Response> {
     return this.http.get(this.genomesUrl());
   }

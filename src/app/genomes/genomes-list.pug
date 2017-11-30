@@ -5,7 +5,7 @@
   <mat-table [dataSource]="genomes">
     <ng-container matColumnDef="Genome">
       <mat-header-cell *matHeaderCellDef>Genome </mat-header-cell>
-      <mat-cell *matCellDef="let genome"><a routerLink="genomes/{{genome.version}}">{{genome.name}} </a></mat-cell>
+      <mat-cell *matCellDef="let genome"><a routerLink="/genomes/{{genome.version}}">{{genome.name}} </a></mat-cell>
     </ng-container>
     <ng-container matColumnDef="Superkingdom">
       <mat-header-cell *matHeaderCellDef>Superkingdom </mat-header-cell>
