@@ -293,6 +293,8 @@ module.exports = {
     "setImmediate": false
   },
   "devServer": {
-    "historyApiFallback": true
+    "historyApiFallback": {
+      disableDotRule: true
+    }
   }
 };
