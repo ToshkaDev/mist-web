@@ -24,7 +24,6 @@ export class GenomeComponent implements OnInit {
         this.errorMessage$ = this.store.select(fromGenomes.getFetchErrorMessage);
         this.genome$ = this.store.select(fromGenomes.getFetchResult);       
         this.assemblyVersion = this.route.snapshot.paramMap.get('version');
-        console.log("this.assemblyVersion " + this.assemblyVersion);
         this.getGenome(this.assemblyVersion);
     }
     
