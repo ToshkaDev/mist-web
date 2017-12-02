@@ -18,7 +18,7 @@ export class GenomesComponent implements OnInit {
   errorMessage$: Observable<string>;
   genomes$: Observable<any[]>;
   dataSource = new GenomeDataSource(this.store);
-  columns = ['Genome', 'Superkingdom', 'Phylum', 'Assembly level'];
+  columns = ['Genome', 'Superkingdom', 'Phylum', 'Genbank Version', 'Assembly level'];
   displayedColumns: String[];
   
   constructor(
