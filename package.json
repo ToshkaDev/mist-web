@@ -26,7 +26,9 @@
     "@angular/router": "^4.2.4",
     "@ngrx/effects": "^4.1.0",
     "@ngrx/store": "^4.0.3",
+    "@types/query-string": "^5.0.1",
     "core-js": "^2.4.1",
+    "query-string": "^5.0.1",
     "rxjs": "^5.4.3",
     "zone.js": "^0.8.14"
   },

@@ -21,6 +21,8 @@ export class GenomesComponent implements OnInit {
   lastPage$: Observable<string>;
   prevPage$: Observable<string>;
   nextPage$:Observable<string>;
+
+  perPage = 30;
   dataSource = new GenomeDataSource(this.store);
   columns = ['Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
   displayedColumns: String[];
@@ -42,7 +44,7 @@ export class GenomesComponent implements OnInit {
   }
 
   search(query: string) {
-    this.store.dispatch(new Search(query));   
+    this.store.dispatch(new Search({search: query, pageNumber:1, perPage:  }));   
   }
 }
 

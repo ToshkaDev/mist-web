@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
+import * as queryString from 'query-string';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
@@ -42,8 +43,19 @@ export class GenomesEffects {
           // a) Extract the links, count, currentPage, totalPages
           // c) Abstract into helper functions
           const matches = response.json();
+          const count = parseInt(response.headers.get('x-total-count'), 10);
+          //const totalPages = Math.ceil(count / perPage);
+          const parsed = queryString.parse(queryString.extract(url));
+
+           //const links = {first:, last: , next:, prev:};
+          // return new genomes.FetchDone({
+          //   count,
+          //   totalPages,
+          //   matches,
+          // });
+
           return new genomes.FetchDone({
-            count: parseInt(response.headers.get('x-total-count'), 10),
+            count,
             matches,
           });
         })

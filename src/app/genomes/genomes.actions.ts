@@ -12,7 +12,7 @@ export const FETCH_ERROR = '[Genomes] Fetch Error';
 export class Search implements Action {
   readonly type = SEARCH;
 
-  constructor(public payload: string) {}
+  constructor(public payload: any) {}
 }
 
 export class FirstPage implements Action {
