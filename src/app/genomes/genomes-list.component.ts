@@ -9,4 +9,9 @@ import {DataSource} from '@angular/cdk/collections';
 export class GenomesListComponent {
   @Input() displayedColumns: String[];  
   @Input() genomes: DataSource<any>;
+  @Input() length = 100;
+  @Input() pageSize = 30;
+  @Input() pageSizeOptions = [5, 10, 30, 100];
+
+  selected = 'phylum';
 }
