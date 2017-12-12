@@ -12,6 +12,6 @@ div(*ngIf="genome")
         div {{genome.submitter}}
         div {{genome.bioproject}}
         div {{genome.biosample}}
-        div {{genome.release_date}}
+        div {{genome.release_date | date: 'longDate'}}
         div {{genome.wgs_master}}
         div {{genome.refseq_category}}

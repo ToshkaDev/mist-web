@@ -17,8 +17,12 @@ export class GenomesComponent implements OnInit {
   isFetching$: Observable<boolean>;
   errorMessage$: Observable<string>;
   genomes$: Observable<any[]>;
+  firstPage$: Observable<string>;
+  lastPage$: Observable<string>;
+  prevPage$: Observable<string>;
+  nextPage$:Observable<string>;
   dataSource = new GenomeDataSource(this.store);
-  columns = ['Genome', 'Superkingdom', 'Phylum', 'Genbank Version', 'Assembly level'];
+  columns = ['Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
   displayedColumns: String[];
   
   constructor(
@@ -31,6 +35,10 @@ export class GenomesComponent implements OnInit {
     this.errorMessage$ = this.store.select(fromGenomes.getSearchErrorMessage);
     this.genomes$ = this.store.select(fromGenomes.getSearchResults);
     this.genomes$.subscribe(results => results.length > 0 ? this.displayedColumns = this.columns : this.displayedColumns = null);
+    this.firstPage$ = this.store.select(fromGenomes.pageUrl('first'));
+    this.lastPage$ = this.store.select(fromGenomes.pageUrl('last'));
+    this.prevPage$ = this.store.select(fromGenomes.pageUrl('prev'));
+    this.nextPage$ = this.store.select(fromGenomes.pageUrl('next'));
   }
 
   search(query: string) {

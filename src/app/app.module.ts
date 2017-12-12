@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { MatButtonModule, MatIconModule, MatInputModule, MatProgressSpinnerModule, 
-  MatTableModule, MatPaginatorModule, MatExpansionModule, MatCardModule } from '@angular/material';
+  MatTableModule, MatPaginatorModule, MatCardModule} from '@angular/material';
+  import {MatSelectModule} from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
@@ -46,9 +47,9 @@ import { HomeComponent } from './home/home.component';
     MatIconModule,
     MatInputModule,
     MatTableModule,
-    MatExpansionModule,
     MatPaginatorModule,
     MatCardModule,
+    MatSelectModule,
     MatProgressSpinnerModule,
     StoreModule.forRoot(reducers, { metaReducers}),
   ],
