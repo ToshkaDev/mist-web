@@ -30,6 +30,27 @@ export const getSearchResults = createSelector(
   (searchState) => searchState.matches,
 );
 
+export const getTotalPages = createSelector(
+  search,
+  (searchState) => searchState.totalPages,
+);
+
+export const getPageLinks = createSelector(
+  search,
+  (searchState) => searchState.links,
+);
+
+export const getCurrentPage = createSelector(
+  search,
+  (searchState) => searchState.currentPage,
+);
+
+export const getCount = createSelector(
+  search,
+  (searchState) => searchState.count,
+);
+
+
 export const pageUrl = (pageType: 'first' | 'last' | 'prev' | 'next') => {
   return createSelector(
     search,

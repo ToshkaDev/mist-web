@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
 import {DataSource} from '@angular/cdk/collections';
-import { Search } from './genomes.actions';
+import { Search, FirstPage, LastPage, PrevPage, NextPage } from './genomes.actions';
 import * as fromGenomes from './genomes.selectors';
 
 @Component({
@@ -17,12 +17,13 @@ export class GenomesComponent implements OnInit {
   isFetching$: Observable<boolean>;
   errorMessage$: Observable<string>;
   genomes$: Observable<any[]>;
-  firstPage$: Observable<string>;
-  lastPage$: Observable<string>;
-  prevPage$: Observable<string>;
-  nextPage$:Observable<string>;
+  links$: Observable<any>;
 
-  perPage = 30;
+  count: number;
+  totalPages: number;
+  perPage: number = 30;
+  currentPage: number;
+
   dataSource = new GenomeDataSource(this.store);
   columns = ['Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
   displayedColumns: String[];
@@ -36,15 +37,40 @@ export class GenomesComponent implements OnInit {
     this.isFetching$ = this.store.select(fromGenomes.getSearchIsFetching);
     this.errorMessage$ = this.store.select(fromGenomes.getSearchErrorMessage);
     this.genomes$ = this.store.select(fromGenomes.getSearchResults);
+    this.links$ = this.store.select(fromGenomes.getPageLinks);
+    
+    this.store.select(fromGenomes.getCurrentPage).subscribe(
+      currentPage => currentPage ? this.currentPage = currentPage : this.currentPage = 1);
+
+    this.store.select(fromGenomes.getCount).subscribe(
+      count => count ? this.count = count : this.count = 1);
+    
+    this.store.select(fromGenomes.getTotalPages).subscribe(
+      totalPages => totalPages > 0 ? this.totalPages = totalPages : this.totalPages = 5);
+
     this.genomes$.subscribe(results => results.length > 0 ? this.displayedColumns = this.columns : this.displayedColumns = null);
-    this.firstPage$ = this.store.select(fromGenomes.pageUrl('first'));
-    this.lastPage$ = this.store.select(fromGenomes.pageUrl('last'));
-    this.prevPage$ = this.store.select(fromGenomes.pageUrl('prev'));
-    this.nextPage$ = this.store.select(fromGenomes.pageUrl('next'));
+  }
+
+  pageApply($event) {
+    let eventPageIndex = ++$event.pageIndex;
+    
+    if ($event.pageSize != this.perPage) {
+      this.perPage = $event.pageSize;
+      this.query$.subscribe(val => this.search(val)).unsubscribe();
+
+    } else if (eventPageIndex > this.currentPage) {
+      this.links$.subscribe(link => this.store.dispatch(new NextPage(link.next))).unsubscribe();
+    } else if (eventPageIndex < this.currentPage) {
+      this.links$.subscribe(link => this.store.dispatch(new PrevPage(link.prev))).unsubscribe();
+    } else if (eventPageIndex === 1) {
+      this.links$.subscribe(link => this.store.dispatch(new FirstPage(link.first))).unsubscribe();
+    } else if (eventPageIndex === this.totalPages) {
+      this.links$.subscribe(link => this.store.dispatch(new LastPage(link.last))).unsubscribe();
+    }
   }
 
   search(query: string) {
-    this.store.dispatch(new Search({search: query, pageNumber:1, perPage:  }));   
+    this.store.dispatch(new Search({search: query, perPage: this.perPage, pageIndex: this.currentPage}));  
   }
 }
 

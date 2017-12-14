@@ -43,7 +43,7 @@ export function reducer (state = initialState, action: Genomes.Actions){
           isFetching: false,
           links: {},
           matches: [],
-          query: action.payload,
+          query: action.payload.search,
           totalPages: null,
         },
     };
