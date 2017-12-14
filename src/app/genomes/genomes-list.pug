@@ -2,7 +2,8 @@
   li(*ngFor="let genome of genomes") {{ genome.name }}
 
 div(*ngIf="displayedColumns")
-  mat-paginator([length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions")
+  mat-paginator([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)")
+
   mat-table([dataSource]="genomes" class="genome-table")
     ng-container(matColumnDef="Genome")
       mat-header-cell(*matHeaderCellDef) Genome

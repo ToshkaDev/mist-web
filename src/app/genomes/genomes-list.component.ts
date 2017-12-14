@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
 import {DataSource} from '@angular/cdk/collections';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -9,9 +9,17 @@ import {DataSource} from '@angular/cdk/collections';
 export class GenomesListComponent {
   @Input() displayedColumns: String[];  
   @Input() genomes: DataSource<any>;
-  @Input() length = 100;
-  @Input() pageSize = 30;
-  @Input() pageSizeOptions = [5, 10, 30, 100];
+  @Input() count;
+  @Input() perPage;
+  @Input() currentPage;
+
+  pageSizeOptions = [5, 10, 30, 100];
+
+  @Output() pageEvent = new EventEmitter<any>();
+
+  pageChanged(pagination: any) {
+    this.pageEvent.emit(pagination);
+  }
 
   selected = 'phylum';
 }

@@ -15,7 +15,7 @@ export class MistApi {
   }
 
   searchGenomesWithPaginationUrl(query: any): string {
-    const pagination = MistApi.paginationParams.replace("%pageNumber%", String(query.pageNumber).replace("%perPage%", String(query.perPage)));
+    const pagination = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
     return this.searchGenomesUrl(query.search) + '&' + pagination;
   }
 
