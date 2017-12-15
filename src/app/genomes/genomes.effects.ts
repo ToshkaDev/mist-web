@@ -14,7 +14,7 @@ import { of } from 'rxjs/observable/of';
 
 import { MistApi } from '../core/services/mist-api.service';
 import * as genomes from './genomes.actions';
-import { pageUrl, search } from './genomes.selectors';
+//import { pageUrl, search } from './genomes.selectors';
 
 @Injectable()
 export class GenomesEffects {
@@ -40,26 +40,18 @@ export class GenomesEffects {
       return this.http.get(url)
         .takeUntil(nextFetch$)
         .map((response) => {
-          // TODO
-          // a) Extract the links, count, currentPage, totalPages
-          // c) Abstract into helper functions
           const matches = response.json();
           const count = parseInt(response.headers.get('x-total-count'), 10);
           const parsed = queryString.parse(queryString.extract(url));
           const totalPages = Math.ceil(count / parsed.per_page);
-          const currentPage = parseInt(parsed.page, 10);
-
-          console.log("count " + count);
-          console.log("parsed.per_page " + parsed.per_page);
-          console.log("url " + url);
-
+          const currentPage = +parsed.page;
           const next = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage + 1});
           const prev = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage - 1});
           const first = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: 1});
           const last = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: totalPages});
           const links = {first: first, last: last, next: next, prev: prev};
-          
           return new genomes.FetchDone({
+            perPage: +parsed.per_page,
             count,
             currentPage,
             totalPages,

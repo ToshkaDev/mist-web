@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
@@ -18,12 +18,10 @@ export class GenomesComponent implements OnInit {
   errorMessage$: Observable<string>;
   genomes$: Observable<any[]>;
   links$: Observable<any>;
-
   count: number;
   totalPages: number;
-  perPage: number = 30;
+  perPage: number;
   currentPage: number;
-
   dataSource = new GenomeDataSource(this.store);
   columns = ['Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
   displayedColumns: String[];
@@ -38,26 +36,22 @@ export class GenomesComponent implements OnInit {
     this.errorMessage$ = this.store.select(fromGenomes.getSearchErrorMessage);
     this.genomes$ = this.store.select(fromGenomes.getSearchResults);
     this.links$ = this.store.select(fromGenomes.getPageLinks);
-    
-    this.store.select(fromGenomes.getCurrentPage).subscribe(
-      currentPage => currentPage ? this.currentPage = currentPage : this.currentPage = 1);
-
-    this.store.select(fromGenomes.getCount).subscribe(
-      count => count ? this.count = count : this.count = 1);
-    
-    this.store.select(fromGenomes.getTotalPages).subscribe(
-      totalPages => totalPages > 0 ? this.totalPages = totalPages : this.totalPages = 5);
-
+    this.store.select(fromGenomes.getPageInfo).subscribe(
+      pageInfo => {
+        pageInfo.count ? this.count = pageInfo.count : this.count = 1;
+        pageInfo.currentPage ? this.currentPage = pageInfo.currentPage : this.currentPage = 1;
+        pageInfo.totalPages ? this.totalPages = pageInfo.totalPages : this.totalPages = 5;
+        pageInfo.perPage ? this.perPage = pageInfo.perPage: this.perPage = 10;
+      }
+    );
     this.genomes$.subscribe(results => results.length > 0 ? this.displayedColumns = this.columns : this.displayedColumns = null);
   }
 
   pageApply($event) {
     let eventPageIndex = ++$event.pageIndex;
-    
     if ($event.pageSize != this.perPage) {
       this.perPage = $event.pageSize;
       this.query$.subscribe(val => this.search(val)).unsubscribe();
-
     } else if (eventPageIndex > this.currentPage) {
       this.links$.subscribe(link => this.store.dispatch(new NextPage(link.next))).unsubscribe();
     } else if (eventPageIndex < this.currentPage) {

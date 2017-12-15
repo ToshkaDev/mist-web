@@ -4,6 +4,7 @@ export interface State {
   search: {
     count: number;
     currentPage: number;
+    perPage: number;
     errorMessage: string;
     isFetching: boolean;
     links: {
@@ -22,6 +23,7 @@ const initialState: State = {
   search: {
     count: null,
     currentPage: null,
+    perPage: null,
     errorMessage: null,
     isFetching: false,
     links: {},
@@ -71,6 +73,7 @@ export function reducer (state = initialState, action: Genomes.Actions){
           ...state.search,
           count: payload.count,
           currentPage: payload.currentPage,
+          perPage: payload.perPage,
           isFetching: false,
           links: payload.links,
           matches: payload.matches,

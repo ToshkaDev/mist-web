@@ -30,9 +30,16 @@ export const getSearchResults = createSelector(
   (searchState) => searchState.matches,
 );
 
-export const getTotalPages = createSelector(
+export const getPageInfo = createSelector(
   search,
-  (searchState) => searchState.totalPages,
+  (searchState) => { 
+    return {
+      count: searchState.count,  
+      totalPages: searchState.totalPages, 
+      currentPage: searchState.currentPage,
+      perPage: searchState.perPage
+    }
+  }
 );
 
 export const getPageLinks = createSelector(
@@ -40,20 +47,10 @@ export const getPageLinks = createSelector(
   (searchState) => searchState.links,
 );
 
-export const getCurrentPage = createSelector(
-  search,
-  (searchState) => searchState.currentPage,
-);
 
-export const getCount = createSelector(
-  search,
-  (searchState) => searchState.count,
-);
-
-
-export const pageUrl = (pageType: 'first' | 'last' | 'prev' | 'next') => {
-  return createSelector(
-    search,
-    (searchState) => searchState.links[pageType],
-  );
-};
+// export const pageUrl = (pageType: 'first' | 'last' | 'prev' | 'next') => {
+//   return createSelector(
+//     search,
+//     (searchState) => searchState.links[pageType],
+//   );
+// };
