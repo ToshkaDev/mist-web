@@ -9,9 +9,10 @@ import {DataSource} from '@angular/cdk/collections';
 export class GenomesListComponent {
   @Input() displayedColumns: String[];  
   @Input() genomes: DataSource<any>;
-  @Input() count;
-  @Input() perPage;
-  @Input() currentPage;
+  @Input() query: string;
+  @Input() count: number;
+  @Input() perPage: number;
+  @Input() currentPage: number;
 
   pageSizeOptions = [5, 10, 30, 100];
 
