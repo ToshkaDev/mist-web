@@ -23,7 +23,13 @@ export class GenomesComponent implements OnInit {
   perPage: number;
   currentPage: number;
   dataSource = new GenomeDataSource(this.store);
-  columns = ['Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
+  columns = ['Select', 'Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
+
+  // asemblyFilter = [{'val':'complete', 'viewVal' : 'Complete genome'}, 
+  // {'val':'chromosom', 'viewVal' : 'Chromosom'},
+  // {'val':'scaffold', 'viewVal' : 'Scaffold'}, 
+  // {'val':'contig', 'viewVal' : 'Contig'}];
+  
   displayedColumns: String[];
   
   constructor(
@@ -51,7 +57,7 @@ export class GenomesComponent implements OnInit {
     let eventPageIndex = ++$event.pageIndex;
     if ($event.pageSize != this.perPage) {
       this.perPage = $event.pageSize;
-      this.query$.subscribe(val => this.search(val)).unsubscribe();
+      this.query$.subscribe(val => this.search(val,1)).unsubscribe();
     } else if (eventPageIndex > this.currentPage) {
       this.links$.subscribe(link => this.store.dispatch(new NextPage(link.next))).unsubscribe();
     } else if (eventPageIndex < this.currentPage) {
@@ -63,8 +69,8 @@ export class GenomesComponent implements OnInit {
     }
   }
 
-  search(query: string) {
-    this.store.dispatch(new Search({search: query, perPage: this.perPage, pageIndex: this.currentPage}));  
+  search(query: string, currentPage: number = this.currentPage) {
+    this.store.dispatch(new Search({search: query, perPage: this.perPage, pageIndex: currentPage}));  
   }
 }
 

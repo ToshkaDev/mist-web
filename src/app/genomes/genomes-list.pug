@@ -3,7 +3,16 @@
 
 div(*ngIf="query")
   mat-paginator([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)")
+  //- mat-select([value]="")
+  //-   mat-option(value="complete")
+  //-   mat-option(value="chromosom")
+  //-   mat-option(value="scaffold")
+  //-   mat-option(value="contig")
   mat-table([dataSource]="genomes" class="genome-table")
+    ng-container(matColumnDef="Select")
+      mat-header-cell(*matHeaderCellDef) Select
+      mat-cell(*matCellDef="let genome") 
+        mat-checkbox 
     ng-container(matColumnDef="Genome")
       mat-header-cell(*matHeaderCellDef) Genome
       mat-cell(*matCellDef="let genome")
