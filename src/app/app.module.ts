@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { MatButtonModule, MatIconModule, MatInputModule, MatProgressSpinnerModule, 
-  MatTableModule, MatPaginatorModule, MatCardModule} from '@angular/material';
+  MatTableModule, MatPaginatorModule, MatCardModule, MatCheckboxModule} from '@angular/material';
   import {MatSelectModule} from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -50,6 +50,7 @@ import { HomeComponent } from './home/home.component';
     MatPaginatorModule,
     MatCardModule,
     MatSelectModule,
+    MatCheckboxModule,
     MatProgressSpinnerModule,
     StoreModule.forRoot(reducers, { metaReducers}),
   ],

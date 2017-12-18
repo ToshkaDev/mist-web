@@ -22,8 +22,7 @@ export class MistApi {
   getGenomeUrl(query: string): string {
     return this.genomesUrl() + "/" +  query;
   }
-
-
+  
   searchGenomes(query: string): Observable<Response> {
     return this.http.get(this.genomesUrl());
   }
