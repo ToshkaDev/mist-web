@@ -64,23 +64,19 @@ export class GenomesEffects {
 
   @Effect()
   firstPage$: Observable<Action> = this.actions$.ofType<genomes.FirstPage>(genomes.FIRST_PAGE)
-    .map((action) => action.payload) 
-    .map((url) => new genomes.Fetch(url));
+    .map((action) => new genomes.Fetch(action.payload));
 
   @Effect()
   lastPage$: Observable<Action> = this.actions$.ofType<genomes.LastPage>(genomes.LAST_PAGE)
-    .map((action) => action.payload) 
-    .map((url) => new genomes.Fetch(url));
+    .map((action) => new genomes.Fetch(action.payload)); 
 
   @Effect()
   prevPage$: Observable<Action> = this.actions$.ofType<genomes.PrevPage>(genomes.PREV_PAGE)
-    .map((action) => action.payload) 
-    .map((url) => new genomes.Fetch(url));
+    .map((action) => new genomes.Fetch(action.payload)); 
 
   @Effect()
   nextPage$: Observable<Action> = this.actions$.ofType<genomes.NextPage>(genomes.NEXT_PAGE)
-    .map((action) => action.payload) 
-    .map((url) => new genomes.Fetch(url));
+    .map((action) => new genomes.Fetch(action.payload)); 
 
   constructor(
     private http: Http,

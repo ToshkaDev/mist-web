@@ -13,6 +13,11 @@ import * as fromGenomes from './genomes.selectors';
   templateUrl: './genomes.pug',
 })
 export class GenomesComponent implements OnInit {
+  readonly defaultCount: number = 1;
+  readonly defaultCurrentPage: number = 1;
+  readonly defaultPerPage: number = 30;
+  readonly defaultTotalPages: number = 1;
+
   query$: Observable<string>;
   isFetching$: Observable<boolean>;
   errorMessage$: Observable<string>;
@@ -24,6 +29,7 @@ export class GenomesComponent implements OnInit {
   currentPage: number;
   dataSource = new GenomeDataSource(this.store);
   columns = ['Select', 'Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
+
 
   // asemblyFilter = [{'val':'complete', 'viewVal' : 'Complete genome'}, 
   // {'val':'chromosom', 'viewVal' : 'Chromosom'},
@@ -44,10 +50,10 @@ export class GenomesComponent implements OnInit {
     this.links$ = this.store.select(fromGenomes.getPageLinks);
     this.store.select(fromGenomes.getPageInfo).subscribe(
       pageInfo => {
-        pageInfo.count ? this.count = pageInfo.count : this.count = 1;
-        pageInfo.currentPage ? this.currentPage = pageInfo.currentPage : this.currentPage = 1;
-        pageInfo.totalPages ? this.totalPages = pageInfo.totalPages : this.totalPages = 5;
-        pageInfo.perPage ? this.perPage = pageInfo.perPage: this.perPage = 10;
+        pageInfo.count ? this.count = pageInfo.count : this.count = this.defaultCount;
+        pageInfo.currentPage ? this.currentPage = pageInfo.currentPage : this.currentPage = this.defaultCurrentPage;
+        pageInfo.totalPages ? this.totalPages = pageInfo.totalPages : this.totalPages = this.defaultTotalPages;
+        pageInfo.perPage ? this.perPage = pageInfo.perPage: this.perPage = this.defaultPerPage;
       }
     );
     this.genomes$.subscribe(results => results.length > 0 ? this.displayedColumns = this.columns : this.displayedColumns = null);
@@ -55,9 +61,9 @@ export class GenomesComponent implements OnInit {
 
   pageApply($event) {
     let eventPageIndex = ++$event.pageIndex;
-    if ($event.pageSize != this.perPage) {
+    if ($event.pageSize !== this.perPage) {
       this.perPage = $event.pageSize;
-      this.query$.subscribe(val => this.search(val,1)).unsubscribe();
+      this.query$.subscribe(val => this.search(val)).unsubscribe();
     } else if (eventPageIndex > this.currentPage) {
       this.links$.subscribe(link => this.store.dispatch(new NextPage(link.next))).unsubscribe();
     } else if (eventPageIndex < this.currentPage) {
@@ -69,8 +75,8 @@ export class GenomesComponent implements OnInit {
     }
   }
 
-  search(query: string, currentPage: number = this.currentPage) {
-    this.store.dispatch(new Search({search: query, perPage: this.perPage, pageIndex: currentPage}));  
+  search(query: string) {
+    this.store.dispatch(new Search({search: query, perPage: this.perPage, pageIndex: this.defaultCurrentPage}));  
   }
 }
 
