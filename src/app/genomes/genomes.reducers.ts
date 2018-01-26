@@ -1,4 +1,5 @@
 import * as Genomes from './genomes.actions';
+import { GenomesFilter }  from './genomes.filter';
 
 export interface State {
   search: {
@@ -51,7 +52,7 @@ export function reducer (state = initialState, action: Genomes.Actions){
     };
 
     case Genomes.FETCH:
-      const url = action.payload;
+      const url = action.payload.url;
       if (url) {
         return {
           ...state,

@@ -2,14 +2,16 @@ import { ChangeDetectionStrategy, Component, OnInit, Input, Output, EventEmitter
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
-import {DataSource} from '@angular/cdk/collections';
+import { DataSource } from '@angular/cdk/collections';
 import { Search, FirstPage, LastPage, PrevPage, NextPage } from './genomes.actions';
 import * as fromGenomes from './genomes.selectors';
+import { GenomesFilter }  from './genomes.filter';
+import { Navigation }  from './genomes.navigation';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'mist-genomes',
-  styleUrls: [],
+  styleUrls: ['./genomes.scss'],
   templateUrl: './genomes.pug',
 })
 export class GenomesComponent implements OnInit {
@@ -17,7 +19,20 @@ export class GenomesComponent implements OnInit {
   readonly defaultCurrentPage: number = 1;
   readonly defaultPerPage: number = 30;
   readonly defaultTotalPages: number = 1;
-
+  readonly minQueryLenght = 1;
+  readonly columns = ['Select', 'Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
+  readonly pageSizeOptions = [5, 10, 30, 100];
+  readonly taxonomyMap: Map<number,string> = new Map()
+    .set(1,"phylum")
+    .set(2,"clazz")
+    .set(3,"orderr")
+    .set(4,"family")
+    .set(5,"genus");
+  readonly asemblyFilterOptions = [
+    {'value':'Complete Genome', 'viewValue' : 'Complete Genome'}, 
+    {'value':'Chromosom', 'viewValue' : 'Chromosom'},
+    {'value':'Scaffold', 'viewValue' : 'Scaffold'}, 
+    {'value':'Contig', 'viewValue' : 'Contig'}];
   query$: Observable<string>;
   isFetching$: Observable<boolean>;
   errorMessage$: Observable<string>;
@@ -27,17 +42,11 @@ export class GenomesComponent implements OnInit {
   totalPages: number;
   perPage: number;
   currentPage: number;
-  dataSource = new GenomeDataSource(this.store);
-  columns = ['Select', 'Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
-
-
-  // asemblyFilter = [{'val':'complete', 'viewVal' : 'Complete genome'}, 
-  // {'val':'chromosom', 'viewVal' : 'Chromosom'},
-  // {'val':'scaffold', 'viewVal' : 'Scaffold'}, 
-  // {'val':'contig', 'viewVal' : 'Contig'}];
-  
+  dataSource: GenomeDataSource = new GenomeDataSource(this.store);
+  selected:string = "defaultValue";  
+  genomeFilter: GenomesFilter = new GenomesFilter(); 
   displayedColumns: String[];
-  
+
   constructor(
     private store: Store<any>,
   ) {}
@@ -61,22 +70,61 @@ export class GenomesComponent implements OnInit {
 
   pageApply($event) {
     let eventPageIndex = ++$event.pageIndex;
+    let filter: GenomesFilter;
+    this.query$.subscribe(searchterm => filter=this.checkQuery()).unsubscribe();
     if ($event.pageSize !== this.perPage) {
       this.perPage = $event.pageSize;
-      this.query$.subscribe(val => this.search(val)).unsubscribe();
+      this.query$.subscribe(searchterm => this.search(searchterm)).unsubscribe();
     } else if (eventPageIndex > this.currentPage) {
-      this.links$.subscribe(link => this.store.dispatch(new NextPage(link.next))).unsubscribe();
+        this.links$.subscribe(link => this.store.dispatch(new NextPage(new Navigation(link.next, filter)))).unsubscribe();
     } else if (eventPageIndex < this.currentPage) {
-      this.links$.subscribe(link => this.store.dispatch(new PrevPage(link.prev))).unsubscribe();
+        this.links$.subscribe(link => this.store.dispatch(new PrevPage(new Navigation(link.prev, filter)))).unsubscribe();
     } else if (eventPageIndex === 1) {
-      this.links$.subscribe(link => this.store.dispatch(new FirstPage(link.first))).unsubscribe();
+        this.links$.subscribe(link => this.store.dispatch(new FirstPage(new Navigation(link.first, filter)))).unsubscribe();
     } else if (eventPageIndex === this.totalPages) {
-      this.links$.subscribe(link => this.store.dispatch(new LastPage(link.last))).unsubscribe();
+        this.links$.subscribe(link => this.store.dispatch(new LastPage(new Navigation(link.last, filter)))).unsubscribe();
     }
   }
 
   search(query: string) {
-    this.store.dispatch(new Search({search: query, perPage: this.perPage, pageIndex: this.defaultCurrentPage}));  
+    this.store.dispatch(new Search({
+      search: query, 
+      perPage: this.perPage, 
+      pageIndex: this.defaultCurrentPage, 
+      filter: this.checkQuery()
+    }));
+  }
+
+  filter() {
+    this.query$.subscribe(query => this.search(query)).unsubscribe();
+  }
+
+  reset() {
+    this.genomeFilter.reset();
+    this.selected="defaultValue";
+  }
+
+  filterTaxonomy($event) {
+    let selectedOptId: string = $event.source.selected._id;
+    let selectedOptIndex: number = $event.source._optionIds.split(" ").indexOf(selectedOptId);
+    let level: string = this.taxonomyMap.get(selectedOptIndex) + "";
+    this.genomeFilter[level] = $event.value;
+    this.genomeFilter.resetFrom(level);
+    this.selected=$event.value;
+    this.filter();
+  }
+
+  checkQuery() {
+    let filter: GenomesFilter;
+    this.query$.subscribe(searchterm => {
+      if (searchterm && searchterm.length >= this.minQueryLenght) {
+        filter = Object.assign(new GenomesFilter(), this.genomeFilter)
+      } else {
+        filter = Object.assign(new GenomesFilter(), this.genomeFilter.reset());
+        this.selected="defaultValue";
+      }
+    }).unsubscribe();
+    return filter;
   }
 }
 

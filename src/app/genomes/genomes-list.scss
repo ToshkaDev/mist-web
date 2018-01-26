@@ -1,7 +1,24 @@
-mat-table.genome-table {
-    
-}
+// mat-table.genome-table {
+//     width: 80%;
+//     justify-content: center;
+// }
 mat-select.taxonomy {
-    width: 50%;
-    color: red;
+    width: 60%;
 }
+
+.select-header, .select-cell {
+    flex: 0 0 5%;
+}
+
+.assembly-header, .assembly-cell {
+    flex: 0 0 10%;
+}
+.superkingdom-header, .superkingdom-cell {
+    flex: 0 0 15%;
+}
+
+.genome-header, .genome-cell {
+    flex: 0 0 30%;
+}
+
+
