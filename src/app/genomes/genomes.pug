@@ -15,17 +15,17 @@ div(*ngIf="displayedColumns && query$ | async" class="flex-container")
         form( (ngSubmit)="filter()" #filterForm="ngForm")
           div.form-group
             mat-form-field
-              input(matInput placeholder="Phylum" class="form-control" name="phylum" [(ngModel)]="genomeFilter.phylum")
+              input(matInput placeholder="Phylum" class="form-control" name="phylum" [(ngModel)]="genomesFilter.phylum")
             mat-form-field
-              input(matInput placeholder="Class" class="form-control" name="clazz" [(ngModel)]="genomeFilter.clazz")
+              input(matInput placeholder="Class" class="form-control" name="clazz" [(ngModel)]="genomesFilter.clazz")
             mat-form-field
-              input(matInput placeholder="Order" class="form-control" name="orderr" [(ngModel)]="genomeFilter.orderr")
+              input(matInput placeholder="Order" class="form-control" name="orderr" [(ngModel)]="genomesFilter.orderr")
             mat-form-field
-              input(matInput placeholder="Family" class="form-control" name="family" [(ngModel)]="genomeFilter.family")
+              input(matInput placeholder="Family" class="form-control" name="family" [(ngModel)]="genomesFilter.family")
             mat-form-field
-              input(matInput placeholder="Genus" class="form-control" name="genus" [(ngModel)]="genomeFilter.genus")
+              input(matInput placeholder="Genus" class="form-control" name="genus" [(ngModel)]="genomesFilter.genus")
             mat-form-field 
-              mat-select( placeholder="Assembly Level" name="assembly_level" [(ngModel)]="genomeFilter.assembly_level")
+              mat-select( placeholder="Assembly Level" name="assembly_level" [(ngModel)]="genomesFilter.assembly_level")
                 mat-option(*ngFor="let option of asemblyFilterOptions" [value]="option.value") {{option.viewValue}}
             div.pull-right
               button(mat-button type="submit" color="primary" class="filter-button" [disabled]="!filterForm.form.valid") Filter

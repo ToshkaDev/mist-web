@@ -43,8 +43,9 @@ export class GenomesComponent implements OnInit {
   perPage: number;
   currentPage: number;
   dataSource: GenomeDataSource = new GenomeDataSource(this.store);
-  selected:string = "defaultValue";  
-  genomeFilter: GenomesFilter = new GenomesFilter(); 
+  defaultValue: string = "defaultValue";
+  selected: string = this.defaultValue;  
+  genomesFilter: GenomesFilter = new GenomesFilter(); 
   displayedColumns: String[];
 
   constructor(
@@ -97,20 +98,21 @@ export class GenomesComponent implements OnInit {
 
   filter() {
     this.query$.subscribe(query => this.search(query)).unsubscribe();
+    this.selected = this.genomesFilter.getMostSpecificLevel();
   }
 
   reset() {
-    this.genomeFilter.reset();
-    this.selected="defaultValue";
+    this.genomesFilter.reset();
+    this.selected = this.defaultValue;
   }
 
   filterTaxonomy($event) {
     let selectedOptId: string = $event.source.selected._id;
     let selectedOptIndex: number = $event.source._optionIds.split(" ").indexOf(selectedOptId);
     let level: string = this.taxonomyMap.get(selectedOptIndex) + "";
-    this.genomeFilter[level] = $event.value;
-    this.genomeFilter.resetFrom(level);
-    this.selected=$event.value;
+    this.genomesFilter[level] = $event.value;
+    this.genomesFilter.resetFrom(level);
+    this.selected = $event.value;
     this.filter();
   }
 
@@ -118,10 +120,10 @@ export class GenomesComponent implements OnInit {
     let filter: GenomesFilter;
     this.query$.subscribe(searchterm => {
       if (searchterm && searchterm.length >= this.minQueryLenght) {
-        filter = Object.assign(new GenomesFilter(), this.genomeFilter)
+        filter = Object.assign(new GenomesFilter(), this.genomesFilter)
       } else {
-        filter = Object.assign(new GenomesFilter(), this.genomeFilter.reset());
-        this.selected="defaultValue";
+        filter = Object.assign(new GenomesFilter(), this.genomesFilter.reset());
+        this.selected = this.defaultValue;
       }
     }).unsubscribe();
     return filter;
