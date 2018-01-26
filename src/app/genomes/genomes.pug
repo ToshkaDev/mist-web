@@ -8,6 +8,33 @@ form
     (onQueryChange)="search($event)"
   )
 
-//mist-genomes-list([genomes]="genomes$ | async")
-mist-genomes-list([genomes]="dataSource" [displayedColumns]="displayedColumns" (pageEvent)="pageApply($event)" 
-[count]="count" [perPage]="perPage" [currentPage]="currentPage" [query]="query$ | async")
+div(*ngIf="displayedColumns && query$ | async" class="flex-container")
+    mat-paginator([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
+    div(class="row")
+      div(class="two columns")
+        form( (ngSubmit)="filter()" #filterForm="ngForm")
+          div.form-group
+            mat-form-field
+              input(matInput placeholder="Phylum" class="form-control" name="phylum" [(ngModel)]="genomeFilter.phylum")
+            mat-form-field
+              input(matInput placeholder="Class" class="form-control" name="clazz" [(ngModel)]="genomeFilter.clazz")
+            mat-form-field
+              input(matInput placeholder="Order" class="form-control" name="orderr" [(ngModel)]="genomeFilter.orderr")
+            mat-form-field
+              input(matInput placeholder="Family" class="form-control" name="family" [(ngModel)]="genomeFilter.family")
+            mat-form-field
+              input(matInput placeholder="Genus" class="form-control" name="genus" [(ngModel)]="genomeFilter.genus")
+            mat-form-field 
+              mat-select( placeholder="Assembly Level" name="assembly_level" [(ngModel)]="genomeFilter.assembly_level")
+                mat-option(*ngFor="let option of asemblyFilterOptions" [value]="option.value") {{option.viewValue}}
+            div.pull-right
+              button(mat-button type="submit" color="primary" class="filter-button" [disabled]="!filterForm.form.valid") Filter
+              button(mat-button type="submit" color="primary" class="filter-button" [disabled]="!filterForm.form.valid" (click)="reset()") Reset
+      div(class="ten columns")
+        mist-genomes-list(
+          [selected]="selected"
+          (taxonomyEvent)="filterTaxonomy($event)"
+          [genomes]="dataSource"
+          [displayedColumns]="displayedColumns"
+          [query]="query$ | async"
+        )

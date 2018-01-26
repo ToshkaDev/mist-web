@@ -18,31 +18,31 @@ export class Search implements Action {
 export class FirstPage implements Action {
   readonly type = FIRST_PAGE;
 
-  constructor(public payload: string) {}
+  constructor(public payload: any) {}
 }
 
 export class LastPage implements Action {
   readonly type = LAST_PAGE;
 
-  constructor(public payload: string) {}
+  constructor(public payload: any) {}
 }
 
 export class NextPage implements Action {
   readonly type = NEXT_PAGE;
 
-  constructor(public payload: string) {}
+  constructor(public payload: any) {}
 }
 
 export class PrevPage implements Action {
   readonly type = PREV_PAGE;
 
-  constructor(public payload: string) {}
+  constructor(public payload: any) {}
 }
 
 export class Fetch implements Action {
   readonly type = FETCH;
 
-  constructor(public payload: string) {}
+  constructor(public payload: any) {}
 }
 
 export class FetchDone implements Action {

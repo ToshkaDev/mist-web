@@ -4,7 +4,8 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class MistApi {
-  static BASE_URL = 'https://api.mistdb.com/v1';
+  //static BASE_URL = 'https://api.mistdb.com/v1';
+  static BASE_URL = 'http://localhost:5000/v1';
   static GENOMES_ROOT = '/genomes';
   static paginationParams = "page=%pageNumber%&per_page=%perPage%";
 
@@ -15,7 +16,25 @@ export class MistApi {
   }
 
   searchGenomesWithPaginationUrl(query: any): string {
-    const pagination = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
+    let pagination = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
+    if(query.filter.phylum) {
+      pagination = pagination.concat("&phylum=" + query.filter.phylum.trim());
+    }
+    if(query.filter.clazz) {
+      pagination = pagination.concat("&class=" + query.filter.clazz.trim());
+    }
+    if(query.filter.orderr) {
+      pagination = pagination.concat("&orderr=" + query.filter.orderr.trim());
+    }
+    if(query.filter.family) {
+      pagination = pagination.concat("&family=" + query.filter.family.trim());
+    }
+    if(query.filter.genus) {
+      pagination = pagination.concat("&genus=" + query.filter.genus.trim());
+    }
+    if(query.filter.assembly_level) {
+      pagination = pagination.concat("&assembly_level=" + query.filter.assembly_level.trim());
+    }
     return this.searchGenomesUrl(query.search) + '&' + pagination;
   }
 

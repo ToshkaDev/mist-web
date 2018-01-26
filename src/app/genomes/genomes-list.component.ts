@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
-import {DataSource} from '@angular/cdk/collections';
+import { DataSource } from '@angular/cdk/collections';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'mist-genomes-list',
@@ -10,17 +10,11 @@ export class GenomesListComponent {
   @Input() displayedColumns: String[];  
   @Input() genomes: DataSource<any>;
   @Input() query: string;
-  @Input() count: number;
-  @Input() perPage: number;
-  @Input() currentPage: number;
+  @Input() selected: string;
+  @Output() taxonomyEvent = new EventEmitter<any>();
 
-  pageSizeOptions = [5, 10, 30, 100];
-
-  @Output() pageEvent = new EventEmitter<any>();
-
-  pageChanged(pagination: any) {
-    this.pageEvent.emit(pagination);
+  taxonomyChanged(taxon: any) {
+    this.taxonomyEvent.emit(taxon);
   }
 
-  selected = 'phylum';
 }
