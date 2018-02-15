@@ -23,11 +23,12 @@ export class GenomesComponent implements OnInit {
   readonly columns = ['Select', 'Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
   readonly pageSizeOptions = [5, 10, 30, 100];
   readonly taxonomyMap: Map<number,string> = new Map()
-    .set(1,"phylum")
-    .set(2,"clazz")
-    .set(3,"orderr")
-    .set(4,"family")
-    .set(5,"genus");
+    .set(1,"superkingdom")
+    .set(2,"phylum")
+    .set(3,"clazz")
+    .set(4,"order")
+    .set(5,"family")
+    .set(6,"genus");
   readonly asemblyFilterOptions = [
     {'value':'Complete Genome', 'viewValue' : 'Complete Genome'}, 
     {'value':'Chromosom', 'viewValue' : 'Chromosom'},
@@ -43,8 +44,8 @@ export class GenomesComponent implements OnInit {
   perPage: number;
   currentPage: number;
   dataSource: GenomeDataSource = new GenomeDataSource(this.store);
-  defaultValue: string = "defaultValue";
-  selected: string = this.defaultValue;  
+  defaultSelection: string = "defaultValue";
+  selected: string = this.defaultSelection;  
   genomesFilter: GenomesFilter = new GenomesFilter(); 
   displayedColumns: String[];
 
@@ -103,7 +104,7 @@ export class GenomesComponent implements OnInit {
 
   reset() {
     this.genomesFilter.reset();
-    this.selected = this.defaultValue;
+    this.selected = this.defaultSelection;
   }
 
   filterTaxonomy($event) {
@@ -123,7 +124,7 @@ export class GenomesComponent implements OnInit {
         filter = Object.assign(new GenomesFilter(), this.genomesFilter)
       } else {
         filter = Object.assign(new GenomesFilter(), this.genomesFilter.reset());
-        this.selected = this.defaultValue;
+        this.selected = this.defaultSelection;
       }
     }).unsubscribe();
     return filter;
