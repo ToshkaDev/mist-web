@@ -1,11 +1,9 @@
 div(*ngIf="genome")
     mat-card
+        div Genome summary
         div {{ genome.name }}
-    mat-card
-        div Taxonomy
         div(*ngFor="let taxon of genomeTaxonomy") {{ taxon }}
     mat-card
-        div Genome information
         div 
             a(href="{{genome.ftp_path}}") {{genome.genbank_version}}
         div {{genome.assembly_level}}

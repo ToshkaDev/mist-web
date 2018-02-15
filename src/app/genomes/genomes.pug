@@ -15,11 +15,13 @@ div(*ngIf="displayedColumns && query$ | async" class="flex-container")
         form( (ngSubmit)="filter()" #filterForm="ngForm")
           div.form-group
             mat-form-field
+              input(matInput placeholder="Superkingdom" class="form-control" name="superkingdom" [(ngModel)]="genomesFilter.superkingdom")
+            mat-form-field
               input(matInput placeholder="Phylum" class="form-control" name="phylum" [(ngModel)]="genomesFilter.phylum")
             mat-form-field
               input(matInput placeholder="Class" class="form-control" name="clazz" [(ngModel)]="genomesFilter.clazz")
             mat-form-field
-              input(matInput placeholder="Order" class="form-control" name="orderr" [(ngModel)]="genomesFilter.orderr")
+              input(matInput placeholder="Order" class="form-control" name="order" [(ngModel)]="genomesFilter.order")
             mat-form-field
               input(matInput placeholder="Family" class="form-control" name="family" [(ngModel)]="genomesFilter.family")
             mat-form-field

@@ -15,6 +15,7 @@ mat-table([dataSource]="genomes" class="genome-table")
     mat-cell(*matCellDef="let genome")
       mat-select([value]="selected" class="taxonomy" (change)="taxonomyChanged($event)")
         mat-option(value="defaultValue" disabled) Select Level
+        mat-option(value="{{genome.superkingdom}}") {{genome.superkingdom}}
         mat-option(value="{{genome.phylum}}") {{genome.phylum}}
         mat-option(value="{{genome.class}}") {{genome.class}}
         mat-option(value="{{genome.order}}") {{genome.order}}
