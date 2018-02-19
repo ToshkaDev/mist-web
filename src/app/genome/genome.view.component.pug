@@ -1,15 +1,20 @@
-div(*ngIf="genome")
-    mat-card
-        div Genome summary
-        div {{ genome.name }}
-        div(*ngFor="let taxon of genomeTaxonomy") {{ taxon }}
-    mat-card
-        div 
-            a(href="{{genome.ftp_path}}") {{genome.genbank_version}}
-        div {{genome.assembly_level}}
-        div {{genome.submitter}}
-        div {{genome.bioproject}}
-        div {{genome.biosample}}
-        div {{genome.release_date | date: 'longDate'}}
-        div {{genome.wgs_master}}
-        div {{genome.refseq_category}}
+div(*ngIf="genomeViewModel")
+    table(class="u-full-width")
+        thead
+            tr
+                th(colspan=2) 
+                    h5 Genome Summary
+        tbody
+            tr  
+                td Taxonomy
+                td 
+                    span(*ngFor="let taxon of genomeViewModel.taxonomy")
+                        span(*ngIf="taxon.level != 'genus'; else genusBlock" ) {{ taxon.value }},{{" "}} 
+                        ng-template(#genusBlock) {{ taxon.value }}
+            tr(*ngFor="let property of genomeViewModel.mainInfo")
+                td {{ property.name }}
+                td(*ngIf="property.ftp_path; else notFtpBlock") 
+                    a(href="{{property.ftp_path}}") {{ property.value }}
+                ng-template(#notFtpBlock) 
+                    td {{ property.value }}
+

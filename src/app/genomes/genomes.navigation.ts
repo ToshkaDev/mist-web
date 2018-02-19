@@ -1,4 +1,4 @@
-import { GenomesFilter }  from './genomes.filter';
+import { GenomesFilter } from './genomes.filter';
 
 export class Navigation {
     constructor(

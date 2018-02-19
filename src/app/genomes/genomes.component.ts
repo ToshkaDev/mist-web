@@ -43,7 +43,7 @@ export class GenomesComponent implements OnInit {
   totalPages: number;
   perPage: number;
   currentPage: number;
-  dataSource: GenomeDataSource = new GenomeDataSource(this.store);
+  dataSource: GenomesDataSource = new GenomesDataSource(this.store);
   defaultSelection: string = "defaultValue";
   selected: string = this.defaultSelection;  
   genomesFilter: GenomesFilter = new GenomesFilter(); 
@@ -123,15 +123,15 @@ export class GenomesComponent implements OnInit {
       if (searchterm && searchterm.length >= this.minQueryLenght) {
         filter = Object.assign(new GenomesFilter(), this.genomesFilter)
       } else {
-        filter = Object.assign(new GenomesFilter(), this.genomesFilter.reset());
-        this.selected = this.defaultSelection;
+          filter = Object.assign(new GenomesFilter(), this.genomesFilter.reset());
+          this.selected = this.defaultSelection;
       }
     }).unsubscribe();
     return filter;
   }
 }
 
-export class GenomeDataSource extends DataSource<any> {
+export class GenomesDataSource extends DataSource<any> {
   constructor(private store: Store<any>) {
     super();
   }

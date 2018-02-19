@@ -2,22 +2,8 @@ import { ChangeDetectionStrategy, Component, Input, AfterContentChecked } from '
 @Component({
   selector: 'mist-genome-view',
   templateUrl: './genome.view.component.pug',
+  styleUrls: ['./genome.view.component.scss']
 })
-export class GenomeViewComponent implements AfterContentChecked {
-  @Input() genome: any;
-  genomeTaxonomy: string[];
-
-  ngAfterContentChecked() {
-    if (this.genome) {
-        this.genomeTaxonomy = [
-          this.genome.superkingdom, 
-          this.genome.phylum, 
-          this.genome.class,
-          this.genome.order,
-          this.genome.family,
-          this.genome.genus,
-          this.genome.strain];
-    }
-
-  }
+export class GenomeViewComponent  {
+  @Input() genomeViewModel: any;
 }
