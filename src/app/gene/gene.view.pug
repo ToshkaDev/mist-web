@@ -1,0 +1,21 @@
+div.row(*ngIf="geneViewModel")
+        h5 Gene/Protein Summary
+div.row(*ngIf="geneViewModel" class="gene_prot_info")
+    div(class="six columns")
+        table(class="u-full-width")
+            tbody
+                tr(*ngFor="let property of geneViewModel.geneInfo")
+                    td {{ property.name }}
+                    td(*ngIf="property.genome_version; else notUrlBlock") 
+                        a(routerLink="/genomes/{{property.genome_version}}") {{ property.value }}
+                    ng-template(#notUrlBlock) 
+                        td {{ property.value }}
+    div(class="six columns")
+        table(class="u-full-width")
+            tbody
+                tr(*ngFor="let property of geneViewModel.proteinInfo")
+                    td {{ property.name }}
+                    td {{ property.value }}
+
+
+div.maincontainer Contt

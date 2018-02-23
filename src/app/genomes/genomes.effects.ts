@@ -11,11 +11,10 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/takeUntil';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-
-import { MistApi } from '../core/services/mist-api.service';
 import * as genomes from './genomes.actions';
-import { GenomesFilter }  from './genomes.filter';
-import { Navigation }  from './genomes.navigation';
+import { MistApi } from '../core/services/mist-api.service';
+import GenomesFilter from './genomes.filter';
+import { Navigation }  from '../core/common/navigation';
 
 @Injectable()
 export class GenomesEffects {
@@ -28,6 +27,7 @@ export class GenomesEffects {
     .debounceTime(GenomesEffects.DEBOUNCE_TIME_MS)
     .map((action) => action.payload)
     .map((query: any) => {
+      console.log("Genoms query " + query)
       const url = this.mistApi.searchGenomesWithPaginationUrl(query);
       return new genomes.Fetch(new Navigation(url, query.filter));
     });

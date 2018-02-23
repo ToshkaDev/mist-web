@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, AfterContentChecked } from '@angular/core';
+import { Component, Input } from '@angular/core';
 @Component({
   selector: 'mist-genome-view',
-  templateUrl: './genome.view.component.pug',
+  templateUrl: './genome.view.pug',
   styleUrls: ['./genome.view.component.scss']
 })
 export class GenomeViewComponent  {

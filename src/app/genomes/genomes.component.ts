@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, OnInit, Input, Output, EventEmitter
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
-import { DataSource } from '@angular/cdk/collections';
 import { Search, FirstPage, LastPage, PrevPage, NextPage } from './genomes.actions';
 import * as fromGenomes from './genomes.selectors';
-import { GenomesFilter }  from './genomes.filter';
-import { Navigation }  from './genomes.navigation';
+import GenomesFilter from './genomes.filter';
+import { Navigation }  from '../core/common/navigation';
+import MistdDatasource from '../core/common/mist.datasource';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,7 +43,7 @@ export class GenomesComponent implements OnInit {
   totalPages: number;
   perPage: number;
   currentPage: number;
-  dataSource: GenomesDataSource = new GenomesDataSource(this.store);
+  dataSource: MistdDatasource = new MistdDatasource(this.store, fromGenomes.getSearchResults);
   defaultSelection: string = "defaultValue";
   selected: string = this.defaultSelection;  
   genomesFilter: GenomesFilter = new GenomesFilter(); 
@@ -129,14 +129,4 @@ export class GenomesComponent implements OnInit {
     }).unsubscribe();
     return filter;
   }
-}
-
-export class GenomesDataSource extends DataSource<any> {
-  constructor(private store: Store<any>) {
-    super();
-  }
-  connect(): Observable<any[]> {
-    return this.store.select(fromGenomes.getSearchResults);
-  }
-  disconnect() {}
 }

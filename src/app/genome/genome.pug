@@ -1,0 +1,11 @@
+form
+  mist-search-input(
+    [query]="query$ | async"
+    [isFetching]="isFetching$ | async"
+    [errorMessage]="errorMessage$ | async"
+    (onQueryChange)="search($event)"
+  )
+
+mist-genome-view(
+    [genomeViewModel]="genomeViewModel"
+)

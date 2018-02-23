@@ -1,4 +1,6 @@
-export class GenomesFilter {
+import { Filter }  from '../core/common/navigation';
+
+export default class GenomesFilter implements Filter {
     readonly levels: number = 6;
     private mostSpecificLevel: string;
 
