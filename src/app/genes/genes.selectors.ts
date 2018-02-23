@@ -1,13 +1,12 @@
 import { createSelector } from '@ngrx/store';
 import { State } from '../app.reducers';
-//import { State as GenomesState } from './genomes.reducers';
 
-export const selectGenomes = (state: State) =>
-  state.genomes;
+export const selectGenes = (state: State) =>
+  state.genes;
 
 export const search = createSelector(
-  selectGenomes,
-  (state) => state.search,
+    selectGenes,
+    (state) => state.search,
 );
 
 export const getSearchQuery = createSelector(

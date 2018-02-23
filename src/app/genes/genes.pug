@@ -1,0 +1,18 @@
+h3 Genes
+
+form
+  mist-search-input(
+    [query]="query$ | async"
+    [isFetching]="isFetching$ | async"
+    [errorMessage]="errorMessage$ | async"
+    (onQueryChange)="search($event)"
+  )
+
+//mist-genes-list([genes]="genes$ | async")
+
+div(*ngIf="displayedColumns && query$ | async" class="flex-container")
+  mist-genes-list(
+    [genes]="dataSource"
+    [displayedColumns]="displayedColumns"
+    [query]="query$ | async"
+  )

@@ -1,4 +1,4 @@
-import * as Genomes from './genomes.actions';
+import * as Genes from './genes.actions';
 
 export interface State {
   search: {
@@ -33,9 +33,9 @@ const initialState: State = {
   },
 };
 
-export function reducer (state = initialState, action: Genomes.Actions) {
+export function reducer (state = initialState, action: Genes.Actions){
   switch (action.type) {
-    case Genomes.SEARCH:
+    case Genes.SEARCH:
       return {
         ...state,
         search: {
@@ -50,7 +50,7 @@ export function reducer (state = initialState, action: Genomes.Actions) {
         },
     };
 
-    case Genomes.FETCH:
+    case Genes.FETCH:
       const url = action.payload.url;
       if (url) {
         return {
@@ -65,7 +65,7 @@ export function reducer (state = initialState, action: Genomes.Actions) {
       }
       break;
 
-    case Genomes.FETCH_DONE:
+    case Genes.FETCH_DONE:
       const { payload } = action;
       return {
         ...state,
@@ -81,7 +81,7 @@ export function reducer (state = initialState, action: Genomes.Actions) {
         },
       };
 
-    case Genomes.FETCH_ERROR:
+    case Genes.FETCH_ERROR:
       return {
         ...state,
         search: {

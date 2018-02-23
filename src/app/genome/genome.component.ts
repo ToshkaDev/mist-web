@@ -9,7 +9,7 @@ import GenomeView from './genome.view.model';
 
 @Component({
     selector: 'mist-genome',
-    templateUrl: './genome.component.pug',
+    templateUrl: './genome.pug',
   })
 export class GenomeComponent implements OnInit {
     private assemblyVersion: string;

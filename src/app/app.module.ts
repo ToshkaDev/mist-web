@@ -31,9 +31,16 @@ import { GenomesListComponent } from './genomes/genomes-list.component';
 import { GenomesComponent } from './genomes/genomes.component';
 import { GenomeComponent } from './genome/genome.component';
 import { GenomeViewComponent } from './genome/genome.view.component';
+import { GenesComponent } from './genes/genes.component';
+import { GeneComponent } from './gene/gene.component';
+import { GenesListComponent } from './genes/genes-list.component';
+import { GeneViewComponent } from './gene/gene.view.component';
 import { GenomesEffects } from './genomes/genomes.effects';
 import { GenomeEffects } from './genome/genome.effects';
+import { GenesEffects } from './genes/genes.effects';
+import { GeneEffects } from './gene/gene.effects';
 import { HomeComponent } from './home/home.component';
+
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -41,8 +48,12 @@ import { HomeComponent } from './home/home.component';
     AppComponent,
     GenomesComponent,
     GenomeComponent,
+    GenesComponent,
     GenomesListComponent,
     GenomeViewComponent,
+    GenesListComponent,
+    GeneComponent,
+    GeneViewComponent,
     HomeComponent,
     MainMenuComponent,
     SearchInputComponent,
@@ -51,7 +62,7 @@ import { HomeComponent } from './home/home.component';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    EffectsModule.forRoot([GenomesEffects, GenomeEffects]),
+    EffectsModule.forRoot([GenomesEffects, GenomeEffects, GenesEffects, GeneEffects]),
     FormsModule,
     HttpModule,
     MatButtonModule,

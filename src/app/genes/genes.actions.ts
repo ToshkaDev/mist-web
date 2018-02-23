@@ -1,13 +1,13 @@
 import { Action } from '@ngrx/store';
 
-export const SEARCH = '[Genomes] Search';
-export const NEXT_PAGE = '[Genomes] Next Page';
-export const PREV_PAGE = '[Genomes] Prev Page';
-export const FIRST_PAGE = '[Genomes] First Page';
-export const LAST_PAGE = '[Genomes] Last Page';
-export const FETCH = '[Genomes] Fetch';
-export const FETCH_DONE = '[Genomes] Fetch Done';
-export const FETCH_ERROR = '[Genomes] Fetch Error';
+export const SEARCH = '[Genes] Search';
+export const NEXT_PAGE = '[Genes] Next Page';
+export const PREV_PAGE = '[Genes] Prev Page';
+export const FIRST_PAGE = '[Genes] First Page';
+export const LAST_PAGE = '[Genes] Last Page';
+export const FETCH = '[Genes] Fetch';
+export const FETCH_DONE = '[Genes] Fetch Done';
+export const FETCH_ERROR = '[Genes] Fetch Error';
 
 export class Search implements Action {
   readonly type = SEARCH;
