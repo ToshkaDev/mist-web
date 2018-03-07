@@ -62,7 +62,7 @@ export class GeneViewComponent implements OnInit {
       ],
     };
      
-    const dg = new DomainGfx({data, parent});
+    //const dg = new DomainGfx({data, parent});
   }
  
 }

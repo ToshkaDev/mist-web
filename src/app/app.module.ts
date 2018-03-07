@@ -19,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { D3Service } from 'd3-ng2-service';
 
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -79,7 +80,7 @@ import { HomeComponent } from './home/home.component';
     StoreModule.forRoot(reducers, { metaReducers}),
   ],
   providers: [
-    MistApi,
+    MistApi, D3Service
   ],
 })
 export class AppModule { }

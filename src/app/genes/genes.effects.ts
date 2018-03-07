@@ -34,7 +34,6 @@ export class GenesEffects {
     .debounceTime(GenesEffects.DEBOUNCE_TIME_MS)
     .map((action) => action.payload)
     .map((query: any) => {
-      console.log("query genes " + query)
       const url = this.mistApi.searchGenesWithPaginationUrl(query);
       return new genes.Fetch(new Navigation(url, query.filter));
     });

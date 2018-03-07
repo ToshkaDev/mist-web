@@ -13,7 +13,7 @@ export class MistApi {
   constructor(private http: Http) {}
 
   searchGenomesUrl(query: string): string {
-    return this.genomesUrl() + '?count&search=' + query;
+    return this.getGenomesBaseUrl() + '?count&search=' + query;
   }
 
   searchGenomesWithPaginationUrl(query: any): string {
@@ -34,15 +34,15 @@ export class MistApi {
   }
 
   getGenomeUrl(query: string): string {
-    return this.genomesUrl() + "/" +  query;
+    return this.getGenomesBaseUrl() + "/" +  query;
   }
 
-  genomesUrl() {
+  getGenomesBaseUrl() {
     return MistApi.BASE_URL + MistApi.GENOMES_ROOT;
   }
 
   searchGenesUrl(query: string): string {
-    return this.genesUrl() + '?count&search=' + query;
+    return this.getGenesBaseUrl() + '?count&search=' + query;
   }
 
   searchGenesWithPaginationUrl(query: any): string {
@@ -61,11 +61,11 @@ export class MistApi {
   }
 
   getGeneUrl(query: string): string {
-    let url = this.genesUrl() + "/" +  `${query}?`;
+    let url = this.getGenesBaseUrl() + "/" +  `${query}?`;
     return this.specifyFields(url, Fields.GENE_FIELDS);
   }
 
-  genesUrl() {
+  getGenesBaseUrl() {
     return MistApi.BASE_URL + MistApi.GENES_ROOT;
   }
 }
