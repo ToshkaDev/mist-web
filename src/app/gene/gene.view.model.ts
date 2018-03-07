@@ -5,10 +5,11 @@ export default class GeneViewModel {
     private geneInfo: any[] = [];
 
     private geneInfoFields: any[] = [
-        {"name": "Source", "value": `Component.definition`, "genome_version": "Component.Genome.version"}, 
+        {"name": "Mist Id", "value": "stable_id"},
+        {"name": "Source", "value": `Component.definition`, "additional": "Component.Genome.version"},
         {"name": "Locus", "value": "locus"},
         {"name": "Old Locus", "value": "old_locus"},
-        {"name": "Location", "value": "location"},
+        {"name": "Location", "value": "location", "additional": "Component.version"},
         {"name": "Strand", "value": "strand"}
     ];
 
@@ -21,7 +22,6 @@ export default class GeneViewModel {
         {"name": "Names", "value": "names"}
     ];
 
-
     constructor(geneData: any) {
         if (geneData) {
             this.initializePropertis(geneData, this.proteinInfo, this.proteinInfoFields);
@@ -33,15 +33,18 @@ export default class GeneViewModel {
     private initializePropertis(geneData: any, property: any[], fields: any[]) {
         for (let element of fields) {
             let elementValue = _.get(geneData, element.value);
-            let genomeVersion = _.get(geneData, element.genome_version);
              if (elementValue) {
-                element.value = elementValue;
-                if (genomeVersion) {
-                    element.genome_version = genomeVersion;
+                if (element.name === "Source") {
+                    element.genome_version = _.get(geneData, element.additional);
                 } else if (element.name === "Protein") {
-                    element.value = `${Math.floor(element.value/3)} aa ` + `(${element.value} bp)`
+                    element.value = `${Math.floor(elementValue/3)} aa ` + `(${elementValue} bp)`
                 } else if (element.name === "Names") {
-                    element.value = elementValue.join(" ");
+                    element.value = element.value.join(" ");
+                } else if (element.name === "Location") {
+                    let additional = _.get(geneData, element.additional);
+                    element.value = `${additional} [${elementValue}]`
+                } else {
+                    element.value = elementValue;
                 }
                 property.push(element);
             }
