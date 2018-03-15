@@ -18,7 +18,6 @@ export class GeneEffects {
         .map((action) => action.payload)
         .switchMap((query: string) => {
             const url = this.mistApi.getGeneUrl(query);
-            console.log("url " + url)
             return this.http.get(url)
             .map((response) => {
                 const fetchedGene = response.json();
@@ -29,6 +28,21 @@ export class GeneEffects {
             .catch((error) => of(new gene.FetchGeneError(error.message)));
         });
 
+    @Effect()
+    fetchNeighourGenes$: Observable<Action> = this.actions$.ofType<gene.FetchNeighbourGenes>(gene.FETCH_NEIGHBOUR_GENES)
+        .map((action) => action.payload)
+        .switchMap((query: string) => {
+            const url = this.mistApi.getNeighbourGenesUrl(query);
+            return this.http.get(url)
+            .map((response) => {
+                const neighbourGenes = response.json();
+                return new gene.FetchNeighbourGenesDone({
+                    neighbourGenes
+                });
+            })
+            .catch((error) => of(new gene.FetchGeneError(error.message)));
+        });
+        
     constructor(
     private http: Http,
     private actions$: Actions,
