@@ -11,9 +11,14 @@ export const fetch = createSelector(
     (fetchState) => fetchState.fetch,
 );
 
-export const getFetchResult = createSelector(
+export const getGene = createSelector(
     fetch,
     (fetchState) => fetchState.gene,
+);
+
+export const getNeighbourGenes = createSelector(
+    fetch,
+    (fetchState) => fetchState.neighbourGenes,
 );
 
 export const getFetchErrorMessage = createSelector(

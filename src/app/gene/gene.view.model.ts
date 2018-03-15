@@ -3,10 +3,9 @@ import _ from "lodash";
 export default class GeneViewModel {
     private proteinInfo: any[] = [];
     private geneInfo: any[] = [];
-
     private geneInfoFields: any[] = [
         {"name": "Mist Id", "value": "stable_id"},
-        {"name": "Source", "value": `Component.definition`, "additional": "Component.Genome.version"},
+        {"name": "Source", "value": "Component.definition", "additional": "Component.Genome.version"},
         {"name": "Locus", "value": "locus"},
         {"name": "Old Locus", "value": "old_locus"},
         {"name": "Location", "value": "location", "additional": "Component.version"},
@@ -39,7 +38,7 @@ export default class GeneViewModel {
                 } else if (element.name === "Protein") {
                     element.value = `${Math.floor(elementValue/3)} aa ` + `(${elementValue} bp)`
                 } else if (element.name === "Names") {
-                    element.value = element.value.join(" ");
+                    element.value = _.get(geneData, element.value).join(" ");
                 } else if (element.name === "Location") {
                     let additional = _.get(geneData, element.additional);
                     element.value = `${additional} [${elementValue}]`

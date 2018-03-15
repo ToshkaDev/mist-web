@@ -65,6 +65,11 @@ export class MistApi {
     return this.specifyFields(url, Fields.GENE_FIELDS);
   }
 
+  getNeighbourGenesUrl(query: string): string {
+    let url = this.getGenesBaseUrl() + `/${query}/neighbors`;
+    return url;
+  }
+
   getGenesBaseUrl() {
     return MistApi.BASE_URL + MistApi.GENES_ROOT;
   }
