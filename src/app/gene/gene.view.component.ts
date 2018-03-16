@@ -37,14 +37,9 @@ export class GeneViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    let element = 1;
+
     if (this.parentNativeElement !== null)
-      this.gene$.take(2).subscribe(gene => {
-        if (gene && gene.length > 0 && element == 2) {
-          this.checkNeighbourGenesAndDraw(gene)
-        }
-        element++;
-      });
+      this.gene$.skip(1).take(1).subscribe(gene => gene && gene.length > 0 ? this.checkNeighbourGenesAndDraw(gene) : null)
 
 
     // const parent = document.querySelector('.maincontainer');
@@ -103,13 +98,7 @@ export class GeneViewComponent implements OnInit {
   }
 
   checkNeighbourGenesAndDraw(gene) {
-    let element = 1;
-    this.neighbourGenes$.take(2).subscribe(neighbGenes => {
-        if (neighbGenes && neighbGenes.length > 0 && element == 2) {
-          this.drawGenes(gene, neighbGenes)
-        }
-        element++;
-      });
+    this.neighbourGenes$.skip(1).take(1).subscribe(neighbGenes => neighbGenes && neighbGenes.length > 0 ? this.drawGenes(gene, neighbGenes) : null)
   }
 
   drawGenes(gene: any, neighbGenes: any[]) {

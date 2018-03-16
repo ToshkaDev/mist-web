@@ -27,7 +27,7 @@ export class GeneComponent implements OnInit {
         this.neighbourGenes$ = this.store.select(fromGenes.getNeighbourGenes);
         this.geneStableId = this.route.snapshot.paramMap.get('stable_id');
         this.getGene(this.geneStableId);
-        this.gene$.take(2).subscribe(result => result ? this.geneViewModel = new GeneView(result) : this.geneViewModel = null);
+        this.gene$.skip(1).take(1).subscribe(result => result ? this.geneViewModel = new GeneView(result) : this.geneViewModel = null);
     }
     
     getGene(query: string) {
