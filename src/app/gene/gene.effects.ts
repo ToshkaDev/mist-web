@@ -9,6 +9,7 @@ import { of } from 'rxjs/observable/of';
 
 import { MistApi } from '../core/services/mist-api.service';
 import * as gene from './gene.actions';
+import { Entities } from  '../core/common/entities';
 
 @Injectable()
 export class GeneEffects {
@@ -17,7 +18,7 @@ export class GeneEffects {
     fetch$: Observable<Action> = this.actions$.ofType<gene.FetchGene>(gene.FETCH_GENE)
         .map((action) => action.payload)
         .switchMap((query: string) => {
-            const url = this.mistApi.getGeneUrl(query);
+            const url = this.mistApi.getUrl(query, Entities.GENE);
             return this.http.get(url)
             .map((response) => {
                 const fetchedGene = response.json();
@@ -32,12 +33,27 @@ export class GeneEffects {
     fetchNeighourGenes$: Observable<Action> = this.actions$.ofType<gene.FetchNeighbourGenes>(gene.FETCH_NEIGHBOUR_GENES)
         .map((action) => action.payload)
         .switchMap((query: string) => {
-            const url = this.mistApi.getNeighbourGenesUrl(query);
+            const url = this.mistApi.getUrl(query, Entities.NEIGHBOUR_GENES);
             return this.http.get(url)
             .map((response) => {
                 const neighbourGenes = response.json();
                 return new gene.FetchNeighbourGenesDone({
                     neighbourGenes
+                });
+            })
+            .catch((error) => of(new gene.FetchGeneError(error.message)));
+        });
+
+    @Effect()
+    fetchDomains$: Observable<Action> = this.actions$.ofType<gene.FetchDomains>(gene.FETCH_DOMAINS)
+        .map((action) => action.payload)
+        .switchMap((query: string) => {
+            const url = this.mistApi.getUrl(query, Entities.DOMAINS);
+            return this.http.get(url)
+            .map((response) => {
+                const domains = response.json();
+                return new gene.FetchDomainsDone({
+                    domains
                 });
             })
             .catch((error) => of(new gene.FetchGeneError(error.message)));

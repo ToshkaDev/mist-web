@@ -15,6 +15,7 @@ import * as genomes from './genomes.actions';
 import { MistApi } from '../core/services/mist-api.service';
 import GenomesFilter from './genomes.filter';
 import { Navigation }  from '../core/common/navigation';
+import { Entities } from '../core/common/entities';
 
 @Injectable()
 export class GenomesEffects {
@@ -28,7 +29,7 @@ export class GenomesEffects {
     .map((action) => action.payload)
     .map((query: any) => {
       console.log("Genoms query " + query)
-      const url = this.mistApi.searchGenomesWithPaginationUrl(query);
+      const url = this.mistApi.searchGenomesWithPaginationUrl(query, Entities.GENOMES);
       return new genomes.Fetch(new Navigation(url, query.filter));
     });
 
@@ -46,10 +47,10 @@ export class GenomesEffects {
           const totalPages = Math.ceil(count / parsed.per_page);
           const currentPage = +parsed.page;
 
-          const next = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: navigation.filter});
-          const prev = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: navigation.filter});
-          const first = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: 1, filter: navigation.filter});
-          const last = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: totalPages, filter: navigation.filter});
+          const next = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: navigation.filter}, Entities.GENOMES);
+          const prev = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: navigation.filter}, Entities.GENOMES);
+          const first = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: 1, filter: navigation.filter}, Entities.GENOMES);
+          const last = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: totalPages, filter: navigation.filter}, Entities.GENOMES);
           const links = {first: first, last: last, next: next, prev: prev};
           
           return new genomes.FetchDone({
