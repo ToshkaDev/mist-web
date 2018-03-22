@@ -9,6 +9,7 @@ import { of } from 'rxjs/observable/of';
 
 import { MistApi } from '../core/services/mist-api.service';
 import * as genome from './genome.actions';
+import { Entities } from '../core/common/entities';
 
 @Injectable()
 export class GenomeEffects {
@@ -17,7 +18,7 @@ export class GenomeEffects {
     fetch$: Observable<Action> = this.actions$.ofType<genome.FetchGenome>(genome.FETCH_GENOME)
         .map((action) => action.payload)
         .switchMap((query: string) => {
-        const url = this.mistApi.getGenomeUrl(query);
+        const url = this.mistApi.getUrl(query, Entities.GENOME);
         return this.http.get(url)
         .map((response) => {
             const fetchedGenome = response.json();

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Fields } from '../common/fields';
+import { fieldMap as FieldMap } from '../common/fields';
+import { Entities } from '../common/entities';
 
 @Injectable()
 export class MistApi {
@@ -9,18 +10,28 @@ export class MistApi {
   static BASE_URL = 'http://localhost:5000/v1';
   static GENOMES_ROOT = '/genomes';
   static GENES_ROOT = '/genes';
+  static DOMAINS_ROOT = '/aseqs';
   static paginationParams = "page=%pageNumber%&per_page=%perPage%";
+  static ENTITY_TO_BASEURL: Map<string, string> = new Map([
+    [Entities.GENOMES, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
+    [Entities.GENOME, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
+    [Entities.GENES, MistApi.BASE_URL + MistApi.GENES_ROOT],
+    [Entities.GENE, MistApi.BASE_URL + MistApi.GENES_ROOT],
+    [Entities.NEIGHBOUR_GENES, MistApi.BASE_URL + MistApi.GENES_ROOT],
+    [Entities.DOMAINS, MistApi.BASE_URL + MistApi.DOMAINS_ROOT]
+  ]);
+
   constructor(private http: Http) {}
 
-  searchGenomesUrl(query: string): string {
-    return this.getGenomesBaseUrl() + '?count&search=' + query;
+  searchGenomesUrl(query: string, entity: string): string {
+    return this.getBaseUrl(entity) + '?count&search=' + query;
   }
 
-  searchGenomesWithPaginationUrl(query: any): string {
+  searchGenomesWithPaginationUrl(query: any, entity: string): string {
     let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
     url = this.processGenomesFilter(query, url); 
-    url = this.specifyFields(`${url}&`, Fields.GENOMES_FIELDS);
-    return this.searchGenomesUrl(query.search) + '&' + url;
+    url = this.specifyFields(`${url}&`, FieldMap.get(entity));
+    return this.searchGenomesUrl(query.search, Entities.GENOMES) + '&' + url;
   }
 
   processGenomesFilter(query: any, url: string): string {
@@ -33,23 +44,15 @@ export class MistApi {
     return url;
   }
 
-  getGenomeUrl(query: string): string {
-    return this.getGenomesBaseUrl() + "/" +  query;
+  searchGenesUrl(query: string, entity: string): string {
+    return this.getBaseUrl(entity) + '?count&search=' + query;
   }
 
-  getGenomesBaseUrl() {
-    return MistApi.BASE_URL + MistApi.GENOMES_ROOT;
-  }
-
-  searchGenesUrl(query: string): string {
-    return this.getGenesBaseUrl() + '?count&search=' + query;
-  }
-
-  searchGenesWithPaginationUrl(query: any): string {
+  searchGenesWithPaginationUrl(query: any, entity: string): string {
     let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
     url = this.processGenesFilter(query, url); 
-    url = this.specifyFields(`${url}&`, Fields.GENES_FIELDS);
-    return this.searchGenesUrl(query.search) + '&' + url;
+    url = this.specifyFields(`${url}&`, FieldMap.get(entity));
+    return this.searchGenesUrl(query.search, Entities.GENES) + '&' + url;
   }
   
   processGenesFilter(query: any, url: string): string {
@@ -57,20 +60,16 @@ export class MistApi {
   }
 
   specifyFields(url: string, fields: string): string {
-    return `${url}fields=${fields}`
+    return `${url}fields=${fields}`;
   }
 
-  getGeneUrl(query: string): string {
-    let url = this.getGenesBaseUrl() + "/" +  `${query}?`;
-    return this.specifyFields(url, Fields.GENE_FIELDS);
+  getUrl(query: string, entity: string): string {
+    let url = this.getBaseUrl(entity) + `/${query}`;
+    url = entity == Entities.NEIGHBOUR_GENES ? `${url}/neighbors?` : `${url}?`;
+    return this.specifyFields(url, FieldMap.get(entity));
   }
 
-  getNeighbourGenesUrl(query: string): string {
-    let url = this.getGenesBaseUrl() + `/${query}/neighbors`;
-    return url;
-  }
-
-  getGenesBaseUrl() {
-    return MistApi.BASE_URL + MistApi.GENES_ROOT;
+  getBaseUrl(entity: string) {
+    return MistApi.ENTITY_TO_BASEURL.get(entity);
   }
 }
