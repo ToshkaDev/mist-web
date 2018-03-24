@@ -1,8 +1,10 @@
 import { Action } from '@ngrx/store';
 export const FETCH_GENE = '[Gene] Fetch';
 export const FETCH_NEIGHBOUR_GENES = '[Gene Neighbours] Fetch';
+export const FETCH_DOMAINS = '[Domains] Fetch'
 export const FETCH_GENE_DONE = '[Gene] Fetch Done';
 export const FETCH_NEIGHBOUR_GENES_DONE = '[Gene Neighbours] Fetch Done';
+export const FETCH_DOMAINS_DONE = '[Domains] Fetch Done'
 export const FETCH_GENE_ERROR = '[Gene] Fetch Error';
 
 
@@ -27,14 +29,26 @@ export class FetchNeighbourGenesDone implements Action {
     constructor(public payload: any) {}
 }
 
+export class FetchDomains implements Action {
+    readonly type = FETCH_DOMAINS;
+    constructor(public payload: any) {}
+}
+
+export class FetchDomainsDone implements Action {
+    readonly type = FETCH_DOMAINS_DONE;
+    constructor(public payload: any) {}
+}
+
 export class FetchGeneError implements Action {
     readonly type = FETCH_GENE_ERROR;
     constructor(public payload: string) {}
 }
 
 export type Actions =
-FetchNeighbourGenesDone
+FetchDomains
+| FetchDomainsDone
 | FetchNeighbourGenes
+| FetchNeighbourGenesDone
 | FetchGene
 | FetchGeneDone
 | FetchGeneError;
