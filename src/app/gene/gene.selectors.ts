@@ -21,6 +21,11 @@ export const getNeighbourGenes = createSelector(
     (fetchState) => fetchState.neighbourGenes,
 );
 
+export const getDomains = createSelector(
+    fetch,
+    (fetchState) => fetchState.domains,
+);
+
 export const getFetchErrorMessage = createSelector(
     fetch,
     (fetchState) => fetchState.errorMessage,
