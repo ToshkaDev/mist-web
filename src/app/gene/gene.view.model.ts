@@ -34,6 +34,7 @@ export default class GeneViewModel {
             let elementValue = _.get(geneData, element.value);
              if (elementValue) {
                 if (element.name === "Source") {
+                    element.value = elementValue;
                     element.genome_version = _.get(geneData, element.additional);
                 } else if (element.name === "Protein") {
                     element.value = `${Math.floor(elementValue/3)} aa ` + `(${elementValue} bp)`
