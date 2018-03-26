@@ -44,21 +44,6 @@ export class GeneEffects {
             .catch((error) => of(new gene.FetchGeneError(error.message)));
         });
 
-    @Effect()
-    fetchDomains$: Observable<Action> = this.actions$.ofType<gene.FetchDomains>(gene.FETCH_DOMAINS)
-        .map((action) => action.payload)
-        .switchMap((query: string) => {
-            const url = this.mistApi.getUrl(query, Entities.DOMAINS);
-            return this.http.get(url)
-            .map((response) => {
-                const domains = response.json();
-                return new gene.FetchDomainsDone({
-                    domains
-                });
-            })
-            .catch((error) => of(new gene.FetchGeneError(error.message)));
-        });
-        
     constructor(
     private http: Http,
     private actions$: Actions,

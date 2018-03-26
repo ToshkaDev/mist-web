@@ -1,7 +1,7 @@
 import {  ElementRef } from '@angular/core';
 import { D3Service, D3, Selection } from 'd3-ng2-service';
-import { Aseq } from '../../core/common/aseq';
-import { pfam30Interface } from '../../core/common/aseq';
+import { Aseq } from './aseq';
+import { pfam30Interface } from './aseq';
 
 export default class DrawProteinFeature {
     private d3: D3;

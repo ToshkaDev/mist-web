@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
-import { FetchGene, FetchNeighbourGenes } from './gene.actions';
+import { FetchGene } from './gene.actions';
 import * as fromGenes from './gene.selectors';
 import GeneView from './gene.view.model';
 
@@ -15,7 +15,6 @@ export class GeneComponent implements OnInit {
     private geneStableId: string;
     private errorMessage$: Observable<string>;
     private gene$: Observable<any>;
-    private neighbourGenes$: Observable<any[]>;
     private geneViewModel: GeneView;
     
     constructor(private store: Store<any>, private route: ActivatedRoute, private location: Location) {
@@ -24,7 +23,6 @@ export class GeneComponent implements OnInit {
     ngOnInit() {
         this.errorMessage$ = this.store.select(fromGenes.getFetchErrorMessage);
         this.gene$ = this.store.select(fromGenes.getGene);
-        this.neighbourGenes$ = this.store.select(fromGenes.getNeighbourGenes);
         this.geneStableId = this.route.snapshot.paramMap.get('stable_id');
         this.getGene(this.geneStableId);
         this.gene$.skip(1).take(1).subscribe(result => result ? this.geneViewModel = new GeneView(result) : this.geneViewModel = null);
@@ -32,10 +30,5 @@ export class GeneComponent implements OnInit {
     
     getGene(query: string) {
         this.store.dispatch(new FetchGene(query));
-        this.getNeighbourGenes(this.geneStableId);
-    }
-
-    getNeighbourGenes(query: string) {
-        this.store.dispatch(new FetchNeighbourGenes(query));
     }
 }

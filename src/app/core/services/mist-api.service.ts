@@ -10,15 +10,13 @@ export class MistApi {
   static BASE_URL = 'http://localhost:5000/v1';
   static GENOMES_ROOT = '/genomes';
   static GENES_ROOT = '/genes';
-  static DOMAINS_ROOT = '/aseqs';
   static paginationParams = "page=%pageNumber%&per_page=%perPage%";
   static ENTITY_TO_BASEURL: Map<string, string> = new Map([
     [Entities.GENOMES, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
     [Entities.GENOME, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
     [Entities.GENES, MistApi.BASE_URL + MistApi.GENES_ROOT],
     [Entities.GENE, MistApi.BASE_URL + MistApi.GENES_ROOT],
-    [Entities.NEIGHBOUR_GENES, MistApi.BASE_URL + MistApi.GENES_ROOT],
-    [Entities.DOMAINS, MistApi.BASE_URL + MistApi.DOMAINS_ROOT]
+    [Entities.NEIGHBOUR_GENES, MistApi.BASE_URL + MistApi.GENES_ROOT]
   ]);
 
   constructor(private http: Http) {}
