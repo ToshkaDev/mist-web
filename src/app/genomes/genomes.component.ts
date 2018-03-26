@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
