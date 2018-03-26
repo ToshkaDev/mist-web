@@ -1,9 +1,12 @@
 mist-gene-view(
     [geneViewModel]="geneViewModel"
-    [neighbourGenes$]="neighbourGenes$"
+)
+
+mist-aseq-view(
     [gene$]="gene$"
 )
 
-mist-aseq(
+mist-neighbor-genes(
     [gene$]="gene$"
+    [geneStableId]="geneStableId"
 )

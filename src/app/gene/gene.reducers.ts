@@ -5,7 +5,6 @@ export interface State {
       errorMessage: string;
       gene: any;
       neighbourGenes: any[];
-      domains: any;
     };
 }
 
@@ -13,8 +12,7 @@ const initialState: State = {
   fetch: {
       errorMessage: null,
       gene: null,
-      neighbourGenes: [],
-      domains: null
+      neighbourGenes: []
     }
 };
 
@@ -35,14 +33,6 @@ export function reducer (state = initialState, action: Gene.Actions){
             fetch: {
               ...state.fetch,
               neighbourGenes: action.payload.neighbourGenes       
-            }
-          };
-        case Gene.FETCH_DOMAINS_DONE:
-          return {
-            ...state,
-            fetch: {
-              ...state.fetch,
-              domains: action.payload.domains       
             }
           };
         case Gene.FETCH_GENE_ERROR:
