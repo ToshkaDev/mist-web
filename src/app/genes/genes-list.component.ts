@@ -19,12 +19,15 @@ export class GenesListComponent implements AfterViewInit {
     
   constructor(private elementRef: ElementRef, private d3Service: D3Service) {
   }
-
+ 
   ngAfterViewInit() {
       this.genes$.subscribe(result => {
-          for (let gene in result) {
+          for (let gene of result) {
             let drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service);
-            drawProteinFeature.drawProteinFeature(`${this.htmlElement}.gene${result[gene]["id"]}`, [result[gene]["Aseq"]]);
+            let aseqData = gene["Aseq"];
+            aseqData ? 
+              drawProteinFeature.drawProteinFeature(`${this.htmlElement}.gene${gene["id"]}`, [aseqData])
+              : null;
           }
       });
   }

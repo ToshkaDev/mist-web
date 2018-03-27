@@ -16,6 +16,6 @@ export class AseqViewComponent implements OnInit {
 
     ngOnInit() {
         let drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service);
-        this.gene$.skip(1).take(1).subscribe(result => result ? drawProteinFeature.drawProteinFeature(this.htmlElement, [result.Aseq]) : null);
+        this.gene$.skip(1).take(1).subscribe(result => result && result.Aseq ? drawProteinFeature.drawProteinFeature(this.htmlElement, [result.Aseq]) : null);
     }
 }
