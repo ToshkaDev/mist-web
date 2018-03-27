@@ -24,9 +24,9 @@ export class GenesListComponent implements AfterViewInit {
       this.genes$.subscribe(result => {
           for (let gene of result) {
             let drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service);
-            let aseqData = gene["Aseq"];
+            let aseqData = gene.Aseq;
             aseqData ? 
-              drawProteinFeature.drawProteinFeature(`${this.htmlElement}.gene${gene["id"]}`, [aseqData])
+              drawProteinFeature.drawProteinFeature(`${this.htmlElement}.gene${gene.id}`, [aseqData])
               : null;
           }
       });
