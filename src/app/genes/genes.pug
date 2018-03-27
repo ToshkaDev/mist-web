@@ -12,6 +12,7 @@ form
 
 div(*ngIf="displayedColumns && query$ | async" class="flex-container")
   mist-genes-list(
+    [genes$]="genes$"
     [genes]="dataSource"
     [displayedColumns]="displayedColumns"
     [query]="query$ | async"

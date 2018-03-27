@@ -10,6 +10,10 @@ mat-table([dataSource]="genes" class="gene-table")
   ng-container(matColumnDef="Protein Id")
     mat-header-cell(*matHeaderCellDef class="proteinId-header") Protein Id
     mat-cell(*matCellDef="let gene" class="proteinId-cell") {{ gene.version }}
+  ng-container(matColumnDef="Domain Structure")
+    mat-header-cell(*matHeaderCellDef class="domain-structure-header") Domain Structure
+    mat-cell(*matCellDef="let gene" class="domain-structure-cell")
+      div(class="gene{{gene.id}}")
   ng-container(matColumnDef="Locus")
     mat-header-cell(*matHeaderCellDef class="locus-header") Locus
     mat-cell(*matCellDef="let gene" class="locus-cell") {{ gene.locus }}

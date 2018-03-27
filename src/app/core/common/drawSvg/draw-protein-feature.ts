@@ -56,15 +56,13 @@ export default class DrawProteinFeature {
         
         // Create a table
         let row = this.d3Element
-        .append('table')
         .selectAll()
         .data(data)
         .enter()
-        .append('tr');
+        .append('div');
 
         // Second column for the main architecture SVG
-        let architecture = row.append('td')
-        .append('svg')
+        let architecture = row.append('svg')
         .attr("height", DrawProteinFeature.kSvgHeight)
         .attr("width", function(d) {return d.length ? d.length : 0 + 1})
         .append('g');
