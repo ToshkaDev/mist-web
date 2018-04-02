@@ -14,7 +14,7 @@ export default class GeneViewModel {
 
     private proteinInfoFields: any[] = [
         {"name": "Protein Accession", "value": "version"}, 
-        {"name": "Protein", "value": "length"},
+        {"name": "Protein", "value": "length", "additional": "Aseq.length"},
         {"name": "Product", "value": "product"}, 
         {"name": "EC", "value": "cds_qualifiers.EC_number"}, 
         {"name": "Pseudo", "value": "pseudo"}, 
@@ -37,7 +37,8 @@ export default class GeneViewModel {
                     element.value = elementValue;
                     element.genome_version = _.get(geneData, element.additional);
                 } else if (element.name === "Protein") {
-                    element.value = `${Math.floor(elementValue/3)} aa ` + `(${elementValue} bp)`
+                    let additional = _.get(geneData, element.additional);
+                    element.value = `${additional} aa ` + `(${elementValue} bp)`
                 } else if (element.name === "Names") {
                     element.value = _.get(geneData, element.value).join(" ");
                 } else if (element.name === "Location") {

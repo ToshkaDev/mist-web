@@ -98,12 +98,12 @@ export default class DrawProteinFeature {
                 .data(d.segs ? d.segs : [])
                 .enter()
                 .append('g')
-                .filter(function(d){ return d.end - d.start > 0 })
+                .filter(function(d){ return d[1] - d[0] > 0 })
                 .append('rect')
-                .attr("x", function(d) { return d.start })
+                .attr("x", function(d) { return d[0] })
                 .attr("y", DrawProteinFeature.kLcrYstart)
                 .attr("width", function(d) { 
-                    return d.end-d.start
+                    return d[1] - d[0]
                 })
                 .attr("height", DrawProteinFeature.kLcrHeight)
                 .attr("fill", DrawProteinFeature.domainColors.lcr);
