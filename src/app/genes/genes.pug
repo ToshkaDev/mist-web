@@ -11,6 +11,7 @@ form
 //mist-genes-list([genes]="genes$ | async")
 
 div(*ngIf="displayedColumns && query$ | async" class="flex-container")
+  mat-paginator([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
   mist-genes-list(
     [genes$]="genes$"
     [genes]="dataSource"

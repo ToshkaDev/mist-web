@@ -8,7 +8,7 @@ export default class DrawNeighborGenes {
     private d3Svg: Selection<SVGSVGElement, any, null, undefined>; 
 
     static readonly svgWidth = 1500;
-    static readonly svgHeight = 400;
+    static readonly svgHeight = 300;
     static readonly fillColour = 'white';
     static readonly borderColour = 'green';
     static readonly currentGeneColour = "#00cc66";

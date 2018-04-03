@@ -7,6 +7,7 @@ import { Search, FirstPage, LastPage, PrevPage, NextPage } from './genes.actions
 import GenesFilter from './genes.filter';
 import * as fromGenes from './genes.selectors';
 import MistdDatasource from '../core/common/mist.datasource';
+import { Navigation }  from '../core/common/navigation';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,6 +34,7 @@ import MistdDatasource from '../core/common/mist.datasource';
     perPage: number = 5;
     currentPage: number;
     displayedColumns: String[];
+    genesFilter: GenesFilter = new GenesFilter(); 
     dataSource = new MistdDatasource(this.store, fromGenes.getSearchResults);
 
     constructor(
@@ -53,7 +55,27 @@ import MistdDatasource from '../core/common/mist.datasource';
           pageInfo.perPage ? this.perPage = pageInfo.perPage: this.perPage = this.defaultPerPage;
         }
       );
+      this.genes$.skip(1).subscribe(result => console.log(JSON.stringify(result)));
       this.genes$.subscribe(results => results.length > 0 ? this.displayedColumns = this.columns : this.displayedColumns = null);  
+    }
+
+    pageApply($event) {
+      let eventPageIndex = ++$event.pageIndex;
+      let filter: GenesFilter;
+      //If actual filtering will be set up uncomment the line below
+      //this.query$.subscribe(searchterm => filter=this.checkQuery()).unsubscribe();
+      if ($event.pageSize !== this.perPage) {
+        this.perPage = $event.pageSize;
+        this.query$.subscribe(searchterm => this.search(searchterm)).unsubscribe();
+      } else if (eventPageIndex > this.currentPage) {
+          this.links$.subscribe(link => this.store.dispatch(new NextPage(new Navigation(link.next, filter)))).unsubscribe();
+      } else if (eventPageIndex < this.currentPage) {
+          this.links$.subscribe(link => this.store.dispatch(new PrevPage(new Navigation(link.prev, filter)))).unsubscribe();
+      } else if (eventPageIndex === 1) {
+          this.links$.subscribe(link => this.store.dispatch(new FirstPage(new Navigation(link.first, filter)))).unsubscribe();
+      } else if (eventPageIndex === this.totalPages) {
+          this.links$.subscribe(link => this.store.dispatch(new LastPage(new Navigation(link.last, filter)))).unsubscribe();
+      }
     }
 
     search(query: string) {
@@ -64,8 +86,18 @@ import MistdDatasource from '../core/common/mist.datasource';
         filter: {}
       }));
     }
-    
-    checkQuery() {}
+
+    checkQuery() {
+      let filter: GenesFilter;
+      this.query$.subscribe(searchterm => {
+        if (searchterm && searchterm.length >= this.minQueryLenght) {
+          filter = Object.assign(new GenesFilter(), this.genesFilter)
+        } else {
+            filter = Object.assign(new GenesFilter(), this.genesFilter.reset());
+        }
+      }).unsubscribe();
+      return filter;
+    }
 
     filter() {}
 

@@ -37,6 +37,7 @@ import { GeneComponent } from './gene/gene.component';
 import { GenesListComponent } from './genes/genes-list.component';
 import { GeneViewComponent } from './gene/gene.view.component';
 import { AseqViewComponent } from  './gene/aseq/aseq.view.component';
+import { AseqComponent } from  './gene/aseq/aseq.component';
 import { NeighborGenes } from './gene/neighbor-genes/neighbor-genes.component';
 import { NeighborGenesView } from  './gene/neighbor-genes/neighbor-genes.view.component';
 import { GenomesEffects } from './genomes/genomes.effects';
@@ -59,6 +60,7 @@ import { HomeComponent } from './home/home.component';
     GeneComponent,
     GeneViewComponent,
     AseqViewComponent,
+    AseqComponent,
     NeighborGenes,
     NeighborGenesView,
     HomeComponent,

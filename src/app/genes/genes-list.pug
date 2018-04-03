@@ -21,8 +21,8 @@ mat-table([dataSource]="genes" class="gene-table")
     mat-header-cell(*matHeaderCellDef class="description-header") Description
     mat-cell(*matCellDef="let gene" class="description-cell" ) 
         div {{ gene.product }} 
-        div(*ngFor="let name of gene.names") {{ name }}
-        div ({{ gene.Component.definition }})
+          span(*ngFor="let name of gene.names") {{ name }}
+          div ({{ gene.Component.definition }})
   ng-container(matColumnDef="Location")
     mat-header-cell(*matHeaderCellDef class="location-header") Location
     mat-cell(*matCellDef="let gene" class="location-cell") {{ gene.Component.version}} [{{gene.location}}]

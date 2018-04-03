@@ -1,0 +1,28 @@
+$padd: 0;
+$padd-left: 1em;
+
+.aseq-details {
+    text-align: right;
+    padding: $padd;
+    padding-left: $padd-left;
+}
+
+.domains {
+    padding-left: $padd-left;
+}
+
+
+
+div.details {
+    padding-top: 1.4em;
+    padding-left: $padd-left;
+    max-width: 33%;
+    div.buttons {
+        display: flex;
+        justify-content: space-between;
+        button.details-button {
+            color: #4d4dff;
+        }
+
+    }
+}
