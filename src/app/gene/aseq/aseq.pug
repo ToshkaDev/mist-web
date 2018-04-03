@@ -1,3 +1,23 @@
-mist-aseq-view(
-    [gene$]="gene$"
-)
+div
+    div.domains
+    button(class="aseq-details" mat-button color="primary" (click)="showDetails()") Details
+        mat-icon(aria-hidden="true") {{ arrow }}
+
+    div.details(*ngIf="details")
+        div.button-row
+            button(mat-button [ngStyle]="styles.pfam" color="primary" class="details-button" (click)="getInfo('pfam')") Pfam
+            button(mat-button [ngStyle]="styles.lowComplSegs" color="primary" class="details-button" (click)="getInfo('lowComplSegs')") Low Complexity Segments
+            button(mat-button [ngStyle]="styles.coiledCoils" color="primary" class="details-button" (click)="getInfo('coiledCoils')") Coiled Coils
+            button(mat-button [ngStyle]="styles.tmHmm" color="primary" class=" details-button" (click)="getInfo('tmHmm')") TM-HMM
+            button(mat-button [ngStyle]="styles.sequence" color="primary" class=" details-button" (click)="getInfo('sequence')") Sequence
+
+        div(*ngIf="aseqViewModel && aseqViewModel.activeProperties")
+            table(class="u-full-width")
+                tbody
+                    tr(*ngIf="aseqViewModel.activeProperties.value.length > 0")
+                        th(*ngFor="let property of aseqViewModel.activeHeaders") {{ property.name }}
+                    tr(*ngFor="let proteinFeature of aseqViewModel.activeProperties.value")
+                        td(*ngFor="let element of proteinFeature") 
+                            div(*ngIf="aseqViewModel.activeProperties.type != 'sequence'; else sequenceBlock") {{ element }}
+                            ng-template(#sequenceBlock) 
+                                div.protSeq {{ element }}

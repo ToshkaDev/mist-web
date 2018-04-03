@@ -14,15 +14,11 @@ $padd-left: 1em;
 
 
 div.details {
-    padding-top: 1.4em;
+    padding-top: 1.2em;
     padding-left: $padd-left;
-    max-width: 33%;
-    div.buttons {
-        display: flex;
-        justify-content: space-between;
-        button.details-button {
-            color: #4d4dff;
-        }
+    max-width: 40%;
+}
 
-    }
+div.protSeq {
+    width: 2em;
 }
