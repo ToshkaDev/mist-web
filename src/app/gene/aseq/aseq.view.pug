@@ -1,1 +1,20 @@
 div
+    div.domains
+    button(class="aseq-details" mat-button color="primary" (click)="showDetails()") Details
+        mat-icon(aria-hidden="true") {{ arrow }}
+
+    div.details(*ngIf="details")
+        div.buttons
+            button(mat-button color="primary" class="details-button" (click)="getInfo('pfam')") Pfam
+            button(mat-button color="primary" class="details-button" (click)="getInfo('lowComplSegs')") Low Complexity Segments
+            button(mat-button color="primary" class="details-button" (click)="getInfo('coiledCoils')") Coiled Coils
+            button(mat-button color="primary" class=" details-button" (click)="getInfo('tmHmm')") TM-HMM
+
+        div(*ngIf="aseqViewModel")
+            table(class="u-full-width")
+                tbody
+                    //NEED TO CHECK FOR LENGTH
+                    tr(*ngIf="aseqViewModel.activeProperties")
+                        th(*ngFor="let property of aseqViewModel.activeHeaders") {{ property.name }}
+                    tr(*ngFor="let proteinFeature of aseqViewModel.activeProperties")
+                        td(*ngFor="let element of proteinFeature") {{ element }}

@@ -1,7 +1,7 @@
 import {  ElementRef } from '@angular/core';
 import { D3Service, D3, Selection } from 'd3-ng2-service';
 import { Aseq } from './aseq';
-import { pfam30Interface } from './aseq';
+import { pfamInterface } from './aseq';
 
 export default class DrawProteinFeature {
     private d3: D3;
@@ -167,7 +167,7 @@ export default class DrawProteinFeature {
 
     }
     
-    private domainBorder(d: pfam30Interface, coverage = '[]') {
+    private domainBorder(d: pfamInterface, coverage = '[]') {
         let partialPixelLeft = coverage[0] === '[' ? 0 : DrawProteinFeature.kPartialPixel
         let partialPixelRight = coverage[1] === ']' ? 0 : DrawProteinFeature.kPartialPixel
         let kQuarterDomainHeight = DrawProteinFeature.kDomainHeight/4

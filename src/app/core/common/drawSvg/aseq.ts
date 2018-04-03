@@ -2,7 +2,7 @@ export interface Aseq {
     id: string;
     length: number;
     sequence: string;
-    pfam30: pfam30Interface[];
+    pfam30: pfamInterface[];
     agfam2: any[];
     ecf1: any[];
     segs: any[];
@@ -10,7 +10,7 @@ export interface Aseq {
     tmhmm?: any[];
 }
 
-export interface pfam30Interface {
+export interface pfamInterface {
     name: string;
     score: number;
     bias: number;
