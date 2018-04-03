@@ -1,13 +1,23 @@
 import _ from "lodash";
 
-export default class AseqViewModel {
-    private pfam: any[] = [];
-    private lowComplSegs: any[] = [];
-    private coiledCoils: any[] = [];
-    private tmHmm: any[] = [];
+export enum TypeNames {
+    PFAM = "pfam",
+    LOW_COMPL_SEGS = "lowComplSegs",
+    COILED_COILS = "coiledCoils",
+    TM_HMM = "tmHmm",
+    SEQUENCE = "sequence"
+}
+
+export class AseqViewModel {
+    private pfam: any = {"type": TypeNames.PFAM, "value": []};
+    private lowComplSegs: any = {"type": TypeNames.LOW_COMPL_SEGS, "value": []};
+    private coiledCoils: any = {"type": TypeNames.COILED_COILS, "value": []};
+    private tmHmm: any = {"type": TypeNames.TM_HMM, "value": []};
+    private sequence: any = {"type": TypeNames.SEQUENCE, "value": []};
+    private sequenceLineLen = 60;
 
     private activeHeaders: any[];
-    private activeProperties: any[];
+    private activeProperties: any;
 
     private pfamHeaders: any[] = [
         {"name": "#", "value": "number"},
@@ -32,11 +42,12 @@ export default class AseqViewModel {
         {"name": "Stop"}
     ];
 
-    private typeNameToProperties: Map<string, any[]> = new Map([
-        ["pfam", this.pfam],
-        ["lowComplSegs", this.lowComplSegs],
-        ["coiledCoils", this.coiledCoils],
-        ["tmHmm", this.tmHmm]
+    private typeNameToProperties: Map<string, any> = new Map([
+        [TypeNames.PFAM, this.pfam],
+        [TypeNames.LOW_COMPL_SEGS, this.lowComplSegs],
+        [TypeNames.COILED_COILS, this.coiledCoils],
+        [TypeNames.TM_HMM, this.tmHmm],
+        [TypeNames.SEQUENCE, this.sequence]
     ]);
 
     //TODO
@@ -46,38 +57,50 @@ export default class AseqViewModel {
 
     //ADD here other headers when they done
     private typeNameToHeaders: Map<string, any[]> = new Map([
-        ["pfam", this.pfamHeaders],
-        ["lowComplSegs", this.lowComplSegsHeaders]
+        [TypeNames.PFAM, this.pfamHeaders],
+        [TypeNames.LOW_COMPL_SEGS, this.lowComplSegsHeaders],
+        [TypeNames.SEQUENCE, []]
     ]);
 
     constructor(aseqData: any) {
         if (aseqData) {
             this.initializeProperties(aseqData.pfam30, this.pfam, this.pfamHeaders);
             this.initializeLowComplSegsProperties(aseqData.segs, this.lowComplSegs);
+            this.initializeSequencesProperties(aseqData.sequence, this.sequence);
         }
     }
 
-    private initializeProperties(pfamData: any[], property: any[], fields: any[])  {
+    private initializeSequencesProperties(sequence: string, property: any) {
+        let stringWithNewlineChars = "";
+        let piece = Math.floor(sequence.length/this.sequenceLineLen);
+        for (var i = 0; i < piece; i++) {
+            stringWithNewlineChars = stringWithNewlineChars + '\n' + sequence.substring(i*this.sequenceLineLen, (i+1)*this.sequenceLineLen);
+        }
+        stringWithNewlineChars = stringWithNewlineChars + '\n' + sequence.substring(i*this.sequenceLineLen, sequence.length);
+        property.value.push([stringWithNewlineChars]);
+    }
+
+    private initializeProperties(pfamData: any[], property: any, headers: any[])  {
         for (let index in pfamData) {
             let properties = [];
             let elementToPush;
-            for (let element of fields) {
+            for (let element of headers) {
                 if (element.name === "#")
-                    elementToPush = +index+1;
+                    elementToPush = +index+1+'.';
                 else 
                     elementToPush = _.get(pfamData[index], element.value);
                 properties.push(elementToPush);
             }
-            property.push(properties);    
+            property.value.push(properties);    
         }
     }
 
-    private initializeLowComplSegsProperties(segs: any[], property: any[]) {
+    private initializeLowComplSegsProperties(segs: any[], property: any) {
         for (let index in segs) {
             let properties = [];
             let elementToPush;
-            properties.push(+index+1, segs[index][0], segs[index][1]);
-            property.push(properties);
+            properties.push(+index+1+'.', segs[index][0], segs[index][1]);
+            property.value.push(properties);
         }
     }
 
