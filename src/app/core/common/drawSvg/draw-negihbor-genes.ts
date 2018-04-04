@@ -8,7 +8,7 @@ export default class DrawNeighborGenes {
     private d3Svg: Selection<SVGSVGElement, any, null, undefined>; 
 
     static readonly svgWidth = 1500;
-    static readonly svgHeight = 300;
+    static readonly svgHeight = 400;
     static readonly fillColour = 'white';
     static readonly borderColour = 'green';
     static readonly currentGeneColour = "#00cc66";
@@ -40,18 +40,51 @@ export default class DrawNeighborGenes {
         .domain([genomeNeighbStart, genomeNeighbStop])
         .range([0, DrawNeighborGenes.svgWidth]);
 
-        
+
         let containerGroup = this.d3Svg.append("g").attr("transform", "translate(0,50)");
         let geneCluster = this.createFrameAndAppendGroupTags(containerGroup, [...neighbGenes, gene]);
         this.createGenePaths(geneCluster, gene, genomeNeighbStop, geneScale);
         this.createDescriptionBoxes(geneCluster, geneScale);
-        this.addEventListeneres(geneCluster, d3);
         //Add axis
-        containerGroup.append("g")
+        containerGroup.append("g").attr("class", "gene-axis")
         .attr("transform", "translate(0, 90)")
         .call(d3.axisBottom(geneScale).ticks(11));
+        //create divs with gene descriptions
+        let divs = this.addHtml([...neighbGenes, gene], d3ParentElement, geneScale);
+        this.addEventListeneres(geneCluster, d3);
+        
     }
-    
+
+    addHtml(neighbourGenes, d3ParentElement, geneScale) {
+        let axisElem = document.getElementsByClassName('gene-axis')[0].getBoundingClientRect();
+        let xAbsolute = axisElem["x"] + window.scrollX;
+        let yAbsolute = axisElem["y"] + window.scrollY;
+       
+        let divs = d3ParentElement
+        .selectAll("div")
+        .data(neighbourGenes)
+        .enter()
+        .append('div')
+        .style("display", "none")
+        .style("position", "absolute")
+        .attr("class", function(gene) {
+            return "gene"+gene.id;
+        })
+        .style("top", function(gene) {
+            let isComplement = gene.strand === "-" ? true : false;
+            if (!isComplement)
+                return yAbsolute-90 + DrawNeighborGenes.directGeneFigureTopY + "px";
+            return yAbsolute-90 + DrawNeighborGenes.reverseGeneFigureTopY + "px";
+        })
+        .style("left", function(gene) {
+            return geneScale(gene.start) + xAbsolute + "px";
+        })
+        .html(function(d, i) {
+            return "<span>" + d.version + "</span>";
+        })
+        return divs;
+    }
+
     createFrameAndAppendGroupTags(containerGroup, neighbourGenes) {
         containerGroup.append("rect")
         .attr("transform", "translate(0,0)")
@@ -67,10 +100,14 @@ export default class DrawNeighborGenes {
         .data(neighbourGenes)
         .enter()
         .append("g")
-        .attr("transform", function(d, i) {
+        .attr("class", function(d) {
+            return "gene"+d.id;
+        })
+        .attr("transform", function(d) {
         return "translate(0,35)";
         });
     }
+
 
     createGenePaths(geneCluster, thisgene, genomeNeighbStop, geneScale) {
         let prevEnd = null;
@@ -83,19 +120,21 @@ export default class DrawNeighborGenes {
         let isComplement = gene.strand === "-" ? true : false;
         if (geneScale(gene.start) < geneScale(genomeNeighbStop)) {
             if (!isComplement) {
-            genePath = [`M${geneScale(gene.start)}`, DrawNeighborGenes.directGeneFigureTopY, 
+            genePath = [
+                `M${geneScale(gene.start)}`, DrawNeighborGenes.directGeneFigureTopY, 
                 `L${geneScale(gene.stop)-DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.directGeneFigureTopY, 
                 `L${geneScale(gene.stop)}`, DrawNeighborGenes.directGeneFigureMiddlePointY, 
                 `L${geneScale(gene.stop)-DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.directGeneFigureBottomY, 
-                `L${geneScale(gene.start)}`, DrawNeighborGenes.directGeneFigureBottomY, 'Z'].join(" ")
-                //console.log("genePath " + genePath)
+                `L${geneScale(gene.start)}`, DrawNeighborGenes.directGeneFigureBottomY, 'Z'
+            ].join(" ")
             } else {
-                genePath = [`M${geneScale(gene.start)}`, DrawNeighborGenes.reverseGeneFigureMiddlePointY, 
-                `L${geneScale(gene.start)+DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.reverseGeneFigureTopY, 
-                `L${geneScale(gene.stop)}`, DrawNeighborGenes.reverseGeneFigureTopY,
-                `L${geneScale(gene.stop)}`, DrawNeighborGenes.reverseGeneFigureBottomY, 
-                `L${geneScale(gene.start)+DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.reverseGeneFigureBottomY, 'Z'].join(" ")
-                //console.log("genePath 2 " + genePath)
+                genePath = [
+                   `M${geneScale(gene.start)}`, DrawNeighborGenes.reverseGeneFigureMiddlePointY, 
+                    `L${geneScale(gene.start)+DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.reverseGeneFigureTopY, 
+                    `L${geneScale(gene.stop)}`, DrawNeighborGenes.reverseGeneFigureTopY,
+                    `L${geneScale(gene.stop)}`, DrawNeighborGenes.reverseGeneFigureBottomY, 
+                    `L${geneScale(gene.start)+DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.reverseGeneFigureBottomY, 'Z'
+                ].join(" ")
             }
         }
         prevEnd = gene.stop;
@@ -114,7 +153,7 @@ export default class DrawNeighborGenes {
 
     createDescriptionBoxes(geneCluster, geneScale) {
         geneCluster.append("rect")
-        .attr("display", "none")
+        .style("display", "none")
         .attr("class", "neighbGeneInfo")
         .attr('width', 200)
         .attr('height', 100)
@@ -133,58 +172,25 @@ export default class DrawNeighborGenes {
             return DrawNeighborGenes.directGeneFigureTopY-100;
         return DrawNeighborGenes.reverseGeneFigureTopY-100;
         });
-
-        //Need to change this thing.
-        geneCluster.append("foreignObject")
-        .attr('class', 'geneText')
-        .attr("display", "none")
-        .attr("x", function(gene) {
-        return geneScale(gene.start);
-        }) 
-        .attr("y", function(gene) {
-        let isComplement = gene.strand === "-" ? true : false;
-        if (!isComplement)
-            return DrawNeighborGenes.directGeneFigureTopY-90;
-        return DrawNeighborGenes.reverseGeneFigureTopY-90;
-        })
-        .attr("stroke", "black")
-        .attr("font-size", "12px")
-        .attr("font-family", "arial")
-        .html(function(gene) {
-        return `<div>${gene.stable_id}</div><div>${gene.version}</div><div><a routerLink href="/genes/${gene.stable_id}">${gene.product}</a></div>`;
-        });
-
-                // geneCluster.append("text")
-        //   .attr('class', 'geneText')
-        //   .attr("display", "none")
-        //   .attr("x", function(gene) {
-        //     return geneScale(gene.start);
-        //   }) 
-        //   .attr("y", function(gene) {
-        //     let isComplement = gene.strand === "-" ? true : false;
-        //     if (!isComplement)
-        //       return directGeneFigureTopY;
-        //     return reverseGeneFigureTopY;
-        //   })
-        //   .attr("stroke", "black")
-        //   .attr("font-size", "12px")
-        //   .attr("font-family", "arial")
-        //   .text(function(gene) {
-        //     return gene.version;
-        //   });
     }
 
     addEventListeneres(geneCluster, d3) {
         geneCluster
         .on("mouseover", function (){
             let element = d3.select(this);
-            element.select('.geneText').attr("display", null);
-            element.select('.neighbGeneInfo').attr("display", null);
+            let elementClass = element.attr("class");
+            let affectedDiv = document.getElementsByClassName(elementClass)[1];
+            let styles = affectedDiv.getAttribute("style").replace("display: none","display: inline");
+            affectedDiv.setAttribute("style", styles);
+            element.select('.neighbGeneInfo').style("display", "inline");
             element.raise();
         })
         .on("mouseout", function(){
-            d3.select(this).select('.geneText').attr("display", "none")
-            d3.select(this).select('.neighbGeneInfo').attr("display", "none")
+            let elementClass = d3.select(this).attr("class");
+            let affectedDiv = document.getElementsByClassName(elementClass)[1];
+            let styles = affectedDiv.getAttribute("style").replace("display: inline","display: none");
+            affectedDiv.setAttribute("style", styles);
+            d3.select(this).select('.neighbGeneInfo').style("display", "none")
         });
     }
 
