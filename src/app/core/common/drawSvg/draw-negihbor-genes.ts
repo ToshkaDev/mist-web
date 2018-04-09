@@ -114,8 +114,7 @@ export default class DrawNeighborGenes {
         geneCluster.append("path")
         .attr("d", function(gene, i) {
         let isComplement = gene.strand === "-" ? true : false;
-        if (geneScale(gene.start) < geneScale(genomeNeighbStop)) {
-            if (!isComplement) {
+        if (!isComplement) {
             genePath = [
                 `M${geneScale(gene.start)}`, DrawNeighborGenes.directGeneFigureTopY, 
                 `L${geneScale(gene.stop)-DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.directGeneFigureTopY, 
@@ -123,15 +122,14 @@ export default class DrawNeighborGenes {
                 `L${geneScale(gene.stop)-DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.directGeneFigureBottomY, 
                 `L${geneScale(gene.start)}`, DrawNeighborGenes.directGeneFigureBottomY, 'Z'
             ].join(" ")
-            } else {
-                genePath = [
-                   `M${geneScale(gene.start)}`, DrawNeighborGenes.reverseGeneFigureMiddlePointY, 
-                    `L${geneScale(gene.start)+DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.reverseGeneFigureTopY, 
-                    `L${geneScale(gene.stop)}`, DrawNeighborGenes.reverseGeneFigureTopY,
-                    `L${geneScale(gene.stop)}`, DrawNeighborGenes.reverseGeneFigureBottomY, 
-                    `L${geneScale(gene.start)+DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.reverseGeneFigureBottomY, 'Z'
-                ].join(" ")
-            }
+        } else {
+            genePath = [
+                `M${geneScale(gene.start)}`, DrawNeighborGenes.reverseGeneFigureMiddlePointY, 
+                `L${geneScale(gene.start)+DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.reverseGeneFigureTopY, 
+                `L${geneScale(gene.stop)}`, DrawNeighborGenes.reverseGeneFigureTopY,
+                `L${geneScale(gene.stop)}`, DrawNeighborGenes.reverseGeneFigureBottomY, 
+                `L${geneScale(gene.start)+DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.reverseGeneFigureBottomY, 'Z'
+            ].join(" ")
         }
         prevEnd = gene.stop;
         return genePath;
@@ -179,6 +177,7 @@ export default class DrawNeighborGenes {
             let axisElem = document.getElementsByClassName('gene-axis')[0].getBoundingClientRect();
             let top, left, xAbsolute = axisElem["x"] + window.scrollX, yAbsolute = axisElem["y"] + window.scrollY;
             element.attr("dummy", function(gene){
+                console.log("gene.version " + gene.version)
                 let isComplement = gene.strand === "-" ? true : false;
                 if (!isComplement)
                     top = DrawNeighborGenes.textPositionFactorDirect*yAbsolute + "px;";
@@ -232,6 +231,7 @@ export default class DrawNeighborGenes {
             
             element
             .style("top", function(gene) {
+                console.log("gene.version from html event listener " + gene.version)
                 let isComplement = gene.strand === "-" ? true : false;
                 if (!isComplement)
                     return DrawNeighborGenes.textPositionFactorDirect*yAbsolute + "px";
