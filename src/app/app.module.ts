@@ -44,6 +44,7 @@ import { GenomeEffects } from './genome/genome.effects';
 import { GenesEffects } from './genes/genes.effects';
 import { GeneEffects } from './gene/gene.effects';
 import { HomeComponent } from './home/home.component';
+import { MistDirective } from './home/mist.directive';
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import { HomeComponent } from './home/home.component';
     HomeComponent,
     MainMenuComponent,
     SearchInputComponent,
+    MistDirective
   ],
   imports: [
     AppRoutingModule,
@@ -88,5 +90,6 @@ import { HomeComponent } from './home/home.component';
   providers: [
     MistApi, D3Service
   ],
+  entryComponents: [GenomesComponent, GenesComponent]
 })
 export class AppModule { }

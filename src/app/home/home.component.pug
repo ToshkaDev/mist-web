@@ -1,9 +1,15 @@
 .container
   .row
-    .eight.columns
-      p Search goes here
+    .ten.columns
+      div.mist-box
+        mat-form-field.select-genome
+          mat-select([(value)]="selected" placeholder="Search" (change)="entityChanged($event)")
+            mat-option(value="Genomes") Genomes
+            mat-option(value="Genes/Proteins") Genes/Proteins
 
-    .four.columns
+        ng-template(ad-host)
+
+    .two.columns
       a Member Genomes
       a Help
       a API
