@@ -31,8 +31,8 @@ export class NeighborGenesView implements OnInit {
             ? geneClusterSvgWidth 
             : NeighborGenesView.minSvgWidth;
 
-        DrawNeighborGenes.svgWidth = geneClusterSvgWidth;
         this.drawNeighborGenesObject = new DrawNeighborGenes(this.elementRef, this.d3Service);
+        this.drawNeighborGenesObject.setSvgSize(geneClusterSvgWidth);
         this.gene$.skip(1).take(1).subscribe(gene => {
             if (gene && gene.length > 0) {
                 this.thisGene = gene;
@@ -52,7 +52,7 @@ export class NeighborGenesView implements OnInit {
             : NeighborGenesView.minSvgWidth;
 
         this.drawNeighborGenesObject.removeElement(this.htmlElement);
-        DrawNeighborGenes.svgWidth = geneClusterSvgWidth;
+        this.drawNeighborGenesObject.setSvgSize(geneClusterSvgWidth);
         this.drawNeighborGenesObject.drawNeighborGenes(this.htmlElement, this.thisGene, this.theseNeighbourGenes);
     }
 

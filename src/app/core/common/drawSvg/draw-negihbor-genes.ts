@@ -8,9 +8,9 @@ export default class DrawNeighborGenes {
     private d3Svg: Selection<SVGSVGElement, any, null, undefined>; 
 
     //Figure
-    static svgWidth = 2000;
-    static svgHeight = 500;
-    static readonly clusterFrameHeight = DrawNeighborGenes.svgHeight*0.4;
+    private svgWidth: number = 2000;
+    private svgHeight: number = 500;
+    private clusterFrameHeight = this.svgHeight*0.4;
     static readonly yTranslationOfSvg = 95;
     static readonly frameRectXRadius = 7;
     static readonly frameRectYRadius = 7;
@@ -31,7 +31,7 @@ export default class DrawNeighborGenes {
 
     //Gene info box
     static readonly infoBoxWidth = 300;
-    static readonly infoBoxHeight = DrawNeighborGenes.svgHeight*0.3;
+    private infoBoxHeight = this.svgHeight*0.3;
     static readonly infoBoxRectXRadius = 3;
     static readonly infoBoxRectYRadius = 3;
     static readonly directGeneInfoBoxY = DrawNeighborGenes.directGeneFigureTopY-148;
@@ -44,6 +44,11 @@ export default class DrawNeighborGenes {
         this.parentNativeElement = element.nativeElement;
     }
 
+    setSvgSize(svgWidth: number, svgHeight: number = null) {
+        this.svgWidth = svgWidth != null ? svgWidth : this.svgWidth;
+        this.svgHeight = svgHeight != null ? svgHeight : this.svgHeight;
+    }
+
     removeElement(htmlElement) {
         let d3ParentElement = this.d3.select(this.parentNativeElement);
         d3ParentElement.selectAll("g").remove();
@@ -52,16 +57,18 @@ export default class DrawNeighborGenes {
 
     drawNeighborGenes(htmlElement, gene: any, neighbGenes: any[]) {
         let d3 = this.d3;
+        let svgWidth = this.svgWidth;
+        let svgHeight = this.svgHeight;
         let d3ParentElement = d3.select(this.parentNativeElement);
         this.d3Svg = d3ParentElement.select<SVGSVGElement>(htmlElement);
-        this.d3Svg.attr('width', DrawNeighborGenes.svgWidth);
-        this.d3Svg.attr('height', DrawNeighborGenes.svgHeight);
+        this.d3Svg.attr('width', svgWidth);
+        this.d3Svg.attr('height', svgHeight);
 
         let genomeNeighbStart = neighbGenes[0].start;
         let genomeNeighbStop = neighbGenes[neighbGenes.length-2].stop;
         let geneScale = this.d3.scaleLinear()
         .domain([genomeNeighbStart, genomeNeighbStop])
-        .range([0, DrawNeighborGenes.svgWidth]);
+        .range([0, svgWidth]);
 
         let containerGroup = this.d3Svg.append("g").attr("transform", `translate(0,${DrawNeighborGenes.yTranslationOfSvg})`);
         let geneCluster = this.createFrameAndAppendGroupTags(containerGroup, [...neighbGenes, gene]);
@@ -77,7 +84,7 @@ export default class DrawNeighborGenes {
         this.addHtmlEventListeneres(divs, d3, geneScale);
     }
 
-    addHtml(neighbourGenes, d3ParentElement, geneScale) {
+    private addHtml(neighbourGenes, d3ParentElement, geneScale) {
         let axisElem = document.getElementsByClassName('gene-axis')[0].getBoundingClientRect();
         let xAbsolute = axisElem["x"] + window.scrollX;
         let yAbsolute = axisElem["y"] + window.scrollY;
@@ -102,7 +109,9 @@ export default class DrawNeighborGenes {
         return divs;
     }
 
-    createFrameAndAppendGroupTags(containerGroup, neighbourGenes) {
+    private createFrameAndAppendGroupTags(containerGroup, neighbourGenes) {
+        let svgWidth = this.svgWidth;
+        let clusterFrameHeight = this.clusterFrameHeight;
         containerGroup.append("rect")
         .attr("transform", "translate(0,0)")
         .attr("fill-opacity", "0.00")
@@ -110,8 +119,8 @@ export default class DrawNeighborGenes {
         .attr("stroke-width", 2)
         .attr("rx", DrawNeighborGenes.frameRectXRadius)
         .attr("ry", DrawNeighborGenes.frameRectYRadius)
-        .attr('width', DrawNeighborGenes.svgWidth)
-        .attr('height', DrawNeighborGenes.clusterFrameHeight);
+        .attr('width', svgWidth)
+        .attr('height', clusterFrameHeight);
 
         return containerGroup.selectAll("g")
         .data(neighbourGenes)
@@ -125,7 +134,7 @@ export default class DrawNeighborGenes {
         });
     }
 
-    createGenePaths(geneCluster, thisgene, genomeNeighbStop, geneScale) {
+    private createGenePaths(geneCluster, thisgene, genomeNeighbStop, geneScale) {
         let prevEnd = null;
         let geneStart;
         let geneStop;
@@ -165,14 +174,15 @@ export default class DrawNeighborGenes {
         .attr("class", "gene-path");
     }
 
-    createDescriptionBoxes(geneCluster, geneScale) {
+    private createDescriptionBoxes(geneCluster, geneScale) {
+        let infoBoxHeight = this.infoBoxHeight;
         geneCluster.append("rect")
         .style("display", "none")
         .attr("class", function(d) {
             return "gene"+d.id;
         })
         .attr('width', DrawNeighborGenes.infoBoxWidth)
-        .attr('height', DrawNeighborGenes.infoBoxHeight)
+        .attr('height', infoBoxHeight)
         .attr("fill-opacity", "1")
         .attr("fill", "white")
         .attr("stroke", "gray")
@@ -190,7 +200,7 @@ export default class DrawNeighborGenes {
         });
     }
 
-    addEventListeneres(geneCluster, d3, geneScale) {
+    private addEventListeneres(geneCluster, d3, geneScale) {
         geneCluster
         .on("mouseover", function (){
             let element = d3.select(this);
@@ -242,7 +252,7 @@ export default class DrawNeighborGenes {
         });
     }
 
-    addHtmlEventListeneres(divs, d3, geneScale) {
+    private addHtmlEventListeneres(divs, d3, geneScale) {
         divs
         .on("mouseover", function (){
             let element = d3.select(this);
