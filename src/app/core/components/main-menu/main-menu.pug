@@ -4,3 +4,22 @@ nav
     li: a(routerLink="/genomes") Genomes
     li: a(routerLink="/genes") Proteins/Genes
 
+.container
+  .row
+    div.mist-box
+      mat-form-field.select-genome
+        mat-select([(value)]="selectedComponent" (change)="entityChanged($event)")
+          mat-option(value="search") Search
+          mat-option(value="genomes") Genomes
+          mat-option(value="genes-proteins") Genes/Proteins
+          mat-option(value="taxonomy") Taxonomy
+          mat-option(value="protein-features") Protein Features
+
+      mist-search-input(
+        [query]="query$ | async"
+        [isFetching]="isFetching$ | async"
+        [errorMessage]="errorMessage$ | async"
+        (onQueryChange)="putQuery($event)"
+      )
+
+
