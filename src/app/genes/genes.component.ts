@@ -37,9 +37,7 @@ import { Navigation }  from '../core/common/navigation';
     genesFilter: GenesFilter = new GenesFilter(); 
     dataSource = new MistdDatasource(this.store, fromGenes.getSearchResults);
 
-    constructor(
-      private store: Store<any>,
-    ) {}
+    constructor(private store: Store<any>) {}
 
     ngOnInit() {
       this.query$ = this.store.select(fromGenes.getSearchQuery);
@@ -55,7 +53,6 @@ import { Navigation }  from '../core/common/navigation';
           pageInfo.perPage ? this.perPage = pageInfo.perPage: this.perPage = this.defaultPerPage;
         }
       );
-      this.genes$.skip(1).subscribe(result => console.log(JSON.stringify(result)));
       this.genes$.subscribe(results => results.length > 0 ? this.displayedColumns = this.columns : this.displayedColumns = null);  
     }
 
