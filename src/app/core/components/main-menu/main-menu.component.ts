@@ -114,6 +114,9 @@ export class MainMenuComponent {
         pageIndex: this.defaultCurrentPage, 
         filter: {}
       }));
+    } else {
+        let Clear = this.selectionOptionToClearAction.get(this.selectedComponent);
+        this.store.dispatch(new Clear());
     }
   }
 
