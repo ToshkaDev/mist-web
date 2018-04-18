@@ -8,6 +8,7 @@ export const LAST_PAGE = '[Genomes] Last Page';
 export const FETCH = '[Genomes] Fetch';
 export const FETCH_DONE = '[Genomes] Fetch Done';
 export const FETCH_ERROR = '[Genomes] Fetch Error';
+export const CLEAR = '[Genomes] Clear';
 
 export class Search implements Action {
   readonly type = SEARCH;
@@ -57,6 +58,10 @@ export class FetchError implements Action {
   constructor(public payload: string) {}
 }
 
+export class Clear implements Action {
+  readonly type = CLEAR;
+}
+
 export type Actions =
   Search
   | FirstPage
@@ -65,4 +70,5 @@ export type Actions =
   | PrevPage
   | Fetch
   | FetchDone
-  | FetchError;
+  | FetchError
+  | Clear;

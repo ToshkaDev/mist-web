@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit, Output } from '@angular/cor
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/from';
+import { Subject } from 'rxjs/Subject';
 import { Search, FirstPage, LastPage, PrevPage, NextPage } from './genomes.actions';
 import * as fromGenomes from './genomes.selectors';
 import GenomesFilter from './genomes.filter';
@@ -72,7 +74,6 @@ export class GenomesComponent implements OnInit {
     );
     this.genomes$.subscribe(results => console.log("results.length " + results.length));
     this.genomes$.subscribe(results => results.length > 0 ? this.displayedColumns = this.columns : this.displayedColumns = null);
-
   }
 
   pageApply($event) {

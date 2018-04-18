@@ -90,6 +90,9 @@ export function reducer (state = initialState, action: Genomes.Actions) {
           isFetching: false,
         },
       };
+
+    case Genomes.CLEAR:
+      return initialState;
   }
 
   return state;
