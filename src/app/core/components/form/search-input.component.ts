@@ -13,4 +13,8 @@ export class SearchInputComponent {
   @Input() errorMessage = '';
   @Input() isFetching = false;
   @Output() onQueryChange = this.queryChange$.map((value) => value.trim()).distinctUntilChanged();
+
+  clear() {
+    this.query = '';
+  }
 }

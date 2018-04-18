@@ -10,7 +10,8 @@ import GenomesFilter from '../../../genomes/genomes.filter';
 import * as fromGenomes from '../../../genomes/genomes.selectors';
 import * as fromGenes from '../../../genes/genes.selectors';
 import { State } from '../../../app.reducers';
-
+import { Clear as ClearGenomes } from '../../../genomes/genomes.actions';
+import { Clear as ClearGenes } from '../../../genes/genes.actions';
 
 @Component({
   selector: 'mist-main-menu',
@@ -18,7 +19,6 @@ import { State } from '../../../app.reducers';
   templateUrl: './main-menu.pug',
 })
 export class MainMenuComponent {
-
   query: string;
   query$: Observable<string>;
   isFetching$: Observable<boolean>;
@@ -42,7 +42,6 @@ export class MainMenuComponent {
     //["taxonomy", ""]
   ]);
   
-
   private routeToSelectionOption = new Map<string, string>([
     ["/genomes", "genomes"],
     ["/genes", "genes-proteins"],
@@ -57,10 +56,17 @@ export class MainMenuComponent {
     //["taxonomy", ""]
   ]);
 
+  private selectionOptionToClearAction = new Map<string, Type<Action>>([
+    ["genomes", ClearGenomes],
+    ["genes-proteins", ClearGenes],
+    //["protein-features", ""],
+    //["taxonomy", ""]
+  ]);
+
   private SelectorsQuery = new Map<string, MemoizedSelector<State, string>>([
     ["genomes", fromGenomes.getSearchQuery],
     ["genes-proteins", fromGenes.getSearchQuery],
-    //["protein-features", ""],
+    //["protein-features", ""],import 'rxjs/add/operator/filter'
     //["taxonomy", ""]
   ]);
 
@@ -85,50 +91,41 @@ export class MainMenuComponent {
 
   ngOnInit() {
     this.assignObservables();
+    this.router.events.subscribe(event => {
+      if (Array.from(this.routeToSelectionOption.keys()).includes(event["urlAfterRedirects"] )) {
+        this.selectedComponent = this.routeToSelectionOption.get(event["urlAfterRedirects"]);
+        this.assignObservables();
+      }
+    });
   }
 
-  putQuery(query: string) {
-    if (this.router.url in Array.from(this.routeToSelectionOption.keys()))
-      this.selectedComponent = this.routeToSelectionOption.get(this.router.url);
-    
+  putQuery(query: string) {   
     this.query = query;
-    this.search();
     this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
+    this.search();
   }
 
   search() {
-    let Search = this.selectionOptionToAction.get(this.selectedComponent);
-    if (this.query)
+    if (this.query && this.query.length >= this.minQueryLenght) {
+      let Search = this.selectionOptionToAction.get(this.selectedComponent);
       this.store.dispatch(new Search({
         search: this.query, 
         perPage: this.perPage, 
         pageIndex: this.defaultCurrentPage, 
         filter: {}
       }));
+    }
   }
 
   entityChanged(entity: any) {
     this.selectedComponent = entity.value;
     this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
-    this.assignObservables()
   }
 
   assignObservables() {
     this.query$ = this.store.select(this.SelectorsQuery.get(this.selectedComponent));
     this.isFetching$ = this.store.select(this.SelectorsIsFetching.get(this.selectedComponent));
     this.errorMessage$ = this.store.select(this.SelectorsErrorMessage.get(this.selectedComponent));
-  }
-
-  checkQuery() {
-    let filter: GenomesFilter;
-    this.query$.subscribe(searchterm => {
-      if (searchterm && searchterm.length >= this.minQueryLenght) {
-        filter = Object.assign(new GenomesFilter(), this.genomesFilter)
-      } else {
-          filter = Object.assign(new GenomesFilter(), this.genomesFilter.reset());
-          this.selected = this.defaultSelection;
-      }}).unsubscribe();
-    return filter;
   }
 
 }
