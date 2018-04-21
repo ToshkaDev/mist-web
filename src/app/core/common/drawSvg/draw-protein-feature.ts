@@ -51,20 +51,19 @@ export default class DrawProteinFeature {
         let domainBorder = this.domainBorder;
 
         let d3ParentElement = d3.select(this.parentNativeElement);
-        //htmlElement e.x.: 'div.protein-features'
         this.d3Element = d3ParentElement.select<HTMLBaseElement>(htmlElement);
         
-        // Create a table
+
         let row = this.d3Element
         .selectAll()
         .data(data)
         .enter()
         .append('div');
-
+       
         // Second column for the main architecture SVG
         let architecture = row.append('svg')
         .attr("height", DrawProteinFeature.kSvgHeight)
-        .attr("width", function(d) {return d.length ? d.length : 0 + 1})
+        .attr("width", function(d) { return d.length ? d.length : 0 + 1 })
         .append('g');
 
         // Draw backbone
@@ -76,8 +75,9 @@ export default class DrawProteinFeature {
         .attr("width", function(d) { return d.length})
         .attr("height", DrawProteinFeature.kBackboneHeight)
         .attr("fill", "gray");
-
+        
         architecture.each(function(d, i) {
+            
             // Draw coiled coils
             let coils = d3.select(this).selectAll('svg')
                 .data(d.coils ? d.coils : [])
@@ -129,6 +129,8 @@ export default class DrawProteinFeature {
                 .data(d.pfam30 ? d.pfam30 : [])
                 .enter()
                 .append('g');
+
+            
 
             domain.append('rect')
                 .filter(function(d){ return d.ali_to - d.ali_from > 0 })

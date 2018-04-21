@@ -30,7 +30,7 @@ export class MainMenuComponent {
 
   readonly defaultCurrentPage: number = 1;
   readonly minQueryLenght = 1;
-  perPage: number=10;
+  perPage: number=30;
   currentPage: number;
   defaultSelection: string = "defaultValue";
   selected: string = this.defaultSelection;
@@ -90,7 +90,6 @@ export class MainMenuComponent {
   ) {}
 
   ngOnInit() {
-    this.assignObservables();
     this.router.events.subscribe(event => {
       if (Array.from(this.routeToSelectionOption.keys()).includes(event["urlAfterRedirects"] )) {
         this.selectedComponent = this.routeToSelectionOption.get(event["urlAfterRedirects"]);
@@ -101,8 +100,8 @@ export class MainMenuComponent {
 
   putQuery(query: string) {   
     this.query = query;
-    this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
     this.search();
+    this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
   }
 
   search() {
