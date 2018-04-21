@@ -58,8 +58,6 @@ export class GenomesComponent implements OnInit {
 
   ngOnInit() {
     this.query$ = this.store.select(fromGenomes.getSearchQuery);
-    this.query$.subscribe(query => console.log("In Genomes component 'Query': " + query));
-
     this.isFetching$ = this.store.select(fromGenomes.getSearchIsFetching);
     this.errorMessage$ = this.store.select(fromGenomes.getSearchErrorMessage);
     this.genomes$ = this.store.select(fromGenomes.getSearchResults);
@@ -72,7 +70,6 @@ export class GenomesComponent implements OnInit {
         pageInfo.perPage ? this.perPage = pageInfo.perPage: this.perPage = this.defaultPerPage;
       }
     );
-    this.genomes$.subscribe(results => console.log("results.length " + results.length));
     this.genomes$.subscribe(results => results.length > 0 ? this.displayedColumns = this.columns : this.displayedColumns = null);
   }
 
