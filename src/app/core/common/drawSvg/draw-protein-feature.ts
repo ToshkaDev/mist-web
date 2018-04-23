@@ -51,8 +51,7 @@ export default class DrawProteinFeature {
 
     removeElement(htmlElement) {
         let d3ParentElement = this.d3.select(this.parentNativeElement);
-        d3ParentElement.selectAll("g").remove();
-        d3ParentElement.selectAll("div").remove();
+        d3ParentElement.selectAll("svg.protein-feature").remove();
     }
 
     drawProteinFeature(htmlElement, data: Aseq[]) {
@@ -79,12 +78,12 @@ export default class DrawProteinFeature {
             .selectAll()
             .data(data)
             .enter()
-            .append('div')
             .append('svg')
+            .attr("class", "protein-feature")
             .attr("height", kSvgHeight)
             .attr("width", function(d) { return d.length ? featureScale(d.length) : 0 + 1 })
             .append('g');
-
+        
         // Draw backbone
         container.append('g')
             .filter(function(d){ return d.length && d.length > 0 })

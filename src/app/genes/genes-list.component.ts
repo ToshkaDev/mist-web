@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, ElementRef, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ElementRef, OnInit, HostListener } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import { D3Service } from 'd3-ng2-service';
@@ -15,8 +15,12 @@ export class GenesListComponent implements OnInit {
   @Input() displayedColumns: String[];  
   @Input() genes: DataSource<any>;
   @Input() query: string;
+  static readonly minSvgWidth = 200;
+  static readonly svgWidthToScreenWidthFactor = 0.30;
+
   private geneToAseq = new Map<string, any>();
   private geneIsDrawn = new Map<string, boolean>();
+  private geneToProteinObject = new Map<string, DrawProteinFeature>();
 
   private htmlElement: string = "div";
     
@@ -37,13 +41,33 @@ export class GenesListComponent implements OnInit {
   }
 
   drawProteinFeature(geneId: string) {
+    console.log("trying to draw")
     let aseqData = this.geneToAseq.get(geneId);
     // !this.geneIsDrawn.get(geneId) is an additional guard preventing repeated rendering
     if (aseqData && !this.geneIsDrawn.get(geneId)) {
       let drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service);
+      this.geneToProteinObject.set(geneId, drawProteinFeature);
       drawProteinFeature.drawProteinFeature(`${this.htmlElement}.gene${geneId}`, [aseqData]);
     }
     // Even if something went wrong rendering shouldn't be repeated
     this.geneIsDrawn.set(geneId, true);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize(ev) {
+    let svgWidth = (window.innerWidth > 0) 
+      ? window.innerWidth*GenesListComponent.svgWidthToScreenWidthFactor
+      : screen.width*GenesListComponent.svgWidthToScreenWidthFactor;
+
+      svgWidth = svgWidth > GenesListComponent.minSvgWidth 
+      ? svgWidth 
+      : GenesListComponent.minSvgWidth;
+
+    this.geneToProteinObject.forEach((proteinObject, geneId) => {
+      proteinObject.removeElement(`${this.htmlElement}.gene${geneId}`);
+      proteinObject.setSvgSize(svgWidth);
+      proteinObject.drawProteinFeature(`${this.htmlElement}.gene${geneId}`, [this.geneToAseq.get(geneId)]);
+
+    })
   }
 }
