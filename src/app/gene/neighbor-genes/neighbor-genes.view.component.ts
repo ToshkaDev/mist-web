@@ -43,7 +43,6 @@ export class NeighborGenesView implements OnInit {
 
     @HostListener('window:resize', ['$event'])
     onWindowResize(ev) {
-        console.log('resized', ev);
         let geneClusterSvgWidth = (window.innerWidth > 0) 
             ? window.innerWidth*NeighborGenesView.svgWidthToScreenWidthFactor
             : screen.width*NeighborGenesView.svgWidthToScreenWidthFactor;

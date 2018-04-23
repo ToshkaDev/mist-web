@@ -207,13 +207,10 @@ export default class DrawNeighborGenes {
             let axisElem = document.getElementsByClassName('gene-axis')[0].getBoundingClientRect();
             let top, left, xAbsolute = axisElem["x"] + window.scrollX, yAbsolute = axisElem["y"] + window.scrollY;
             element.attr("dummy", function(gene){
-                console.log("gene.version " + gene.version)
                 let isComplement = gene.strand === "-" ? true : false;
                 if (!isComplement)
                     top = DrawNeighborGenes.textPositionFactorDirect*yAbsolute + "px;";
                 else top = DrawNeighborGenes.textPositionFactorReverse*yAbsolute + "px;";
-                console.log("geneScale(gene.start) " + geneScale(gene.start));
-                console.log("xAbsolute " + xAbsolute);
                 left = geneScale(gene.start) + xAbsolute + "px;";
             });
 
@@ -261,7 +258,6 @@ export default class DrawNeighborGenes {
             
             element
             .style("top", function(gene) {
-                console.log("gene.version from html event listener " + gene.version)
                 let isComplement = gene.strand === "-" ? true : false;
                 if (!isComplement)
                     return DrawNeighborGenes.textPositionFactorDirect*yAbsolute + "px";
