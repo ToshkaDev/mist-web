@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
@@ -20,7 +20,7 @@ export class NeighborGenesView implements OnInit {
     static readonly minSvgWidth = 650;
     static readonly svgWidthToScreenWidthFactor = 0.94;
     
-    constructor(private elementRef: ElementRef, private d3Service: D3Service, private renderer: Renderer2) {
+    constructor(private elementRef: ElementRef, private d3Service: D3Service) {
     }
 
     ngOnInit() {
