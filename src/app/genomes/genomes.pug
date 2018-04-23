@@ -6,13 +6,10 @@
 //-     (onQueryChange)="search($event)"
 //-   )
 
-div 
-  p We are here
-
 div(*ngIf="query$ | async" class="flex-container")
     mat-paginator([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
     div(class="row")
-      div(class="two columns")
+      div(*ngIf="displayedColumns" class="two columns")
         form( (ngSubmit)="filter()" #filterForm="ngForm")
           div.form-group
             mat-form-field
