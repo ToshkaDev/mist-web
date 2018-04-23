@@ -42,7 +42,8 @@ export class GenesListComponent implements OnInit {
     if (aseqData && !this.geneIsDrawn.get(geneId)) {
       let drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service);
       drawProteinFeature.drawProteinFeature(`${this.htmlElement}.gene${geneId}`, [aseqData]);
-      this.geneIsDrawn.set(geneId, true);
     }
+    // Even if something went wrong rendering shouldn't be repeated
+    this.geneIsDrawn.set(geneId, true);
   }
 }

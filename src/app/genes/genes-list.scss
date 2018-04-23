@@ -1,0 +1,27 @@
+.select-header, .select-cell {
+    flex: 0 0 5%;
+}
+
+.gene-header, .gene-cell {
+    flex: 0 0 10%;
+}
+
+.proteinId-header, .proteinId-cell {
+    flex: 0 0 10%;
+}
+
+.domain-structure-header, .domain-structure-cell {
+    flex: 0 0 40%;
+}
+
+.locus-header, .locus-cell {
+    flex: 0 0 7%;
+}
+
+.description-header, .description-cell {
+    flex: 0 0 20%;
+}
+
+.location-header, .location-cell {
+    flex: 0 0 8%;
+}
