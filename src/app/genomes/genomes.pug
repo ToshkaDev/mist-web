@@ -1,11 +1,3 @@
-//- form
-//-   mist-search-input(
-//-     [query]="query$ | async"
-//-     [isFetching]="isFetching$ | async"
-//-     [errorMessage]="errorMessage$ | async"
-//-     (onQueryChange)="search($event)"
-//-   )
-
 div(*ngIf="query$ | async" class="flex-container")
     mat-paginator([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
     div(class="row")

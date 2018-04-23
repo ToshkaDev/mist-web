@@ -22,7 +22,7 @@ import { Navigation }  from '../core/common/navigation';
     readonly defaultPerPage: number = 30;
     readonly defaultTotalPages: number = 1;
     readonly minQueryLenght = 1;
-    readonly columns: string[] = ["Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
+    readonly columns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
     readonly pageSizeOptions = [5, 10, 30, 100];
     private genes$: Observable<any[]>;
     private query$: Observable<string>;

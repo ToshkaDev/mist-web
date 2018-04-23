@@ -13,7 +13,7 @@ mat-table([dataSource]="genes" class="gene-table")
   ng-container(matColumnDef="Domain Structure")
     mat-header-cell(*matHeaderCellDef class="domain-structure-header") Domain Structure
     mat-cell(*matCellDef="let gene" class="domain-structure-cell")
-      div(class="gene{{gene.id}}") {{ drawProteinFeature(gene.id) }}
+      div(class="gene{{gene.id}}") {{ !geneIsDrawn.get(gene.id) ? drawProteinFeature(gene.id) : null }}
   ng-container(matColumnDef="Locus")
     mat-header-cell(*matHeaderCellDef class="locus-header") Locus
     mat-cell(*matCellDef="let gene" class="locus-cell") {{ gene.locus }}
