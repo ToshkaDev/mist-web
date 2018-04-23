@@ -1,15 +1,14 @@
 nav
   ul
     li: a(routerLink="/") Home
-    li: a(routerLink="/genomes") Genomes
-    li: a(routerLink="/genes") Proteins/Genes
+    //- li: a(routerLink="/genomes") Genomes
+    //- li: a(routerLink="/genes") Proteins/Genes
 
 .container
   .row
     div.mist-box
       mat-form-field.select-genome
         mat-select([(value)]="selectedComponent" (change)="entityChanged($event)")
-          mat-option(value="search") Search
           mat-option(value="genomes") Genomes
           mat-option(value="genes-proteins") Genes/Proteins
           mat-option(value="taxonomy") Taxonomy

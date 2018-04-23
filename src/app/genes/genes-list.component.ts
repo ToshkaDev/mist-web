@@ -16,6 +16,7 @@ export class GenesListComponent implements OnInit {
   @Input() genes: DataSource<any>;
   @Input() query: string;
   private geneToAseq = new Map<string, any>();
+  private geneIsDrawn = new Map<string, boolean>();
 
   private htmlElement: string = "div";
     
@@ -25,9 +26,11 @@ export class GenesListComponent implements OnInit {
   ngOnInit() {
       this.genes$.subscribe(result => {
         this.geneToAseq.clear();
+        this.geneIsDrawn.clear();
         for (let gene of result) {
           if (gene.Aseq) {
             this.geneToAseq.set(gene.id, gene.Aseq);
+            this.geneIsDrawn.set(gene.id, false);
           }
         }
       });
@@ -35,9 +38,11 @@ export class GenesListComponent implements OnInit {
 
   drawProteinFeature(geneId: string) {
     let aseqData = this.geneToAseq.get(geneId);
-    if (aseqData) {
+    // !this.geneIsDrawn.get(geneId) is an additional guard preventing repeated rendering
+    if (aseqData && !this.geneIsDrawn.get(geneId)) {
       let drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service);
       drawProteinFeature.drawProteinFeature(`${this.htmlElement}.gene${geneId}`, [aseqData]);
+      this.geneIsDrawn.set(geneId, true);
     }
   }
 }
