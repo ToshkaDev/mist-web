@@ -51,8 +51,8 @@ export default class DrawNeighborGenes {
 
     removeElement(htmlElement) {
         let d3ParentElement = this.d3.select(this.parentNativeElement);
-        d3ParentElement.selectAll("g").remove();
-        d3ParentElement.selectAll("div").remove();
+        let d3Element = d3ParentElement.select<HTMLBaseElement>(htmlElement);
+        d3Element.selectAll("g").remove();
     }
 
     drawNeighborGenes(htmlElement, gene: any, neighbGenes: any[]) {
