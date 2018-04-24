@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { D3Service } from 'd3-ng2-service';
 import DrawProteinFeature from '../../core/common/drawSvg/draw-protein-feature';
@@ -27,16 +27,23 @@ export class AseqComponent implements OnInit {
         'tmHmm': {...this.buttonStyle},
         'sequence': {...this.buttonStyle}
     };
-    
+    static readonly minSvgWidth = 100;
+    static readonly svgWidthToScreenWidthFactor = 0.33;
+    private drawProteinFeature: DrawProteinFeature;
+    private aseqData: any;
+
     constructor(private elementRef: ElementRef, private d3Service: D3Service) {
     }
 
     ngOnInit() {
-        let drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service);
+        this.drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service);
+        let svgWidth = this.getSvgWidth();
+        this.drawProteinFeature.setSvgSize(svgWidth);
         this.gene$.skip(1).take(1).subscribe(result => {
             if (result && result.Aseq) {
                 this.aseqViewModel = new AseqViewModel(result.Aseq);
-                drawProteinFeature.drawProteinFeature(this.htmlElement, [result.Aseq]);
+                this.drawProteinFeature.drawProteinFeature(this.htmlElement, [result.Aseq]);
+                this.aseqData = result.Aseq;
             }
         });
     }
@@ -56,4 +63,21 @@ export class AseqComponent implements OnInit {
         this.details = !this.details;
         this.arrow = this.arrowObject[+this.details];
     }
+
+    @HostListener('window:resize', ['$event'])
+    onWindowResize(ev) {
+        let svgWidth = this.getSvgWidth();
+        this.drawProteinFeature.removeElement(this.htmlElement);
+        this.drawProteinFeature.setSvgSize(svgWidth);
+        this.drawProteinFeature.drawProteinFeature(this.htmlElement, [this.aseqData]);
+    }
+
+    private getSvgWidth(): number {
+        let svgWidth = (window.innerWidth > 0) 
+          ? window.innerWidth*AseqComponent.svgWidthToScreenWidthFactor
+          : screen.width*AseqComponent.svgWidthToScreenWidthFactor;
+        return svgWidth > AseqComponent.minSvgWidth 
+          ? svgWidth 
+          : AseqComponent.minSvgWidth;
+      }
 }

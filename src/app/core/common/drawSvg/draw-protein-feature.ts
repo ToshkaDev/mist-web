@@ -46,12 +46,13 @@ export default class DrawProteinFeature {
 
     setSvgSize(svgWidth: number, svgHeight: number = null) {
         this.kSvgWidth = svgWidth != null ? svgWidth : this.kSvgWidth;
-        this.kSvgHeight = svgHeight != null ? svgHeight : this.kSvgWidth;
+        this.kSvgHeight = svgHeight != null ? svgHeight : this.kSvgHeight;
     }
 
     removeElement(htmlElement) {
         let d3ParentElement = this.d3.select(this.parentNativeElement);
-        d3ParentElement.selectAll("svg.protein-feature").remove();
+        let d3Element = d3ParentElement.select<HTMLBaseElement>(htmlElement);
+        d3Element.selectAll("svg.protein-feature").remove();
     }
 
     drawProteinFeature(htmlElement, data: Aseq[]) {
@@ -69,8 +70,7 @@ export default class DrawProteinFeature {
 
         let d3ParentElement = d3.select(this.parentNativeElement);
         this.d3Element = d3ParentElement.select<HTMLBaseElement>(htmlElement);
-        
-        let featureScale = this.d3.scaleLinear()
+        let featureScale = d3.scaleLinear()
         .domain([0, data[0].length])
         .range([0, kSvgWidth]);
 
