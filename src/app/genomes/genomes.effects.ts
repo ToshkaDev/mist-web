@@ -28,7 +28,6 @@ export class GenomesEffects {
     .debounceTime(GenomesEffects.DEBOUNCE_TIME_MS)
     .map((action) => action.payload)
     .map((query: any) => {
-      console.log("Genoms query " + query)
       const url = this.mistApi.searchGenomesWithPaginationUrl(query, Entities.GENOMES);
       return new genomes.Fetch(new Navigation(url, query.filter));
     });
