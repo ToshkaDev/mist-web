@@ -11,6 +11,8 @@ import {
   MatCheckboxModule, 
   MatExpansionModule,
   MatToolbarModule,
+  MatGridListModule,
+  MatListModule
 } from '@angular/material';
 
 import {MatSelectModule} from '@angular/material/select';
@@ -83,6 +85,8 @@ import { HomeComponent } from './home/home.component';
     MatExpansionModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
+    MatGridListModule,
+    MatListModule,
     StoreModule.forRoot(reducers, { metaReducers}),
   ],
   providers: [

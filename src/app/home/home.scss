@@ -1,0 +1,16 @@
+mat-grid-tile {
+    background: #3dbfc1;
+    display: flex;
+    justify-content: center;
+}
+
+.right-side {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.full-width-container { 
+    max-width: 1200px;
+    clear: both;
+    margin: 0 auto;
+}
