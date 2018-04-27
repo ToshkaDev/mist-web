@@ -1,23 +1,24 @@
-.container
+.container(class="full-width-container")
   .row
-    .eight.columns
-      p Search goes here
+      div.right-side
+        mat-list
+          mat-list-item
+             a Member Genomes
+          mat-list-item
+             a Help
+          mat-list-item
+             a API
 
-
-    .four.columns
-      a Member Genomes
-      a Help
-      a API
 
   .row
     hr
 
   .row
-    .four.columns
-      h2 Introduction
-
-    .four.columns
-      h2 Statistics
-
-    .four.columns
-      h2 Citation
+    .ten.columns
+      mat-grid-list(cols="3" rowHeight="2:3")
+        mat-grid-tile 
+          h2 Introduction
+        mat-grid-tile 
+          h2 Statistics
+        mat-grid-tile
+          h2 Citation

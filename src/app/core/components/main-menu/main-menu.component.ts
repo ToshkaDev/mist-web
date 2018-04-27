@@ -92,7 +92,6 @@ export class MainMenuComponent {
   ngOnInit() {
     this.router.events.subscribe(event => {
       let currentUrl = event["urlAfterRedirects"] ? `/${String(event["urlAfterRedirects"]).split("/")[1]}` : null;
-      console.log('currentUrl ' + currentUrl)
       if (Array.from(this.routeToSelectionOption.keys()).includes(currentUrl)) {
         this.selectedComponent = this.routeToSelectionOption.get(currentUrl);
         this.assignObservables();

@@ -1,3 +1,28 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 h1 {
   color: #495EB5;
 }
+
+mat-toolbar {
+  background-color: #197477;
+  height: 140px;
+}
+
+footer {
+  background-color:#889999;
+  height: 140px;
+}
+
+.mist-logo {
+  margin-top: 80px;
+}
+
+.content {
+  min-height: calc(100vh - 310px);
+  padding-bottom: 30px;
+}
+
