@@ -1,8 +1,31 @@
 .mist-box {
     display: flex;
-    justify-content: center;
 }
 
 .select-genome {
-    padding-right: 5%;
+    margin-left: auto;
+    padding-left: 12%;
+}
+
+.full-width-container { 
+    max-width: 1800px;
+    clear: both;
+    margin: 0 auto;
+}
+
+.right-side {
+    margin-left: auto;
+}
+
+.info a {
+    text-decoration: none;
+    color: #197477;
+}
+
+.info a:hover {
+    color: #28b8bd;
+}
+
+.info a:active {
+    color: #24d1b4;
 }

@@ -1,24 +1,12 @@
-.container(class="full-width-container")
-  .row
-      div.right-side
-        mat-list
-          mat-list-item
-             a Member Genomes
-          mat-list-item
-             a Help
-          mat-list-item
-             a API
-
-
+.container(class="nofull-width-container")
   .row
     hr
 
   .row
-    .ten.columns
-      mat-grid-list(cols="3" rowHeight="2:3")
-        mat-grid-tile 
-          h2 Introduction
-        mat-grid-tile 
-          h2 Statistics
-        mat-grid-tile
-          h2 Citation
+    mat-grid-list(cols="3" rowHeight="3:4")
+      mat-grid-tile 
+        h2 Introduction
+      mat-grid-tile 
+        h2 Statistics
+      mat-grid-tile
+        h2 Citation

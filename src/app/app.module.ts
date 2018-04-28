@@ -46,6 +46,7 @@ import { GenomeEffects } from './genome/genome.effects';
 import { GenesEffects } from './genes/genes.effects';
 import { GeneEffects } from './gene/gene.effects';
 import { HomeComponent } from './home/home.component';
+import { HelpComponent } from './home/help.component';
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import { HomeComponent } from './home/home.component';
     NeighborGenes,
     NeighborGenesView,
     HomeComponent,
+    HelpComponent,
     MainMenuComponent,
     SearchInputComponent
   ],

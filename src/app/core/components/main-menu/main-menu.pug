@@ -4,9 +4,9 @@ nav
     //- li: a(routerLink="/genomes") Genomes
     //- li: a(routerLink="/genes") Proteins/Genes
 
-.container
+.container(class="full-width-container")
   .row
-    div.mist-box
+    .mist-box
       mat-form-field.select-genome
         mat-select([(value)]="selectedComponent" (change)="entityChanged($event)")
           mat-option(value="genomes") Genomes
@@ -19,7 +19,16 @@ nav
         [isFetching]="isFetching$ | async"
         [errorMessage]="errorMessage$ | async"
         (onQueryChange)="putQuery($event)"
-      )
+      ) 
+      .right-side
+        mat-list.info
+          mat-list-item
+              a Member Genomes
+          mat-list-item
+              a(routerLink="/help") Help
+          mat-list-item
+              a API
+
       
 
 
