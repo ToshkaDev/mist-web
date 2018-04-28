@@ -9,8 +9,12 @@ mat-grid-tile {
     justify-content: flex-end;
 }
 
-.full-width-container { 
-    max-width: 1200px;
+.nofull-width-container { 
+    max-width: 960px;
     clear: both;
     margin: 0 auto;
+}
+.info {
+    display: flex;
+    justify-content: center; 
 }

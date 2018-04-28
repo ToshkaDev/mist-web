@@ -30,8 +30,7 @@ export class MainMenuComponent {
 
   readonly defaultCurrentPage: number = 1;
   readonly minQueryLenght = 1;
-  perPage: number=30;
-  currentPage: number;
+  perPage: number = 30;
   defaultSelection: string = "defaultValue";
   selected: string = this.defaultSelection;
 
