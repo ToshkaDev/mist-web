@@ -92,7 +92,6 @@ export class GenomesComponent implements OnInit {
   }
 
   search(query: string) {
-    console.log("Genomes search " + query)
     this.store.dispatch(new Search({
       search: query, 
       perPage: this.perPage, 

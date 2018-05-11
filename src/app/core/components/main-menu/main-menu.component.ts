@@ -19,20 +19,33 @@ import { Clear as ClearGenes } from '../../../genes/genes.actions';
   templateUrl: './main-menu.pug',
 })
 export class MainMenuComponent {
-  query: string;
-  query$: Observable<string>;
-  isFetching$: Observable<boolean>;
-  errorMessage$: Observable<string>;
-  selectedComponent: string = "genomes";
+  private query: string;
+  private query$: Observable<string>;
+  private isFetching$: Observable<boolean>;
+  private errorMessage$: Observable<string>;
+  private selectedComponent: string = "genomes";
+  private smallMenuDisplay: any = {'visibility': 'visible'};
+  private 
   
 
-  genomesFilter: GenomesFilter = new GenomesFilter(); 
+  private genomesFilter: GenomesFilter = new GenomesFilter(); 
 
   readonly defaultCurrentPage: number = 1;
-  readonly minQueryLenght = 1;
-  perPage: number = 30;
-  defaultSelection: string = "defaultValue";
-  selected: string = this.defaultSelection;
+  readonly minQueryLenght: number = 1;
+  private perPage: number = 30;
+  private defaultSelection: string = "defaultValue";
+  private selected: string = this.defaultSelection;
+
+  private routeToSmallMenuDisplay = new Map<string, string>([
+    ["/", "visible"],
+    ["/help", "visible"],
+    ["/member-genomes", "hidden"],
+    ["/api", "hidden"],
+    ["/genomes", "hidden"],
+    ["/genes", "hidden"],
+    //["/protein-features", ""],
+    //["/taxonomy", ""]
+  ]);
 
   private selectionOptionToRoute = new Map<string, string>([
     ["genomes", "/genomes"],
@@ -44,8 +57,8 @@ export class MainMenuComponent {
   private routeToSelectionOption = new Map<string, string>([
     ["/genomes", "genomes"],
     ["/genes", "genes-proteins"],
-    //["protein-features", ""],
-    //["taxonomy", ""]
+    //["/protein-features", ""],
+    //["/taxonomy", ""]
   ]);
 
   private selectionOptionToAction = new Map<string, Type<Action>>([
@@ -91,6 +104,7 @@ export class MainMenuComponent {
   ngOnInit() {
     this.router.events.subscribe(event => {
       let currentUrl = event["urlAfterRedirects"] ? `/${String(event["urlAfterRedirects"]).split("/")[1]}` : null;
+      this.smallMenuDisplay['visibility'] = this.routeToSmallMenuDisplay.get(currentUrl);
       if (Array.from(this.routeToSelectionOption.keys()).includes(currentUrl)) {
         this.selectedComponent = this.routeToSelectionOption.get(currentUrl);
         this.assignObservables();

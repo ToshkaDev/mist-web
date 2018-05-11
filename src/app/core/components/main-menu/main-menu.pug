@@ -20,14 +20,14 @@ nav
         [errorMessage]="errorMessage$ | async"
         (onQueryChange)="putQuery($event)"
       ) 
-      .right-side
+      .right-side([ngStyle]="smallMenuDisplay")
         mat-list.info
           mat-list-item
-              a Member Genomes
+              a(routerLink="/member-genomes") Member Genomes
           mat-list-item
               a(routerLink="/help") Help
           mat-list-item
-              a API
+              a(routerLink="/api") API
 
       
 
