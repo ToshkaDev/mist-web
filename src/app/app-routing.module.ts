@@ -7,14 +7,55 @@ import { GenesComponent } from './genes/genes.component';
 import { GeneComponent } from './gene/gene.component';
 import { HomeComponent } from './home/home.component';
 import { HelpComponent } from './home/help.component';
+import { GenomeResolver } from './genome/genome.resolver';
+import { GeneResolver } from './gene/gene.resolver';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'help', component: HelpComponent },
-  { path: 'genomes', component: GenomesComponent },
-  { path: 'genomes/:version', component: GenomeComponent },
-  { path: 'genes', component: GenesComponent },
-  { path: 'genes/:stable_id', component: GeneComponent },
+  { path: '', 
+    data: { breadcrumbs: 'Home' }, 
+    children: [
+      {
+        path: '', 
+        component: HomeComponent
+      },
+      { path: 'help',
+        component: HelpComponent, 
+        data: { breadcrumbs: 'Help' } 
+      },
+      {
+        path: 'genomes',
+        data: { breadcrumbs: 'Genomes' },
+        children: [
+          {
+            path: '',
+            component: GenomesComponent
+          },
+          {
+            path: ':version',
+            component: GenomeComponent,
+            data: { breadcrumbs: '{{ genome.version }}' },
+            resolve: { genome: GenomeResolver }
+          } 
+        ],
+      },
+      {
+        path: 'genes',
+        data: { breadcrumbs: 'Genes' },
+        children: [
+          {
+            path: '',
+            component: GenesComponent
+          },
+          {
+            path: ':stable_id',
+            component: GeneComponent,
+            data: { breadcrumbs: '{{ gene.stableId }}' },
+            resolve: { gene: GeneResolver }
+          }  
+        ]
+      }
+    ] 
+  }
 ];
 
 @NgModule({

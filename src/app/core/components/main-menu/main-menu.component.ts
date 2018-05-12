@@ -25,7 +25,6 @@ export class MainMenuComponent {
   private errorMessage$: Observable<string>;
   private selectedComponent: string = "genomes";
   private smallMenuDisplay: any = {'visibility': 'visible'};
-  private 
   
 
   private genomesFilter: GenomesFilter = new GenomesFilter(); 
