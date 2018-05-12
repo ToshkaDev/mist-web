@@ -29,6 +29,7 @@ import { AppComponent } from './app.component';
 import { metaReducers, reducers } from './app.reducers';
 import { SearchInputComponent } from './core/components/form/search-input.component';
 import { MainMenuComponent } from './core/components/main-menu/main-menu.component';
+import { McBreadcrumbsModule } from 'ngx-breadcrumbs';
 import { MistApi } from './core/services/mist-api.service';
 import { GenomesListComponent } from './genomes/genomes-list.component';
 import { GenomesComponent } from './genomes/genomes.component';
@@ -47,6 +48,8 @@ import { GenesEffects } from './genes/genes.effects';
 import { GeneEffects } from './gene/gene.effects';
 import { HomeComponent } from './home/home.component';
 import { HelpComponent } from './home/help.component';
+import { GenomeResolver } from './genome/genome.resolver';
+import { GeneResolver } from './gene/gene.resolver';
 
 
 @NgModule({
@@ -90,9 +93,10 @@ import { HelpComponent } from './home/help.component';
     MatGridListModule,
     MatListModule,
     StoreModule.forRoot(reducers, { metaReducers}),
+    McBreadcrumbsModule.forRoot()
   ],
   providers: [
-    MistApi, D3Service
+    MistApi, D3Service, GenomeResolver, GeneResolver
   ]
 })
 export class AppModule { }
