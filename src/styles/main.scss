@@ -5,3 +5,87 @@
  @import "skeleton/themes/fresh/grid";
 
  @import "material-theme";
+
+ $linkColorHover: #96c75c;
+ $bacground-color: #ece9e9;
+ $text-color: rgb(138, 136, 136);
+ 
+
+ .breadcrumb {
+    list-style: none;
+    margin-bottom: 20px;
+    line-height: 30px;
+    color: $text-color;
+    padding: 2px;
+    padding-top: 10px;
+   
+     li:not(.active) {
+        display: block;
+        float: left;
+        background: $bacground-color;
+        padding-right: 10px;
+        height: 30px;
+        margin-right: 31px;
+        position: relative;
+    
+        & a {
+            text-decoration: none;
+            color: $text-color;
+        }
+        
+        &:last-of-type {
+            margin-right: 25px;
+        }
+        
+        &:before {
+            content: "";
+            display: block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            top: 0;
+            left: -29.7px;
+            border: 15px solid transparent;
+            border-color: $bacground-color;
+            border-left-color: transparent;
+        }
+        
+        &:after {
+            content: "";
+            display: block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            top: 0;
+            right: -29.7px;
+            border: 15px solid transparent;
+            border-left-color: $bacground-color;
+        }
+        
+        &:first-of-type {
+            padding-left: 15px;
+
+            &:before {
+                display: none;
+            }
+        }
+        
+        &:hover {
+            background: $linkColorHover;  
+
+            & a {
+                color: white;
+                text-decoration: none;
+            }   
+
+            &:before {
+                border-color: $linkColorHover;
+                border-left-color: transparent;
+            }
+            
+            &:after {
+                border-left-color: $linkColorHover;
+            }
+        }
+    }
+ }
