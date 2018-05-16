@@ -25,9 +25,9 @@
               a(href="https://api.mistdb.com/") API
   .row 
     div.examples Examples:
-      span.exmaple(*ngFor="let example of examples") 
+      span.exmaple(*ngFor="let example of examples; last as isLast") 
         a(routerLink="{{ example.link }}" (click)="putQuery(example.queryString)") {{ example.queryString }}
-        span {{ "; " }}
+        span(*ngIf="!isLast") {{ "; " }}
 
       
 
