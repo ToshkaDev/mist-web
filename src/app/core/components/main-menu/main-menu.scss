@@ -1,7 +1,21 @@
+$txt-color: #197477;
+$example-font-size: 14px;
+
 .mist-box {
     display: flex;
 }
-
+.examples {
+    position:relative;
+    display: flex;
+    justify-content: center;
+    margin-top: -110px;
+    color: $txt-color;
+    font-size: $example-font-size;
+}
+.exmaple {
+    margin-left: 5px;
+    font-size: $example-font-size;
+}
 .select-genome {
     margin-left: auto;
     padding-left: 12%;
@@ -19,7 +33,7 @@
 
 .info a {
     text-decoration: none;
-    color: #197477;
+    color: $txt-color;
 }
 
 .info a:hover {

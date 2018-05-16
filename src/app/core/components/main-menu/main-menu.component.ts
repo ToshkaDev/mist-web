@@ -12,6 +12,7 @@ import * as fromGenes from '../../../genes/genes.selectors';
 import { State } from '../../../app.reducers';
 import { Clear as ClearGenomes } from '../../../genomes/genomes.actions';
 import { Clear as ClearGenes } from '../../../genes/genes.actions';
+import { Entities } from '../../common/entities';
 
 @Component({
   selector: 'mist-main-menu',
@@ -23,7 +24,7 @@ export class MainMenuComponent {
   private query$: Observable<string>;
   private isFetching$: Observable<boolean>;
   private errorMessage$: Observable<string>;
-  private selectedComponent: string = "genomes";
+  private selectedComponent: string = Entities.GENOMES;
   private smallMenuDisplay: any = {'visibility': 'visible'};
   
 
@@ -40,60 +41,81 @@ export class MainMenuComponent {
     ["/help", "visible"],
     ["/member-genomes", "hidden"],
     ["/api", "hidden"],
-    ["/genomes", "hidden"],
-    ["/genes", "hidden"],
+    [`/${Entities.GENOMES}`, "hidden"],
+    [`/${Entities.GENES}`, "hidden"],
     //["/protein-features", ""],
     //["/taxonomy", ""]
   ]);
 
   private selectionOptionToRoute = new Map<string, string>([
-    ["genomes", "/genomes"],
-    ["genes-proteins", "/genes"],
+    [Entities.GENOMES, `/${Entities.GENOMES}`],
+    [Entities.GENES, `/${Entities.GENES}`],
     //["protein-features", ""],
     //["taxonomy", ""]
   ]);
   
   private routeToSelectionOption = new Map<string, string>([
-    ["/genomes", "genomes"],
-    ["/genes", "genes-proteins"],
+    [`/${Entities.GENOMES}`, Entities.GENOMES],
+    [`/${Entities.GENES}`, Entities.GENES],
     //["/protein-features", ""],
     //["/taxonomy", ""]
   ]);
 
   private selectionOptionToAction = new Map<string, Type<Action>>([
-    ["genomes", SearchGenomes],
-    ["genes-proteins", SearchGenes],
+    [Entities.GENOMES, SearchGenomes],
+    [Entities.GENES, SearchGenes],
     //["protein-features", ""],
     //["taxonomy", ""]
   ]);
 
   private selectionOptionToClearAction = new Map<string, Type<Action>>([
-    ["genomes", ClearGenomes],
-    ["genes-proteins", ClearGenes],
+    [Entities.GENOMES, ClearGenomes],
+    [Entities.GENES, ClearGenes],
     //["protein-features", ""],
     //["taxonomy", ""]
   ]);
 
   private SelectorsQuery = new Map<string, MemoizedSelector<State, string>>([
-    ["genomes", fromGenomes.getSearchQuery],
-    ["genes-proteins", fromGenes.getSearchQuery],
+    [Entities.GENOMES, fromGenomes.getSearchQuery],
+    [Entities.GENES, fromGenes.getSearchQuery],
     //["protein-features", ""],import 'rxjs/add/operator/filter'
     //["taxonomy", ""]
   ]);
 
   private SelectorsIsFetching = new Map<string, MemoizedSelector<State, boolean>>([
-    ["genomes", fromGenomes.getSearchIsFetching],
-    ["genes-proteins", fromGenes.getSearchIsFetching],
+    [Entities.GENOMES, fromGenomes.getSearchIsFetching],
+    [Entities.GENES, fromGenes.getSearchIsFetching],
     //["protein-features", ""],
     //["taxonomy", ""]
   ]);
   
   private SelectorsErrorMessage = new Map<string, MemoizedSelector<State, string>>([
-    ["genomes", fromGenomes.getSearchErrorMessage],
-    ["genes-proteins", fromGenes.getSearchErrorMessage],
+    [Entities.GENOMES, fromGenomes.getSearchErrorMessage],
+    [Entities.GENES, fromGenes.getSearchErrorMessage],
     //["protein-features", ""],
     //["taxonomy", ""]
   ]);
+
+  private entityToExamples = new Map<string, any[]>([
+    [Entities.GENOMES, [
+        {"queryString": "Methanobacteriales", "link": `/${Entities.GENOMES}`}, 
+        {"queryString": "Methanococcus voltae", "link": `/${Entities.GENOMES}`},
+        {"queryString": "GCF_000302455.1", "link": `/${Entities.GENOMES}`}
+      ]
+    ],
+    [Entities.GENES, [
+        {"queryString": "two-component sensor histidine kinase", "link": `/${Entities.GENES}`},
+        {"queryString": "GCF_000302455.1-A994_RS01845", "link": `/${Entities.GENES}`},
+        {"queryString": "WP_004029250.1", "link": `/${Entities.GENES}`},
+        {"queryString": "A994_RS13120", "link": `/${Entities.GENES}`}
+      ]
+    ],
+    //["/protein-features", ""]
+  ]);
+  
+  private examples: any[] = this.entityToExamples.has(this.selectedComponent) 
+    ? this.entityToExamples.get(this.selectedComponent) 
+    : null; 
 
   constructor(
     private router: Router,
@@ -107,8 +129,11 @@ export class MainMenuComponent {
       if (Array.from(this.routeToSelectionOption.keys()).includes(currentUrl)) {
         this.selectedComponent = this.routeToSelectionOption.get(currentUrl);
         this.assignObservables();
+        this.examples = this.entityToExamples.has(this.selectedComponent) 
+          ? this.entityToExamples.get(this.selectedComponent) 
+          : null; 
       }
-    });
+    });   
   }
 
   putQuery(query: string) {   

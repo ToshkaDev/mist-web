@@ -5,3 +5,5 @@ mat-form-field
   button(*ngIf="!isFetching && query?.length" type="button" matSuffix mat-button mat-icon-button (click)="queryChange$.emit(''); clear()")
     mat-icon close
   mat-error(*ngIf="errorMessage") {{ errorMessage }}
+
+
