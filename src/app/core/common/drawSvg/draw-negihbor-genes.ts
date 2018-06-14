@@ -30,14 +30,16 @@ export default class DrawNeighborGenes {
     static readonly currentGeneColour = "#00cc66";
 
     //Gene info box
+    //Need to make textPositionFactorDirect, textPositionFactorReverse, 
+    //substractions from directGeneInfoBoxY and reverseGeneInfoBoxY calculable, not hard-coded
     static readonly infoBoxWidth = 300;
     private infoBoxHeight = this.svgHeight*0.3;
     static readonly infoBoxRectXRadius = 3;
     static readonly infoBoxRectYRadius = 3;
     static readonly directGeneInfoBoxY = DrawNeighborGenes.directGeneFigureTopY-148;
     static readonly reverseGeneInfoBoxY = DrawNeighborGenes.reverseGeneFigureTopY-150;
-    static readonly textPositionFactorDirect = 0.81;
-    static readonly textPositionFactorReverse = 0.87;
+    static readonly textPositionFactorDirect = 189;
+    static readonly textPositionFactorReverse = 131;
 
     constructor(element: ElementRef, d3Service: D3Service) {
         this.d3 = d3Service.getD3();
@@ -209,8 +211,8 @@ export default class DrawNeighborGenes {
             element.attr("dummy", function(gene){
                 let isComplement = gene.strand === "-" ? true : false;
                 if (!isComplement)
-                    top = DrawNeighborGenes.textPositionFactorDirect*yAbsolute + "px;";
-                else top = DrawNeighborGenes.textPositionFactorReverse*yAbsolute + "px;";
+                    top = yAbsolute - DrawNeighborGenes.textPositionFactorDirect + "px;";
+                else top = yAbsolute - DrawNeighborGenes.textPositionFactorReverse + "px;";
                 left = geneScale(gene.start) + xAbsolute + "px;";
             });
 
@@ -227,7 +229,6 @@ export default class DrawNeighborGenes {
             regLeft.test(textDivStyles) 
                 ? textDivStyles = textDivStyles.replace(regLeft, "top: " + top)
                 : textDivStyles = textDivStyles + "left: " + left;
-
             textDiv.setAttribute("style", textDivStyles);
             let descripRect = elementsOfTheClass[1];
             let descripRectStyles = descripRect.getAttribute("style").replace("display: none","display: inline");
@@ -260,8 +261,9 @@ export default class DrawNeighborGenes {
             .style("top", function(gene) {
                 let isComplement = gene.strand === "-" ? true : false;
                 if (!isComplement)
-                    return DrawNeighborGenes.textPositionFactorDirect*yAbsolute + "px";
-                return DrawNeighborGenes.textPositionFactorReverse*yAbsolute + "px";
+                    return yAbsolute - DrawNeighborGenes.textPositionFactorDirect + "px";
+                return yAbsolute - DrawNeighborGenes.textPositionFactorReverse + "px";
+                
             })
             .style("left", function(gene) {
                 return geneScale(gene.start) + xAbsolute + "px";
