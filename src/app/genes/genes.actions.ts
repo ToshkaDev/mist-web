@@ -9,6 +9,7 @@ export const FETCH = '[Genes] Fetch';
 export const FETCH_DONE = '[Genes] Fetch Done';
 export const FETCH_ERROR = '[Genes] Fetch Error';
 export const CLEAR = '[Genes] Clear';
+export const GETBY_ID_LIST = '[Genes] Get By Id List';
 
 export class Search implements Action {
   readonly type = SEARCH;
@@ -62,6 +63,12 @@ export class Clear implements Action {
   readonly type = CLEAR;
 }
 
+export class GetByIdList implements Action {
+  readonly type = GETBY_ID_LIST;
+
+  constructor(public payload: any) {}
+}
+
 export type Actions =
   Search
   | FirstPage
@@ -71,4 +78,5 @@ export type Actions =
   | Fetch
   | FetchDone
   | FetchError
-  | Clear;
+  | Clear
+  | GetByIdList;

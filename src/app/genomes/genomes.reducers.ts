@@ -49,7 +49,20 @@ export function reducer (state = initialState, action: Genomes.Actions) {
           totalPages: null,
         },
     };
-
+    case Genomes.GETBY_ID_LIST:
+    return {
+      ...state,
+      search: {
+        ...state.search,
+        count: null,
+        currentPage: null,
+        isFetching: false,
+        links: {},
+        matches: [],
+        query: action.payload.search,
+        totalPages: null,
+      },
+  };
     case Genomes.FETCH:
       const url = action.payload.url;
       if (url) {

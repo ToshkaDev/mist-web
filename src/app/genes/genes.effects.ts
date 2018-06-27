@@ -39,7 +39,7 @@ export class GenesEffects {
       return new genes.Fetch(new Navigation(url, query.filter));
     });
 
-    @Effect()
+  @Effect()
   fetch$: Observable<Action> = this.actions$.ofType<genes.Fetch>(genes.FETCH)
     .map((action) => action.payload)
     .switchMap((navigation) => {

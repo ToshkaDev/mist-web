@@ -7,6 +7,7 @@ import { GenesComponent } from './genes/genes.component';
 import { GeneComponent } from './gene/gene.component';
 import { HomeComponent } from './home/home.component';
 import { HelpComponent } from './home/help.component';
+import { ShopCartComponent } from './shop-cart/shop-cart.component';
 import { GenomeResolver } from './genome/genome.resolver';
 import { GeneResolver } from './gene/gene.resolver';
 
@@ -21,6 +22,11 @@ const routes: Routes = [
       { path: 'help',
         component: HelpComponent, 
         data: { breadcrumbs: 'Help' } 
+      },
+      {
+        path: 'shop-cart',
+        component: ShopCartComponent,
+        data: { breadcrumbs: 'Shopping Cart' }
       },
       {
         path: 'genomes',

@@ -1,0 +1,9 @@
+//div(*ngIf="query$ | async" class="flex-container")
+mat-paginator([length]="countGenomes" [pageSize]="perPageGenomes" [pageIndex]="currentPageGenomes-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event, 'genomes')")
+mat-paginator([length]="countGenes" [pageSize]="perPageGenes" [pageIndex]="currentPageGenes-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event, 'genes')")
+mist-shop-cart-view(
+  [genesDataSource]="genesDataSource"
+  [genomesDataSource]="genomesDataSource"
+  [genesDisplayedColumns]="genesDisplayedColumns"
+  [genomesDisplayedColumns]="genomesDisplayedColumns"
+)

@@ -12,7 +12,7 @@ import DrawProteinFeature from '../core/common/drawSvg/draw-protein-feature';
 })
 export class GenesListComponent implements OnInit {
   @Input() genes$: Observable<any>; 
-  @Input() displayedColumns: String[];  
+  @Input() displayedColumns: String[];
   @Input() genes: DataSource<any>;
   @Input() query: string;
   static readonly minSvgWidth = 100;
