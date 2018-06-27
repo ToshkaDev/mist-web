@@ -9,6 +9,7 @@ export const FETCH = '[Genomes] Fetch';
 export const FETCH_DONE = '[Genomes] Fetch Done';
 export const FETCH_ERROR = '[Genomes] Fetch Error';
 export const CLEAR = '[Genomes] Clear';
+export const GETBY_ID_LIST = '[Genomes] Get By Id List';
 
 export class Search implements Action {
   readonly type = SEARCH;
@@ -61,6 +62,11 @@ export class FetchError implements Action {
 export class Clear implements Action {
   readonly type = CLEAR;
 }
+export class GetByIdList implements Action {
+  readonly type = GETBY_ID_LIST;
+  
+  constructor(public payload: any) {}
+}
 
 export type Actions =
   Search
@@ -71,4 +77,5 @@ export type Actions =
   | Fetch
   | FetchDone
   | FetchError
-  | Clear;
+  | Clear
+  | GetByIdList;

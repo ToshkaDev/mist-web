@@ -5,6 +5,7 @@ export interface Filter {
 export class Navigation {
     constructor(
         public url: string, 
-        public filter: Filter
+        public filter: Filter,
+        public isGetIdList: boolean = false
     ){} 
 }

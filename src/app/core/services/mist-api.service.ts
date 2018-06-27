@@ -53,8 +53,15 @@ export class MistApi {
     return this.searchGenesUrl(query.search, Entities.GENES) + '&' + url;
   }
   
+  // not implemented
   processGenesFilter(query: any, url: string): string {
     return url;
+  }
+
+  getByIdList(query: any, entity: string): string {
+    let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
+    url = this.specifyFields(`${url}&`, FieldMap.get(entity));
+    return this.getBaseUrl(entity) + `?count&where.id=${query.search}` + "&" + url;
   }
 
   specifyFields(url: string, fields: string): string {

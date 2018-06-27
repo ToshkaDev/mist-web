@@ -50,6 +50,10 @@ import { HomeComponent } from './home/home.component';
 import { HelpComponent } from './home/help.component';
 import { GenomeResolver } from './genome/genome.resolver';
 import { GeneResolver } from './gene/gene.resolver';
+import { SelectButtonsComponent } from './core/components/cart-related/select-buttons.component';
+import { ShopCartComponent } from './shop-cart/shop-cart.component';
+import { ShopCartViewComponent } from './shop-cart/shop-cart.view.component';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @NgModule({
@@ -70,7 +74,10 @@ import { GeneResolver } from './gene/gene.resolver';
     HomeComponent,
     HelpComponent,
     MainMenuComponent,
-    SearchInputComponent
+    SearchInputComponent,
+    SelectButtonsComponent,
+    ShopCartComponent,
+    ShopCartViewComponent
   ],
   imports: [
     AppRoutingModule,
@@ -96,7 +103,7 @@ import { GeneResolver } from './gene/gene.resolver';
     McBreadcrumbsModule.forRoot()
   ],
   providers: [
-    MistApi, D3Service, GenomeResolver, GeneResolver
+    MistApi, D3Service, GenomeResolver, GeneResolver, CookieService
   ]
 })
 export class AppModule { }

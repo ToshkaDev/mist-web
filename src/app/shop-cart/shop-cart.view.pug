@@ -1,0 +1,53 @@
+mat-table([dataSource]="genomesDataSource" class="genome-table")
+  ng-container(matColumnDef="Select")
+    mat-header-cell(*matHeaderCellDef class="select-header") Select
+    mat-cell(*matCellDef="let genome" class="select-cell")
+      mat-checkbox(checked='{{checked}}') 
+  ng-container(matColumnDef="Genome")
+    mat-header-cell(*matHeaderCellDef class="genome-header") Genome
+    mat-cell(*matCellDef="let genome" class="genome-cell")
+      a(routerLink="/genomes/{{genome.version}}") {{genome.name}}
+  ng-container(matColumnDef="Taxonomy")
+    mat-header-cell(*matHeaderCellDef) Taxonomy
+    mat-cell(*matCellDef="let genome") {{genome.superkingdom}}; {{genome.phylum}}; {{genome.class}}; {{genome.order}}; {{genome.family}}; {{genome.genus}}
+  ng-container(matColumnDef="Genbank Version")
+    mat-header-cell(*matHeaderCellDef class="genbank-version-header") Genbank Version
+    mat-cell(*matCellDef="let genome" class="genbank-version-cell" ) {{genome.genbank_version}}
+  ng-container(matColumnDef="Assembly level")
+    mat-header-cell(*matHeaderCellDef class="assembly-header") Assembly Level
+    mat-cell(*matCellDef="let genome" class="assembly-cell") {{genome.assembly_level}}
+  mat-header-row(*matHeaderRowDef="genomesDisplayedColumns")
+  mat-row(*matRowDef="let row; columns: genomesDisplayedColumns;")
+
+
+
+//- mat-table([dataSource]="genesDataSource" class="gene-table")
+//-   ng-container(matColumnDef="Select")
+//-     mat-header-cell(*matHeaderCellDef class="select-header") Select 
+//-     mat-cell(*matCellDef="let gene" class="select-cell")
+//-       mat-checkbox 
+//-   ng-container(matColumnDef="Mist Id")
+//-     mat-header-cell(*matHeaderCellDef class="gene-header") Mist Id
+//-     mat-cell(*matCellDef="let gene" class="gene-cell")
+//-       a(routerLink="/genes/{{gene.stable_id}}") {{ gene.stable_id }}
+//-   ng-container(matColumnDef="Protein Id")
+//-     mat-header-cell(*matHeaderCellDef class="proteinId-header") Protein Id
+//-     mat-cell(*matCellDef="let gene" class="proteinId-cell") {{ gene.version }}
+//-   ng-container(matColumnDef="Domain Structure")
+//-     mat-header-cell(*matHeaderCellDef class="domain-structure-header") Domain Structure
+//-     mat-cell(*matCellDef="let gene" class="domain-structure-cell")
+//-       div(class="gene{{gene.id}}") {{ !geneIsDrawn.get(gene.id) ? drawProteinFeature(gene.id) : null }}
+//-   ng-container(matColumnDef="Locus")
+//-     mat-header-cell(*matHeaderCellDef class="locus-header") Locus
+//-     mat-cell(*matCellDef="let gene" class="locus-cell") {{ gene.locus }}
+//-   ng-container(matColumnDef="Description")
+//-     mat-header-cell(*matHeaderCellDef class="description-header") Description
+//-     mat-cell(*matCellDef="let gene" class="description-cell" ) 
+//-         div {{ gene.product }} 
+//-           span(*ngFor="let name of gene.names") {{ name }}
+//-           div ({{ gene.Component.definition }})
+//-   ng-container(matColumnDef="Location")
+//-     mat-header-cell(*matHeaderCellDef class="location-header") Location
+//-     mat-cell(*matCellDef="let gene" class="location-cell") {{ gene.Component.version}} [{{gene.location}}]
+//-   mat-header-row(*matHeaderRowDef="displayedColumns")
+//-   mat-row(*matRowDef="let row; columns: displayedColumns;")
