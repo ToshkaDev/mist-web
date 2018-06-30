@@ -37,24 +37,21 @@ export class ShopCartComponent implements OnInit {
   readonly defaultPerPage: number = 30;
   readonly defaultTotalPages: number = 1;
   readonly pageSizeOptions = [5, 10, 30, 100];
-  private countGenomes: number;
-  private countGenes: number;
-  private perPageGenomes: number;
-  private perPageGenes: number;
-  private totalPagesGenomes: number;
-  private totalPagesGenes: number;
-  private currentPageGenomes: number;
-  private currentPageGenes: number;
   readonly genomesColumns = ['Select', 'Genome', 'Taxonomy', 'Genbank Version', 'Assembly level'];
   readonly genesColumns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
+  private paginationElementList = ["count", "currentPage", "totalPages", "perPage"];
+  private elementToDefault = {
+    "count": this.defaultCount, 
+    "currentPage": this.defaultCurrentPage, 
+    "totalPages": this.defaultTotalPages, 
+    "perPage": this.defaultPerPage
+  };
   private genomes$: Observable<any[]>;
   private genes$: Observable<any[]>;
   private isFetchingGenomes$: Observable<boolean>;
   private errorMessageGenomes$: Observable<string>;
   private isFetchingGenes$: Observable<boolean>;
   private errorMessageGenes$: Observable<string>;
-  private linksGenomes$: Observable<any>;
-  private linksGenes$: Observable<any>;
   private genomesDataSource: MistdDatasource = new MistdDatasource(this.store, fromGenomes.getSearchResults);
   private genesDataSource = new MistdDatasource(this.store, fromGenes.getSearchResults);
   private genesDisplayedColumns: String[];
@@ -76,24 +73,23 @@ export class ShopCartComponent implements OnInit {
       ["lastPage", GenomesLastPage]
     ])]
   ]);
-  private entityToPageCountMap: Map<string, Map<string, number>> = new Map([
-    [Entities.GENES, new Map<string, number>([
-      ["perPage", this.defaultPerPage],
-      ["currentPage", this.currentPageGenes],
-      ["totalPages", this.totalPagesGenes],
-      ["count", this.countGenes],
-    ])],
-    [Entities.GENOMES, new Map<string, number>([
-      ["perPage", this.defaultPerPage],
-      ["currentPage", this.currentPageGenomes],
-      ["totalPages", this.totalPagesGenomes],
-      ["count", this.countGenomes],
-    ])],
-  ]);
-  private entityToLinks: Map<string, Observable<any>> = new Map([
-    [Entities.GENES, this.linksGenes$],
-    [Entities.GENOMES, this.linksGenomes$]
-  ]);
+
+  private entityToPaginationElement: any = {
+    "genes" : {
+      "perPage" : this.defaultPerPage,
+      "currentPage" : this.defaultCurrentPage,
+      "totalPages" : this.defaultTotalPages,
+      "count" : this.defaultCount
+    },
+    "genomes" : {
+      "perPage" : this.defaultPerPage,
+      "currentPage" : this.defaultCurrentPage,
+      "totalPages" : this.defaultTotalPages,
+      "count" : this.defaultCount
+    }
+  }
+  
+  private entityToLinks: Map<string, Observable<any>> = new Map();
 
   constructor(private store: Store<any>, private cookieService: CookieService) {}
 
@@ -105,18 +101,21 @@ export class ShopCartComponent implements OnInit {
     this.getByIdList(cookieValue, "genomes");
   }
 
+  setUpPagination(pageInfo, entity) {
+    this.paginationElementList.forEach(element => {
+      pageInfo[element]
+        ? this.entityToPaginationElement[entity][element] = pageInfo[element]
+        : this.entityToPaginationElement[entity][element] = this.elementToDefault[element]
+    });
+  }
+
   setUpGenes() {
     this.isFetchingGenes$ = this.store.select(fromGenes.getSearchIsFetching);
     this.errorMessageGenes$ = this.store.select(fromGenes.getSearchErrorMessage);
     this.genes$ = this.store.select(fromGenes.getSearchResults);
-    this.linksGenes$ = this.store.select(fromGenes.getPageLinks);
+    this.entityToLinks.set(Entities.GENES, this.store.select(fromGenes.getPageLinks));
     this.store.select(fromGenes.getPageInfo).subscribe(
-      pageInfo => {
-        pageInfo.count ? this.countGenes = pageInfo.count : this.countGenes = this.defaultCount;
-        pageInfo.currentPage ? this.currentPageGenes = pageInfo.currentPage : this.currentPageGenes = this.defaultCurrentPage;
-        pageInfo.totalPages ? this.totalPagesGenes = pageInfo.totalPages : this.totalPagesGenes = this.defaultTotalPages;
-        pageInfo.perPage ? this.perPageGenes = pageInfo.perPage: this.perPageGenes = this.defaultPerPage;
-      }
+      pageInfo => this.setUpPagination(pageInfo, Entities.GENES)
     );
     this.genes$.subscribe(results => results.length > 0 ? this.genesDisplayedColumns = this.genesDisplayedColumns : this.genesDisplayedColumns = null);
   }
@@ -125,25 +124,17 @@ export class ShopCartComponent implements OnInit {
     this.isFetchingGenomes$ = this.store.select(fromGenomes.getSearchIsFetching);
     this.errorMessageGenomes$ = this.store.select(fromGenomes.getSearchErrorMessage);
     this.genomes$ = this.store.select(fromGenomes.getSearchResults);
-    this.linksGenomes$ = this.store.select(fromGenomes.getPageLinks);
+    this.entityToLinks.set(Entities.GENOMES, this.store.select(fromGenomes.getPageLinks));
     this.store.select(fromGenomes.getPageInfo).subscribe(
-      pageInfo => {
-        pageInfo.count ? this.countGenomes = pageInfo.count : this.countGenomes = this.defaultCount;
-        pageInfo.currentPage ? this.currentPageGenomes = pageInfo.currentPage : this.currentPageGenomes = this.defaultCurrentPage;
-        pageInfo.totalPages ? this.totalPagesGenomes = pageInfo.totalPages : this.totalPagesGenomes = this.defaultTotalPages;
-        pageInfo.perPage ? this.perPageGenomes = pageInfo.perPage: this.perPageGenomes = this.defaultPerPage;
-      }
+      pageInfo => this.setUpPagination(pageInfo, Entities.GENOMES)
     );
     this.genomes$.subscribe(results => results.length > 0 ? this.genomesDisplayedColumns = this.genomesColumns : this.genomesDisplayedColumns = null);
   }
 
   getByIdList(query: string, entity) {
     let GetByIdList = this.entityToPageActionMap.get(entity).get("getByIdList");
-    let perPage = this.entityToPageCountMap.get(entity).get("perPage");
-    let pageIndex = this.entityToPageCountMap.get(entity).get("currentPage");
-    console.log("perPage " + perPage)
-    console.log("this.entityToPageCountMap.get(entity).get(currentPage) " + this.entityToPageCountMap.get(entity).get("currentPage"))
-    console.log("this.currentPageGenomes " + this.currentPageGenomes)
+    let perPage = this.entityToPaginationElement[entity]["perPage"]
+    let pageIndex = this.entityToPaginationElement[entity]["currentPage"];
     this.store.dispatch(new GetByIdList({
       search: query, 
       perPage: perPage, 
@@ -155,11 +146,13 @@ export class ShopCartComponent implements OnInit {
     let eventPageIndex = ++$event.pageIndex;
     let links$ = this.entityToLinks.get(entity);
     let pageActionMap =  this.entityToPageActionMap.get(entity);
-    let perPage = this.entityToPageCountMap.get(entity).get("perPage");
-    let currentPage = this.entityToPageCountMap.get(entity).get("currentPage");
-    let totalPages = this.entityToPageCountMap.get(entity).get("totalPages");
+    let perPage = this.entityToPaginationElement[entity]["perPage"];
+    let currentPage = this.entityToPaginationElement[entity]["currentPage"];
+    let totalPages = this.entityToPaginationElement[entity]["totalPages"];
+    links$.subscribe(link => console.log("link " + JSON.stringify(link)))
+    
     if ($event.pageSize !== perPage) {
-      perPage = $event.pageSize;
+      this.entityToPaginationElement[entity]["perPage"] = $event.pageSize;
       this.getByIdList(this.cookieService.get('mist-genomesIds'), entity)
     } else if (eventPageIndex > currentPage) {
         let NextPage = pageActionMap.get("nextPage");

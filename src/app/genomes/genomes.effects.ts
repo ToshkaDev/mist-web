@@ -36,7 +36,6 @@ export class GenomesEffects {
     .ofType<genomes.GetByIdList>(genomes.GETBY_ID_LIST)
     .map((action) => action.payload)
     .map((query: any) => {
-      console.log("query from effects " + JSON.stringify(query) )
       const url = this.mistApi.getByIdList(query, Entities.GENOMES);
       return new genomes.Fetch(new Navigation(url, query.filter, true));
     });
@@ -59,10 +58,10 @@ export class GenomesEffects {
           let first;
           let last;
           if (navigation.isGetIdList) {
-            next = this.mistApi.getByIdList({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: navigation.filter}, Entities.GENOMES);
-            prev = this.mistApi.getByIdList({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: navigation.filter}, Entities.GENOMES);
-            first = this.mistApi.getByIdList({search: parsed.search, perPage: parsed.per_page, pageIndex: 1, filter: navigation.filter}, Entities.GENOMES);
-            last = this.mistApi.getByIdList({search: parsed.search, perPage: parsed.per_page, pageIndex: totalPages, filter: navigation.filter}, Entities.GENOMES);
+            next = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: currentPage + 1, filter: navigation.filter}, Entities.GENOMES);
+            prev = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: currentPage - 1, filter: navigation.filter}, Entities.GENOMES);
+            first = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: 1, filter: navigation.filter}, Entities.GENOMES);
+            last = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: totalPages, filter: navigation.filter}, Entities.GENOMES);
           } else {
               next = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: navigation.filter}, Entities.GENOMES);
               prev = this.mistApi.searchGenomesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: navigation.filter}, Entities.GENOMES);
