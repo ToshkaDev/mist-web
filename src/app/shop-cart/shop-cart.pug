@@ -1,21 +1,2 @@
-//div(*ngIf="query$ | async" class="flex-container")
-mat-paginator(
-  [length]="entityToPaginationElement.genomes.count" 
-  [pageSize]="entityToPaginationElement.genomes.perPage" 
-  [pageIndex]="entityToPaginationElement.genomes.currentPage-1" 
-  [pageSizeOptions]="pageSizeOptions" 
-  (page)="pageApply($event, 'genomes')"
-)
-mat-paginator(
-  [length]="entityToPaginationElement.genes.count" 
-  [pageSize]="entityToPaginationElement.genes.perPage" 
-  [pageIndex]="entityToPaginationElement.genes.currentPage-1" 
-  [pageSizeOptions]="pageSizeOptions" 
-  (page)="pageApply($event, 'genes')"
-)
-mist-shop-cart-view(
-  [genesDataSource]="genesDataSource"
-  [genomesDataSource]="genomesDataSource"
-  [genesDisplayedColumns]="genesDisplayedColumns"
-  [genomesDisplayedColumns]="genomesDisplayedColumns"
-)
+shop-cart-genomes
+shop-cart-genes

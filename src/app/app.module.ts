@@ -18,7 +18,6 @@ import {
 import {MatSelectModule} from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule, Routes } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { D3Service } from 'd3-ng2-service';
@@ -52,7 +51,10 @@ import { GenomeResolver } from './genome/genome.resolver';
 import { GeneResolver } from './gene/gene.resolver';
 import { SelectButtonsComponent } from './core/components/cart-related/select-buttons.component';
 import { ShopCartComponent } from './shop-cart/shop-cart.component';
-import { ShopCartViewComponent } from './shop-cart/shop-cart.view.component';
+import { ShopCartGenesComponent } from './shop-cart/shop-cart.genes.component';
+import { ShopCartGenomesComponent } from './shop-cart/shop-cart.genomes.component';
+import { ShopCartGenesList } from './shop-cart/shop-cart.genes.list.component';
+import { ShopCartGenomesList } from './shop-cart/shop-cart.genomes.list.component';
 import { CookieService } from 'ngx-cookie-service';
 
 
@@ -77,7 +79,11 @@ import { CookieService } from 'ngx-cookie-service';
     SearchInputComponent,
     SelectButtonsComponent,
     ShopCartComponent,
-    ShopCartViewComponent
+    ShopCartGenesComponent,
+    ShopCartGenomesComponent,
+    ShopCartGenesList,
+    ShopCartGenomesList
+
   ],
   imports: [
     AppRoutingModule,
