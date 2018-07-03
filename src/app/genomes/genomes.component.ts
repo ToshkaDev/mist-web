@@ -4,7 +4,9 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/observable/from';
 import { Search } from './genomes.actions';
 import GenomesFilter from './genomes.filter';
-import { GenomesMain } from './genomes.main';
+import { MistComponent } from '../core/common/mist-component';
+import * as fromGenomes from './genomes.selectors';
+import { Entities } from '../core/common/entities';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -12,7 +14,10 @@ import { GenomesMain } from './genomes.main';
   styleUrls: ['./genomes.scss'],
   templateUrl: './genomes.pug',
 })
-export class GenomesComponent extends GenomesMain {
+export class GenomesComponent extends MistComponent {
+  private defaultSelection: string = "defaultValue";
+  private selected: string = this.defaultSelection;
+  private genomesFilter: GenomesFilter = new GenomesFilter();
   readonly taxonomyMap: Map<number,string> = new Map()
     .set(1,"superkingdom")
     .set(2,"phylum")
@@ -25,11 +30,11 @@ export class GenomesComponent extends GenomesMain {
     {'value':'Chromosom', 'viewValue' : 'Chromosom'},
     {'value':'Scaffold', 'viewValue' : 'Scaffold'}, 
     {'value':'Contig', 'viewValue' : 'Contig'}];
-  private genomesFilter: GenomesFilter = new GenomesFilter(); 
+  static readonly genomesColumns = ['Select', 'Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
 
   constructor(store: Store<any>) {
-    super(store);
-  }
+    super(store, fromGenomes, GenomesComponent.genomesColumns, Entities.GENOMES);
+}
 
   search(query: string) {
     super.getStore().dispatch(new Search({

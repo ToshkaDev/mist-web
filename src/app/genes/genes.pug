@@ -1,8 +1,7 @@
 div(*ngIf="query$ | async" class="flex-container")
   mat-paginator([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
   mist-genes-list(
-    [genes$]="genes$"
+    [genes$]="result$"
     [genes]="dataSource"
     [displayedColumns]="displayedColumns"
-    [query]="query$ | async"
   )
