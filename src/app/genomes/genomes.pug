@@ -28,5 +28,4 @@ div(*ngIf="query$ | async" class="flex-container")
           (taxonomyEvent)="filterTaxonomy($event)"
           [genomes]="dataSource"
           [displayedColumns]="displayedColumns"
-          [query]="query$ | async"
         )

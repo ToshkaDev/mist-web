@@ -1,20 +1,12 @@
-import { Input, Output, EventEmitter } from '@angular/core';
+import { Input } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { Selectable } from '../core/components/cart-related/selectable';
 
 export class GenomesListMain implements Selectable {
   @Input() displayedColumns: String[];  
   @Input() genomes: DataSource<any>;
-  @Input() query: string;
-  @Input() selected: string;
-  @Output() taxonomyEvent = new EventEmitter<any>();
-
   checked: string = null;
   
-  taxonomyChanged(taxon: any) {
-    this.taxonomyEvent.emit(taxon);
-  }
-
   onSelectClickEvent(event: any) {
     switch(event) { 
       case 'selectAll': { 

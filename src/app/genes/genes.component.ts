@@ -3,7 +3,9 @@ import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/take';
 import { Search } from './genes.actions';
 import GenesFilter from './genes.filter';
-import { GenesMain } from './genes.main';
+import { MistComponent } from '../core/common/mist-component';
+import * as fromGenes from './genes.selectors';
+import { Entities } from '../core/common/entities';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,12 +13,13 @@ import { GenesMain } from './genes.main';
     styleUrls: ['./genes.scss'],
     templateUrl: './genes.pug',
   })
-export class GenesComponent extends GenesMain {
+export class GenesComponent extends MistComponent {
+  static readonly genesColumns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
 
   private genesFilter: GenesFilter = new GenesFilter(); 
 
   constructor(store: Store<any>) {
-    super(store);
+    super(store, fromGenes, GenesComponent.genesColumns, Entities.GENES);
   }
 
   search(query: string) {

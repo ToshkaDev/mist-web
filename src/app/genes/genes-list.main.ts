@@ -8,7 +8,6 @@ export class GenesListMain implements OnInit {
   @Input() genes$: Observable<any>; 
   @Input() displayedColumns: String[];
   @Input() genes: DataSource<any>;
-  @Input() query: string;
   static readonly minSvgWidth = 100;
   static readonly svgWidthToScreenWidthFactor = 0.33;
 
