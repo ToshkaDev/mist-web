@@ -25,7 +25,7 @@ export class GenomesComponent extends GenomesMain {
     {'value':'Chromosom', 'viewValue' : 'Chromosom'},
     {'value':'Scaffold', 'viewValue' : 'Scaffold'}, 
     {'value':'Contig', 'viewValue' : 'Contig'}];
-  genomesFilter: GenomesFilter = new GenomesFilter(); 
+  private genomesFilter: GenomesFilter = new GenomesFilter(); 
 
   constructor(store: Store<any>) {
     super(store);
