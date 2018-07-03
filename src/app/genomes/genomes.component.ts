@@ -34,7 +34,7 @@ export class GenomesComponent extends MistComponent {
 
   constructor(store: Store<any>) {
     super(store, fromGenomes, GenomesComponent.genomesColumns, Entities.GENOMES);
-}
+  } 
 
   search(query: string) {
     super.getStore().dispatch(new Search({
