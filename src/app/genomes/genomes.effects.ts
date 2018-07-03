@@ -53,10 +53,7 @@ export class GenomesEffects {
           const parsed = queryString.parse(queryString.extract(navigation.url));
           const totalPages = Math.ceil(count / parsed.per_page);
           const currentPage = +parsed.page;
-          let next;
-          let prev;
-          let first;
-          let last;
+          let next, prev, first, last;
           if (navigation.isGetIdList) {
             next = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: currentPage + 1, filter: navigation.filter}, Entities.GENOMES);
             prev = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: currentPage - 1, filter: navigation.filter}, Entities.GENOMES);

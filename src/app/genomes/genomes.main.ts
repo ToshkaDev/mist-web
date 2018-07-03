@@ -70,7 +70,6 @@ export abstract class GenomesMain implements OnInit {
 
   abstract initialyzeFilter(): GenomesFilter;
 
-  //default sendQuery
   abstract sendQuery(): void;
 
 }
