@@ -15,8 +15,10 @@
         (onQueryChange)="putQuery($event)"
         (entity)="selectedComponent"
       ) 
-      .right-side([ngStyle]="smallMenuDisplay")
-        mat-list.info
+      .right-side
+        mat-icon(matBadge="15")
+          a(routerLink="/shop-cart") shopping_cart
+        mat-list.info([ngStyle]="smallMenuDisplay")
           mat-list-item
               a(routerLink="/member-genomes") Member Genomes
           mat-list-item

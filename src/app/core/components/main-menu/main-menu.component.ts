@@ -41,6 +41,7 @@ export class MainMenuComponent {
     ["/help", "visible"],
     ["/member-genomes", "hidden"],
     ["/api", "hidden"],
+    ["/shop-cart", "hidden"],
     [`/${Entities.GENOMES}`, "hidden"],
     [`/${Entities.GENES}`, "hidden"],
     //["/protein-features", ""],

@@ -3,6 +3,8 @@ import { Store, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { State } from '../../app.reducers';
 import { MemoizedSelector } from '@ngrx/store';
+import { CookieService } from 'ngx-cookie-service';
+
 import MistdDatasource from './mist.datasource';
 import { Filter, Navigation }  from './navigation';
 import { Entities } from './entities';
@@ -31,7 +33,7 @@ export abstract class MistComponent implements OnInit {
     protected links$: Observable<any>;
     protected count: number;
     protected totalPages: number;
-    protected perPage: number = 5;
+    protected perPage: number = 30;
     protected currentPage: number;
     protected displayedColumns: string[];
     protected resultsSelector: MemoizedSelector<State, any[]>;
@@ -111,5 +113,8 @@ export abstract class MistComponent implements OnInit {
         return this.store;
     }
 
+    protected getEntityName() {
+        return this.entity;
+    }
 
 }

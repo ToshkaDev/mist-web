@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
-import { D3Service } from 'd3-ng2-service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+
 import { GenomesListMain } from '../genomes/genomes-list.main';
 
 @Component({
@@ -9,5 +10,8 @@ import { GenomesListMain } from '../genomes/genomes-list.main';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShopCartGenomesList extends GenomesListMain {
+  constructor(cookieService: CookieService) {
+    super(cookieService);
+  }
 
 }

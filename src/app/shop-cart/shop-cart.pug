@@ -1,2 +1,6 @@
-shop-cart-genomes
-shop-cart-genes
+div.pull-right
+  button(mat-raised-button color="primary" (click)="buttonClicked('genomes')") Genomes
+  button(mat-raised-button color="primary" (click)="buttonClicked('genes')") Genes
+
+shop-cart-genomes([thisEntitySelected]="isGenomesActive")
+shop-cart-genes([thisEntitySelected]="isGenesActive")
