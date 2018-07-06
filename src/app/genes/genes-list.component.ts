@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 import { D3Service } from 'd3-ng2-service';
+import { CookieService } from 'ngx-cookie-service';
+
 import { GenesListMain } from './genes-list.main';
 
 @Component({
@@ -9,7 +11,7 @@ import { GenesListMain } from './genes-list.main';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GenesListComponent extends GenesListMain {
-  constructor(elementRef: ElementRef, d3Service: D3Service) {
-    super(elementRef, d3Service)
+  constructor(elementRef: ElementRef, d3Service: D3Service, cookieService: CookieService) {
+    super(elementRef, d3Service, cookieService)
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -10,34 +10,44 @@ import { GetByIdList } from '../genes/genes.actions';
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'shop-cart-genes',
-    styleUrls: ['./shop-cart.genes.scss'],
     templateUrl: './shop-cart.genes.pug',
   })
 export class ShopCartGenesComponent extends MistComponent {
-  static readonly genesColumns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
+    static readonly genesColumns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
+    
+    @Input()
+    private thisEntitySelected = false;
 
+    constructor(store: Store<any>, private cookieService: CookieService) {
+        super(store, fromGenes, ShopCartGenesComponent.genesColumns, Entities.GENES, true);
+        this.sendQuery();
+    }
 
-  constructor(store: Store<any>, private cookieService: CookieService) {
-      super(store, fromGenes, ShopCartGenesComponent.genesColumns, Entities.GENES, true);
-      this.sendQuery();
-  }
+    initialyzeFilter() {
+        return null;
+    }
+    
+    sendQuery() {
+        let cookie = this.getCookie();
+        console.log("cookie " + cookie)
+        if (cookie) {
+            this.getByIdList(cookie);
+        }
+    }
 
-  initialyzeFilter() {
-      return null;
-  }
-  
-  sendQuery() {
-      this.cookieService.set('mist-genomesIds', '1,2,3,4,5,6,7,8,9');
-      let cookieValue = this.cookieService.get('mist-genomesIds');
-      this.getByIdList(cookieValue) ;
-  }
+    getCookie(): string {
+        if (this.cookieService.check(`mist_Database-${super.getEntityName()}`)) {
+            return this.cookieService.get(`mist_Database-${super.getEntityName()}`);
+        }
+        return null;
+    }
 
-  getByIdList(query: string) {
-      super.getStore().dispatch(new GetByIdList({
-          search: query, 
-          perPage: this.perPage, 
-          pageIndex: this.defaultCurrentPage
-    }));
-}
+    getByIdList(query: string) {
+        super.getStore().dispatch(new GetByIdList({
+            search: query, 
+            perPage: this.perPage, 
+            pageIndex: this.defaultCurrentPage
+        }));
+    }
 
 }

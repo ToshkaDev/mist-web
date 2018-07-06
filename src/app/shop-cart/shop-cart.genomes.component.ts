@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -10,11 +10,12 @@ import { GetByIdList } from '../genomes/genomes.actions';
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'shop-cart-genomes',
-    styleUrls: ['./shop-cart.genomes.scss'],
     templateUrl: './shop-cart.genomes.pug',
   })
   export class ShopCartGenomesComponent extends MistComponent {
     static readonly genomesColumns = ['Select', 'Genome', 'Taxonomy', 'Genbank Version', 'Assembly level'];
+    @Input()
+    private thisEntitySelected = false;
 
     constructor(store: Store<any>, private cookieService: CookieService) {
         super(store, fromGenomes, ShopCartGenomesComponent.genomesColumns, Entities.GENOMES, true);
@@ -24,18 +25,26 @@ import { GetByIdList } from '../genomes/genomes.actions';
     initialyzeFilter() {
         return null;
     }
-      
+        
     sendQuery() {
-        this.cookieService.set('mist-genomesIds', '1,2,3,4,5,6,7,8,9');
-        let cookieValue = this.cookieService.get('mist-genomesIds');
-        this.getByIdList(cookieValue) ;
+        let cookie = this.getCookie();
+        if (cookie) {
+            this.getByIdList(cookie);
+        }
     }
-    
+
+    getCookie(): string {
+        if (this.cookieService.check(`mist_Database-${super.getEntityName()}`)) {
+            return this.cookieService.get(`mist_Database-${super.getEntityName()}`);
+        }
+        return null;
+    }
+
     getByIdList(query: string) {
         super.getStore().dispatch(new GetByIdList({
-          search: query, 
-          perPage: this.perPage, 
-          pageIndex: this.defaultCurrentPage
+            search: query, 
+            perPage: this.perPage, 
+            pageIndex: this.defaultCurrentPage
         }));
     }
 

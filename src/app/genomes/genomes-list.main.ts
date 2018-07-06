@@ -1,43 +1,10 @@
-import { Input } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
-import { Selectable } from '../core/components/cart-related/selectable';
+import { CookieService } from 'ngx-cookie-service';
 
-export class GenomesListMain implements Selectable {
-  @Input() displayedColumns: String[];  
-  @Input() genomes: DataSource<any>;
-  checked: string = null;
-  
-  onSelectClickEvent(event: any) {
-    switch(event) { 
-      case 'selectAll': { 
-        this.selectAll(); 
-        break; 
-      } 
-      case 'unselectAll': { 
-        this.unselectAll(); 
-        break; 
-      } 
-      case 'addToCart': { 
-        this.addToCart();
-        break; 
-     } 
-      default: { 
-        console.log("Something went wrong in onSelectClickEvent(event)"); 
-        break; 
-      } 
-    } 
+import { MistListComponent } from '../core/common/mist-list-component';
+import { Entities } from '../core/common/entities';
+
+export abstract class GenomesListMain extends MistListComponent {
+  constructor(cookieService: CookieService) {
+    super(cookieService, Entities.GENOMES);
   }
-
-  selectAll() {
-    this.checked = 'checked';
-  }
-
-  unselectAll() {
-    this.checked = null;
-  }
-
-  addToCart() {
-
-  }
-
 }

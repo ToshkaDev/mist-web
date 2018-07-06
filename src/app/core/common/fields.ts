@@ -1,5 +1,5 @@
 const fieldMap = new Map<string, string>([
-    ["genomes", "name,superkingdom,phylum,class,order,family,genus,genbank_version,version,assembly_level"],
+    ["genomes", "id,name,superkingdom,phylum,class,order,family,genus,genbank_version,version,assembly_level"],
     ["genome", ""],
     ["genes", "id,stable_id,version,names,locus,location,product&fields.Component=version,definition&fields.Aseq"],
     ["neighbour_genes", ""],

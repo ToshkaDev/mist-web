@@ -1,13 +1,13 @@
 import { Input, ElementRef, OnInit, HostListener } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import { D3Service } from 'd3-ng2-service';
 import DrawProteinFeature from '../core/common/drawSvg/draw-protein-feature';
+import { Entities } from '../core/common/entities';
+import { CookieService } from 'ngx-cookie-service';
+import { MistListComponent } from '../core/common/mist-list-component';
 
-export class GenesListMain implements OnInit {
+export abstract class GenesListMain extends MistListComponent implements OnInit {
   @Input() genes$: Observable<any>; 
-  @Input() displayedColumns: String[];
-  @Input() genes: DataSource<any>;
   static readonly minSvgWidth = 100;
   static readonly svgWidthToScreenWidthFactor = 0.33;
 
@@ -17,7 +17,8 @@ export class GenesListMain implements OnInit {
 
   private htmlElement: string = "div";
     
-  constructor(private elementRef: ElementRef, private d3Service: D3Service) {
+  constructor(private elementRef: ElementRef, private d3Service: D3Service, cookieService: CookieService) {
+    super(cookieService, Entities.GENES);
   }
  
   ngOnInit() {
