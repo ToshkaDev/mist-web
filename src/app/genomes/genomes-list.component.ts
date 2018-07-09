@@ -12,6 +12,7 @@ import { GenomesListMain } from './genomes-list.main';
 export class GenomesListComponent extends GenomesListMain {
   @Input() selected: string;
   @Output() taxonomyEvent = new EventEmitter<any>();
+  cart = {"add": true, "remove": false};
 
   constructor(cookieService: CookieService) {
     super(cookieService);

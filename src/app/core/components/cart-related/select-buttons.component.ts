@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class SelectButtonsComponent {
     @Output() selectClickEvent = new EventEmitter<any>();
+    @Input() cart: any;
         
     buttonClicked(event: any) {
       this.selectClickEvent.emit(event);

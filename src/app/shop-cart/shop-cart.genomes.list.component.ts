@@ -10,6 +10,7 @@ import { GenomesListMain } from '../genomes/genomes-list.main';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShopCartGenomesList extends GenomesListMain {
+  cart = {"add": false, "remove": true};
   constructor(cookieService: CookieService) {
     super(cookieService);
   }
