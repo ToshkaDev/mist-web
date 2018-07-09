@@ -21,17 +21,6 @@ export class MistApi {
 
   constructor(private http: Http) {}
 
-  searchGenomesUrl(query: string, entity: string): string {
-    return this.getBaseUrl(entity) + '?count&search=' + query;
-  }
-
-  searchGenomesWithPaginationUrl(query: any, entity: string): string {
-    let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
-    url = this.processGenomesFilter(query, url); 
-    url = this.specifyFields(`${url}&`, FieldMap.get(entity));
-    return this.searchGenomesUrl(query.search, Entities.GENOMES) + '&' + url;
-  }
-
   processGenomesFilter(query: any, url: string): string {
     for (let option in query.filter) {
       if ((query.filter.taxonmoyToRank.has(option) || option == "assembly_level") && query.filter[option]) { 
@@ -42,17 +31,25 @@ export class MistApi {
     return url;
   }
 
-  searchGenesUrl(query: string, entity: string): string {
+  searchWithPaginationUrl(query: any, entity: string): string {
+    let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
+    url = this.processFilter(query, url, entity); 
+    url = this.specifyFields(`${url}&`, FieldMap.get(entity));
+    return this.searchUrl(query.search, entity) + '&' + url;
+  }
+
+  searchUrl(query: string, entity: string): string {
     return this.getBaseUrl(entity) + '?count&search=' + query;
   }
 
-  searchGenesWithPaginationUrl(query: any, entity: string): string {
-    let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
-    url = this.processGenesFilter(query, url); 
-    url = this.specifyFields(`${url}&`, FieldMap.get(entity));
-    return this.searchGenesUrl(query.search, Entities.GENES) + '&' + url;
+  processFilter(query, url, entity) {
+    if (entity == Entities.GENOMES) {
+      return this.processGenomesFilter(query, url);
+    } else if (entity == Entities.GENES) {
+      return this.processGenesFilter(query, url);
+    }
   }
-  
+
   // not implemented
   processGenesFilter(query: any, url: string): string {
     return url;
