@@ -16,7 +16,7 @@ export class ShopCartGenesComponent extends MistComponent {
     static readonly genesColumns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
     
     @Input()
-    private thisEntitySelected = false;
+    thisEntitySelected = false;
 
     constructor(store: Store<any>, private cookieService: CookieService) {
         super(store, fromGenes, ShopCartGenesComponent.genesColumns, Entities.GENES, true);
