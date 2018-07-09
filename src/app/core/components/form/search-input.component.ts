@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import 'rxjs/add/operator/distinctUntilChanged';
-import { Entities } from '../../common/entities';
 
 @Component({
   selector: 'mist-search-input',
@@ -9,7 +8,6 @@ import { Entities } from '../../common/entities';
 })
 export class SearchInputComponent {
   queryChange$ = new EventEmitter<string>();
-  static readonly deafultEntity = 'genomes'; 
 
   @Input() query = '';
   @Input() errorMessage = '';

@@ -3,7 +3,6 @@ import { Store, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { State } from '../../app.reducers';
 import { MemoizedSelector } from '@ngrx/store';
-import { CookieService } from 'ngx-cookie-service';
 
 import MistdDatasource from './mist.datasource';
 import { Filter, Navigation }  from './navigation';
