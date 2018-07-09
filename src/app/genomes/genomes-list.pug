@@ -1,4 +1,4 @@
-cart-select-buttons((selectClickEvent)='onSelectClickEvent($event)')
+cart-select-buttons((selectClickEvent)='onSelectClickEvent($event)' [cart]="cart")
 mat-table([dataSource]="result" class="genome-table")
   ng-container(matColumnDef="Select")
     mat-header-cell(*matHeaderCellDef class="select-header") Select

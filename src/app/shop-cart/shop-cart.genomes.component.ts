@@ -15,7 +15,7 @@ import { GetByIdList } from '../genomes/genomes.actions';
   export class ShopCartGenomesComponent extends MistComponent {
     static readonly genomesColumns = ['Select', 'Genome', 'Taxonomy', 'Genbank Version', 'Assembly level'];
     @Input()
-    private thisEntitySelected = false;
+    thisEntitySelected = false;
 
     constructor(store: Store<any>, private cookieService: CookieService) {
         super(store, fromGenomes, ShopCartGenomesComponent.genomesColumns, Entities.GENOMES, true);
