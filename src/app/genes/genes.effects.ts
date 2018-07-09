@@ -34,7 +34,7 @@ export class GenesEffects {
     .debounceTime(GenesEffects.DEBOUNCE_TIME_MS)
     .map((action) => action.payload)
     .map((query: any) => {
-      const url = this.mistApi.searchGenesWithPaginationUrl(query, Entities.GENES);
+      const url = this.mistApi.searchWithPaginationUrl(query, Entities.GENES);
       return new genes.Fetch(new Navigation(url, query.filter));
     });
 
@@ -68,10 +68,10 @@ export class GenesEffects {
             first = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: 1, filter: navigation.filter}, Entities.GENES);
             last = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: totalPages, filter: navigation.filter}, Entities.GENES);
           } else {
-              next = this.mistApi.searchGenesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: navigation.filter}, Entities.GENES);
-              prev = this.mistApi.searchGenesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: navigation.filter}, Entities.GENES);
-              first = this.mistApi.searchGenesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: 1, filter: navigation.filter}, Entities.GENES);
-              last = this.mistApi.searchGenesWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: totalPages, filter: navigation.filter}, Entities.GENES);  
+              next = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: navigation.filter}, Entities.GENES);
+              prev = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: navigation.filter}, Entities.GENES);
+              first = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: 1, filter: navigation.filter}, Entities.GENES);
+              last = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: totalPages, filter: navigation.filter}, Entities.GENES);  
           }
           const links = {first: first, last: last, next: next, prev: prev};
           return new genes.FetchDone({
