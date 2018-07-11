@@ -13,7 +13,6 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { MistApi } from '../services/mist-api.service';
 import { Navigation }  from './navigation';
-import { Entities } from './entities';
 
 import * as MistAction from './mist-actions';
 
@@ -23,8 +22,10 @@ export class MistEffects {
 
   @Effect()
   search$: Observable<Action> = this.actions$
-    .ofType<MistAction.Search>(MistAction.SEARCH_GENOMES, MistAction.SEARCH_GENES)
-    .debounceTime(MistEffects.DEBOUNCE_TIME_MS)
+    .ofType<MistAction.Search>(
+      MistAction.SEARCH_GENOMES, 
+      MistAction.SEARCH_GENES
+    ).debounceTime(MistEffects.DEBOUNCE_TIME_MS)
     .map((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
       const url = this.mistApi.searchWithPaginationUrl(action.payload, entity);
@@ -33,22 +34,34 @@ export class MistEffects {
 
   @Effect()
   getByIdList$: Observable<Action> = this.actions$
-    .ofType<MistAction.GetByIdList>(MistAction.GETBY_ID_LIST_GENOMES, MistAction.GETBY_ID_LIST_GENES)
-    .map((action) => {
+    .ofType<MistAction.GetByIdList>(
+      MistAction.GETBY_ID_LIST_GENOMES_SHOPCART, 
+      MistAction.GETBY_ID_LIST_GENES_SHOPCART
+    ).map((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
-      const url = this.mistApi.getByIdList(action.payload, Entities.GENOMES);
+      const url = this.mistApi.getByIdList(action.payload, entity);
       return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH),  new Navigation(url, action.payload.filter, true));
     });
 
   @Effect()
-  fetch$: Observable<Action> = this.actions$.ofType<MistAction.Fetch>(MistAction.FETCH_GENOMES, MistAction.FETCH_GENES)
-    .switchMap((action) => {
+  fetch$: Observable<Action> = this.actions$.ofType<MistAction.Fetch>(
+    MistAction.FETCH_GENOMES, 
+    MistAction.FETCH_GENES,
+    MistAction.FETCH_GENOMES_SHOPCART, 
+    MistAction.FETCH_GENES_SHOPCART
+    ).switchMap((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
-      const nextFetch$ = this.actions$.ofType<MistAction.Fetch>(MistAction.FETCH_GENOMES, MistAction.FETCH_GENES).skip(1);
+      const nextFetch$ = this.actions$.ofType<MistAction.Fetch>(
+        MistAction.FETCH_GENOMES, 
+        MistAction.FETCH_GENES,
+        MistAction.FETCH_GENOMES_SHOPCART, 
+        MistAction.FETCH_GENES_SHOPCART
+      ).skip(1);
       return this.http.get(action.payload.url)
         .takeUntil(nextFetch$)
         .map((response) => {
           const matches = response.json();
+          console.log("matches " + JSON.stringify(matches))
           const count = parseInt(response.headers.get('x-total-count'), 10);
           const parsed = queryString.parse(queryString.extract(action.payload.url));
           const totalPages = Math.ceil(count / parsed.per_page);
@@ -79,29 +92,45 @@ export class MistEffects {
     });
 
   @Effect()
-  firstPage$: Observable<Action> = this.actions$.ofType<MistAction.FirstPage>(MistAction.FIRST_PAGE_GENOMES, MistAction.FIRST_PAGE_GENES)
-    .map((action) => {
+  firstPage$: Observable<Action> = this.actions$.ofType<MistAction.FirstPage>(
+    MistAction.FIRST_PAGE_GENOMES, 
+    MistAction.FIRST_PAGE_GENES,
+    MistAction.FIRST_PAGE_GENOMES_SHOPCART, 
+    MistAction.FIRST_PAGE_GENES_SHOPCART
+    ).map((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
       return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH), action.payload); 
     });
 
   @Effect()
-  lastPage$: Observable<Action> = this.actions$.ofType<MistAction.LastPage>(MistAction.LAST_PAGE_GENOMES, MistAction.LAST_PAGE_GENES)
-    .map((action) => {
+  lastPage$: Observable<Action> = this.actions$.ofType<MistAction.LastPage>(
+    MistAction.LAST_PAGE_GENOMES, 
+    MistAction.LAST_PAGE_GENES,
+    MistAction.LAST_PAGE_GENOMES_SHOPCART, 
+    MistAction.LAST_PAGE_GENES_SHOPCART
+    ).map((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
       return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH), action.payload); 
     });  
 
   @Effect()
-  prevPage$: Observable<Action> = this.actions$.ofType<MistAction.PrevPage>(MistAction.PREV_PAGE_GENOMES, MistAction.PREV_PAGE_GENES)
-    .map((action) => {
+  prevPage$: Observable<Action> = this.actions$.ofType<MistAction.PrevPage>(
+    MistAction.PREV_PAGE_GENOMES, 
+    MistAction.PREV_PAGE_GENES,
+    MistAction.PREV_PAGE_GENOMES_SHOPCART, 
+    MistAction.PREV_PAGE_GENES_SHOPCART
+    ).map((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
       return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH), action.payload); 
     });
 
   @Effect()
-  nextPage$: Observable<Action> = this.actions$.ofType<MistAction.NextPage>(MistAction.NEXT_PAGE_GENOMES, MistAction.NEXT_PAGE_GENES)
-    .map((action) => {
+  nextPage$: Observable<Action> = this.actions$.ofType<MistAction.NextPage>(
+    MistAction.NEXT_PAGE_GENOMES, 
+    MistAction.NEXT_PAGE_GENES,
+    MistAction.NEXT_PAGE_GENOMES_SHOPCART, 
+    MistAction.NEXT_PAGE_GENES_SHOPCART
+    ).map((action) => {
         const entity = action.type.split("]")[0].replace("[", "");
         return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH), action.payload); 
     });

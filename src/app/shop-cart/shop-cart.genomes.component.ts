@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 
 import { MistComponent } from '../core/common/mist-component';
-import * as fromGenomes from '../genomes/genomes.selectors';
+import * as fromGenomesShopCart from './shop-cart-genomes.selectors';
 import { Entities } from '../core/common/entities';
-import { GetByIdList } from '../genomes/genomes.actions';
+import * as MistAction from '../core/common/mist-actions';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,7 +18,7 @@ import { GetByIdList } from '../genomes/genomes.actions';
     thisEntitySelected = false;
 
     constructor(store: Store<any>, private cookieService: CookieService) {
-        super(store, fromGenomes, ShopCartGenomesComponent.genomesColumns, Entities.GENOMES, true);
+        super(store, fromGenomesShopCart, ShopCartGenomesComponent.genomesColumns, Entities.GENOMES, true);
         this.sendQuery();
     }
 
@@ -41,7 +41,7 @@ import { GetByIdList } from '../genomes/genomes.actions';
     }
 
     getByIdList(query: string) {
-        super.getStore().dispatch(new GetByIdList({
+        super.getStore().dispatch(new MistAction.GetByIdList(MistAction.GETBY_ID_LIST_GENOMES_SHOPCART, {
             search: query, 
             perPage: this.perPage, 
             pageIndex: this.defaultCurrentPage

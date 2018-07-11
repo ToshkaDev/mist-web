@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 
 import { MistComponent } from '../core/common/mist-component';
-import * as fromGenes from '../genes/genes.selectors';
+import * as fromGenesShopCart from './shop-cart-genes.selector';
 import { Entities } from '../core/common/entities';
-import { GetByIdList } from '../genes/genes.actions';
+import * as MistAction from '../core/common/mist-actions';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,7 +19,7 @@ export class ShopCartGenesComponent extends MistComponent {
     thisEntitySelected = false;
 
     constructor(store: Store<any>, private cookieService: CookieService) {
-        super(store, fromGenes, ShopCartGenesComponent.genesColumns, Entities.GENES, true);
+        super(store, fromGenesShopCart, ShopCartGenesComponent.genesColumns, Entities.GENES, true);
         this.sendQuery();
     }
 
@@ -29,7 +29,6 @@ export class ShopCartGenesComponent extends MistComponent {
     
     sendQuery() {
         let cookie = this.getCookie();
-        console.log("cookie " + cookie)
         if (cookie) {
             this.getByIdList(cookie);
         }
@@ -43,7 +42,7 @@ export class ShopCartGenesComponent extends MistComponent {
     }
 
     getByIdList(query: string) {
-        super.getStore().dispatch(new GetByIdList({
+        super.getStore().dispatch(new MistAction.GetByIdList(MistAction.GETBY_ID_LIST_GENES_SHOPCART, {
             search: query, 
             perPage: this.perPage, 
             pageIndex: this.defaultCurrentPage

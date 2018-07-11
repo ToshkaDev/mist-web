@@ -35,7 +35,6 @@ export const initialState: State = {
 
 const genesActionTypes = [
     MistAction.SEARCH_GENES,
-    MistAction.GETBY_ID_LIST_GENES,
     MistAction.FETCH_GENES, 
     MistAction.FETCH_DONE_GENES, 
     MistAction.FETCH_ERROR_GENES, 
@@ -43,11 +42,24 @@ const genesActionTypes = [
 ];
 const genomesActionTypes = [
     MistAction.SEARCH_GENOMES,
-    MistAction.GETBY_ID_LIST_GENOMES,
     MistAction.FETCH_GENOMES, 
     MistAction.FETCH_DONE_GENOMES,
     MistAction.FETCH_ERROR_GENOMES, 
     MistAction.CLEAR_GENOMES
+];
+const genesShopCartActionTypes = [
+    MistAction.GETBY_ID_LIST_GENES_SHOPCART,
+    MistAction.FETCH_GENES_SHOPCART, 
+    MistAction.FETCH_DONE_GENES_SHOPCART, 
+    MistAction.FETCH_ERROR_GENES_SHOPCART, 
+    MistAction.CLEAR_GENES_SHOPCART
+];
+const genomesShopCartActionTypes = [
+    MistAction.GETBY_ID_LIST_GENOMES_SHOPCART,
+    MistAction.FETCH_GENOMES_SHOPCART, 
+    MistAction.FETCH_DONE_GENOMES_SHOPCART,
+    MistAction.FETCH_ERROR_GENOMES_SHOPCART, 
+    MistAction.CLEAR_GENOMES_SHOPCART
 ];
 
 export function genomesReducer(state = initialState, action: MistAction.Actions) {
@@ -58,9 +70,18 @@ export function genesReducer(state = initialState, action: MistAction.Actions) {
     return reducer(state, action, genesActionTypes);
 }
 
+export function genomesReducerShopCart(state = initialState, action: MistAction.Actions) {
+    return reducer(state, action, genomesShopCartActionTypes);
+}
+
+export function genesReducerShopCart(state = initialState, action: MistAction.Actions) {
+    return reducer(state, action, genesShopCartActionTypes);
+}
+
 function reducer (state, action: MistAction.Actions,  actions) {
     switch (action.type) {
         case actions[0]:
+            console.log("search or getByIdList")
             return {
                 ...state,
                 search: {
@@ -73,22 +94,9 @@ function reducer (state, action: MistAction.Actions,  actions) {
                     query: action.payload.search,
                     totalPages: null,
                 },
-            };
+            }; 
         case actions[1]:
-            return {
-                ...state,
-                search: {
-                    ...state.search,
-                    count: null,
-                    currentPage: null,
-                    isFetching: false,
-                    links: {},
-                    matches: [],
-                    query: action.payload.search,
-                    totalPages: null,
-                },
-            };    
-        case actions[2]:
+            console.log("fetch")
             const url = action.payload.url;
             if (url) {
                 return {
@@ -102,7 +110,8 @@ function reducer (state, action: MistAction.Actions,  actions) {
                 };
             }
             break;
-        case actions[3]:
+        case actions[2]:
+            console.log("fetch done")
             const { payload } = action;
             return {
                 ...state,
@@ -117,7 +126,8 @@ function reducer (state, action: MistAction.Actions,  actions) {
                     totalPages: payload.totalPages,
                 },
             };
-        case actions[4]:
+        case actions[3]:
+            console.log("error")
             return {
                 ...state,
                 search: {
@@ -126,7 +136,7 @@ function reducer (state, action: MistAction.Actions,  actions) {
                     isFetching: false,
                 },
             };
-        case actions[5]:
+        case actions[4]:
             return initialState;
     }
     return state;

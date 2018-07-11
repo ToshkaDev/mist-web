@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { Entities } from '../core/common/entities';
+
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'mist-shop-cart',
@@ -12,11 +14,11 @@ export class ShopCartComponent  {
 
   
   buttonClicked(entity: string) {
-    if (entity == "genomes") {
+    if (entity == Entities.GENOMES) {
       this.isGenomesActive = true;
       this.isGenesActive = false;
     }
-    else if (entity == "genes") {
+    else if (entity == Entities.GENES) {
       this.isGenesActive = true;
       this.isGenomesActive = false;
     }
