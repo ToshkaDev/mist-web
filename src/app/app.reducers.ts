@@ -10,15 +10,19 @@ import * as mistState from './core/common/mist-state';
 
 export interface State {
   genomes: mistState.State,
+  genomes_shopcart: mistState.State,
   genome: fromGenome.State,
   genes: mistState.State,
+  genes_shopcart: mistState.State,
   gene: fromGene.State
 }
 
 export const reducers: ActionReducerMap<State> = {
   genomes: mistState.genomesReducer,
+  genomes_shopcart: mistState.genomesReducerShopCart,
   genome: fromGenome.reducer,
   genes: mistState.genesReducer,
+  genes_shopcart: mistState.genesReducerShopCart,
   gene: fromGene.reducer
 };
 

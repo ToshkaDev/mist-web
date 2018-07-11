@@ -24,7 +24,6 @@ export const FETCH_GENES = '[genes] Fetch';
 export const FETCH_DONE_GENES = '[genes] Fetch Done';
 export const FETCH_ERROR_GENES = '[genes] Fetch Error';
 export const CLEAR_GENES = '[genes] Clear';
-export const GETBY_ID_LIST_GENES = '[genes] Get By Id List';
 
 // Genomes actions
 export const SEARCH_GENOMES = '[genomes] Search';
@@ -36,7 +35,29 @@ export const FETCH_GENOMES = '[genomes] Fetch';
 export const FETCH_DONE_GENOMES = '[genomes] Fetch Done';
 export const FETCH_ERROR_GENOMES = '[genomes] Fetch Error';
 export const CLEAR_GENOMES = '[genomes] Clear';
-export const GETBY_ID_LIST_GENOMES = '[genomes] Get By Id List';
+
+
+// Shop-cart Genes actions
+export const NEXT_PAGE_GENES_SHOPCART = '[genes_shopcart] Shop Cart Next Page';
+export const PREV_PAGE_GENES_SHOPCART = '[genes_shopcart] Shop Cart Prev Page';
+export const FIRST_PAGE_GENES_SHOPCART = '[genes_shopcart] Shop Cart First Page';
+export const LAST_PAGE_GENES_SHOPCART = '[genes_shopcart] Shop Cart Last Page';
+export const FETCH_GENES_SHOPCART = '[genes_shopcart] Shop Cart Fetch';
+export const FETCH_DONE_GENES_SHOPCART = '[genes_shopcart] Shop Cart Fetch Done';
+export const FETCH_ERROR_GENES_SHOPCART = '[genes_shopcart] Shop Cart Fetch Error';
+export const CLEAR_GENES_SHOPCART = '[genes_shopcart] Shop Cart Clear';
+export const GETBY_ID_LIST_GENES_SHOPCART = '[genes_shopcart] Shop Cart Get By Id List';
+
+// Shop-cart  Genomes actions
+export const NEXT_PAGE_GENOMES_SHOPCART = '[genomes_shopcart] Shop Cart Next Page';
+export const PREV_PAGE_GENOMES_SHOPCART = '[genomes_shopcart] Shop Cart Prev Page';
+export const FIRST_PAGE_GENOMES_SHOPCART = '[genomes_shopcart] Shop Cart First Page';
+export const LAST_PAGE_GENOMES_SHOPCART = '[genomes_shopcart] Shop Cart Last Page';
+export const FETCH_GENOMES_SHOPCART = '[genomes_shopcart] Shop Cart Fetch';
+export const FETCH_DONE_GENOMES_SHOPCART = '[genomes_shopcart] Shop Cart Fetch Done';
+export const FETCH_ERROR_GENOMES_SHOPCART = '[genomes_shopcart] Shop Cart Fetch Error';
+export const CLEAR_GENOMES_SHOPCART = '[genomes_shopcart] Shop Cart Clear';
+export const GETBY_ID_LIST_GENOMES_SHOPCART = '[genomes_shopcart] Shop Cart Get By Id List';
 
 
 export class Search implements Action {
@@ -94,7 +115,6 @@ export type Actions =
 export const entityToActionType: Map<string, Map<string, string>> = new Map([
     [Entities.GENOMES, new Map([
         [SEARCH, SEARCH_GENOMES],
-        [GETBY_ID_LIST, GETBY_ID_LIST_GENOMES],
         [FETCH, FETCH_GENOMES],
         [FETCH_DONE, FETCH_DONE_GENOMES],
         [FETCH_ERROR, FETCH_ERROR_GENOMES],
@@ -105,7 +125,6 @@ export const entityToActionType: Map<string, Map<string, string>> = new Map([
     ])],
     [Entities.GENES, new Map([
         [SEARCH, SEARCH_GENES],
-        [GETBY_ID_LIST, GETBY_ID_LIST_GENES],
         [FETCH, FETCH_GENES],
         [FETCH_DONE, FETCH_DONE_GENES],
         [FETCH_ERROR, FETCH_ERROR_GENES],
@@ -113,5 +132,25 @@ export const entityToActionType: Map<string, Map<string, string>> = new Map([
         [LAST_PAGE, LAST_PAGE_GENES],
         [NEXT_PAGE, NEXT_PAGE_GENES],
         [PREV_PAGE, PREV_PAGE_GENES],
+    ])],
+    [Entities.GENOMES_SHOPCART, new Map([
+        [GETBY_ID_LIST, GETBY_ID_LIST_GENOMES_SHOPCART],
+        [FETCH, FETCH_GENOMES_SHOPCART],
+        [FETCH_DONE, FETCH_DONE_GENOMES_SHOPCART],
+        [FETCH_ERROR, FETCH_ERROR_GENOMES_SHOPCART],
+        [FIRST_PAGE, FIRST_PAGE_GENOMES_SHOPCART],
+        [LAST_PAGE, LAST_PAGE_GENOMES_SHOPCART],
+        [NEXT_PAGE, NEXT_PAGE_GENOMES_SHOPCART],
+        [PREV_PAGE, PREV_PAGE_GENOMES_SHOPCART],
+    ])],
+    [Entities.GENES_SHOPCART, new Map([
+        [GETBY_ID_LIST, GETBY_ID_LIST_GENES_SHOPCART],
+        [FETCH, FETCH_GENES_SHOPCART],
+        [FETCH_DONE, FETCH_DONE_GENES_SHOPCART],
+        [FETCH_ERROR, FETCH_ERROR_GENES_SHOPCART],
+        [FIRST_PAGE, FIRST_PAGE_GENES_SHOPCART],
+        [LAST_PAGE, LAST_PAGE_GENES_SHOPCART],
+        [NEXT_PAGE, NEXT_PAGE_GENES_SHOPCART],
+        [PREV_PAGE, PREV_PAGE_GENES_SHOPCART],
     ])],
 ]);
