@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/observable/from';
-import { Search } from './genomes.actions';
 import GenomesFilter from './genomes.filter';
 import { MistComponent } from '../core/common/mist-component';
 import * as fromGenomes from './genomes.selectors';
 import { Entities } from '../core/common/entities';
+
+import * as MistAction from '../core/common/mist-actions';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,7 +38,7 @@ export class GenomesComponent extends MistComponent {
   } 
 
   search(query: string) {
-    super.getStore().dispatch(new Search({
+    super.getStore().dispatch(new MistAction.Search(MistAction.SEARCH_GENOMES, {
       search: query, 
       perPage: this.perPage, 
       pageIndex: this.defaultCurrentPage, 

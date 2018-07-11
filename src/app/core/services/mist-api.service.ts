@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Http } from '@angular/http';
 import { fieldMap as FieldMap } from '../common/fields';
 import { Entities } from '../common/entities';
 
