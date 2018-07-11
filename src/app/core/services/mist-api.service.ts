@@ -12,8 +12,10 @@ export class MistApi {
   static paginationParams = "page=%pageNumber%&per_page=%perPage%";
   static ENTITY_TO_BASEURL: Map<string, string> = new Map([
     [Entities.GENOMES, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
+    [Entities.GENOMES_SHOPCART, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
     [Entities.GENOME, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
     [Entities.GENES, MistApi.BASE_URL + MistApi.GENES_ROOT],
+    [Entities.GENES_SHOPCART, MistApi.BASE_URL + MistApi.GENES_ROOT],
     [Entities.GENE, MistApi.BASE_URL + MistApi.GENES_ROOT],
     [Entities.NEIGHBOUR_GENES, MistApi.BASE_URL + MistApi.GENES_ROOT]
   ]);
@@ -47,6 +49,8 @@ export class MistApi {
     } else if (entity == Entities.GENES) {
       return this.processGenesFilter(query, url);
     }
+    // will need to reconsider
+    return url;
   }
 
   // not implemented
