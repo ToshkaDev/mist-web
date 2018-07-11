@@ -1,18 +1,14 @@
 import { Component, OnInit, Type} from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { GenomesComponent } from '../../../genomes/genomes.component';
-import { GenesComponent } from '../../../genes/genes.component';
-import { Store, Action, MemoizedSelector} from '@ngrx/store';
-import { Search as SearchGenomes } from '../../../genomes/genomes.actions';
-import { Search as SearchGenes } from '../../../genes/genes.actions';
+import { Store, MemoizedSelector} from '@ngrx/store';
 import GenomesFilter from '../../../genomes/genomes.filter';
 import * as fromGenomes from '../../../genomes/genomes.selectors';
 import * as fromGenes from '../../../genes/genes.selectors';
 import { State } from '../../../app.reducers';
-import { Clear as ClearGenomes } from '../../../genomes/genomes.actions';
-import { Clear as ClearGenes } from '../../../genes/genes.actions';
 import { Entities } from '../../common/entities';
+
+import * as MistAction from '../../common/mist-actions';
 
 @Component({
   selector: 'mist-main-menu',
@@ -31,7 +27,7 @@ export class MainMenuComponent {
   private genomesFilter: GenomesFilter = new GenomesFilter(); 
 
   readonly defaultCurrentPage: number = 1;
-  readonly minQueryLenght: number = 1;
+  readonly minQueryLenght: number = 2;
   private perPage: number = 30;
   private defaultSelection: string = "defaultValue";
   private selected: string = this.defaultSelection;
@@ -45,56 +41,48 @@ export class MainMenuComponent {
     [`/${Entities.GENOMES}`, "hidden"],
     [`/${Entities.GENES}`, "hidden"],
     //["/protein-features", ""],
-    //["/taxonomy", ""]
   ]);
 
   private selectionOptionToRoute = new Map<string, string>([
     [Entities.GENOMES, `/${Entities.GENOMES}`],
     [Entities.GENES, `/${Entities.GENES}`],
     //["protein-features", ""],
-    //["taxonomy", ""]
   ]);
   
   private routeToSelectionOption = new Map<string, string>([
     [`/${Entities.GENOMES}`, Entities.GENOMES],
     [`/${Entities.GENES}`, Entities.GENES],
     //["/protein-features", ""],
-    //["/taxonomy", ""]
   ]);
 
-  private selectionOptionToAction = new Map<string, Type<Action>>([
-    [Entities.GENOMES, SearchGenomes],
-    [Entities.GENES, SearchGenes],
+  private selectionOptionToActionType = new Map<string, string>([
+    [Entities.GENOMES, MistAction.SEARCH_GENOMES],
+    [Entities.GENES, MistAction.SEARCH_GENES],
     //["protein-features", ""],
-    //["taxonomy", ""]
   ]);
 
-  private selectionOptionToClearAction = new Map<string, Type<Action>>([
-    [Entities.GENOMES, ClearGenomes],
-    [Entities.GENES, ClearGenes],
+  private selectionOptionToClearActionType = new Map<string, string>([
+    [Entities.GENOMES, MistAction.CLEAR_GENOMES],
+    [Entities.GENES, MistAction.CLEAR_GENES],
     //["protein-features", ""],
-    //["taxonomy", ""]
   ]);
 
   private SelectorsQuery = new Map<string, MemoizedSelector<State, string>>([
     [Entities.GENOMES, fromGenomes.getSearchQuery],
     [Entities.GENES, fromGenes.getSearchQuery],
     //["protein-features", ""],import 'rxjs/add/operator/filter'
-    //["taxonomy", ""]
   ]);
 
   private SelectorsIsFetching = new Map<string, MemoizedSelector<State, boolean>>([
     [Entities.GENOMES, fromGenomes.getSearchIsFetching],
     [Entities.GENES, fromGenes.getSearchIsFetching],
     //["protein-features", ""],
-    //["taxonomy", ""]
   ]);
   
   private SelectorsErrorMessage = new Map<string, MemoizedSelector<State, string>>([
     [Entities.GENOMES, fromGenomes.getSearchErrorMessage],
     [Entities.GENES, fromGenes.getSearchErrorMessage],
     //["protein-features", ""],
-    //["taxonomy", ""]
   ]);
 
   private entityToExamples = new Map<string, any[]>([
@@ -127,17 +115,22 @@ export class MainMenuComponent {
     this.router.events.subscribe(event => {
       let currentUrl = event["urlAfterRedirects"] ? `/${String(event["urlAfterRedirects"]).split("/")[1]}` : null;
       this.smallMenuDisplay['visibility'] = this.routeToSmallMenuDisplay.get(currentUrl);
-      if (Array.from(this.routeToSelectionOption.keys()).includes(currentUrl)) {
+      if (this.routeToSelectionOption.has(currentUrl)) {
         this.selectedComponent = this.routeToSelectionOption.get(currentUrl);
-        this.assignObservables();
+        console.log("this.selectedComponent " + this.selectedComponent)
+        this.assignObservables(currentUrl);
         this.examples = this.entityToExamples.has(this.selectedComponent) 
           ? this.entityToExamples.get(this.selectedComponent) 
           : null; 
+      } 
+      //TODO: will need remove this
+      else {
+        this.query$ = null;
       }
     });   
   }
 
-  putQuery(query: string) {   
+  putQuery(query: string) { 
     this.query = query;
     this.search();
     this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
@@ -145,16 +138,16 @@ export class MainMenuComponent {
 
   search() {
     if (this.query && this.query.length >= this.minQueryLenght) {
-      let Search = this.selectionOptionToAction.get(this.selectedComponent);
-      this.store.dispatch(new Search({
+      let SEARCH = this.selectionOptionToActionType.get(this.selectedComponent);
+      this.store.dispatch(new MistAction.Search(SEARCH, {
         search: this.query, 
         perPage: this.perPage, 
         pageIndex: this.defaultCurrentPage, 
         filter: {}
       }));
     } else {
-        let Clear = this.selectionOptionToClearAction.get(this.selectedComponent);
-        this.store.dispatch(new Clear());
+        let CLEAR = this.selectionOptionToClearActionType.get(this.selectedComponent);
+        this.store.dispatch(new MistAction.Clear(CLEAR,{}));
     }
   }
 
@@ -163,8 +156,11 @@ export class MainMenuComponent {
     this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
   }
 
-  assignObservables() {
-    this.query$ = this.store.select(this.SelectorsQuery.get(this.selectedComponent));
+  assignObservables(currentUrl: string) {
+    //TODO: will need to change this
+    this.routeToSelectionOption.has(currentUrl)
+      ? this.query$ = this.store.select(this.SelectorsQuery.get(this.selectedComponent))
+      : this.query$ = null;
     this.isFetching$ = this.store.select(this.SelectorsIsFetching.get(this.selectedComponent));
     this.errorMessage$ = this.store.select(this.SelectorsErrorMessage.get(this.selectedComponent));
   }

@@ -41,9 +41,7 @@ import { GeneViewComponent } from './gene/gene.view.component';
 import { AseqComponent } from  './gene/aseq/aseq.component';
 import { NeighborGenes } from './gene/neighbor-genes/neighbor-genes.component';
 import { NeighborGenesView } from  './gene/neighbor-genes/neighbor-genes.view.component';
-import { GenomesEffects } from './genomes/genomes.effects';
 import { GenomeEffects } from './genome/genome.effects';
-import { GenesEffects } from './genes/genes.effects';
 import { GeneEffects } from './gene/gene.effects';
 import { HomeComponent } from './home/home.component';
 import { HelpComponent } from './home/help.component';
@@ -56,6 +54,7 @@ import { ShopCartGenomesComponent } from './shop-cart/shop-cart.genomes.componen
 import { ShopCartGenesList } from './shop-cart/shop-cart.genes.list.component';
 import { ShopCartGenomesList } from './shop-cart/shop-cart.genomes.list.component';
 import { CookieService } from 'ngx-cookie-service';
+import { MistEffects } from './core/common/mist-effects'; 
 
 
 @NgModule({
@@ -89,7 +88,7 @@ import { CookieService } from 'ngx-cookie-service';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    EffectsModule.forRoot([GenomesEffects, GenomeEffects, GenesEffects, GeneEffects]),
+    EffectsModule.forRoot([MistEffects, GenomeEffects, GeneEffects]),
     FormsModule,
     HttpModule,
     MatButtonModule,

@@ -1,24 +1,13 @@
-import { OnInit, Type } from '@angular/core';
-import { Store, Action } from '@ngrx/store';
+import { OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { State } from '../../app.reducers';
 import { MemoizedSelector } from '@ngrx/store';
 
 import MistdDatasource from './mist.datasource';
 import { Filter, Navigation }  from './navigation';
-import { Entities } from './entities';
-import { 
-    FirstPage as GenesFirstPage, 
-    LastPage as GenesLastPage, 
-    PrevPage as GenesPrevPage, 
-    NextPage as GenesNextPage
-  } from '../../genes/genes.actions';
-  import { 
-    FirstPage as GenomesFirstPage, 
-    LastPage as GenomesLastPage, 
-    PrevPage as GenomesPrevPage, 
-    NextPage as GenomesNextPage
-   } from '../../genomes/genomes.actions';
+
+import * as MistAction from './mist-actions';
 
 export abstract class MistComponent implements OnInit {
     readonly defaultCount: number = 1;
@@ -40,20 +29,6 @@ export abstract class MistComponent implements OnInit {
     protected pageInfoSelector: MemoizedSelector<State, any>;
     protected pageLinksSelector: MemoizedSelector<State, any>;
     protected dataSource;
-    private entityToPageActionMap: Map<string, Map<string, Type<Action>>> = new Map([
-        [Entities.GENES, new Map<string, Type<Action>>([
-          ["nextPage", GenesNextPage],
-          ["prevPage", GenesPrevPage],
-          ["firstPage", GenesFirstPage],
-          ["lastPage", GenesLastPage]
-        ])],
-        [Entities.GENOMES, new Map<string, Type<Action>>([
-          ["nextPage", GenomesNextPage],
-          ["prevPage", GenomesPrevPage],
-          ["firstPage", GenomesFirstPage],
-          ["lastPage", GenomesLastPage]
-        ])]
-      ]); 
 
     constructor(private store: Store<any>, selectors: any, private columns: string[], private entity: string, private isGetById: boolean = false) {
         this.initalyzeSelectors(selectors);
@@ -77,23 +52,19 @@ export abstract class MistComponent implements OnInit {
 
     pageApply($event) {
         let eventPageIndex = ++$event.pageIndex;
-        let pageActionMap =  this.entityToPageActionMap.get(this.entity);
+        let pageActionMap = MistAction.entityToActionType.get(this.entity);
         let filter: Filter = this.initialyzeFilter();
         if ($event.pageSize !== this.perPage) {
           this.perPage = $event.pageSize;
           this.sendQuery();
         } else if (eventPageIndex > this.currentPage) {
-            let NextPage = pageActionMap.get("nextPage");
-            this.links$.subscribe(link => this.store.dispatch(new NextPage(new Navigation(link.next, filter, this.isGetById)))).unsubscribe();
+            this.links$.subscribe(link => this.store.dispatch(new MistAction.NextPage(pageActionMap.get(MistAction.NEXT_PAGE), new Navigation(link.next, filter, this.isGetById)))).unsubscribe();
         } else if (eventPageIndex < this.currentPage) {
-            let PrevPage = pageActionMap.get("prevPage");
-            this.links$.subscribe(link => this.store.dispatch(new PrevPage(new Navigation(link.prev, filter, this.isGetById)))).unsubscribe();
+            this.links$.subscribe(link => this.store.dispatch(new MistAction.PrevPage(pageActionMap.get(MistAction.PREV_PAGE), new Navigation(link.prev, filter, this.isGetById)))).unsubscribe();
         } else if (eventPageIndex === 1) {
-            let FirstPage = pageActionMap.get("firstPage");
-            this.links$.subscribe(link => this.store.dispatch(new FirstPage(new Navigation(link.first, filter, this.isGetById)))).unsubscribe();
+            this.links$.subscribe(link => this.store.dispatch(new MistAction.FirstPage(pageActionMap.get(MistAction.FIRST_PAGE), new Navigation(link.first, filter, this.isGetById)))).unsubscribe();
         } else if (eventPageIndex === this.totalPages) {
-            let LastPage = pageActionMap.get("lastPage");
-            this.links$.subscribe(link => this.store.dispatch(new LastPage(new Navigation(link.last, filter, this.isGetById)))).unsubscribe();
+            this.links$.subscribe(link => this.store.dispatch(new MistAction.LastPage(pageActionMap.get(MistAction.LAST_PAGE), new Navigation(link.last, filter, this.isGetById)))).unsubscribe();
         }
     }
     
