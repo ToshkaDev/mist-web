@@ -1,6 +1,12 @@
-div.pull-right
-  button(mat-raised-button color="primary" (click)="buttonClicked('genomes')") Genomes
-  button(mat-raised-button color="primary" (click)="buttonClicked('genes')") Genes
+div(*ngIf="genomesCookieIsSet || genesCookieIsSet; else cookieIsNotSetBlock")
+  div.pull-right
+    button(mat-raised-button color="primary" (click)="buttonClicked('genomes')" *ngIf="genomesCookieIsSet") Genomes
+    button(mat-raised-button color="primary" (click)="buttonClicked('genes')" *ngIf="genesCookieIsSet") Genes
 
-shop-cart-genomes([thisEntitySelected]="isGenomesActive")
-shop-cart-genes([thisEntitySelected]="isGenesActive")
+  shop-cart-genomes(*ngIf="isGenomesActive")
+  shop-cart-genes(*ngIf="isGenesActive")
+
+ng-template(#cookieIsNotSetBlock)
+  h3 Your cart is empty
+
+

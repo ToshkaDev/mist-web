@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -6,6 +6,7 @@ import { MistComponent } from '../core/common/mist-component';
 import * as fromGenomesShopCart from './shop-cart-genomes.selectors';
 import { Entities } from '../core/common/entities';
 import * as MistAction from '../core/common/mist-actions';
+import { CookieChangedService } from './cookie-changed.service';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,11 +15,14 @@ import * as MistAction from '../core/common/mist-actions';
   })
   export class ShopCartGenomesComponent extends MistComponent {
     static readonly genomesColumns = ['Select', 'Genome', 'Taxonomy', 'Genbank Version', 'Assembly level'];
+    readonly zeroResultCookieQuery = "-1";
     @Input()
-    thisEntitySelected = false;
+    thisEntitySelected;
+    
 
-    constructor(store: Store<any>, private cookieService: CookieService) {
+    constructor(store: Store<any>, private cookieService: CookieService, private cookieChangedService: CookieChangedService) {
         super(store, fromGenomesShopCart, ShopCartGenomesComponent.genomesColumns, Entities.GENOMES, true);
+        this.cookieChangedService.cookieChanged$.subscribe(message => this.sendQuery());
         this.sendQuery();
     }
 
@@ -27,9 +31,12 @@ import * as MistAction from '../core/common/mist-actions';
     }
         
     sendQuery() {
+        console.log("sending query ")
         let cookie = this.getCookie();
         if (cookie) {
             this.getByIdList(cookie);
+        } else {
+            this.getByIdList(this.zeroResultCookieQuery);
         }
     }
 
@@ -47,5 +54,10 @@ import * as MistAction from '../core/common/mist-actions';
             pageIndex: this.defaultCurrentPage
         }));
     }
+
+    onCookieChanged() {
+        this.sendQuery();
+    }
+    
 
   }

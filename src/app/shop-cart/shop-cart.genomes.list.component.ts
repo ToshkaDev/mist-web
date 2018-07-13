@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 import { GenomesListMain } from '../genomes/genomes-list.main';
+import { CookieChangedService } from './cookie-changed.service';
 
 @Component({
   selector: 'shop-cart-genomes-list',
@@ -11,8 +12,8 @@ import { GenomesListMain } from '../genomes/genomes-list.main';
 })
 export class ShopCartGenomesList extends GenomesListMain {
   cart = {"add": false, "remove": true};
-  constructor(cookieService: CookieService) {
-    super(cookieService);
+  constructor(cookieService: CookieService, cookieChangedService: CookieChangedService) {
+    super(cookieService, cookieChangedService);
   }
 
 }

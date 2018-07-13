@@ -2,6 +2,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { Input, Output, EventEmitter, ChangeDetectionStrategy, Component } from '@angular/core';
 import { GenomesListMain } from './genomes-list.main';
+import { CookieChangedService } from '../shop-cart/cookie-changed.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,8 +15,8 @@ export class GenomesListComponent extends GenomesListMain {
   @Output() taxonomyEvent = new EventEmitter<any>();
   cart = {"add": true, "remove": false};
 
-  constructor(cookieService: CookieService) {
-    super(cookieService);
+  constructor(cookieService: CookieService, cookieChangedService: CookieChangedService) {
+    super(cookieService, cookieChangedService);
   }
 
   taxonomyChanged(taxon: any) {

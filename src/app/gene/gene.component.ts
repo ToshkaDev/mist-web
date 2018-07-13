@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { FetchGene } from './gene.actions';
 import * as fromGenes from './gene.selectors';
@@ -17,7 +16,7 @@ export class GeneComponent implements OnInit {
     private gene$: Observable<any>;
     private geneViewModel: GeneView;
     
-    constructor(private store: Store<any>, private route: ActivatedRoute, private location: Location) {
+    constructor(private store: Store<any>, private route: ActivatedRoute) {
     }
 
     ngOnInit() {
