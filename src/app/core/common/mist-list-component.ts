@@ -1,16 +1,26 @@
-import { Input } from '@angular/core';
+import { Input, Output, EventEmitter } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { CookieService } from 'ngx-cookie-service';
+import { CookieChangedService } from '../../shop-cart/cookie-changed.service';
 
 export abstract class MistListComponent {
-    @Input() displayedColumns: String[];  
+    @Input() displayedColumns: string[];  
     @Input() result: DataSource<any>;
+    @Output() cookieEvent = new EventEmitter<any>();
     idsForShopCart: Set<string> = new Set();
     checked: string = null;
     
-    constructor(private cookieService: CookieService, private entity: string) {
+    constructor(private cookieService: CookieService, private cookieChangedService: CookieChangedService, private entity: string) {
     }
-  
+    
+    cookieChanged2() {
+        this.cookieChangedService.notify("cookie changed");
+    }
+
+    cookieChanged() {
+        this.cookieEvent.emit();
+    }
+
     onSelectClickEvent(event: any): void {
         switch(event) { 
             case 'selectAll': {
@@ -68,13 +78,23 @@ export abstract class MistListComponent {
     removeFromCart(): void {     
         if (this.cookieIsSet()) {
             let idsToDeletFrom = new Set(this.getCookie().split(','));
+            // Additional guard against unnecessary requests to server
+            let oldIdsToDeletFrom = new Set(this.getCookie().split(','));
             this.idsForShopCart.forEach(element => {
                 idsToDeletFrom.delete(element);
             });
-            idsToDeletFrom && idsToDeletFrom.size > 0 
-                ? this.cookieService.set(`mist_Database-${this.entity}`, Array.from(idsToDeletFrom).join())
-                : this.cookieService.delete(`mist_Database-${this.entity}`);        
-            }
+            if (idsToDeletFrom && idsToDeletFrom.size != 0 && idsToDeletFrom.size < oldIdsToDeletFrom.size) {
+                console.log("here 1 " + idsToDeletFrom)
+                this.cookieService.set(`mist_Database-${this.entity}`, Array.from(idsToDeletFrom).join());
+                this.cookieChanged();
+            } else if (idsToDeletFrom && idsToDeletFrom.size == 0) {
+                console.log("here 2 " + idsToDeletFrom)
+                this.cookieService.delete(`mist_Database-${this.entity}`);
+                this.cookieChanged();
+            } else {
+                console.log("Error in removeFromCart()")
+            }      
+        }
     }
 
     cookieIsSet(): boolean {

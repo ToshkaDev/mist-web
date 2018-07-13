@@ -61,7 +61,6 @@ export class MistEffects {
         .takeUntil(nextFetch$)
         .map((response) => {
           const matches = response.json();
-          console.log("matches " + JSON.stringify(matches))
           const count = parseInt(response.headers.get('x-total-count'), 10);
           const parsed = queryString.parse(queryString.extract(action.payload.url));
           const totalPages = Math.ceil(count / parsed.per_page);

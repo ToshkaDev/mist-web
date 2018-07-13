@@ -6,6 +6,7 @@ import { MistComponent } from '../core/common/mist-component';
 import * as fromGenesShopCart from './shop-cart-genes.selector';
 import { Entities } from '../core/common/entities';
 import * as MistAction from '../core/common/mist-actions';
+import { CookieChangedService } from './cookie-changed.service';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,12 +15,13 @@ import * as MistAction from '../core/common/mist-actions';
   })
 export class ShopCartGenesComponent extends MistComponent {
     static readonly genesColumns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
-    
+    readonly zeroResultCookieQuery = "-1";
     @Input()
-    thisEntitySelected = false;
+    thisEntitySelected;
 
-    constructor(store: Store<any>, private cookieService: CookieService) {
+    constructor(store: Store<any>, private cookieService: CookieService, private cookieChangedService: CookieChangedService) {
         super(store, fromGenesShopCart, ShopCartGenesComponent.genesColumns, Entities.GENES, true);
+        this.cookieChangedService.cookieChanged$.subscribe(message => this.sendQuery());
         this.sendQuery();
     }
 
@@ -31,6 +33,8 @@ export class ShopCartGenesComponent extends MistComponent {
         let cookie = this.getCookie();
         if (cookie) {
             this.getByIdList(cookie);
+        } else {
+            this.getByIdList(this.zeroResultCookieQuery);
         }
     }
 
@@ -47,6 +51,10 @@ export class ShopCartGenesComponent extends MistComponent {
             perPage: this.perPage, 
             pageIndex: this.defaultCurrentPage
         }));
+    }
+
+    onCookieChanged() {
+        this.sendQuery();
     }
 
 }
