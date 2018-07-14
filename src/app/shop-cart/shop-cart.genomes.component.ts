@@ -31,7 +31,6 @@ import { CookieChangedService } from './cookie-changed.service';
     }
         
     sendQuery() {
-        console.log("sending query ")
         let cookie = this.getCookie();
         if (cookie) {
             this.getByIdList(cookie);
@@ -53,10 +52,6 @@ import { CookieChangedService } from './cookie-changed.service';
             perPage: this.perPage, 
             pageIndex: this.defaultCurrentPage
         }));
-    }
-
-    onCookieChanged() {
-        this.sendQuery();
     }
     
 

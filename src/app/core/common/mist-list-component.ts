@@ -13,12 +13,8 @@ export abstract class MistListComponent {
     constructor(private cookieService: CookieService, private cookieChangedService: CookieChangedService, private entity: string) {
     }
     
-    cookieChanged2() {
-        this.cookieChangedService.notify("cookie changed");
-    }
-
     cookieChanged() {
-        this.cookieEvent.emit();
+        this.cookieChangedService.notify("cookie changed");
     }
 
     onSelectClickEvent(event: any): void {
