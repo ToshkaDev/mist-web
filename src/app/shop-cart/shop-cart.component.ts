@@ -10,29 +10,31 @@ import { CookieChangedService } from './cookie-changed.service';
   styleUrls: ['./shop-cart.scss'],
   templateUrl: './shop-cart.pug',
 })
-export class ShopCartComponent  {
+export class ShopCartComponent implements OnInit {
   isGenomesActive = true;
   isGenesActive = false;
   genomesCookieIsSet = false;
   genesCookieIsSet = false;
   
   constructor(private cookieService: CookieService, private cookieChangedService: CookieChangedService) {
-    //this.cookieChangedService.cookieChanged$.subscribe(message => this.setCookieBooleans());
-    this.setCookieBooleans()
-    this.cookieChangedService.cookieChanged$.subscribe(message => this.setCookieBooleans());
   }
 
-  // ngOnInit() {
-  //   console.log("GENOMES cookie  " + this.cookieService.get(`mist_Database-${Entities.GENOMES}`))
-  //   console.log("GENES cookie  " + this.cookieService.get(`mist_Database-${Entities.GENES}`))
-    
-  //   this.setCookieBooleans();
-  // }
+  ngOnInit() {
+    this.setCookieBooleans();
+    this.cookieChangedService.cookieChanged$.subscribe(message => {
+      let genomesCookieIsSetOld = this.genomesCookieIsSet;
+      let genesCookieIsSetOld = this.genesCookieIsSet;
+      this.setCookieBooleans();
+      if (genomesCookieIsSetOld && !this.genomesCookieIsSet && this.genesCookieIsSet) {
+        this.buttonClicked(Entities.GENES);
+      } else if (genesCookieIsSetOld && !this.genesCookieIsSet && this.genomesCookieIsSet) {
+        this.buttonClicked(Entities.GENOMES);
+      }
+
+    });
+  }
 
   setCookieBooleans() {
-    console.log("GENOMES cookie  " + this.cookieService.get(`mist_Database-${Entities.GENOMES}`))
-    console.log("GENES cookie  " + this.cookieService.get(`mist_Database-${Entities.GENES}`))
-
     this.cookieService.check(`mist_Database-${Entities.GENOMES}`)
       ? this.genomesCookieIsSet = true
       : this.genomesCookieIsSet = false;
