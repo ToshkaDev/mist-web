@@ -1,32 +1,45 @@
-import { Input, Output, EventEmitter } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
+import { Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { CookieChangedService } from '../../shop-cart/cookie-changed.service';
+import MistDataSource from './mist.datasource';
 
-export abstract class MistListComponent {
+export abstract class MistListComponent implements OnChanges {
     @Input() displayedColumns: string[];  
-    @Input() result: DataSource<any>;
+    @Input() result: MistDataSource;
     @Output() cookieEvent = new EventEmitter<any>();
     idsForShopCart: Set<string> = new Set();
+    idToIsDisabled: any = {};
+    idToIsChecked: any = {};
     checked: string = null;
     
     constructor(private cookieService: CookieService, private cookieChangedService: CookieChangedService, private entity: string) {
     }
+
+    ngOnChanges() {
+        this.result.connect().subscribe(entitiesList => { 
+            if (entitiesList && entitiesList.length > 0) {
+                entitiesList.forEach(entity => {
+                    this.idToIsDisabled[entity.id+""] = false;
+                    this.idToIsChecked[entity.id+""] = null;
+                }); 
+            }
+            if (this.cookieIsSet()) {
+                this.updateDisabledCheckboxes(new Set(this.getCookie().split(',')));
+            }
+        });
+    }
     
-    cookieChanged() {
-        this.cookieChangedService.notify("cookie changed");
+    cookieChanged(message) {
+        this.cookieChangedService.notify(message);
     }
 
-    onSelectClickEvent(event: any): void {
-        switch(event) { 
-            case 'selectAll': {
-                this.selectAll(); 
-                break; 
-            } 
-            case 'unselectAll': { 
-                this.unselectAll(); 
-                break; 
-            } 
+    onAllCheckBoxChanged(event: any) {
+        event.checked ? this.selectAll() : this.unselectAll();
+        this.result.connect().subscribe(entitiesList => this.checkBoxesChanged(event, entitiesList));
+    }
+
+    onAddRemoveClickEvent(event: any): void {
+        switch(event) {
             case 'addToCart': {
                 this.addToCart();
                 break; 
@@ -43,15 +56,27 @@ export abstract class MistListComponent {
     }
 
     selectAll(): void {
+        for (let id in this.idToIsChecked) {
+            this.idToIsChecked[id] = 'checked';
+        }
         this.checked = 'checked';
     }
 
     unselectAll(): void {
+        for (let id in this.idToIsChecked) {
+            !this.idToIsDisabled[id] ? this.idToIsChecked[id] = null : null;
+        }
         this.checked = null;
     }
 
     checkBoxChanged(event: any, entityId: number): void {
         event.checked ? this.idsForShopCart.add(entityId+"") : this.idsForShopCart.delete(entityId+"");
+    }
+
+    checkBoxesChanged(event: any, entitiesList: any[]): void {
+        event.checked 
+            ? entitiesList.forEach(entity => this.idsForShopCart.add(entity.id+"")) 
+            : entitiesList.forEach(entity => this.idsForShopCart.delete(entity.id+""));
     }
 
     union(set1, set2) { 
@@ -69,6 +94,14 @@ export abstract class MistListComponent {
         } else {
             this.cookieService.set(`mist_Database-${this.entity}`, Array.from(this.idsForShopCart).join());
         }
+        this.updateDisabledCheckboxes(this.idsForShopCart);
+    }
+
+    updateDisabledCheckboxes(cookieSet: Set<string>) {
+        cookieSet.forEach(cookieId => {
+            this.idToIsDisabled[cookieId] = true;
+            this.idToIsChecked[cookieId] = 'checked'; 
+    });
     }
 
     removeFromCart(): void {     
@@ -80,13 +113,11 @@ export abstract class MistListComponent {
                 idsToDeletFrom.delete(element);
             });
             if (idsToDeletFrom && idsToDeletFrom.size != 0 && idsToDeletFrom.size < oldIdsToDeletFrom.size) {
-                console.log("here 1 " + idsToDeletFrom)
                 this.cookieService.set(`mist_Database-${this.entity}`, Array.from(idsToDeletFrom).join());
-                this.cookieChanged();
+                this.cookieChanged(`${this.entity}|cookie is changed`);
             } else if (idsToDeletFrom && idsToDeletFrom.size == 0) {
-                console.log("here 2 " + idsToDeletFrom)
                 this.cookieService.delete(`mist_Database-${this.entity}`);
-                this.cookieChanged();
+                this.cookieChanged(`${this.entity}|cookie is deleted`);
             } else {
                 console.log("Error in removeFromCart()")
             }      

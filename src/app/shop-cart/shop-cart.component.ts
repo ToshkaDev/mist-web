@@ -30,17 +30,16 @@ export class ShopCartComponent implements OnInit {
       } else if (genesCookieIsSetOld && !this.genesCookieIsSet && this.genomesCookieIsSet) {
         this.buttonClicked(Entities.GENOMES);
       }
-
     });
   }
 
   setCookieBooleans() {
-    this.cookieService.check(`mist_Database-${Entities.GENOMES}`)
-      ? this.genomesCookieIsSet = true
-      : this.genomesCookieIsSet = false;
-    this.cookieService.check(`mist_Database-${Entities.GENES}`)
-      ? this.genesCookieIsSet = true
-      : this.genesCookieIsSet = false;
+    this.genomesCookieIsSet = this.cookieService.check(`mist_Database-${Entities.GENOMES}`);
+    if (!this.genomesCookieIsSet) {
+      this.isGenomesActive = false;
+      this.isGenesActive = true;
+    }
+    this.genesCookieIsSet = this.cookieService.check(`mist_Database-${Entities.GENES}`);
   }
 
   buttonClicked(entity: string) {

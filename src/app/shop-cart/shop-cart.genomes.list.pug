@@ -1,7 +1,8 @@
-cart-select-buttons((selectClickEvent)='onSelectClickEvent($event)' [cart]="cart")
+cart-select-buttons((selectClickEvent)='onAddRemoveClickEvent($event)' [cart]="cart")
 mat-table([dataSource]="result" class="genome-table")
   ng-container(matColumnDef="Select")
-    mat-header-cell(*matHeaderCellDef class="select-header") Select
+    mat-header-cell(*matHeaderCellDef class="select-header")
+      mat-checkbox((change)="onAllCheckBoxChanged($event)")
     mat-cell(*matCellDef="let genome" class="select-cell")
       mat-checkbox(checked='{{checked}}' (change)="checkBoxChanged($event, genome.id)")  
   ng-container(matColumnDef="Genome")
