@@ -93,7 +93,7 @@ export class MainMenuComponent {
       ]
     ],
     [Entities.GENES, [
-        {"queryString": "two-component sensor histidine kinase", "link": `/${Entities.GENES}`},
+        {"queryString": "kinase", "link": `/${Entities.GENES}`},
         {"queryString": "GCF_000302455.1-A994_RS01845", "link": `/${Entities.GENES}`},
         {"queryString": "WP_004029250.1", "link": `/${Entities.GENES}`},
         {"queryString": "A994_RS13120", "link": `/${Entities.GENES}`}
