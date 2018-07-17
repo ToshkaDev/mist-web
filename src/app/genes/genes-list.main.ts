@@ -18,8 +18,8 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
 
   private htmlElement: string = "div";
     
-  constructor(private elementRef: ElementRef, private d3Service: D3Service, cookieService: CookieService, cookieChangedService: CookieChangedService) {
-    super(cookieService, cookieChangedService, Entities.GENES);
+  constructor(private elementRef: ElementRef, private d3Service: D3Service, cookieService: CookieService, cookieChangedService: CookieChangedService, isShopCart: boolean = false) {
+    super(cookieService, cookieChangedService, Entities.GENES, isShopCart);
   }
  
   ngOnInit() {

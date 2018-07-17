@@ -15,7 +15,7 @@ import { CookieChangedService } from './cookie-changed.service';
 export class ShopCartGenesList extends GenesListMain {
   cart = {"add": false, "remove": true};
   constructor(elementRef: ElementRef, d3Service: D3Service, cookieService: CookieService, cookieChangedService: CookieChangedService) {
-    super(elementRef, d3Service, cookieService, cookieChangedService)
+    super(elementRef, d3Service, cookieService, cookieChangedService, true)
   }
  
 }
