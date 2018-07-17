@@ -2,6 +2,8 @@ import { Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { CookieChangedService } from '../../shop-cart/cookie-changed.service';
 import MistDataSource from './mist.datasource';
+import { saveAs } from 'file-saver';
+import { Entities } from './entities';
 
 export abstract class MistListComponent implements OnChanges {
     @Input() displayedColumns: string[];  
@@ -46,6 +48,10 @@ export abstract class MistListComponent implements OnChanges {
             }
             case 'removeFromCart': {
                 this.removeFromCart();
+                break; 
+            }
+            case 'downloadFromCart': {
+                this.downloadFromCart();
                 break; 
             } 
             default: { 
@@ -101,7 +107,7 @@ export abstract class MistListComponent implements OnChanges {
         cookieSet.forEach(cookieId => {
             this.idToIsDisabled[cookieId] = true;
             this.idToIsChecked[cookieId] = 'checked'; 
-    });
+        });
     }
 
     removeFromCart(): void {     
@@ -122,6 +128,35 @@ export abstract class MistListComponent implements OnChanges {
                 console.log("Error in removeFromCart()")
             }      
         }
+    }
+
+    downloadFromCart() {
+        let mistFile = "";
+        let geneId;
+        let geneLocus;
+        let geneVersion;
+        let geneProduct;
+        let geneOrganism;
+        let proteinSequence;
+        this.result.connect().subscribe(itemsList => {
+            if (this.entity == Entities.GENES) {
+                itemsList.forEach(item => {
+                    geneId = item.stable_id ? `${item.stable_id}|` : '';
+                    geneLocus = item.locus ? `${item.locus}|` : '';
+                    geneVersion = item.version ? `${item.version}|` : '';
+                    geneProduct = item.product ? item.product : '';
+                    geneOrganism = item.Component && item.Component.definition 
+                        ? item.Component.definition.split(',')[0].split('Contig')[0].split('chromosome')[0].trim()
+                        : '';
+                    proteinSequence = item.Aseq && item.Aseq.sequence ? item.Aseq.sequence : '';
+                    mistFile = `${mistFile}>${geneId}${geneLocus}${geneVersion} ${geneProduct} [${geneOrganism}]\n`;
+                    mistFile = mistFile + `${proteinSequence}\n`;
+                });
+            }
+        }).unsubscribe();
+
+        let file = new File([mistFile], `MIST3_${this.entity}`, {type: "text/plain;charset=utf-8"});
+        saveAs(file);
     }
 
     cookieIsSet(): boolean {
