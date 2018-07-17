@@ -12,17 +12,27 @@ export abstract class MistListComponent implements OnChanges {
     idsForShopCart: Set<string> = new Set();
     idToIsDisabled: any = {};
     idToIsChecked: any = {};
+    shopCartIdToIsChecked: any = {};
     checked: string = null;
+    readonly fileNamePrefix= "MIST3_";
+    readonly cookiePrefix = "mist_Database-";
     
-    constructor(private cookieService: CookieService, private cookieChangedService: CookieChangedService, private entity: string) {
+    constructor(private cookieService: CookieService, private cookieChangedService: CookieChangedService, private entity: string, private isShopCart: boolean = false)  {
     }
 
     ngOnChanges() {
         this.result.connect().subscribe(entitiesList => { 
             if (entitiesList && entitiesList.length > 0) {
                 entitiesList.forEach(entity => {
-                    this.idToIsDisabled[entity.id+""] = false;
-                    this.idToIsChecked[entity.id+""] = null;
+                    // We need to control differently checkboxes in the shopping cart and when we're displaying the data.
+                    // Id-wise checkbox control in shooping cart needed to avoid selection of thouse items which were not displayed 
+                    // after deleting all the currently displaed items 
+                    if (!this.isShopCart) {
+                        this.idToIsDisabled[entity.id+""] = false;
+                        this.idToIsChecked[entity.id+""] = null;
+                    } else {
+                        this.shopCartIdToIsChecked[entity.id+""] = null;
+                    }
                 }); 
             }
             if (this.cookieIsSet()) {
@@ -62,17 +72,27 @@ export abstract class MistListComponent implements OnChanges {
     }
 
     selectAll(): void {
-        for (let id in this.idToIsChecked) {
-            this.idToIsChecked[id] = 'checked';
+        if (!this.isShopCart) {
+            for (let id in this.idToIsChecked) {
+                this.idToIsChecked[id] = 'checked';
+            }
+        } else {
+            for (let id in this.shopCartIdToIsChecked) {
+                this.shopCartIdToIsChecked[id] = 'checked';
+            }
         }
-        this.checked = 'checked';
     }
 
     unselectAll(): void {
-        for (let id in this.idToIsChecked) {
-            !this.idToIsDisabled[id] ? this.idToIsChecked[id] = null : null;
+        if (!this.isShopCart) {
+            for (let id in this.idToIsChecked) {
+                !this.idToIsDisabled[id] ? this.idToIsChecked[id] = null : null;
+            }
+        } else {
+            for (let id in this.shopCartIdToIsChecked) {
+                this.shopCartIdToIsChecked[id] = null;
+            }
         }
-        this.checked = null;
     }
 
     checkBoxChanged(event: any, entityId: number): void {
@@ -96,9 +116,9 @@ export abstract class MistListComponent implements OnChanges {
         if (this.cookieIsSet()) {
             let currentCookie: Set<string> = new Set(this.getCookie().split(","));
             let unionCookie = this.union(currentCookie, this.idsForShopCart);
-            this.cookieService.set(`mist_Database-${this.entity}`, Array.from(unionCookie).join());
+            this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(unionCookie).join());
         } else {
-            this.cookieService.set(`mist_Database-${this.entity}`, Array.from(this.idsForShopCart).join());
+            this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(this.idsForShopCart).join());
         }
         this.updateDisabledCheckboxes(this.idsForShopCart);
     }
@@ -119,10 +139,10 @@ export abstract class MistListComponent implements OnChanges {
                 idsToDeletFrom.delete(element);
             });
             if (idsToDeletFrom && idsToDeletFrom.size != 0 && idsToDeletFrom.size < oldIdsToDeletFrom.size) {
-                this.cookieService.set(`mist_Database-${this.entity}`, Array.from(idsToDeletFrom).join());
+                this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(idsToDeletFrom).join());
                 this.cookieChanged(`${this.entity}|cookie is changed`);
             } else if (idsToDeletFrom && idsToDeletFrom.size == 0) {
-                this.cookieService.delete(`mist_Database-${this.entity}`);
+                this.cookieService.delete(`${this.cookiePrefix}${this.entity}`);
                 this.cookieChanged(`${this.entity}|cookie is deleted`);
             } else {
                 console.log("Error in removeFromCart()")
@@ -131,13 +151,7 @@ export abstract class MistListComponent implements OnChanges {
     }
 
     downloadFromCart() {
-        let mistFile = "";
-        let geneId;
-        let geneLocus;
-        let geneVersion;
-        let geneProduct;
-        let geneOrganism;
-        let proteinSequence;
+        let mistFile = "", geneId, geneLocus, geneVersion, geneProduct, geneOrganism, proteinSequence;
         this.result.connect().subscribe(itemsList => {
             if (this.entity == Entities.GENES) {
                 itemsList.forEach(item => {
@@ -155,16 +169,16 @@ export abstract class MistListComponent implements OnChanges {
             }
         }).unsubscribe();
 
-        let file = new File([mistFile], `MIST3_${this.entity}`, {type: "text/plain;charset=utf-8"});
+        let file = new File([mistFile], `${this.fileNamePrefix}${this.entity}`, {type: "text/plain;charset=utf-8"});
         saveAs(file);
     }
 
     cookieIsSet(): boolean {
-        return this.cookieService.check(`mist_Database-${this.entity}`);
+        return this.cookieService.check(`${this.cookiePrefix}${this.entity}`);
     }
 
     getCookie(): string {
-        return this.cookieService.get(`mist_Database-${this.entity}`);
+        return this.cookieService.get(`${this.cookiePrefix}${this.entity}`);
     }
 
 }

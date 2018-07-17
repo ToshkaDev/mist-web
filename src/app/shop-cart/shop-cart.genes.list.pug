@@ -4,7 +4,7 @@ mat-table([dataSource]="result" class="gene-table")
     mat-header-cell(*matHeaderCellDef class="select-header")
       mat-checkbox((change)="onAllCheckBoxChanged($event)")  
     mat-cell(*matCellDef="let gene" class="select-cell")
-      mat-checkbox(checked='{{checked}}' (change)="checkBoxChanged($event, gene.id)") 
+      mat-checkbox(checked='{{shopCartIdToIsChecked[gene.id]}}' (change)="checkBoxChanged($event, gene.id)") 
   ng-container(matColumnDef="Mist Id")
     mat-header-cell(*matHeaderCellDef class="gene-header") Mist Id
     mat-cell(*matCellDef="let gene" class="gene-cell")

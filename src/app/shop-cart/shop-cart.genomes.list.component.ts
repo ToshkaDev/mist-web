@@ -13,7 +13,7 @@ import { CookieChangedService } from './cookie-changed.service';
 export class ShopCartGenomesList extends GenomesListMain {
   cart = {"add": false, "remove": true};
   constructor(cookieService: CookieService, cookieChangedService: CookieChangedService) {
-    super(cookieService, cookieChangedService);
+    super(cookieService, cookieChangedService, true);
   }
 
 }
