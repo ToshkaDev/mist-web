@@ -1,15 +1,15 @@
 div
     div.domains
-    button(class="aseq-details" mat-button color="primary" (click)="showDetails()") Details
+    button(class="aseq-details mist-button-standard" mat-button (click)="showDetails()") Details
         mat-icon(aria-hidden="true") {{ arrow }}
 
     div.details(*ngIf="details")
         div.button-row
-            button(mat-button [ngStyle]="styles.pfam" color="primary" class="details-button" (click)="getInfo('pfam')") Pfam
-            button(mat-button [ngStyle]="styles.lowComplSegs" color="primary" class="details-button" (click)="getInfo('lowComplSegs')") Low Complexity Segments
-            button(mat-button [ngStyle]="styles.coiledCoils" color="primary" class="details-button" (click)="getInfo('coiledCoils')") Coiled Coils
-            button(mat-button [ngStyle]="styles.tmHmm" color="primary" class=" details-button" (click)="getInfo('tmHmm')") TM-HMM
-            button(mat-button [ngStyle]="styles.sequence" color="primary" class=" details-button" (click)="getInfo('sequence')") Sequence
+            button(mat-button [ngStyle]="styles.pfam" (click)="getInfo('pfam')") Pfam
+            button(mat-button [ngStyle]="styles.lowComplSegs" (click)="getInfo('lowComplSegs')") Low Complexity Segments
+            button(mat-button [ngStyle]="styles.coiledCoils" (click)="getInfo('coiledCoils')") Coiled Coils
+            button(mat-button [ngStyle]="styles.tmHmm" (click)="getInfo('tmHmm')") TM-HMM
+            button(mat-button [ngStyle]="styles.sequence" (click)="getInfo('sequence')") Sequence
 
         div(*ngIf="aseqViewModel && aseqViewModel.activeProperties")
             table(class="u-full-width")

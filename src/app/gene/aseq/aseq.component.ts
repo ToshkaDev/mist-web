@@ -17,8 +17,9 @@ export class AseqComponent implements OnInit {
     readonly arrowObject = {0: "keyboard_arrow_downc", 1:  "keyboard_arrow_upc"};
     private arrow = "keyboard_arrow_downc";
     readonly buttonColor = 'white';
-    readonly selectedButtonColor = '#b3b3ff';
-    readonly buttonTextColor = '#4d4dff';
+    readonly selectedButtonColor = '#28b8bd';
+    readonly buttonTextColor = '#197477';
+    readonly selectedButtonTextColor = 'white';
     private buttonStyle = {'background-color': this.buttonColor, 'color': this.buttonTextColor};
     private styles = {
         'pfam': {...this.buttonStyle}, 
@@ -52,8 +53,10 @@ export class AseqComponent implements OnInit {
         if (dataType && this.aseqViewModel) {
             for (let element in this.styles) {
                 this.styles[element]['background-color'] = this.buttonColor;
+                this.styles[element]['color'] = this.buttonTextColor;
             }
             this.styles[dataType]['background-color'] = this.selectedButtonColor;
+            this.styles[dataType]['color'] = this.selectedButtonTextColor;
             this.aseqViewModel.changeActiveHeaders(dataType);
             this.aseqViewModel.changeActiveProperties(dataType);
         }

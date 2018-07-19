@@ -26,8 +26,8 @@ export default class DrawNeighborGenes {
     static readonly yTranslationOfGenes = 35;
     static readonly geneFigureArrowLen = 10;
     static readonly fillColour = 'white';
-    static readonly borderColour = 'green';
-    static readonly currentGeneColour = "#00cc66";
+    static readonly borderColour = '#96c75c';
+    static readonly currentGeneColour = "#96c75c";
 
     //Gene info box
     //Need to make textPositionFactorDirect, textPositionFactorReverse, 
