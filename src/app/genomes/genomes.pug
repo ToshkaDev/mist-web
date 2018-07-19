@@ -1,5 +1,5 @@
 div(*ngIf="query$ | async" class="flex-container")
-    mat-paginator([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
+    mat-paginator.paginator-txt-size([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
     div(class="row")
       div(*ngIf="displayedColumns" class="two columns")
         form( (ngSubmit)="filter()" #filterForm="ngForm")
@@ -20,8 +20,8 @@ div(*ngIf="query$ | async" class="flex-container")
               mat-select( placeholder="Assembly Level" name="assembly_level" [(ngModel)]="genomesFilter.assembly_level")
                 mat-option(*ngFor="let option of asemblyFilterOptions" [value]="option.value") {{option.viewValue}}
             div.pull-right
-              button(mat-button type="submit" color="primary" class="filter-button" [disabled]="!filterForm.form.valid") Filter
-              button(mat-button type="submit" color="primary" class="filter-button" [disabled]="!filterForm.form.valid" (click)="reset()") Reset
+              button(mat-button type="submit" class="mist-button-standard" [disabled]="!filterForm.form.valid") Filter
+              button(mat-button type="submit" class="mist-button-standard" [disabled]="!filterForm.form.valid" (click)="reset()") Reset
       div(class="ten columns")
         mist-genomes-list(
           [selected]="selected"
