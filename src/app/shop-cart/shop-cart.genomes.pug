@@ -1,5 +1,6 @@
-mat-paginator([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
-shop-cart-genomes-list(
-    [result]="dataSource"
-    [displayedColumns]="displayedColumns"
-)
+.flex-container
+    mat-paginator.paginator-txt-size([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
+    shop-cart-genomes-list(
+        [result]="dataSource"
+        [displayedColumns]="displayedColumns"
+    )

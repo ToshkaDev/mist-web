@@ -6,27 +6,27 @@ mat-table([dataSource]="result" class="gene-table")
     mat-cell(*matCellDef="let gene" class="select-cell")
       mat-checkbox(checked='{{shopCartIdToIsChecked[gene.id]}}' (change)="checkBoxChanged($event, gene.id)") 
   ng-container(matColumnDef="Mist Id")
-    mat-header-cell(*matHeaderCellDef class="gene-header") Mist Id
+    mat-header-cell(*matHeaderCellDef class="gene-header table-txt-size") Mist Id
     mat-cell(*matCellDef="let gene" class="gene-cell")
       a(routerLink="/genes/{{gene.stable_id}}") {{ gene.stable_id }}
   ng-container(matColumnDef="Protein Id")
-    mat-header-cell(*matHeaderCellDef class="proteinId-header") Protein Id
+    mat-header-cell(*matHeaderCellDef class="proteinId-header table-txt-size") Protein Id
     mat-cell(*matCellDef="let gene" class="proteinId-cell") {{ gene.version }}
   ng-container(matColumnDef="Domain Structure")
-    mat-header-cell(*matHeaderCellDef class="domain-structure-header") Domain Structure
+    mat-header-cell(*matHeaderCellDef class="domain-structure-header table-txt-size") Domain Structure
     mat-cell(*matCellDef="let gene" class="domain-structure-cell")
       div(class="gene{{gene.id}}") {{ !geneIsDrawn.get(gene.id) ? drawProteinFeature(gene.id) : null }}
   ng-container(matColumnDef="Locus")
-    mat-header-cell(*matHeaderCellDef class="locus-header") Locus
+    mat-header-cell(*matHeaderCellDef class="locus-header table-txt-size") Locus
     mat-cell(*matCellDef="let gene" class="locus-cell") {{ gene.locus }}
   ng-container(matColumnDef="Description")
-    mat-header-cell(*matHeaderCellDef class="description-header") Description
+    mat-header-cell(*matHeaderCellDef class="description-header table-txt-size") Description
     mat-cell(*matCellDef="let gene" class="description-cell" ) 
         div {{ gene.product }} 
           span(*ngFor="let name of gene.names") {{ name }}
           div ({{ gene.Component.definition }})
   ng-container(matColumnDef="Location")
-    mat-header-cell(*matHeaderCellDef class="location-header") Location
+    mat-header-cell(*matHeaderCellDef class="location-header table-txt-size") Location
     mat-cell(*matCellDef="let gene" class="location-cell") {{ gene.Component.version}} [{{gene.location}}]
   mat-header-row(*matHeaderRowDef="displayedColumns")
   mat-row(*matRowDef="let row; columns: displayedColumns;")
