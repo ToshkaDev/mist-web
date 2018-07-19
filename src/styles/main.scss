@@ -14,6 +14,7 @@
  .breadcrumb {
     list-style: none;
     margin-bottom: 20px;
+    margin-left: 4px;
     line-height: 30px;
     color: $text-color;
     padding: 2px;
@@ -90,9 +91,41 @@
     }
  }
 
- .pull-right {
+.pull-right {
     display: flex;
     justify-content: flex-end;
-  
-  }
+}
+
+.mist-button, .mist-button:hover, .mist-button:active, .mist-button:focus  {
+    color: white !important;
+    background-color: #28b8bd;
+}
+
+.mist-button-standard {
+    color: #197477 !important;
+    background-color: white;
+}
+
+.mist-button-standard:hover, .mist-button-standard:active {
+    color: white !important;
+    background-color: #28b8bd;
+}
+
+mat-checkbox.mat-checked ._mat-icon {
+    background-color: white;
+}
+
+.table-txt-size {
+    font-size: 16px;
+}
+
+.paginator-txt-size {
+    font-size: 14px;
+}
+
+.flex-container {
+    padding-left: 3%;
+    padding-right: 3%;
+    width:90%;
+}
 
