@@ -1,0 +1,17 @@
+%center {
+    display: flex;
+    justify-content: center;
+}
+
+.center {
+    @extend %center;
+  }
+
+.chip {
+    background-color: #96c75c;
+    color: white;
+    @extend %center;
+    width: 100px;
+    height: 30px;
+    font-size: 110%;
+}

@@ -12,7 +12,8 @@ import {
   MatExpansionModule,
   MatToolbarModule,
   MatGridListModule,
-  MatListModule
+  MatListModule,
+  MatChipsModule
 } from '@angular/material';
 
 import {MatSelectModule} from '@angular/material/select';
@@ -105,6 +106,7 @@ import { CookieChangedService } from './shop-cart/cookie-changed.service';
     MatProgressSpinnerModule,
     MatGridListModule,
     MatListModule,
+    MatChipsModule,
     StoreModule.forRoot(reducers, { metaReducers}),
     McBreadcrumbsModule.forRoot()
   ],

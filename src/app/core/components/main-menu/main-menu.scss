@@ -50,6 +50,16 @@ $example-font-size: 14px;
     width: $size;
     line-height: $size;
   }
-  .material-icons.mat-icon {
-    @include md-icon-size(48px);
-  }
+
+.material-icons.mat-icon {
+    @include md-icon-size(58px);
+}
+
+.shop-cart {
+    margin-left: 14px;
+}
+
+.non-decor {
+    color: #96c75c;
+    text-decoration: none;
+}
