@@ -186,7 +186,7 @@ export default class DrawProteinFeature {
     private drawDomainBorders(domain: any, domainBorder, kDomainYstart, kDomainYend, featureScale) {
         domain.append('path')
             .filter(function(d){ return d.ali_to - d.ali_from > 0 })
-            .attr("d", function(d) { return domainBorder(d, d.ali_cov ? d.ali_cov : '[]', kDomainYstart, kDomainYend, featureScale) })
+            .attr("d", function(d) { return domainBorder(d, d.hmm_cov ? d.hmm_cov : '[]', kDomainYstart, kDomainYend, featureScale) })
             .attr("stroke", DrawProteinFeature.domainColors.domainStroke)
             .attr("stroke-width", DrawProteinFeature.kDomainStrokeWidth)
             .attr("fill", "none")
