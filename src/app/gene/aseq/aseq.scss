@@ -11,8 +11,6 @@ $padd-left: 1em;
     padding-left: $padd-left;
 }
 
-
-
 div.details {
     padding-top: 1.2em;
     padding-left: $padd-left;
@@ -20,5 +18,9 @@ div.details {
 }
 
 div.protSeq {
-    width: 2em;
+    font-family: monospace, serif;
+}
+
+.highlight {
+    background-color: yellow;
 }

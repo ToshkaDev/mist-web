@@ -3,11 +3,17 @@ import { D3Service, D3, Selection } from 'd3-ng2-service';
 import { Aseq } from './aseq';
 import { pfamInterface } from './aseq';
 
+enum DataType {
+    DOMAIN = 'domain',
+    TM = 'tm',
+    COILED_COILS = 'coiled_coils',
+    LOW_COMPLEXITY = 'low_complexity'
+}
+
 export default class DrawProteinFeature {
     private d3: D3;
     private parentNativeElement: any;
     private d3Element: Selection<HTMLBaseElement, any, null, undefined>;
-
     // Constants
     private kSvgWidth = 500;
     private kSvgHeight = 100;
@@ -101,18 +107,19 @@ export default class DrawProteinFeature {
         let drawDomainBorders = this.drawDomainBorders;
         let nameDomain = this.nameDomain;
         let domainBorder = this.domainBorder;
+        let getUniqueFeatureName = this.getUniqueFeatureName;
         
         container.each(function(d, i) {
             let selectedElement = d3.select(this);
-            d.coils ? drawCoiledCoils(selectedElement, d, kCoilsYstart, featureScale) : null;                
-            d.segs ? drawLowComplexityRegion(selectedElement, d, kLcrYstart, featureScale) : null;
-            d.tmhmm ? drawTransmembraneRegin(selectedElement, d, kTransmembraneYstart, featureScale) : null;
+            d.coils ? drawCoiledCoils(selectedElement, d, kCoilsYstart, featureScale, getUniqueFeatureName) : null;                
+            d.segs ? drawLowComplexityRegion(selectedElement, d, kLcrYstart, featureScale, getUniqueFeatureName) : null;
+            d.tmhmm ? drawTransmembraneRegin(selectedElement, d, kTransmembraneYstart, featureScale, getUniqueFeatureName) : null;
             d.pfam30 ? drawDomain(selectedElement, d, drawDomainBorders, nameDomain, 
-                domainBorder, kDomainYstart, kDomainYend, kMiddleY, featureScale) : null;
+                domainBorder, kDomainYstart, kDomainYend, kMiddleY, featureScale, getUniqueFeatureName) : null;
         })
     }
 
-    private drawCoiledCoils(selectedElement: any, data: any, kCoilsYstart, featureScale) {
+    private drawCoiledCoils(selectedElement: any, data: any, kCoilsYstart, featureScale, getUniqueFeatureName) {
         selectedElement.selectAll('svg')
             .data(data.coils ? data.coils : [])
             .enter()
@@ -125,10 +132,14 @@ export default class DrawProteinFeature {
                 return featureScale(d.end-d.start)
             })
             .attr("height", DrawProteinFeature.kCoilsHeight)
-            .attr("fill", DrawProteinFeature.domainColors.coils);
+            .attr("fill", DrawProteinFeature.domainColors.coils)
+            .attr("class", "protein-element")
+            .attr("id", function (d){
+                return getUniqueFeatureName(d, DataType.COILED_COILS);
+            });
     }
 
-    private drawLowComplexityRegion(selectedElement: any, data: any, kLcrYstart, featureScale) {
+    private drawLowComplexityRegion(selectedElement: any, data: any, kLcrYstart, featureScale, getUniqueFeatureName) {
         selectedElement.selectAll('svg')
             .data(data.segs ? data.segs : [])
             .enter()
@@ -141,10 +152,14 @@ export default class DrawProteinFeature {
                 return featureScale(d[1] - d[0])
             })
             .attr("height", DrawProteinFeature.kLcrHeight)
-            .attr("fill", DrawProteinFeature.domainColors.lcr);
+            .attr("fill", DrawProteinFeature.domainColors.lcr)
+            .attr("class", "protein-element")
+            .attr("id", function (d){
+                return getUniqueFeatureName(d, DataType.LOW_COMPLEXITY);
+            });
     }
 
-    private drawTransmembraneRegin(selectedElement: any, data: any, kTransmembraneYstart, featureScale) {
+    private drawTransmembraneRegin(selectedElement: any, data: any, kTransmembraneYstart, featureScale, getUniqueFeatureName) {
         selectedElement.selectAll('svg')
             .data(data.tmhmm ? data.tmhmm: [])
             .enter()
@@ -157,11 +172,15 @@ export default class DrawProteinFeature {
                 return featureScale(d.end-d.start)
             })
             .attr("height", DrawProteinFeature.kTransmembraneHeight)
-            .attr("fill", DrawProteinFeature.domainColors.tm);
+            .attr("fill", DrawProteinFeature.domainColors.tm)
+            .attr("class", "protein-element")
+            .attr("id", function (d){
+                return getUniqueFeatureName(d, DataType.TM);
+            });
     }
 
     private drawDomain(selectedElement: any, data: any, drawDomainBorders, nameDomain, domainBorder, 
-        kDomainYstart, kDomainYend, kMiddleY, featureScale) {
+        kDomainYstart, kDomainYend, kMiddleY, featureScale, getUniqueFeatureName) {
         let domain = selectedElement.selectAll('svg')
             .data(data.pfam30 ? data.pfam30 : [])
             .enter()
@@ -177,23 +196,31 @@ export default class DrawProteinFeature {
             .attr("height", DrawProteinFeature.kDomainHeight)
             .attr("fill", DrawProteinFeature.domainColors.domain)
             .attr("stroke", DrawProteinFeature.domainColors.domainStroke)
-            .attr("stroke-width", 0);
+            .attr("stroke-width", 0)
+            .attr("class", "protein-element")
+            .attr("id", function (d){
+                return getUniqueFeatureName(d, DataType.DOMAIN);
+            });
 
-        drawDomainBorders(domain, domainBorder, kDomainYstart, kDomainYend, featureScale);
-        nameDomain(domain, kMiddleY, featureScale);
+        drawDomainBorders(domain, domainBorder, kDomainYstart, kDomainYend, featureScale, getUniqueFeatureName);
+        nameDomain(domain, kMiddleY, featureScale, getUniqueFeatureName);
     }
 
-    private drawDomainBorders(domain: any, domainBorder, kDomainYstart, kDomainYend, featureScale) {
+    private drawDomainBorders(domain: any, domainBorder, kDomainYstart, kDomainYend, featureScale, getUniqueFeatureName) {
         domain.append('path')
             .filter(function(d){ return d.ali_to - d.ali_from > 0 })
             .attr("d", function(d) { return domainBorder(d, d.hmm_cov ? d.hmm_cov : '[]', kDomainYstart, kDomainYend, featureScale) })
             .attr("stroke", DrawProteinFeature.domainColors.domainStroke)
             .attr("stroke-width", DrawProteinFeature.kDomainStrokeWidth)
             .attr("fill", "none")
-            .attr("stroke-linecap", "round");
+            .attr("stroke-linecap", "round")
+            .attr("class", "protein-element")
+            .attr("id", function (d){
+                return getUniqueFeatureName(d, DataType.DOMAIN);
+            });
     }
 
-    private nameDomain(domain: any, kMiddleY, featureScale) {
+    private nameDomain(domain: any, kMiddleY, featureScale, getUniqueFeatureName) {
         domain.append('text')
             .filter(function(d){ return d.ali_to - d.ali_from > 0 })
             .attr("x", function(d) {return featureScale((d.ali_from+d.ali_to)/2) })
@@ -206,7 +233,23 @@ export default class DrawProteinFeature {
             .attr("font-family", DrawProteinFeature.kFontFamily)
             .attr("font-size", DrawProteinFeature.kFontSize)
             .attr("lengthAdjust", "spacingAndGlyphs")
-            .text(function(d) { return d.name});
+            .text(function(d) { return d.name})
+            .attr("class", "protein-element")
+            .attr("id", function (d){
+                return getUniqueFeatureName(d, DataType.DOMAIN);
+            });
+    }
+
+    private getUniqueFeatureName(d, dataType): string {
+        let readyName, name = d.name ? d.name : "genericName";
+        if (dataType === DataType.DOMAIN) {
+            readyName = `${name}@${d.ali_from}-${d.ali_to}`;
+        } else if (dataType === DataType.COILED_COILS || dataType === DataType.TM) {
+            readyName = `${name}@${d.start}-${d.end}`;
+        } else if (dataType === DataType.LOW_COMPLEXITY) {
+            readyName = `${name}@${d[0]}-${d[1]}`;
+        }
+        return readyName;
     }
 
     private domainBorder(d: pfamInterface, coverage = '[]', kDomainYstart, kDomainYend, featureScale) {
