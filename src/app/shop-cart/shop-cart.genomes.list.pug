@@ -10,8 +10,8 @@ mat-table([dataSource]="result" class="genome-table")
     mat-cell(*matCellDef="let genome" class="genome-cell")
       a(routerLink="/genomes/{{genome.version}}") {{genome.name}}
   ng-container(matColumnDef="Taxonomy")
-    mat-header-cell(*matHeaderCellDef class="table-txt-size") Taxonomy
-    mat-cell(*matCellDef="let genome") {{genome.superkingdom}}; {{genome.phylum}}; {{genome.class}}; {{genome.order}}; {{genome.family}}; {{genome.genus}}
+    mat-header-cell(*matHeaderCellDef class="genome-taxonomy table-txt-size") Taxonomy
+    mat-cell(*matCellDef="let genome" class="taxonomy-cell") {{genome.superkingdom}}; {{genome.phylum}}; {{genome.class}}; {{genome.order}}; {{genome.family}}; {{genome.genus}}
   ng-container(matColumnDef="Genbank Version")
     mat-header-cell(*matHeaderCellDef class="genbank-version-header table-txt-size") Genbank Version
     mat-cell(*matCellDef="let genome" class="genbank-version-cell" ) {{genome.genbank_version}}

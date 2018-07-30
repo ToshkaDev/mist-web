@@ -1,9 +1,13 @@
-mat-select.taxonomy {
-    width: 60%;
+.select-header, .select-cell {
+    flex: 0 0 10%;
 }
 
-.select-header, .select-cell {
-    flex: 0 0 5%;
+.genome-header, .genome-cell {
+    flex: 0 0 30%;
+}
+
+.genome-taxonomy, .taxonomy-cell {
+    flex: 0 0 30%
 }
 
 .assembly-header, .assembly-cell {
@@ -13,6 +17,3 @@ mat-select.taxonomy {
     flex: 0 0 15%;
 }
 
-.genome-header, .genome-cell {
-    flex: 0 0 30%;
-}
