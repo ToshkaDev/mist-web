@@ -10,7 +10,7 @@ import { CookieChangedService } from '../shop-cart/cookie-changed.service';
 export abstract class GenesListMain extends MistListComponent implements OnInit {
   @Input() genes$: Observable<any>; 
   static readonly minSvgWidth = 100;
-  static readonly svgWidthToScreenWidthFactor = 0.33;
+  static readonly svgWidthToScreenWidthFactor = 0.30;
 
   private geneToAseq = new Map<string, any>();
   private geneIsDrawn = new Map<string, boolean>();
