@@ -1,6 +1,6 @@
 div
     div.domains
-    button(class="aseq-details mist-button-standard" mat-button (click)="showDetails()") Details
+    button(class="aseq-details mist-button-standard" mat-button (click)="toggleDetails()") Details
         mat-icon(aria-hidden="true") {{ arrow }}
 
     div.details(*ngIf="details")
@@ -20,4 +20,4 @@ div
                         td(*ngFor="let element of proteinFeature") 
                             div(*ngIf="aseqViewModel.activeProperties.type != 'sequence'; else sequenceBlock") {{ element }}
                             ng-template(#sequenceBlock) 
-                                div.protSeq {{ element }}
+                                div.protSeq {{ highlightSelection() }} {{ element }}

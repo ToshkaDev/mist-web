@@ -47,7 +47,7 @@ export abstract class MistComponent implements OnInit {
             pageInfo.perPage ? this.perPage = pageInfo.perPage: this.perPage = this.defaultPerPage;
           }
         );
-        this.result$.subscribe(results => results && results.length > 0 ? this.displayedColumns = this.columns : this.displayedColumns = null);  
+        this.result$.subscribe(results => results && results.length > 0 ? this.displayedColumns = this.columns : this.displayedColumns = null);
     }
 
     pageApply($event) {

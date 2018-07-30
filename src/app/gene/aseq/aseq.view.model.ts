@@ -71,14 +71,15 @@ export class AseqViewModel {
     }
 
     private initializeSequencesProperties(sequence: string, property: any) {
-        let stringWithNewlineChars = "";
+        let stringWithSpaceChars = "";
         let piece = Math.floor(sequence.length/this.sequenceLineLen);
         for (var i = 0; i < piece; i++) {
-            stringWithNewlineChars = stringWithNewlineChars + '\n' + sequence.substring(i*this.sequenceLineLen, (i+1)*this.sequenceLineLen);
+            stringWithSpaceChars = stringWithSpaceChars + " " + sequence.substring(i*this.sequenceLineLen, (i+1)*this.sequenceLineLen);
         }
-        stringWithNewlineChars = stringWithNewlineChars + '\n' + sequence.substring(i*this.sequenceLineLen, sequence.length);
-        property.value.push([stringWithNewlineChars]);
+        stringWithSpaceChars = stringWithSpaceChars + " " + sequence.substring(i*this.sequenceLineLen, sequence.length);
+        property.value.push([stringWithSpaceChars]);
     }
+
 
     private initializeProperties(pfamData: any[], property: any, headers: any[])  {
         for (let index in pfamData) {
@@ -98,10 +99,13 @@ export class AseqViewModel {
     private initializeLowComplSegsProperties(segs: any[], property: any) {
         for (let index in segs) {
             let properties = [];
-            let elementToPush;
             properties.push(+index+1+'.', segs[index][0], segs[index][1]);
             property.value.push(properties);
         }
+    }
+
+    public getSequence(): string {
+        return String(this.sequence.value[0]);
     }
 
     changeActiveHeaders(dataTypeName: string) {

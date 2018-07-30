@@ -32,6 +32,7 @@ export class AseqComponent implements OnInit {
     static readonly svgWidthToScreenWidthFactor = 0.33;
     private drawProteinFeature: DrawProteinFeature;
     private aseqData: any;
+    private currentSelection;
 
     constructor(private elementRef: ElementRef, private d3Service: D3Service) {
     }
@@ -45,8 +46,17 @@ export class AseqComponent implements OnInit {
                 this.aseqViewModel = new AseqViewModel(result.Aseq);
                 this.drawProteinFeature.drawProteinFeature(this.htmlElement, [result.Aseq]);
                 this.aseqData = result.Aseq;
+                this.setProteinFeaturesEventListeners();
             }
         });
+    }
+
+    // Get coordinates in the string with added newline characters: one which precedes the string and others after every 60 symbols
+    private getTranslatedCoordinates(coordinate: number) {
+        if (coordinate <= 59) 
+            return ++coordinate;
+        else if (coordinate > 59) 
+            return coordinate+2;
     }
 
     getInfo(dataType: string) {
@@ -62,13 +72,44 @@ export class AseqComponent implements OnInit {
         }
     }
 
-    showDetails() {
-        this.details = !this.details;
+    toggleDetails(show: boolean = false) {
+        show ? this.details = true : this.details = !this.details;
         this.arrow = this.arrowObject[+this.details];
     }
 
+    highlightSelection() {
+        let protSeqElement = document.getElementsByClassName("protSeq")[0];
+        if (this.currentSelection)
+            protSeqElement.innerHTML = this.currentSelection;
+    }
+
+    setProteinFeaturesEventListeners() {
+        let AseqComponentObject = this;
+        let sequenceFirstFragment;
+        let sequenceMiddleFragment;
+        let sequenceLastFragment;
+        let proteinSequnce = this.aseqViewModel.getSequence();
+        let proteinElements = document.getElementsByClassName("protein-element");
+       
+        for (let i = 0; i < proteinElements.length; i++) {
+            proteinElements[i].addEventListener("click", function(){
+                AseqComponentObject.getInfo('sequence');
+                AseqComponentObject.toggleDetails(true);
+                
+                let elementCoords = proteinElements[i].id.split("@")[1].split("-");
+                let elementStart = AseqComponentObject.getTranslatedCoordinates(+elementCoords[0]);
+                let elementEnd = AseqComponentObject.getTranslatedCoordinates(+elementCoords[1]);
+
+                sequenceFirstFragment = (''+proteinSequnce).substring(0, elementStart);
+                sequenceMiddleFragment = '<span style="background-color: yellow">'+(''+proteinSequnce).substring(elementStart, elementEnd+1)+'</span>';
+                sequenceLastFragment = (''+proteinSequnce).substring(elementEnd+1, proteinSequnce.length+1);                
+                AseqComponentObject.currentSelection = sequenceFirstFragment+sequenceMiddleFragment+sequenceLastFragment;
+            });
+        }
+    }
+
     @HostListener('window:resize', ['$event'])
-    onWindowResize(ev) {
+    onWindowResize() {
         let svgWidth = this.getSvgWidth();
         this.drawProteinFeature.removeElement(this.htmlElement);
         this.drawProteinFeature.setSvgSize(svgWidth);
