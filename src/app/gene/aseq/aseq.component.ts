@@ -28,6 +28,7 @@ export class AseqComponent implements OnInit {
         'tmHmm': {...this.buttonStyle},
         'sequence': {...this.buttonStyle}
     };
+    private higlightColor = '#daf8b5';
     static readonly minSvgWidth = 100;
     static readonly svgWidthToScreenWidthFactor = 0.33;
     private drawProteinFeature: DrawProteinFeature;
@@ -101,7 +102,7 @@ export class AseqComponent implements OnInit {
                 let elementEnd = AseqComponentObject.getTranslatedCoordinates(+elementCoords[1]);
 
                 sequenceFirstFragment = (''+proteinSequnce).substring(0, elementStart);
-                sequenceMiddleFragment = '<span style="background-color: yellow">'+(''+proteinSequnce).substring(elementStart, elementEnd+1)+'</span>';
+                sequenceMiddleFragment = `<span style="background-color: ${AseqComponentObject.higlightColor}">${(''+proteinSequnce).substring(elementStart, elementEnd+1)}</span>`;
                 sequenceLastFragment = (''+proteinSequnce).substring(elementEnd+1, proteinSequnce.length+1);                
                 AseqComponentObject.currentSelection = sequenceFirstFragment+sequenceMiddleFragment+sequenceLastFragment;
             });
@@ -114,6 +115,7 @@ export class AseqComponent implements OnInit {
         this.drawProteinFeature.removeElement(this.htmlElement);
         this.drawProteinFeature.setSvgSize(svgWidth);
         this.drawProteinFeature.drawProteinFeature(this.htmlElement, [this.aseqData]);
+        this.setProteinFeaturesEventListeners();
     }
 
     private getSvgWidth(): number {
