@@ -28,7 +28,7 @@ export class AseqComponent implements OnInit {
         'tmHmm': {...this.buttonStyle},
         'sequence': {...this.buttonStyle}
     };
-    private higlightColor = '#daf8b5';
+    static readonly higlightColor = '#daf8b5';
     static readonly minSvgWidth = 100;
     static readonly svgWidthToScreenWidthFactor = 0.33;
     private drawProteinFeature: DrawProteinFeature;
@@ -54,7 +54,7 @@ export class AseqComponent implements OnInit {
 
     // Get coordinates in the string with added newline characters: one which precedes the string and others after every 60 symbols
     private getTranslatedCoordinates(coordinate: number) {
-        //shift to zero-based first
+        // shift to zero-based first
         let myCoordinate = --coordinate;
         if (myCoordinate <= 59) {
             return myCoordinate;
@@ -63,7 +63,7 @@ export class AseqComponent implements OnInit {
         }
     }
 
-    getInfo(dataType: string) {
+    private getInfo(dataType: string) {
         if (dataType && this.aseqViewModel) {
             for (let element in this.styles) {
                 this.styles[element]['background-color'] = this.buttonColor;
@@ -76,7 +76,7 @@ export class AseqComponent implements OnInit {
         }
     }
 
-    toggleDetails(show: boolean = false) {
+    private toggleDetails(show: boolean = false) {
         show ? this.details = true : this.details = !this.details;
         this.arrow = this.arrowObject[+this.details];
     }
@@ -87,7 +87,7 @@ export class AseqComponent implements OnInit {
             protSeqElement.innerHTML = this.currentSelection;
     }
 
-    setProteinFeaturesEventListeners() {
+    private setProteinFeaturesEventListeners() {
         let AseqComponentObject = this;
         let sequenceFirstFragment;
         let sequenceMiddleFragment;
@@ -103,13 +103,8 @@ export class AseqComponent implements OnInit {
                 let elementCoords = proteinElements[i].id.split("@")[1].split("-");
                 let elementStart = AseqComponentObject.getTranslatedCoordinates(+elementCoords[0]);
                 let elementEnd = AseqComponentObject.getTranslatedCoordinates(+elementCoords[1]);
-                console.log("elementCoords[0] " + elementCoords[0])
-                console.log("elementCoords[1] " + elementCoords[1])
-                console.log("elementStart " + elementStart)
-                console.log("elementEnd " + elementEnd)
-                console.log(proteinSequnce.substring(0,2))
                 sequenceFirstFragment = (''+proteinSequnce).substring(0, elementStart);
-                sequenceMiddleFragment = `<span style="background-color: ${AseqComponentObject.higlightColor}">${(''+proteinSequnce).substring(elementStart, elementEnd+1)}</span>`;
+                sequenceMiddleFragment = `<span style="background-color: ${AseqComponent.higlightColor}">${(''+proteinSequnce).substring(elementStart, elementEnd+1)}</span>`;
                 sequenceLastFragment = (''+proteinSequnce).substring(elementEnd+1, proteinSequnce.length);                
                 AseqComponentObject.currentSelection = sequenceFirstFragment+sequenceMiddleFragment+sequenceLastFragment;
             });
@@ -132,5 +127,5 @@ export class AseqComponent implements OnInit {
         return svgWidth > AseqComponent.minSvgWidth 
           ? svgWidth 
           : AseqComponent.minSvgWidth;
-      }
+    }
 }
