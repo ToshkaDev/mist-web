@@ -77,7 +77,7 @@ export class AseqViewModel {
             stringWithSpaceChars = stringWithSpaceChars + " " + sequence.substring(i*this.sequenceLineLen, (i+1)*this.sequenceLineLen);
         }
         stringWithSpaceChars = stringWithSpaceChars + " " + sequence.substring(i*this.sequenceLineLen, sequence.length);
-        property.value.push([stringWithSpaceChars]);
+        property.value.push([stringWithSpaceChars.trim()]);
     }
 
 

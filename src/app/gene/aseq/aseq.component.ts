@@ -54,10 +54,13 @@ export class AseqComponent implements OnInit {
 
     // Get coordinates in the string with added newline characters: one which precedes the string and others after every 60 symbols
     private getTranslatedCoordinates(coordinate: number) {
-        if (coordinate <= 59) 
-            return ++coordinate;
-        else if (coordinate > 59) 
-            return coordinate+2;
+        //shift to zero-based first
+        let myCoordinate = --coordinate;
+        if (myCoordinate <= 59) {
+            return myCoordinate;
+        } else if (myCoordinate > 59) {
+            return myCoordinate + Math.floor(myCoordinate / 60);
+        }
     }
 
     getInfo(dataType: string) {
@@ -100,10 +103,14 @@ export class AseqComponent implements OnInit {
                 let elementCoords = proteinElements[i].id.split("@")[1].split("-");
                 let elementStart = AseqComponentObject.getTranslatedCoordinates(+elementCoords[0]);
                 let elementEnd = AseqComponentObject.getTranslatedCoordinates(+elementCoords[1]);
-
+                console.log("elementCoords[0] " + elementCoords[0])
+                console.log("elementCoords[1] " + elementCoords[1])
+                console.log("elementStart " + elementStart)
+                console.log("elementEnd " + elementEnd)
+                console.log(proteinSequnce.substring(0,2))
                 sequenceFirstFragment = (''+proteinSequnce).substring(0, elementStart);
                 sequenceMiddleFragment = `<span style="background-color: ${AseqComponentObject.higlightColor}">${(''+proteinSequnce).substring(elementStart, elementEnd+1)}</span>`;
-                sequenceLastFragment = (''+proteinSequnce).substring(elementEnd+1, proteinSequnce.length+1);                
+                sequenceLastFragment = (''+proteinSequnce).substring(elementEnd+1, proteinSequnce.length);                
                 AseqComponentObject.currentSelection = sequenceFirstFragment+sequenceMiddleFragment+sequenceLastFragment;
             });
         }
