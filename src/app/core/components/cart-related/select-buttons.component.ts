@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, Output, AfterContentChecked } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'cart-select-buttons',
   styleUrls: ['./select-buttons.scss'],
   templateUrl: './select-buttons.pug',
 })
-export class SelectButtonsComponent implements AfterContentChecked {
+export class SelectButtonsComponent {
     @Output() selectClickEvent = new EventEmitter<any>();
     @Input() cart: any;
     @Input() idsForShopCart: string[];
@@ -14,10 +14,4 @@ export class SelectButtonsComponent implements AfterContentChecked {
     buttonClicked(event: any) {
       this.selectClickEvent.emit(event);
     }
-
-    ngAfterContentChecked() {
-
-
-    }
-
 }

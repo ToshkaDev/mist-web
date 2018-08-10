@@ -75,7 +75,7 @@ export class MistEffects {
               next = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
               prev = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
               first = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
-              last = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);  
+              last = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
           }
           const links = {first: first, last: last, next: next, prev: prev};
           return new MistAction.FetchDone(MistAction.entityToActionType.get(entity).get(MistAction.FETCH_DONE), {

@@ -8,13 +8,14 @@ import 'rxjs/add/operator/distinctUntilChanged';
 })
 export class SearchInputComponent {
   queryChange$ = new EventEmitter<string>();
+  scopeChange$ = new EventEmitter<string>();
+  scope_placeholder = "Scope";
 
   @Input() query = '';
+  @Input() scope = '';
   @Input() errorMessage = '';
   @Input() isFetching = false;
-  @Output() onQueryChange = this.queryChange$.map((value) => value.trim()).distinctUntilChanged();
-  
-  clear() {
-    this.query = '';
-  }
+  @Output() onQueryChange = this.queryChange$.map((value) => value.trim());
+  @Output() onScopeChange = this.scopeChange$.map((value) => value.trim());
+
 }

@@ -15,6 +15,7 @@ export interface State {
       },
       matches: any[];
       query: string;
+      scope: string;
       totalPages: number;
     };
   }
@@ -29,6 +30,7 @@ export const initialState: State = {
       links: {},
       matches: [],
       query: null,
+      scope: null,
       totalPages: null,
     },
   };
@@ -92,6 +94,7 @@ function reducer (state, action: MistAction.Actions,  actions) {
                     links: {},
                     matches: [],
                     query: action.payload.search,
+                    scope: action.payload.scope,
                     totalPages: null,
                 },
             }; 
@@ -137,7 +140,14 @@ function reducer (state, action: MistAction.Actions,  actions) {
                 },
             };
         case actions[4]:
-            return initialState;
+            return {
+                ...initialState,
+                search: {
+                    ...state.search,
+                    query: action.payload.query,
+                    scope: action.payload.scope
+                }
+            };
     }
     return state;
 }

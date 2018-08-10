@@ -10,9 +10,11 @@
 
       mist-search-input(
         [query]="query$ | async"
+        [scope]="scope$ | async"
         [isFetching]="isFetching$ | async"
         [errorMessage]="errorMessage$ | async"
         (onQueryChange)="putQuery($event)"
+        (onScopeChange)="putScope($event)"
         (entity)="selectedComponent"
       ) 
       .right-side
