@@ -14,6 +14,11 @@ export const getSearchQuery = createSelector(
   (searchState) => searchState.query,
 );
 
+export const getSearchScope = createSelector(
+  search,
+  (searchState) => searchState.scope,
+);
+
 export const getSearchIsFetching = createSelector(
   search,
   (searchState) => searchState.isFetching,

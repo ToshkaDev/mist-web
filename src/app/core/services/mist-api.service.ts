@@ -10,6 +10,7 @@ export class MistApi {
   static GENOMES_ROOT = '/genomes';
   static GENES_ROOT = '/genes';
   static paginationParams = "page=%pageNumber%&per_page=%perPage%";
+  static allGenomesScope = "All Genomes";
   static ENTITY_TO_BASEURL: Map<string, string> = new Map([
     [Entities.GENOMES, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
     [Entities.GENOMES_SHOPCART, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
@@ -35,12 +36,20 @@ export class MistApi {
   searchWithPaginationUrl(query: any, entity: string): string {
     let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
     url = this.processFilter(query, url, entity); 
+    if (query.scope && query.scope !== MistApi.allGenomesScope) {
+      url = this.specifyFields(`${url}&`, FieldMap.get("genes_inside_genome"));
+      return this.searchInsideGenomeUrl(query.search, query.scope) + '&' + url;
+    }
     url = this.specifyFields(`${url}&`, FieldMap.get(entity));
     return this.searchUrl(query.search, entity) + '&' + url;
   }
 
   searchUrl(query: string, entity: string): string {
     return this.getBaseUrl(entity) + '?count&search=' + query;
+  }
+
+  searchInsideGenomeUrl(querySearch: string, queryScope: string): string {
+    return this.getBaseUrl(Entities.GENOMES) + `/${queryScope}/` + 'genes?count&search=' + querySearch;
   }
 
   processFilter(query, url, entity) {

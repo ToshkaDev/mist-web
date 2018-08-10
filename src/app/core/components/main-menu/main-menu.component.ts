@@ -17,7 +17,10 @@ import * as MistAction from '../../common/mist-actions';
 })
 export class MainMenuComponent {
   private query: string;
+  static readonly allGenomesScope = "All Genomes";
+  private scope: string = MainMenuComponent.allGenomesScope;
   private query$: Observable<string>;
+  private scope$: Observable<string>;
   private isFetching$: Observable<boolean>;
   private errorMessage$: Observable<string>;
   private selectedComponent: string = Entities.GENOMES;
@@ -27,7 +30,7 @@ export class MainMenuComponent {
   private genomesFilter: GenomesFilter = new GenomesFilter(); 
 
   readonly defaultCurrentPage: number = 1;
-  readonly minQueryLenght: number = 2;
+  readonly minQueryLenght: number = 1;
   private perPage: number = 30;
   private defaultSelection: string = "defaultValue";
   private selected: string = this.defaultSelection;
@@ -70,7 +73,13 @@ export class MainMenuComponent {
   private SelectorsQuery = new Map<string, MemoizedSelector<State, string>>([
     [Entities.GENOMES, fromGenomes.getSearchQuery],
     [Entities.GENES, fromGenes.getSearchQuery],
-    //["protein-features", ""],import 'rxjs/add/operator/filter'
+    //["protein-features", ""],
+  ]);
+
+  private SelectorsScope = new Map<string, MemoizedSelector<State, string>>([
+    [Entities.GENOMES, fromGenomes.getSearchScope],
+    [Entities.GENES, fromGenes.getSearchScope],
+    //["protein-features", ""],
   ]);
 
   private SelectorsIsFetching = new Map<string, MemoizedSelector<State, boolean>>([
@@ -117,7 +126,6 @@ export class MainMenuComponent {
       this.smallMenuDisplay['visibility'] = this.routeToSmallMenuDisplay.get(currentUrl);
       if (this.routeToSelectionOption.has(currentUrl)) {
         this.selectedComponent = this.routeToSelectionOption.get(currentUrl);
-        console.log("this.selectedComponent " + this.selectedComponent)
         this.assignObservables(currentUrl);
         this.examples = this.entityToExamples.has(this.selectedComponent) 
           ? this.entityToExamples.get(this.selectedComponent) 
@@ -130,25 +138,43 @@ export class MainMenuComponent {
     });   
   }
 
-  putQuery(query: string) { 
+  putQuery(query: string) {
     this.query = query;
-    this.search();
+    if (this.query && this.query.length >= this.minQueryLenght) {
+      this.search();
+    } else {
+      this.clear(this.query, this.scope); 
+    }
     this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
   }
 
-  search() {
-    if (this.query && this.query.length >= this.minQueryLenght) {
-      let SEARCH = this.selectionOptionToActionType.get(this.selectedComponent);
-      this.store.dispatch(new MistAction.Search(SEARCH, {
-        search: this.query, 
-        perPage: this.perPage, 
-        pageIndex: this.defaultCurrentPage, 
-        filter: {}
-      }));
+  putScope(scope: string) {
+    if (scope && scope.length > 0) {
+      this.scope = scope;
+      this.search();
     } else {
-        let CLEAR = this.selectionOptionToClearActionType.get(this.selectedComponent);
-        this.store.dispatch(new MistAction.Clear(CLEAR,{}));
+      this.scope = MainMenuComponent.allGenomesScope;
+      this.clear(this.query, ''); 
     }
+  }
+
+  search() {
+    let SEARCH = this.selectionOptionToActionType.get(this.selectedComponent);
+    this.store.dispatch(new MistAction.Search(SEARCH, {
+      scope: this.scope,
+      search: this.query, 
+      perPage: this.perPage, 
+      pageIndex: this.defaultCurrentPage, 
+      filter: {}
+    }));
+  }
+
+  clear(query: string, scope: string) {
+    let CLEAR = this.selectionOptionToClearActionType.get(this.selectedComponent);
+    this.store.dispatch(new MistAction.Clear(CLEAR, {
+      query: query,
+      scope: scope
+    }));
   }
 
   entityChanged(entity: any) {
@@ -158,9 +184,13 @@ export class MainMenuComponent {
 
   assignObservables(currentUrl: string) {
     //TODO: will need to change this
-    this.routeToSelectionOption.has(currentUrl)
-      ? this.query$ = this.store.select(this.SelectorsQuery.get(this.selectedComponent))
-      : this.query$ = null;
+    this.query$ = null;
+    this.scope$ = null;
+    if (this.routeToSelectionOption.has(currentUrl)) {
+      this.query$ = this.store.select(this.SelectorsQuery.get(this.selectedComponent));
+      this.scope$ = this.store.select(this.SelectorsScope.get(this.selectedComponent));
+      this.scope$.subscribe(elem => console.log("elem " + elem))
+    }
     this.isFetching$ = this.store.select(this.SelectorsIsFetching.get(this.selectedComponent));
     this.errorMessage$ = this.store.select(this.SelectorsErrorMessage.get(this.selectedComponent));
   }
