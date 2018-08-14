@@ -35,7 +35,7 @@ export class MistApi {
 
   searchWithPaginationUrl(query: any, entity: string): string {
     let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
-    url = this.processFilter(query, url, entity); 
+    url = this.processFilter(query, url, entity);
     if (query.scope && query.scope !== MistApi.allGenomesScope) {
       url = this.specifyFields(`${url}&`, FieldMap.get("genes_inside_genome"));
       return this.searchInsideGenomeUrl(query.search, query.scope) + '&' + url;

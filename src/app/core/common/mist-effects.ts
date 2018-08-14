@@ -29,7 +29,7 @@ export class MistEffects {
     .map((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
       const url = this.mistApi.searchWithPaginationUrl(action.payload, entity);
-      return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH), new Navigation(url, action.payload.filter));
+      return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH), new Navigation(url, action.payload.scope, action.payload.filter));
     });
 
   @Effect()
@@ -40,7 +40,7 @@ export class MistEffects {
     ).map((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
       const url = this.mistApi.getByIdList(action.payload, entity);
-      return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH),  new Navigation(url, action.payload.filter, true));
+      return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH),  new Navigation(url, null, action.payload.filter, true));
     });
 
   @Effect()
@@ -63,6 +63,7 @@ export class MistEffects {
           const matches = response.json();
           const count = parseInt(response.headers.get('x-total-count'), 10);
           const parsed = queryString.parse(queryString.extract(action.payload.url));
+          
           const totalPages = Math.ceil(count / parsed.per_page);
           const currentPage = +parsed.page;
           let next, prev, first, last;
@@ -72,10 +73,10 @@ export class MistEffects {
             first = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
             last = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
           } else {
-              next = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
-              prev = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
-              first = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
-              last = this.mistApi.searchWithPaginationUrl({search: parsed.search, perPage: parsed.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
+              next = this.mistApi.searchWithPaginationUrl({search: parsed.search, scope: action.payload.scope, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
+              prev = this.mistApi.searchWithPaginationUrl({search: parsed.search, scope: action.payload.scope, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
+              first = this.mistApi.searchWithPaginationUrl({search: parsed.search, scope: action.payload.scope, perPage: parsed.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
+              last = this.mistApi.searchWithPaginationUrl({search: parsed.search, scope: action.payload.scope, perPage: parsed.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
           }
           const links = {first: first, last: last, next: next, prev: prev};
           return new MistAction.FetchDone(MistAction.entityToActionType.get(entity).get(MistAction.FETCH_DONE), {

@@ -19,6 +19,7 @@ export abstract class MistComponent implements OnInit {
     protected result$: Observable<any[]>;
     protected query$: Observable<string>;
     protected links$: Observable<any>;
+    protected scope$: Observable<string>;
     protected count: number;
     protected totalPages: number;
     protected perPage: number = 30;
@@ -28,6 +29,7 @@ export abstract class MistComponent implements OnInit {
     protected searchQuerySelector: MemoizedSelector<State, string>;
     protected pageInfoSelector: MemoizedSelector<State, any>;
     protected pageLinksSelector: MemoizedSelector<State, any>;
+    protected searchScopeSelector: MemoizedSelector<State, string>;
     protected dataSource;
 
     constructor(private store: Store<any>, selectors: any, private columns: string[], private entity: string, private isGetById: boolean = false) {
@@ -39,6 +41,7 @@ export abstract class MistComponent implements OnInit {
         this.query$ = this.store.select(this.searchQuerySelector);
         this.result$ = this.store.select(this.resultsSelector);
         this.links$ = this.store.select(this.pageLinksSelector);
+        this.scope$ = this.store.select(this.searchScopeSelector);
         this.store.select(this.pageInfoSelector).subscribe(
           pageInfo => {
             pageInfo.count ? this.count = pageInfo.count : this.count = this.defaultCount;
@@ -54,17 +57,19 @@ export abstract class MistComponent implements OnInit {
         let eventPageIndex = ++$event.pageIndex;
         let pageActionMap = MistAction.entityToActionType.get(this.entity);
         let filter: Filter = this.initialyzeFilter();
+        let scope: string;
+        this.scope$.subscribe(currentScope => scope = currentScope);
         if ($event.pageSize !== this.perPage) {
           this.perPage = $event.pageSize;
           this.sendQuery();
         } else if (eventPageIndex > this.currentPage) {
-            this.links$.subscribe(link => this.store.dispatch(new MistAction.NextPage(pageActionMap.get(MistAction.NEXT_PAGE), new Navigation(link.next, filter, this.isGetById)))).unsubscribe();
+            this.links$.subscribe(link => this.store.dispatch(new MistAction.NextPage(pageActionMap.get(MistAction.NEXT_PAGE), new Navigation(link.next, scope, filter, this.isGetById)))).unsubscribe();
         } else if (eventPageIndex < this.currentPage) {
-            this.links$.subscribe(link => this.store.dispatch(new MistAction.PrevPage(pageActionMap.get(MistAction.PREV_PAGE), new Navigation(link.prev, filter, this.isGetById)))).unsubscribe();
+            this.links$.subscribe(link => this.store.dispatch(new MistAction.PrevPage(pageActionMap.get(MistAction.PREV_PAGE), new Navigation(link.prev, scope, filter, this.isGetById)))).unsubscribe();
         } else if (eventPageIndex === 1) {
-            this.links$.subscribe(link => this.store.dispatch(new MistAction.FirstPage(pageActionMap.get(MistAction.FIRST_PAGE), new Navigation(link.first, filter, this.isGetById)))).unsubscribe();
+            this.links$.subscribe(link => this.store.dispatch(new MistAction.FirstPage(pageActionMap.get(MistAction.FIRST_PAGE), new Navigation(link.first, scope, filter, this.isGetById)))).unsubscribe();
         } else if (eventPageIndex === this.totalPages) {
-            this.links$.subscribe(link => this.store.dispatch(new MistAction.LastPage(pageActionMap.get(MistAction.LAST_PAGE), new Navigation(link.last, filter, this.isGetById)))).unsubscribe();
+            this.links$.subscribe(link => this.store.dispatch(new MistAction.LastPage(pageActionMap.get(MistAction.LAST_PAGE), new Navigation(link.last, scope, filter, this.isGetById)))).unsubscribe();
         }
     }
     
@@ -77,6 +82,7 @@ export abstract class MistComponent implements OnInit {
         this.searchQuerySelector = selectors.getSearchQuery;
         this.pageInfoSelector = selectors.getPageInfo;
         this.pageLinksSelector = selectors.getPageLinks;
+        this.searchScopeSelector = selectors.getSearchScope;
     }
 
     protected getStore() {

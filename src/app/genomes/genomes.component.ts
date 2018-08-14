@@ -37,9 +37,10 @@ export class GenomesComponent extends MistComponent {
     super(store, fromGenomes, GenomesComponent.genomesColumns, Entities.GENOMES);
   } 
 
-  search(query: string) {
+  search(query: string, scope: string) {
     super.getStore().dispatch(new MistAction.Search(MistAction.SEARCH_GENOMES, {
-      search: query, 
+      search: query,
+      scope: scope, 
       perPage: this.perPage, 
       pageIndex: this.defaultCurrentPage, 
       filter: this.checkQuery()
@@ -53,11 +54,14 @@ export class GenomesComponent extends MistComponent {
   }
   
   sendQuery() {
-    this.query$.subscribe(searchterm => this.search(searchterm)).unsubscribe();
+    let scope, searchterm;
+    this.query$.subscribe(currentSearchterm => searchterm = currentSearchterm).unsubscribe();
+    this.scope$.subscribe(currentScope => scope = currentScope).unsubscribe();
+    this.search(searchterm, scope);
   }
 
   filter() {
-    this.query$.subscribe(query => this.search(query)).unsubscribe();
+    this.sendQuery();
     this.selected = this.genomesFilter.getMostSpecificLevel().trim();
   }
 

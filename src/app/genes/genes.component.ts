@@ -23,9 +23,10 @@ export class GenesComponent extends MistComponent {
     super(store, fromGenes, GenesComponent.genesColumns, Entities.GENES);
   }
 
-  search(query: string) {
+  search(query: string, scope: string) {
     super.getStore().dispatch(new MistAction.Search(MistAction.SEARCH_GENES, {
-      search: query, 
+      search: query,
+      scope: scope, 
       perPage: this.perPage, 
       pageIndex: this.defaultCurrentPage, 
       filter: {}
@@ -38,7 +39,10 @@ export class GenesComponent extends MistComponent {
   }
   
   sendQuery() {
-    this.query$.subscribe(searchterm => this.search(searchterm)).unsubscribe();
+    let scope, searchterm;
+    this.query$.subscribe(currentSearchterm => searchterm = currentSearchterm).unsubscribe();
+    this.scope$.subscribe(currentScope => scope = currentScope).unsubscribe();
+    this.search(searchterm, scope);
   }
 
   checkQuery() {
