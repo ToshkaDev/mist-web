@@ -1,4 +1,4 @@
-import { Component, OnInit, Type} from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store, MemoizedSelector} from '@ngrx/store';
@@ -122,7 +122,8 @@ export class MainMenuComponent {
 
   ngOnInit() {
     this.router.events.subscribe(event => {
-      let currentUrl = event["urlAfterRedirects"] ? `/${String(event["urlAfterRedirects"]).split("/")[1]}` : null;
+      //let currentUrl = event["urlAfterRedirects"] ? `/${String(event["urlAfterRedirects"]).split("/")[1]}` : null;
+      let currentUrl = this.getCurrentUrl();
       this.smallMenuDisplay['visibility'] = this.routeToSmallMenuDisplay.get(currentUrl);
       if (this.routeToSelectionOption.has(currentUrl)) {
         this.selectedComponent = this.routeToSelectionOption.get(currentUrl);
@@ -161,7 +162,7 @@ export class MainMenuComponent {
   search() {
     let SEARCH = this.selectionOptionToActionType.get(this.selectedComponent);
     this.store.dispatch(new MistAction.Search(SEARCH, {
-      scope: this.scope,
+      scope: this.getScope(),
       search: this.query, 
       perPage: this.perPage, 
       pageIndex: this.defaultCurrentPage, 
@@ -189,10 +190,20 @@ export class MainMenuComponent {
     if (this.routeToSelectionOption.has(currentUrl)) {
       this.query$ = this.store.select(this.SelectorsQuery.get(this.selectedComponent));
       this.scope$ = this.store.select(this.SelectorsScope.get(this.selectedComponent));
-      this.scope$.subscribe(elem => console.log("elem " + elem))
     }
     this.isFetching$ = this.store.select(this.SelectorsIsFetching.get(this.selectedComponent));
     this.errorMessage$ = this.store.select(this.SelectorsErrorMessage.get(this.selectedComponent));
+  }
+
+  private getCurrentUrl(): string {
+    return this.router.url ? `/${this.router.url.split("/")[1]}` : null;
+  }
+
+  private getScope(): string {
+    if (this.getCurrentUrl() === this.selectionOptionToRoute.get(Entities.GENES)) {
+      return this.scope;
+    }
+    return null;
   }
 
 }

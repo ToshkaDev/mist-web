@@ -10,7 +10,8 @@ export class SearchInputComponent {
   queryChange$ = new EventEmitter<string>();
   scopeChange$ = new EventEmitter<string>();
   scope_placeholder = "Scope";
-
+  
+  @Input() selectedComponent;
   @Input() query = '';
   @Input() scope = '';
   @Input() errorMessage = '';

@@ -4,7 +4,8 @@ export interface Filter {
 
 export class Navigation {
     constructor(
-        public url: string, 
+        public url: string,
+        public scope: string,
         public filter: Filter,
         public isGetIdList: boolean = false
     ){} 

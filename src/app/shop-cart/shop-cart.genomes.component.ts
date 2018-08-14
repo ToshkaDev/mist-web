@@ -49,6 +49,7 @@ import { CookieChangedService } from './cookie-changed.service';
     getByIdList(query: string) {
         super.getStore().dispatch(new MistAction.GetByIdList(MistAction.GETBY_ID_LIST_GENOMES_SHOPCART, {
             search: query, 
+            scope: null,
             perPage: this.perPage, 
             pageIndex: this.defaultCurrentPage
         }));

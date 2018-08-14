@@ -15,7 +15,7 @@
         [errorMessage]="errorMessage$ | async"
         (onQueryChange)="putQuery($event)"
         (onScopeChange)="putScope($event)"
-        (entity)="selectedComponent"
+        [selectedComponent]="selectedComponent"
       ) 
       .right-side
         mat-icon.shop-cart
