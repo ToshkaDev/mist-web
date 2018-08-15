@@ -1,0 +1,9 @@
+mat-table([dataSource]="result" class="gene-table")
+  ng-container(matColumnDef="Genome")
+    mat-header-cell(*matHeaderCellDef class="genome-header table-txt-size") Genome
+    mat-cell(*matCellDef="let genome" class="genome-cell") {{genome.name}}
+  ng-container(matColumnDef="Assembly level")
+    mat-header-cell(*matHeaderCellDef class="assembly-header table-txt-size") Assembly Level
+    mat-cell(*matCellDef="let genome" class="assembly-cell") {{genome.assembly_level}}
+  mat-header-row(*matHeaderRowDef="displayedColumns")
+  mat-row(*matRowDef="let row; columns: displayedColumns;")

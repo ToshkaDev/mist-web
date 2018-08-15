@@ -159,6 +159,27 @@ export class MainMenuComponent {
     }
   }
 
+  putScope2(scope: string) {
+    if (scope && scope.length > 0) {
+      this.scope = scope;
+      this.searchForScope();
+    } else {
+      this.scope = MainMenuComponent.allGenomesScope;
+      this.clear(this.query, ''); 
+    }
+  }
+
+  searchForScope() {
+    let SEARCH = MistAction.SEARCH_SCOPE;
+    this.store.dispatch(new MistAction.Search(SEARCH, {
+      scope: null,
+      search: this.query, 
+      perPage: this.perPage, 
+      pageIndex: this.defaultCurrentPage, 
+      filter: {}
+    }));
+  }
+
   search() {
     let SEARCH = this.selectionOptionToActionType.get(this.selectedComponent);
     this.store.dispatch(new MistAction.Search(SEARCH, {
