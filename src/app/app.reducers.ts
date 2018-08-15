@@ -14,7 +14,8 @@ export interface State {
   genome: fromGenome.State,
   genes: mistState.State,
   genes_shopcart: mistState.State,
-  gene: fromGene.State
+  gene: fromGene.State,
+  scope: mistState.State
 }
 
 export const reducers: ActionReducerMap<State> = {
@@ -23,7 +24,8 @@ export const reducers: ActionReducerMap<State> = {
   genome: fromGenome.reducer,
   genes: mistState.genesReducer,
   genes_shopcart: mistState.genesReducerShopCart,
-  gene: fromGene.reducer
+  gene: fromGene.reducer,
+  scope: mistState.scopeReducer
 };
 
 const isProduction = false;

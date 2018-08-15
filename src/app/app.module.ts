@@ -57,6 +57,8 @@ import { ShopCartGenomesList } from './shop-cart/shop-cart.genomes.list.componen
 import { CookieService } from 'ngx-cookie-service';
 import { MistEffects } from './core/common/mist-effects'; 
 import { CookieChangedService } from './shop-cart/cookie-changed.service';
+import { GenesScopeComponent } from './genes/scope/genes-scope.component';
+import { GenesScopeListComponent } from './genes/scope/genes-scope-list.component';
 
 
 @NgModule({
@@ -83,8 +85,9 @@ import { CookieChangedService } from './shop-cart/cookie-changed.service';
     ShopCartGenesComponent,
     ShopCartGenomesComponent,
     ShopCartGenesList,
-    ShopCartGenomesList
-
+    ShopCartGenomesList,
+    GenesScopeComponent,
+    GenesScopeListComponent
   ],
   imports: [
     AppRoutingModule,

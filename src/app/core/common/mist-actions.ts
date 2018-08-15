@@ -36,6 +36,16 @@ export const FETCH_DONE_GENOMES = '[genomes] Fetch Done';
 export const FETCH_ERROR_GENOMES = '[genomes] Fetch Error';
 export const CLEAR_GENOMES = '[genomes] Clear';
 
+// Scope actions
+export const SEARCH_SCOPE = '[scope] Search';
+export const NEXT_PAGE_SCOPE = '[scope] Next Page';
+export const PREV_PAGE_SCOPE = '[scope] Prev Page';
+export const FIRST_PAGE_SCOPE = '[scope] First Page';
+export const LAST_PAGE_SCOPE = '[scope] Last Page';
+export const FETCH_SCOPE = '[scope] Fetch';
+export const FETCH_DONE_SCOPE = '[scope] Fetch Done';
+export const FETCH_ERROR_SCOPE = '[scope] Fetch Error';
+export const CLEAR_SCOPE = '[scope] Clear';
 
 // Shop-cart Genes actions
 export const NEXT_PAGE_GENES_SHOPCART = '[genes_shopcart] Shop Cart Next Page';
@@ -132,6 +142,16 @@ export const entityToActionType: Map<string, Map<string, string>> = new Map([
         [LAST_PAGE, LAST_PAGE_GENES],
         [NEXT_PAGE, NEXT_PAGE_GENES],
         [PREV_PAGE, PREV_PAGE_GENES],
+    ])],
+    [Entities.SCOPE, new Map([
+        [SEARCH, SEARCH_SCOPE],
+        [FETCH, FETCH_SCOPE],
+        [FETCH_DONE, FETCH_DONE_SCOPE],
+        [FETCH_ERROR, FETCH_ERROR_SCOPE],
+        [FIRST_PAGE, FIRST_PAGE_SCOPE],
+        [LAST_PAGE, LAST_PAGE_SCOPE],
+        [NEXT_PAGE, NEXT_PAGE_SCOPE],
+        [PREV_PAGE, PREV_PAGE_SCOPE],
     ])],
     [Entities.GENOMES_SHOPCART, new Map([
         [GETBY_ID_LIST, GETBY_ID_LIST_GENOMES_SHOPCART],

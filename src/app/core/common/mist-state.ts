@@ -63,6 +63,13 @@ const genomesShopCartActionTypes = [
     MistAction.FETCH_ERROR_GENOMES_SHOPCART, 
     MistAction.CLEAR_GENOMES_SHOPCART
 ];
+const scopeActionTypes = [
+    MistAction.SEARCH_SCOPE,
+    MistAction.FETCH_SCOPE, 
+    MistAction.FETCH_DONE_SCOPE, 
+    MistAction.FETCH_ERROR_SCOPE, 
+    MistAction.CLEAR_SCOPE
+];
 
 export function genomesReducer(state = initialState, action: MistAction.Actions) {
     return reducer(state, action, genomesActionTypes);
@@ -78,6 +85,10 @@ export function genomesReducerShopCart(state = initialState, action: MistAction.
 
 export function genesReducerShopCart(state = initialState, action: MistAction.Actions) {
     return reducer(state, action, genesShopCartActionTypes);
+}
+
+export function scopeReducer(state = initialState, action: MistAction.Actions) {
+    return reducer(state, action, scopeActionTypes);
 }
 
 function reducer (state, action: MistAction.Actions,  actions) {
