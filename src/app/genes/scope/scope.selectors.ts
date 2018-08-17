@@ -14,6 +14,12 @@ export const getSearchQuery = createSelector(
   (searchState) => searchState.query,
 );
 
+// We still need this to be able to use the abstract mist-component class
+export const getSearchScope = createSelector(
+  search,
+  (searchState) => searchState.scope,
+);
+
 export const getSearchIsFetching = createSelector(
   search,
   (searchState) => searchState.isFetching,

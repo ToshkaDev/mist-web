@@ -14,6 +14,7 @@ export class MistApi {
   static ENTITY_TO_BASEURL: Map<string, string> = new Map([
     [Entities.GENOMES, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
     [Entities.GENOMES_SHOPCART, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
+    [Entities.SCOPE, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
     [Entities.GENOME, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
     [Entities.GENES, MistApi.BASE_URL + MistApi.GENES_ROOT],
     [Entities.GENES_SHOPCART, MistApi.BASE_URL + MistApi.GENES_ROOT],

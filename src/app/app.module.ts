@@ -57,6 +57,7 @@ import { ShopCartGenomesList } from './shop-cart/shop-cart.genomes.list.componen
 import { CookieService } from 'ngx-cookie-service';
 import { MistEffects } from './core/common/mist-effects'; 
 import { CookieChangedService } from './shop-cart/cookie-changed.service';
+import { ScopeService } from './core/components/main-menu/scope.service';
 import { GenesScopeComponent } from './genes/scope/genes-scope.component';
 import { GenesScopeListComponent } from './genes/scope/genes-scope-list.component';
 
@@ -114,7 +115,7 @@ import { GenesScopeListComponent } from './genes/scope/genes-scope-list.componen
     McBreadcrumbsModule.forRoot()
   ],
   providers: [
-    MistApi, D3Service, GenomeResolver, GeneResolver, CookieService, CookieChangedService
+    MistApi, D3Service, GenomeResolver, GeneResolver, CookieService, CookieChangedService, ScopeService
   ]
 })
 export class AppModule { }

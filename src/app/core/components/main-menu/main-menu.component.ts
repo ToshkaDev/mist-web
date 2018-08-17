@@ -5,8 +5,10 @@ import { Store, MemoizedSelector} from '@ngrx/store';
 import GenomesFilter from '../../../genomes/genomes.filter';
 import * as fromGenomes from '../../../genomes/genomes.selectors';
 import * as fromGenes from '../../../genes/genes.selectors';
+import * as fromScope from '../../../genes/scope/scope.selectors';
 import { State } from '../../../app.reducers';
 import { Entities } from '../../common/entities';
+import { ScopeService } from './scope.service';
 
 import * as MistAction from '../../common/mist-actions';
 
@@ -26,7 +28,6 @@ export class MainMenuComponent {
   private selectedComponent: string = Entities.GENOMES;
   private smallMenuDisplay: any = {'visibility': 'visible'};
   
-
   private genomesFilter: GenomesFilter = new GenomesFilter(); 
 
   readonly defaultCurrentPage: number = 1;
@@ -34,6 +35,8 @@ export class MainMenuComponent {
   private perPage: number = 30;
   private defaultSelection: string = "defaultValue";
   private selected: string = this.defaultSelection;
+  private isScope: boolean = false;
+  scopeIsSelected: boolean = false;
 
   private routeToSmallMenuDisplay = new Map<string, string>([
     ["/", "visible"],
@@ -117,14 +120,21 @@ export class MainMenuComponent {
 
   constructor(
     private router: Router,
-    private store: Store<any>
+    private store: Store<any>,
+    private scopeService: ScopeService
   ) {}
 
   ngOnInit() {
     this.router.events.subscribe(event => {
-      //let currentUrl = event["urlAfterRedirects"] ? `/${String(event["urlAfterRedirects"]).split("/")[1]}` : null;
       let currentUrl = this.getCurrentUrl();
       this.smallMenuDisplay['visibility'] = this.routeToSmallMenuDisplay.get(currentUrl);
+      this.changeScopeTo(false);
+      console.log('this.scopeIsSelected ' + this.scopeIsSelected)
+      console.log('this.scope ' + this.scope)
+      // Need to find out a solution for this
+      // if (!this.scopeIsSelected) {
+      //   this.putQuery();
+      // }
       if (this.routeToSelectionOption.has(currentUrl)) {
         this.selectedComponent = this.routeToSelectionOption.get(currentUrl);
         this.assignObservables(currentUrl);
@@ -137,35 +147,53 @@ export class MainMenuComponent {
         this.query$ = null;
       }
     });   
+
+    this.scopeService.selectedScope$.subscribe(selectedScope => this.selectScope(selectedScope));
   }
 
-  putQuery(query: string) {
+  putQuery(query: string = this.query) {
+    this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
+    this.changeScopeTo(false);
+    this.assignObservables(this.getCurrentUrl());
     this.query = query;
     if (this.query && this.query.length >= this.minQueryLenght) {
       this.search();
     } else {
       this.clear(this.query, this.scope); 
-    }
-    this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
+    } 
   }
 
   putScope(scope: string) {
+    if (this.scope === scope) 
+      return;
     if (scope && scope.length > 0) {
+      this.scopeIsSelected = false;
       this.scope = scope;
-      this.search();
-    } else {
-      this.scope = MainMenuComponent.allGenomesScope;
-      this.clear(this.query, ''); 
-    }
-  }
-
-  putScope2(scope: string) {
-    if (scope && scope.length > 0) {
-      this.scope = scope;
+      this.query = this.query ? this.query : '';
+      this.changeScopeTo(true);
+      // A lot of fun is going on here:
+      // 1) Clear current observables of the downloaded component
+      // 2) Assign observables corresponding to GenesScopeComponent
+      // We use separate method to assign observables for scope, because the standard method is based on url address.
+      // 3) Search for scope
+      this.clear(this.query, this.scope);
+      this.assignObservablesForScope();
       this.searchForScope();
+      // At the beginning we set this.scopeIsSelected = false. If a user selects a genome clicking on one of the records
+      // on scope search results then this.scopeIsSelected will be changed to true in selectScope(selectedScope: string = null) method.
+      // But if a user doesn't select any genome then the search scope will be defaulted to "All Genomes" 
+      if (!this.scopeIsSelected)
+        this.scope = MainMenuComponent.allGenomesScope;
     } else {
       this.scope = MainMenuComponent.allGenomesScope;
-      this.clear(this.query, ''); 
+      // 1) First we need to dispatch clear action to get rid off the results (and a scope) corresponding to the current
+      // component which got downloaded previously based on the url. 
+      // 2) Then we dispatch clear action corresponding to GenesScopeComponent
+      // 3) Finally we set scope to true so that only GenesScopeComponent will get downloaded when the genomes 
+      // results from the server will be retrieved
+      this.clear(this.query, null); 
+      this.clear(null, null, MistAction.CLEAR_SCOPE); 
+      this.changeScopeTo(true);
     }
   }
 
@@ -173,11 +201,17 @@ export class MainMenuComponent {
     let SEARCH = MistAction.SEARCH_SCOPE;
     this.store.dispatch(new MistAction.Search(SEARCH, {
       scope: null,
-      search: this.query, 
+      search: this.scope, 
       perPage: this.perPage, 
       pageIndex: this.defaultCurrentPage, 
       filter: {}
     }));
+  }
+
+  selectScope(selectedScope: string = null) {
+    this.scopeIsSelected = true;
+    this.scope = selectedScope && selectedScope.length > 0 ? selectedScope : MainMenuComponent.allGenomesScope;
+    this.putQuery();
   }
 
   search() {
@@ -191,8 +225,8 @@ export class MainMenuComponent {
     }));
   }
 
-  clear(query: string, scope: string) {
-    let CLEAR = this.selectionOptionToClearActionType.get(this.selectedComponent);
+  clear(query: string, scope: string, action: string = null) {
+    let CLEAR = action ? action : this.selectionOptionToClearActionType.get(this.selectedComponent);
     this.store.dispatch(new MistAction.Clear(CLEAR, {
       query: query,
       scope: scope
@@ -205,7 +239,6 @@ export class MainMenuComponent {
   }
 
   assignObservables(currentUrl: string) {
-    //TODO: will need to change this
     this.query$ = null;
     this.scope$ = null;
     if (this.routeToSelectionOption.has(currentUrl)) {
@@ -214,6 +247,12 @@ export class MainMenuComponent {
     }
     this.isFetching$ = this.store.select(this.SelectorsIsFetching.get(this.selectedComponent));
     this.errorMessage$ = this.store.select(this.SelectorsErrorMessage.get(this.selectedComponent));
+  }
+
+  assignObservablesForScope() {
+    this.query$ = this.store.select(this.SelectorsQuery.get(this.selectedComponent));
+    this.isFetching$ = this.store.select(fromScope.getSearchIsFetching);
+    this.errorMessage$ = this.store.select(fromScope.getSearchErrorMessage);
   }
 
   private getCurrentUrl(): string {
@@ -225,6 +264,11 @@ export class MainMenuComponent {
       return this.scope;
     }
     return null;
+  }
+
+  private changeScopeTo(isScope: boolean) {
+    this.isScope = isScope;
+    this.scopeService.change(isScope);
   }
 
 }
