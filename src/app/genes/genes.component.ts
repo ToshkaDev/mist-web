@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/take';
+
 import GenesFilter from './genes.filter';
 import { MistComponent } from '../core/common/mist-component';
 import * as fromGenes from './genes.selectors';
 import { Entities } from '../core/common/entities';
-
+import { ScopeService } from '../core/components/main-menu/scope.service';
 import * as MistAction from '../core/common/mist-actions';
 
 @Component({
@@ -16,10 +17,9 @@ import * as MistAction from '../core/common/mist-actions';
   })
 export class GenesComponent extends MistComponent {
   static readonly genesColumns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
-
   private genesFilter: GenesFilter = new GenesFilter(); 
 
-  constructor(store: Store<any>) {
+  constructor(store: Store<any>, private scopeService: ScopeService) {
     super(store, fromGenes, GenesComponent.genesColumns, Entities.GENES);
   }
 

@@ -154,7 +154,6 @@ function reducer (state, action: MistAction.Actions,  actions) {
             return {
                 ...initialState,
                 search: {
-                    ...state.search,
                     query: action.payload.query,
                     scope: action.payload.scope
                 }

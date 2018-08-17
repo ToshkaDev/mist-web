@@ -24,13 +24,15 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
  
   ngOnInit() {
     this.genes$.subscribe(result => {
-      this.geneToAseq.clear();
-      this.geneIsDrawn.clear();
-      this.geneToProteinObject.clear();
-      for (let gene of result) {
-        if (gene.Aseq) {
-          this.geneToAseq.set(gene.id, gene.Aseq);
-          this.geneIsDrawn.set(gene.id, false);
+      if (result && result.length > 0) {
+        this.geneToAseq.clear();
+        this.geneIsDrawn.clear();
+        this.geneToProteinObject.clear();
+        for (let gene of result) {
+          if (gene.Aseq) {
+            this.geneToAseq.set(gene.id, gene.Aseq);
+            this.geneIsDrawn.set(gene.id, false);
+          }
         }
       }
     });

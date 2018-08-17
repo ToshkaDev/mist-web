@@ -32,6 +32,7 @@
       span.exmaple(*ngFor="let example of examples; last as isLast") 
         a(routerLink="{{ example.link }}" (click)="putQuery(example.queryString)") {{ example.queryString }}
         span(*ngIf="!isLast") {{ "; " }}
+  mist-genes-scope(*ngIf="isScope")
 
       
 
