@@ -1,4 +1,4 @@
-div(*ngIf="!(scopeService.scope$ | async)")
+div(*ngIf="!(scopeService.scope$ | async) && (result$ | async)")
   div(*ngIf="query$ | async" class="flex-container")
     mat-paginator.paginator-txt-size([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
     mist-genes-list(
