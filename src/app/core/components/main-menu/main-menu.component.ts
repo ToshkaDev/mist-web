@@ -129,12 +129,6 @@ export class MainMenuComponent {
       let currentUrl = this.getCurrentUrl();
       this.smallMenuDisplay['visibility'] = this.routeToSmallMenuDisplay.get(currentUrl);
       this.changeScopeTo(false);
-      console.log('this.scopeIsSelected ' + this.scopeIsSelected)
-      console.log('this.scope ' + this.scope)
-      // Need to find out a solution for this
-      // if (!this.scopeIsSelected) {
-      //   this.putQuery();
-      // }
       if (this.routeToSelectionOption.has(currentUrl)) {
         this.selectedComponent = this.routeToSelectionOption.get(currentUrl);
         this.assignObservables(currentUrl);
