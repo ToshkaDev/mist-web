@@ -11,6 +11,7 @@ import { MistComponent } from '../../core/common/mist-component';
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'mist-genes-scope',
+    styleUrls: ['./genes-scope.scss'],
     templateUrl: './genes-scope.pug',
   })
 export class GenesScopeComponent extends MistComponent {
