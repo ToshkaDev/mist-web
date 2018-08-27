@@ -6,6 +6,6 @@ mat-form-field
     mat-icon close
   mat-error(*ngIf="errorMessage") {{ errorMessage }}
 mat-form-field(*ngIf="selectedComponent == 'genes'")
-  input(matInput [placeholder]="scope_placeholder" [value]="scope" (keyup)="scopeChange$.emit($event.target.value)")
+  input.scope-input(matInput [placeholder]="scope_placeholder" [value]="scope" (keyup)="scopeChange$.emit($event.target.value)")
   button(type="button" matSuffix mat-button mat-icon-button (click)="scopeChange$.emit('')")
     mat-icon close

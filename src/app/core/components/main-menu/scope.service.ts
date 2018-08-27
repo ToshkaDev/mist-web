@@ -4,18 +4,18 @@ import { Subject }    from 'rxjs';
 @Injectable()
 export class ScopeService {
 
-  private scopeSource = new Subject<boolean>();
   private selectedScopeSource = new Subject<string>();
+  private selectedScopeGenomeNameSource = new Subject<string>();
 
-  scope$ = this.scopeSource.asObservable();
   selectedScope$ = this.selectedScopeSource.asObservable();
-
-  change(state: boolean) {
-    this.scopeSource.next(state);
-  }
+  selectedScopeGenomeName$ = this.selectedScopeGenomeNameSource.asObservable();
 
   select(scopeElement: string) {
     this.selectedScopeSource.next(scopeElement);
+  }
+
+  selectGenomeName(scopeElement: string) {
+    this.selectedScopeGenomeNameSource.next(scopeElement);
   }
  
 }

@@ -10,7 +10,7 @@
 
       mist-search-input(
         [query]="query$ | async"
-        [scope]="scope$ | async"
+        [scope]="scopeName$ | async"
         [isFetching]="isFetching$ | async"
         [errorMessage]="errorMessage$ | async"
         (onQueryChange)="putQuery($event)"

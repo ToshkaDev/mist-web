@@ -15,8 +15,9 @@ import { ScopeService } from '../../core/components/main-menu/scope.service';
     constructor(private scopeService: ScopeService) {
     }
 
-    select(rowVersion) {
-      this.scopeService.select(rowVersion);
+    select(versionAndName: any) {
+      this.scopeService.select(versionAndName.version);
+      this.scopeService.selectGenomeName(versionAndName.genomeName);
     }
     
   }
