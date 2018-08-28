@@ -5,8 +5,6 @@
         mat-select([(value)]="selectedComponent" (change)="entityChanged($event)")
           mat-option(value="genomes") Genomes
           mat-option(value="genes") Genes/Proteins
-          mat-option(value="taxonomy") Taxonomy
-          mat-option(value="protein-features") Protein Features
 
       mist-search-input(
         [query]="query$ | async"

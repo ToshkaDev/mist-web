@@ -34,7 +34,7 @@ export class GenesComponent extends MistComponent {
   }
 
   initialyzeFilter() {
-    //No filter in genes yet
+    //No filter in genes
     return null;
   }
   
@@ -56,10 +56,4 @@ export class GenesComponent extends MistComponent {
     }).unsubscribe();
     return filter;
   }
-
-  //Implement when will need
-  filter() {}
-  
-  //Implement when will need
-  reset() {}
 }
