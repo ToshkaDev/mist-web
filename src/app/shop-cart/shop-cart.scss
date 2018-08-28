@@ -7,11 +7,15 @@
     @extend %center;
   }
 
-.chip {
-    background-color: #96c75c;
+.shop-cart-button {
     color: white;
     @extend %center;
-    width: 100px;
-    height: 30px;
-    font-size: 110%;
+    width: 130px;
+    height: 45px;
+    margin-left: 5px;
+    border-radius: 12px;
+}
+
+.mat-button:hover {
+    background-color: #96c75c !important;
 }
