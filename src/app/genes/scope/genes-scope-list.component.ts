@@ -1,4 +1,4 @@
-import { Input, ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { Input, ChangeDetectionStrategy, Component } from '@angular/core';
 import MistDataSource from '../../core/common/mist.datasource';
 import { ScopeService } from '../../core/components/main-menu/scope.service';
 

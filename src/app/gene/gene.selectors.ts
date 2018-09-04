@@ -1,6 +1,5 @@
 import { createSelector } from '@ngrx/store';
 import { State } from '../app.reducers';
-import { State as GeneState } from './gene.reducers';
 
 export const selectGene = (state: State) =>
     state.gene;
