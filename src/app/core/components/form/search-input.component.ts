@@ -16,7 +16,7 @@ export class SearchInputComponent {
   @Input() scope = '';
   @Input() errorMessage = '';
   @Input() isFetching = false;
-  @Output() onQueryChange = this.queryChange$.map((value) => value.trim()).distinctUntilChanged();
+  @Output() onQueryChange = this.queryChange$.map((value) => value.trim());
   @Output() onScopeChange = this.scopeChange$.map((value) => value.trim());
 
 }

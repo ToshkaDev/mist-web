@@ -155,10 +155,15 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
     this.changeScopeTo(false);
     this.assignObservables(this.getCurrentUrl());
-    this.query = query;
-    if (this.query && this.query.length >= this.minQueryLenght) {
-      this.search();
+    // Don't send repeated requests. We don't use distinctUntilChanged() in SearchInputComponent
+    // because the search term can't be deleted in this case by clicking close icon.
+    if (query && this.query === query) {
+      return;
+    } else if (query && query.length >= this.minQueryLenght) {
+        this.query = query;
+        this.search();
     } else {
+        this.query = query;
         this.clear(this.query, this.scope); 
     } 
   }
@@ -260,6 +265,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.scopeName$ = null;
     if (this.routeToSelectionOption.has(currentUrl)) {
       this.query$ = this.store.select(this.SelectorsQuery.get(this.selectedComponent));
+      this.query$.subscribe(query => query ? this.query = query : this.query = null);
       this.scopeName$ = this.SelectorsScope.get(this.selectedComponent) ? this.scopeService.selectedScopeGenomeName$ : null;
       if (this.scopeName$)
         this.scopeName$.subscribe(scopeName => this.scopeName = scopeName);  
