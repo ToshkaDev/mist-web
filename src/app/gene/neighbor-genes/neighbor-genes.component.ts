@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import {FetchNeighbourGenes } from '../gene.actions';
 import * as fromGenes from '../gene.selectors';

@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { GenomesComponent } from '../genomes/genomes.component';
-import { GenesComponent } from '../genes/genes.component';
 
 @Component({
   selector: 'mist-home',

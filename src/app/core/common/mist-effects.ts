@@ -15,7 +15,6 @@ import { MistApi } from '../services/mist-api.service';
 import { Navigation }  from './navigation';
 
 import * as MistAction from './mist-actions';
-import { Entities } from './entities';
 
 @Injectable()
 export class MistEffects {
