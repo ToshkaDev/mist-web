@@ -16,12 +16,12 @@ import { CookieChangedService } from './cookie-changed.service';
   export class ShopCartGenomesComponent extends MistComponent {
     static readonly genomesColumns = ['Select', 'Genome', 'Taxonomy', 'Genbank Version', 'Assembly level'];
     readonly zeroResultCookieQuery = "-1";
+    static readonly baseEntity: string = Entities.GENOMES;
     @Input()
     thisEntitySelected;
     
-
     constructor(store: Store<any>, private cookieService: CookieService, private cookieChangedService: CookieChangedService) {
-        super(store, fromGenomesShopCart, ShopCartGenomesComponent.genomesColumns, Entities.GENOMES, true);
+        super(store, fromGenomesShopCart, ShopCartGenomesComponent.genomesColumns, Entities.GENOMES_SHOPCART, true);
         this.cookieChangedService.cookieChanged$.subscribe(message => this.sendQuery());
         this.sendQuery();
     }
@@ -40,8 +40,8 @@ import { CookieChangedService } from './cookie-changed.service';
     }
 
     getCookie(): string {
-        if (this.cookieService.check(`mist_Database-${super.getEntityName()}`)) {
-            return this.cookieService.get(`mist_Database-${super.getEntityName()}`);
+        if (this.cookieService.check(`mist_Database-${ShopCartGenomesComponent.baseEntity}`)) {
+            return this.cookieService.get(`mist_Database-${ShopCartGenomesComponent.baseEntity}`);
         }
         return null;
     }

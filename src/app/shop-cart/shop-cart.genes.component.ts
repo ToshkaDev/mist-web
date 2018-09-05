@@ -16,11 +16,12 @@ import { CookieChangedService } from './cookie-changed.service';
 export class ShopCartGenesComponent extends MistComponent {
     static readonly genesColumns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
     readonly zeroResultCookieQuery = "-1";
+    static readonly baseEntity: string = Entities.GENES;
     @Input()
     thisEntitySelected;
 
     constructor(store: Store<any>, private cookieService: CookieService, private cookieChangedService: CookieChangedService) {
-        super(store, fromGenesShopCart, ShopCartGenesComponent.genesColumns, Entities.GENES, true);
+        super(store, fromGenesShopCart, ShopCartGenesComponent.genesColumns, Entities.GENES_SHOPCART, true);
         this.cookieChangedService.cookieChanged$.subscribe(message => this.sendQuery());
         this.sendQuery();
     }
@@ -39,22 +40,17 @@ export class ShopCartGenesComponent extends MistComponent {
     }
 
     getCookie(): string {
-        if (this.cookieService.check(`mist_Database-${super.getEntityName()}`)) {
-            return this.cookieService.get(`mist_Database-${super.getEntityName()}`);
+        if (this.cookieService.check(`mist_Database-${ShopCartGenesComponent.baseEntity}`)) {
+            return this.cookieService.get(`mist_Database-${ShopCartGenesComponent.baseEntity}`);
         }
         return null;
     }
 
     getByIdList(query: string) {
         super.getStore().dispatch(new MistAction.GetByIdList(MistAction.GETBY_ID_LIST_GENES_SHOPCART, {
-            search: query, 
+            search: query,
             perPage: this.perPage, 
             pageIndex: this.defaultCurrentPage
         }));
     }
-
-    onCookieChanged() {
-        this.sendQuery();
-    }
-
 }
