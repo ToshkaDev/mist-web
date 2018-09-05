@@ -155,16 +155,20 @@ export abstract class MistListComponent implements OnChanges {
         this.result.connect().subscribe(itemsList => {
             if (this.entity == Entities.GENES) {
                 itemsList.forEach(item => {
-                    geneId = item.stable_id ? `${item.stable_id}|` : '';
-                    geneLocus = item.locus ? `${item.locus}|` : '';
-                    geneVersion = item.version ? `${item.version}|` : '';
-                    geneProduct = item.product ? item.product : '';
-                    geneOrganism = item.Component && item.Component.definition 
-                        ? item.Component.definition.split(',')[0].split('Contig')[0].split('chromosome')[0].trim()
-                        : '';
-                    proteinSequence = item.Aseq && item.Aseq.sequence ? item.Aseq.sequence : '';
-                    mistFile = `${mistFile}>${geneId}${geneLocus}${geneVersion} ${geneProduct} [${geneOrganism}]\n`;
-                    mistFile = mistFile + `${proteinSequence}\n`;
+                    // download only selected elements
+                    if (this.idsForShopCart.has(item.id+"")) {
+                        geneId = item.stable_id ? `${item.stable_id}|` : '';
+                        geneLocus = item.locus ? `${item.locus}|` : '';
+                        geneVersion = item.version ? `${item.version}|` : '';
+                        geneProduct = item.product ? item.product : '';
+                        geneOrganism = item.Component && item.Component.definition 
+                            ? item.Component.definition.split(',')[0].split('Contig')[0].split('chromosome')[0].trim()
+                            : '';
+                        proteinSequence = item.Aseq && item.Aseq.sequence ? item.Aseq.sequence : '';
+                        mistFile = `${mistFile}>${geneId}${geneLocus}${geneVersion} ${geneProduct} [${geneOrganism}]\n`;
+                        mistFile = mistFile + `${proteinSequence}\n`;
+                    }
+
                 });
             }
         }).unsubscribe();
