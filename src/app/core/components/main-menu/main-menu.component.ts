@@ -27,6 +27,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   private scopeName: string;
   private isFetching$: Observable<boolean>;
   private errorMessage$: Observable<string>;
+  private results$: Observable<any>;
   private selectedComponent: string = Entities.GENOMES;
   private smallMenuDisplay: any = {'visibility': 'visible'};
   private genomesFilter: GenomesFilter = new GenomesFilter(); 
@@ -76,6 +77,11 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   private SelectorsQuery = new Map<string, MemoizedSelector<State, string>>([
     [Entities.GENOMES, fromGenomes.getSearchQuery],
     [Entities.GENES, fromGenes.getSearchQuery],
+    //["protein-features", ""],
+  ]);
+
+  private SelectorsResults = new Map<string, MemoizedSelector<State, any>>([
+    [Entities.GENES, fromGenes.getSearchResults],
     //["protein-features", ""],
   ]);
 
@@ -156,8 +162,8 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.changeScopeTo(false);
     this.assignObservables(this.getCurrentUrl());
     // Don't send repeated requests. We don't use distinctUntilChanged() in SearchInputComponent
-    // because the search term can't be deleted in this case by clicking close icon.
-    if (query && this.query === query) {
+    // because the search term can't be deleted in this case by clicking close icon.    
+    if (query && this.query === query && this.compntHasScopeAndResIsLoaded()) {
       return;
     } else if (query && query.length >= this.minQueryLenght) {
         this.query = query;
@@ -263,13 +269,18 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   assignObservables(currentUrl: string) {
     this.query$ = null;
     this.scopeName$ = null;
+    this.results$ = null;
     if (this.routeToSelectionOption.has(currentUrl)) {
       this.query$ = this.store.select(this.SelectorsQuery.get(this.selectedComponent));
       this.query$.subscribe(query => query ? this.query = query : this.query = null);
       this.scopeName$ = this.SelectorsScope.get(this.selectedComponent) ? this.scopeService.selectedScopeGenomeName$ : null;
       if (this.scopeName$)
-        this.scopeName$.subscribe(scopeName => this.scopeName = scopeName);  
+        this.scopeName$.subscribe(scopeName => this.scopeName = scopeName);
+      if (this.componentHasScope()) {
+        this.results$ = this.store.select(this.SelectorsResults.get(this.selectedComponent));
+      }
     }
+
     this.isFetching$ = this.store.select(this.SelectorsIsFetching.get(this.selectedComponent));
     this.errorMessage$ = this.store.select(this.SelectorsErrorMessage.get(this.selectedComponent));
   }
@@ -296,6 +307,18 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
 
   private changeScopeTo(isScope: boolean) {
     this.isScope = isScope;
+  }
+
+  private componentHasScope() {
+    return this.SelectorsResults.has(this.routeToSelectionOption.get(this.getCurrentUrl()));
+  }
+
+  // should be called after assignObservables() was called. This happens naturally. Just a warning.
+  private compntHasScopeAndResIsLoaded() {
+    let isResultLoaded = false;
+    if (this.results$)
+      this.results$.subscribe(result => { if (result && result.length > 0) isResultLoaded = true });
+    return isResultLoaded && this.results$;
   }
 
 }
