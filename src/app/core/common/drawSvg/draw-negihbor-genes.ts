@@ -10,6 +10,7 @@ export default class DrawNeighborGenes {
     //Figure
     private svgWidth: number = 2000;
     private svgHeight: number = 500;
+    
     private clusterFrameHeight = this.svgHeight*0.4;
     static readonly yTranslationOfSvg = 95;
     static readonly frameRectXRadius = 7;
@@ -28,6 +29,7 @@ export default class DrawNeighborGenes {
     static readonly fillColour = 'white';
     static readonly borderColour = '#96c75c';
     static readonly currentGeneColour = "#96c75c";
+    static lastGeneStop;
 
     //Gene info box
     //Need to make textPositionFactorDirect, textPositionFactorReverse, 
@@ -40,7 +42,12 @@ export default class DrawNeighborGenes {
     static readonly reverseGeneInfoBoxY = DrawNeighborGenes.reverseGeneFigureTopY-150;
     static readonly textPositionFactorDirectY = 189;
     static readonly textPositionFactorReverseY = 131;
-    static readonly textPositionFactorX = 30;
+    static readonly textPositionFactorX = -20;
+    static readonly textPositionFactorXLast = -44;
+    static readonly xShiftLeft = 0.03;
+    static readonly xShiftLeftLast = 0.05;
+    static readonly clusterOffsetLeft = 0.05;
+    static readonly clusterOffsetRight = 0.084;
     
 
     constructor(element: ElementRef, d3Service: D3Service) {
@@ -63,21 +70,23 @@ export default class DrawNeighborGenes {
         let d3 = this.d3;
         let svgWidth = this.svgWidth;
         let svgHeight = this.svgHeight;
+        let clusterPictureWidth = this.svgWidth - 0.19*this.svgWidth;
         let d3ParentElement = d3.select(this.parentNativeElement);
         this.d3Svg = d3ParentElement.select<SVGSVGElement>(htmlElement);
         this.d3Svg.attr('width', svgWidth);
         this.d3Svg.attr('height', svgHeight);
-
-        let genomeNeighbStart = neighbGenes[0].start;
-        let genomeNeighbStop = neighbGenes[neighbGenes.length-2].stop;
+        let span = neighbGenes[neighbGenes.length-1].stop - neighbGenes[0].start;
+        let genomeNeighbStart = neighbGenes[0].start - span*DrawNeighborGenes.clusterOffsetLeft;
+        let genomeNeighbStop = neighbGenes[neighbGenes.length-1].stop + span*DrawNeighborGenes.clusterOffsetRight;
+        DrawNeighborGenes.lastGeneStop = neighbGenes[neighbGenes.length-1].stop;
         let geneScale = this.d3.scaleLinear()
         .domain([genomeNeighbStart, genomeNeighbStop])
-        .range([0, svgWidth]);
+        .range([10, clusterPictureWidth]);
 
         let containerGroup = this.d3Svg.append("g").attr("transform", `translate(0,${DrawNeighborGenes.yTranslationOfSvg})`);
-        let geneCluster = this.createFrameAndAppendGroupTags(containerGroup, [...neighbGenes, gene]);
+        let geneCluster = this.createFrameAndAppendGroupTags(containerGroup, [...neighbGenes, gene], clusterPictureWidth);
         this.createGenePaths(geneCluster, gene, geneScale);
-        this.createDescriptionBoxes(geneCluster, geneScale);
+        this.createDescriptionBoxes(geneCluster, geneScale, span);
         //Add axis
         containerGroup.append("g").attr("class", "gene-axis")
         .attr("transform", `translate(0,${DrawNeighborGenes.yTranslationOfSvg})`)
@@ -109,9 +118,9 @@ export default class DrawNeighborGenes {
         return divs;
     }
 
-    private createFrameAndAppendGroupTags(containerGroup, neighbourGenes) {
-        let svgWidth = this.svgWidth;
+    private createFrameAndAppendGroupTags(containerGroup, neighbourGenes, clusterPictureWidth) {
         let clusterFrameHeight = this.clusterFrameHeight;
+        let clusterFrameWidth = clusterPictureWidth+10;
         containerGroup.append("rect")
         .attr("transform", "translate(0,0)")
         .attr("fill-opacity", "0.00")
@@ -119,7 +128,7 @@ export default class DrawNeighborGenes {
         .attr("stroke-width", 2)
         .attr("rx", DrawNeighborGenes.frameRectXRadius)
         .attr("ry", DrawNeighborGenes.frameRectYRadius)
-        .attr('width', svgWidth)
+        .attr('width', clusterFrameWidth)
         .attr('height', clusterFrameHeight);
 
         return containerGroup.selectAll("g")
@@ -170,7 +179,7 @@ export default class DrawNeighborGenes {
         .attr("class", "gene-path");
     }
 
-    private createDescriptionBoxes(geneCluster, geneScale) {
+    private createDescriptionBoxes(geneCluster, geneScale, span) {
         let infoBoxHeight = this.infoBoxHeight;
         geneCluster.append("rect")
         .style("display", "none")
@@ -185,8 +194,12 @@ export default class DrawNeighborGenes {
         .attr("stroke-width", 1)
         .attr("rx", DrawNeighborGenes.infoBoxRectXRadius)
         .attr("ry", DrawNeighborGenes.infoBoxRectYRadius)
-        .attr("x", function(gene) {
-            return geneScale(gene.start);
+        .attr("x", function(gene, ind) {
+            let boxXCoord = gene.start - span*DrawNeighborGenes.xShiftLeft;
+            if (ind === geneCluster.size()-2) {
+                boxXCoord = gene.start - span*DrawNeighborGenes.xShiftLeftLast;
+            }
+            return geneScale(boxXCoord);
         })
         .attr("y", function(gene) {
         let isComplement = gene.strand === "-" ? true : false;
@@ -201,14 +214,19 @@ export default class DrawNeighborGenes {
         .on("mouseover", function (){
             let element = d3.select(this);
             let axisElem = document.getElementsByClassName('gene-axis')[0].getBoundingClientRect();
-            
+            let textPositionFactorXMain;
             let top, left, xAbsolute = axisElem["x"] + window.scrollX, yAbsolute = axisElem["y"] + window.scrollY;
             element.attr("dummy", function(gene){
                 let isComplement = gene.strand === "-" ? true : false;
                 if (!isComplement)
                     top = yAbsolute - DrawNeighborGenes.textPositionFactorDirectY + "px;";
                 else top = yAbsolute - DrawNeighborGenes.textPositionFactorReverseY + "px;";
-                left = geneScale(gene.start) + xAbsolute + DrawNeighborGenes.textPositionFactorX + "px;";
+                if (gene.stop === DrawNeighborGenes.lastGeneStop) {
+                    textPositionFactorXMain = DrawNeighborGenes.textPositionFactorXLast; 
+                }   
+                else 
+                    textPositionFactorXMain = DrawNeighborGenes.textPositionFactorX;
+                left = geneScale(gene.start) + xAbsolute + textPositionFactorXMain + "px;";
             });
 
             let elementsOfTheClass = document.getElementsByClassName(element.attr("class"));
@@ -251,7 +269,7 @@ export default class DrawNeighborGenes {
             let element = d3.select(this);
             let axisElem = document.getElementsByClassName('gene-axis')[0].getBoundingClientRect();
             let xAbsolute = axisElem["x"] + window.scrollX, yAbsolute = axisElem["y"] + window.scrollY;
-            
+            let textPositionFactorXMain;
             element
             .style("top", function(gene) {
                 let isComplement = gene.strand === "-" ? true : false;
@@ -261,7 +279,11 @@ export default class DrawNeighborGenes {
                 
             })
             .style("left", function(gene) {
-                return geneScale(gene.start) + xAbsolute + DrawNeighborGenes.textPositionFactorX + "px";
+                if (gene.stop === DrawNeighborGenes.lastGeneStop)
+                    textPositionFactorXMain = DrawNeighborGenes.textPositionFactorXLast; 
+                else 
+                    textPositionFactorXMain = DrawNeighborGenes.textPositionFactorX;
+                return geneScale(gene.start) + xAbsolute + textPositionFactorXMain + "px";
             })
             .style("display", "inline");
 
