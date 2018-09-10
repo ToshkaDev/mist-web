@@ -2,12 +2,12 @@ export interface Aseq {
     id: string;
     length: number;
     sequence: string;
-    pfam30: pfamInterface[];
+    pfam31: pfamInterface[];
     agfam2: any[];
     ecf1: any[];
     segs: any[];
     coils: any[];
-    tmhmm?: any[];
+    tmhmm2?: any[];
 }
 
 export interface pfamInterface {

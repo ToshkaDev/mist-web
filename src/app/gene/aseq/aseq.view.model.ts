@@ -64,7 +64,7 @@ export class AseqViewModel {
 
     constructor(aseqData: any) {
         if (aseqData) {
-            this.initializeProperties(aseqData.pfam30, this.pfam, this.pfamHeaders);
+            this.initializeProperties(aseqData.pfam31, this.pfam, this.pfamHeaders);
             this.initializeLowComplSegsProperties(aseqData.segs, this.lowComplSegs);
             this.initializeSequencesProperties(aseqData.sequence, this.sequence);
         }

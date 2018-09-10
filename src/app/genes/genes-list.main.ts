@@ -10,6 +10,7 @@ import { CookieChangedService } from '../shop-cart/cookie-changed.service';
 export abstract class GenesListMain extends MistListComponent implements OnInit {
   @Input() genes$: Observable<any>; 
   static readonly minSvgWidth = 100;
+  static readonly maxSvgWidth = 400;
   static readonly svgWidthToScreenWidthFactor = 0.30;
 
   private geneToAseq = new Map<string, any>();
@@ -66,8 +67,13 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
     let svgWidth = (window.innerWidth > 0) 
       ? window.innerWidth*GenesListMain.svgWidthToScreenWidthFactor
       : screen.width*GenesListMain.svgWidthToScreenWidthFactor;
-    return svgWidth > GenesListMain.minSvgWidth 
-      ? svgWidth 
-      : GenesListMain.minSvgWidth;
+
+    let svgWidthReady = svgWidth;
+    if (svgWidth < GenesListMain.minSvgWidth) 
+      svgWidthReady = GenesListMain.minSvgWidth;
+    else if (svgWidth > GenesListMain.maxSvgWidth)
+      svgWidthReady = GenesListMain.maxSvgWidth;
+
+    return svgWidthReady;
   }
 }

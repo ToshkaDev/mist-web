@@ -90,7 +90,7 @@ export default class DrawNeighborGenes {
         //Add axis
         containerGroup.append("g").attr("class", "gene-axis")
         .attr("transform", `translate(0,${DrawNeighborGenes.yTranslationOfSvg})`)
-        .call(d3.axisBottom(geneScale).ticks(11));
+        .call(d3.axisBottom(geneScale).tickSizeOuter(0).ticks(11));
         //create divs with gene descriptions
         let divs = this.addHtml([...neighbGenes, gene], d3ParentElement);
         this.addEventListeneres(geneCluster, d3, geneScale);

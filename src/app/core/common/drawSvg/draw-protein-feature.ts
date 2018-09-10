@@ -99,7 +99,7 @@ export default class DrawProteinFeature {
             .attr("width", function(d) { return featureScale(d.length)})
             .attr("height", DrawProteinFeature.kBackboneHeight)
             .attr("fill", "gray");
-        
+
         let drawCoiledCoils = this.drawCoiledCoils;
         let drawLowComplexityRegion = this.drawLowComplexityRegion;
         let drawTransmembraneRegin = this.drawTransmembraneRegin;
@@ -113,8 +113,8 @@ export default class DrawProteinFeature {
             let selectedElement = d3.select(this);
             d.coils ? drawCoiledCoils(selectedElement, d, kCoilsYstart, featureScale, getUniqueFeatureName) : null;                
             d.segs ? drawLowComplexityRegion(selectedElement, d, kLcrYstart, featureScale, getUniqueFeatureName) : null;
-            d.tmhmm ? drawTransmembraneRegin(selectedElement, d, kTransmembraneYstart, featureScale, getUniqueFeatureName) : null;
-            d.pfam30 ? drawDomain(selectedElement, d, drawDomainBorders, nameDomain, 
+            d.tmhmm2 ? drawTransmembraneRegin(selectedElement, d, kTransmembraneYstart, featureScale, getUniqueFeatureName) : null;
+            d.pfam31 ? drawDomain(selectedElement, d, drawDomainBorders, nameDomain, 
                 domainBorder, kDomainYstart, kDomainYend, kMiddleY, featureScale, getUniqueFeatureName) : null;
         })
     }
@@ -182,7 +182,7 @@ export default class DrawProteinFeature {
     private drawDomain(selectedElement: any, data: any, drawDomainBorders, nameDomain, domainBorder, 
         kDomainYstart, kDomainYend, kMiddleY, featureScale, getUniqueFeatureName) {
         let domain = selectedElement.selectAll('svg')
-            .data(data.pfam30 ? data.pfam30 : [])
+            .data(data.pfam31 ? data.pfam31 : [])
             .enter()
             .append('g');
 
