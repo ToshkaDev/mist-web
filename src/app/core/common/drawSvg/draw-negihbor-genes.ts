@@ -64,6 +64,8 @@ export default class DrawNeighborGenes {
         let d3ParentElement = this.d3.select(this.parentNativeElement);
         let d3Element = d3ParentElement.select<HTMLBaseElement>(htmlElement);
         d3Element.selectAll("g").remove();
+        let gene_divs = this.d3.selectAll("div.gene-div");
+        this.d3.selectAll("div.gene-div").remove();
     }
 
     drawNeighborGenes(htmlElement, gene: any, neighbGenes: any[]) {
@@ -97,7 +99,7 @@ export default class DrawNeighborGenes {
         this.addHtmlEventListeneres(divs, d3, geneScale);
     }
 
-    private addHtml(neighbourGenes, d3ParentElement) {       
+    private addHtml(neighbourGenes, d3ParentElement) {      
         let divs = d3ParentElement
         .selectAll("div")
         .data(neighbourGenes)
@@ -106,7 +108,7 @@ export default class DrawNeighborGenes {
         .style("display", "none")
         .style("position", "absolute")
         .attr("class", function(gene) {
-            return "gene"+gene.id;
+            return "gene"+gene.id+" gene-div";
         })
         .html(function(gene) {
             let format = gene.strand === "-" ? "complement(coords)" : "(coords)";
@@ -136,7 +138,7 @@ export default class DrawNeighborGenes {
         .enter()
         .append("g")
         .attr("class", function(d) {
-            return "gene"+d.id;
+            return "gene"+d.id+" gene-div";
         })
         .attr("transform", function(d) {
             return `translate(0, ${DrawNeighborGenes.yTranslationOfGenes})`;
@@ -184,7 +186,7 @@ export default class DrawNeighborGenes {
         geneCluster.append("rect")
         .style("display", "none")
         .attr("class", function(d) {
-            return "gene"+d.id;
+            return "gene"+d.id+" gene-div";
         })
         .attr('width', DrawNeighborGenes.infoBoxWidth)
         .attr('height', infoBoxHeight)
@@ -231,7 +233,7 @@ export default class DrawNeighborGenes {
 
             let elementsOfTheClass = document.getElementsByClassName(element.attr("class"));
             let textDiv = elementsOfTheClass[2];
-            let textDivStyles = textDiv.getAttribute("style").replace("display: none","display: inline");       
+            let textDivStyles = textDiv.getAttribute("style").replace("display: none","display: inline");          
             
             let regTop = /top: \d+.+px;/;
             let regLeft = /left: \d+.+px;/;
@@ -286,6 +288,8 @@ export default class DrawNeighborGenes {
                 return geneScale(gene.start) + xAbsolute + textPositionFactorXMain + "px";
             })
             .style("display", "inline");
+
+            
 
             let elementsOfTheClass = document.getElementsByClassName(element.attr("class"));
             let descripRect = elementsOfTheClass[1];

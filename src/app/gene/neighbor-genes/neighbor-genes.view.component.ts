@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ElementRef, HostListener } from '@angular/core';
+import { Subject }    from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { D3Service } from 'd3-ng2-service';
 import DrawNeighborGenes from '../../core/common/drawSvg/draw-negihbor-genes';
@@ -17,6 +18,9 @@ export class NeighborGenesView implements OnInit {
     private drawNeighborGenesObject: DrawNeighborGenes;
     static readonly minSvgWidth = 650;
     static readonly svgWidthToScreenWidthFactor = 0.87;
+
+    private itemNumber = 1;
+    private isDrawn = false;
     
     constructor(private elementRef: ElementRef, private d3Service: D3Service) {
     }
@@ -28,9 +32,11 @@ export class NeighborGenesView implements OnInit {
         geneClusterSvgWidth = geneClusterSvgWidth > NeighborGenesView.minSvgWidth 
             ? geneClusterSvgWidth 
             : NeighborGenesView.minSvgWidth;
-
+            
         this.drawNeighborGenesObject = new DrawNeighborGenes(this.elementRef, this.d3Service);
         this.drawNeighborGenesObject.setSvgSize(geneClusterSvgWidth);
+        this.itemNumber = 1;
+        this.isDrawn = false;
         this.gene$.skip(1).take(1).subscribe(gene => {
             if (gene && gene.length > 0) {
                 this.thisGene = gene;
@@ -48,17 +54,30 @@ export class NeighborGenesView implements OnInit {
             ? geneClusterSvgWidth 
             : NeighborGenesView.minSvgWidth;
 
+        this.itemNumber = 1;
         this.drawNeighborGenesObject.removeElement(this.htmlElement);
         this.drawNeighborGenesObject.setSvgSize(geneClusterSvgWidth);
         this.drawNeighborGenesObject.drawNeighborGenes(this.htmlElement, this.thisGene, this.theseNeighbourGenes);
     }
 
     checkNeighbourGenesAndDraw(gene, drawNeighborGenesObject) {
-        this.neighbourGenes$.skip(1).take(1).subscribe(neighbGenes => {
-            if (neighbGenes && neighbGenes.length > 0) {
-                this.theseNeighbourGenes = neighbGenes;
-                drawNeighborGenesObject.drawNeighborGenes(this.htmlElement, gene, neighbGenes);
+        this.neighbourGenes$.subscribe(neighbGenes => {
+            if (this.itemNumber === 1) {
+                if (neighbGenes && neighbGenes.length > 0) {
+                    this.theseNeighbourGenes = neighbGenes;
+                    drawNeighborGenesObject.drawNeighborGenes(this.htmlElement, gene, neighbGenes);
+                    this.isDrawn = true;
+                }
+            } else if (this.itemNumber === 2) {
+                if (neighbGenes && neighbGenes.length > 0) {
+                    this.theseNeighbourGenes = neighbGenes;
+                    if (this.isDrawn) {
+                        this.drawNeighborGenesObject.removeElement(this.htmlElement);
+                    }
+                    drawNeighborGenesObject.drawNeighborGenes(this.htmlElement, gene, neighbGenes);
+                }
             }
+            this.itemNumber++;
         });
     }
 }
