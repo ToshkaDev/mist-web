@@ -5,17 +5,21 @@ import MistDataSource from './mist.datasource';
 import { saveAs } from 'file-saver';
 import { Entities } from './entities';
 
+
 export abstract class MistListComponent implements OnChanges {
     @Input() displayedColumns: string[];  
     @Input() result: MistDataSource;
     @Output() cookieEvent = new EventEmitter<any>();
     idsForShopCart: Set<string> = new Set();
+    idsForShopCartArray:  string[] = [];
     idToIsDisabled: any = {};
     idToIsChecked: any = {};
     shopCartIdToIsChecked: any = {};
     checked: string = null;
     readonly fileNamePrefix= "MIST3_";
     readonly cookiePrefix = "mist_Database-";
+    readonly cookieLifeDays = 30;  
+    readonly cookieMaxQuantity = 160;
     
     constructor(private cookieService: CookieService, private cookieChangedService: CookieChangedService, private entity: string, private isShopCart: boolean = false)  {
     }
@@ -96,13 +100,20 @@ export abstract class MistListComponent implements OnChanges {
     }
 
     checkBoxChanged(event: any, entityId: number): void {
-        event.checked ? this.idsForShopCart.add(entityId+"") : this.idsForShopCart.delete(entityId+"");
+        let element = entityId+"";
+        if (event.checked ) {
+            if (!this.idsForShopCart.has(element)) 
+                this.idsForShopCartArray.push(element);
+            this.idsForShopCart.add(element);
+        } else {
+            let elementIndex = this.idsForShopCartArray.indexOf(element);
+            this.idsForShopCartArray.splice(elementIndex, 1);
+            this.idsForShopCart.delete(element);
+        }
     }
 
     checkBoxesChanged(event: any, entitiesList: any[]): void {
-        event.checked 
-            ? entitiesList.forEach(entity => this.idsForShopCart.add(entity.id+"")) 
-            : entitiesList.forEach(entity => this.idsForShopCart.delete(entity.id+""));
+        entitiesList.forEach(entity => this.checkBoxChanged(event, entity.id));
     }
 
     union(set1, set2) { 
@@ -116,9 +127,16 @@ export abstract class MistListComponent implements OnChanges {
         if (this.cookieIsSet()) {
             let currentCookie: Set<string> = new Set(this.getCookie().split(","));
             let unionCookie = this.union(currentCookie, this.idsForShopCart);
-            this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(unionCookie).join());
+            let cookieQnt = unionCookie.size;     
+            if (cookieQnt > this.cookieMaxQuantity) {
+                let toRemoveFrom = this.idsForShopCartArray.length - (cookieQnt - this.cookieMaxQuantity);
+                this.idsForShopCartArray.splice(toRemoveFrom);
+                this.idsForShopCart = new Set(this.idsForShopCartArray);
+                unionCookie = this.union(currentCookie, this.idsForShopCart);
+            }
+            this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(unionCookie).join(), this.cookieLifeDays);
         } else {
-            this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(this.idsForShopCart).join());
+            this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(this.idsForShopCart).join(), this.cookieLifeDays);
         }
         this.updateDisabledCheckboxes(this.idsForShopCart);
     }

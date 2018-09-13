@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, ElementRef, HostListener } from '@angular/core';
-import { Subject }    from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { D3Service } from 'd3-ng2-service';
 import DrawNeighborGenes from '../../core/common/drawSvg/draw-negihbor-genes';

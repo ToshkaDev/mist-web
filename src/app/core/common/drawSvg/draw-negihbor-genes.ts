@@ -64,7 +64,6 @@ export default class DrawNeighborGenes {
         let d3ParentElement = this.d3.select(this.parentNativeElement);
         let d3Element = d3ParentElement.select<HTMLBaseElement>(htmlElement);
         d3Element.selectAll("g").remove();
-        let gene_divs = this.d3.selectAll("div.gene-div");
         this.d3.selectAll("div.gene-div").remove();
     }
 
@@ -288,8 +287,6 @@ export default class DrawNeighborGenes {
                 return geneScale(gene.start) + xAbsolute + textPositionFactorXMain + "px";
             })
             .style("display", "inline");
-
-            
 
             let elementsOfTheClass = document.getElementsByClassName(element.attr("class"));
             let descripRect = elementsOfTheClass[1];
