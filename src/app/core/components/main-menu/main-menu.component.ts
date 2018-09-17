@@ -9,6 +9,9 @@ import * as fromScope from '../../../genes/scope/scope.selectors';
 import { State } from '../../../app.reducers';
 import { Entities } from '../../common/entities';
 import { ScopeService } from './scope.service';
+import { CookieService } from 'ngx-cookie-service';
+import { CookieChangedService } from '../../../shop-cart/cookie-changed.service';
+import { Misc } from '../../common/misc-enum';
 
 import * as MistAction from '../../common/mist-actions';
 
@@ -38,6 +41,8 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   private selected: string = this.defaultSelection;
   private isScope: boolean = false;
   private scopeIsSelected: boolean = false;
+  private genesInCart: string;
+  private genomesInCart: string;
 
   private routeToSmallMenuDisplay = new Map<string, string>([
     ["/", "visible"],
@@ -127,7 +132,9 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   constructor(
     private router: Router,
     private store: Store<any>,
-    private scopeService: ScopeService
+    private scopeService: ScopeService,
+    private cookieService: CookieService,
+    private cookieChangedService: CookieChangedService
   ) {}
 
   ngOnInit() {
@@ -146,7 +153,14 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
       else {
         this.query$ = null;
       }
-    });   
+    }); 
+    this.genesInCart = this.cookieChangedService.refreshCookieCounter(Entities.GENES);
+    this.genomesInCart = this.cookieChangedService.refreshCookieCounter(Entities.GENOMES);
+
+    this.cookieChangedService.isCookieAddedOrChanged$.subscribe(() => {
+      this.genesInCart = this.cookieChangedService.refreshCookieCounter(Entities.GENES);
+      this.genomesInCart = this.cookieChangedService.refreshCookieCounter(Entities.GENOMES);
+    });  
     this.scopeService.selectedScope$.subscribe(selectedScope => this.selectScope(selectedScope));
   }
 

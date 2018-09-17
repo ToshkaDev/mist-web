@@ -16,8 +16,12 @@
         [selectedComponent]="selectedComponent"
       ) 
       .right-side
-        mat-icon.shop-cart
-          a.non-decor(routerLink="/shop-cart") shopping_cart
+        div.cart
+          mat-icon.cart-icon
+            a.non-decor(routerLink="/shop-cart") shopping_cart 
+          div.cart-details  
+            div {{ genesInCart }}
+            div {{ genomesInCart }}
         mat-list.info([ngStyle]="smallMenuDisplay")
           mat-list-item
               a(routerLink="/member-genomes") Member Genomes

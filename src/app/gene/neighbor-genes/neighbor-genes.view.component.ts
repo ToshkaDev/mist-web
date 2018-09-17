@@ -16,7 +16,7 @@ export class NeighborGenesView implements OnInit {
     private theseNeighbourGenes: any[];
     private drawNeighborGenesObject: DrawNeighborGenes;
     static readonly minSvgWidth = 650;
-    static readonly svgWidthToScreenWidthFactor = 0.87;
+    static readonly svgWidthToScreenWidthFactor = 0.94;
 
     private itemNumber = 1;
     private isDrawn = false;

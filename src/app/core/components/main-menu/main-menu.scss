@@ -4,6 +4,7 @@ $example-font-size: 14px;
 .mist-box {
     display: flex;
 }
+
 .examples {
     position:relative;
     display: flex;
@@ -12,10 +13,12 @@ $example-font-size: 14px;
     color: $txt-color;
     font-size: $example-font-size;
 }
+
 .exmaple {
     margin-left: 5px;
     font-size: $example-font-size;
 }
+
 .select-genome {
     margin-left: auto;
     padding-left: 12%;
@@ -49,17 +52,27 @@ $example-font-size: 14px;
     height: $size;
     width: $size;
     line-height: $size;
-  }
+}
 
 .material-icons.mat-icon {
     @include md-icon-size(58px);
 }
 
-.shop-cart {
+.cart-icon {
     margin-left: 14px;
 }
 
 .non-decor {
     color: #96c75c;
     text-decoration: none;
+}
+
+.cart-details {
+    color: #4d4d4d;
+    font-size: 14px;
+    margin-left: 3px;
+}
+
+.cart {
+    display: flex;
 }

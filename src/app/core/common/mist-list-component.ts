@@ -4,6 +4,7 @@ import { CookieChangedService } from '../../shop-cart/cookie-changed.service';
 import MistDataSource from './mist.datasource';
 import { saveAs } from 'file-saver';
 import { Entities } from './entities';
+import { Misc } from './misc-enum';
 
 
 export abstract class MistListComponent implements OnChanges {
@@ -17,7 +18,7 @@ export abstract class MistListComponent implements OnChanges {
     shopCartIdToIsChecked: any = {};
     checked: string = null;
     readonly fileNamePrefix= "MIST3_";
-    readonly cookiePrefix = "mist_Database-";
+    readonly cookiePrefix = Misc.COOKIE_PREFIX;
     readonly cookieLifeDays = 30;  
     readonly cookieMaxQuantity = 160;
     
@@ -39,8 +40,8 @@ export abstract class MistListComponent implements OnChanges {
                     }
                 }); 
             }
-            if (this.cookieIsSet()) {
-                this.updateDisabledCheckboxes(new Set(this.getCookie().split(',')));
+            if (this.cookieChangedService.cookieIsSet(this.entity)) {
+                this.updateDisabledCheckboxes(new Set(this.cookieChangedService.getCookie(this.entity)));
             }
         });
     }
@@ -124,8 +125,8 @@ export abstract class MistListComponent implements OnChanges {
     }
 
     addToCart(): void {
-        if (this.cookieIsSet()) {
-            let currentCookie: Set<string> = new Set(this.getCookie().split(","));
+        if (this.cookieChangedService.cookieIsSet(this.entity)) {
+            let currentCookie: Set<string> = new Set(this.cookieChangedService.getCookie(this.entity));
             let unionCookie = this.union(currentCookie, this.idsForShopCart);
             let cookieQnt = unionCookie.size;     
             if (cookieQnt > this.cookieMaxQuantity) {
@@ -134,9 +135,14 @@ export abstract class MistListComponent implements OnChanges {
                 this.idsForShopCart = new Set(this.idsForShopCartArray);
                 unionCookie = this.union(currentCookie, this.idsForShopCart);
             }
-            this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(unionCookie).join(), this.cookieLifeDays);
+            if (unionCookie.size > currentCookie.size) {
+                this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(unionCookie).join(), this.cookieLifeDays);
+                this.cookieChangedService.notifyOfChange();
+            }
+            
         } else {
             this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(this.idsForShopCart).join(), this.cookieLifeDays);
+            this.cookieChangedService.notifyOfChange();
         }
         this.updateDisabledCheckboxes(this.idsForShopCart);
     }
@@ -149,19 +155,21 @@ export abstract class MistListComponent implements OnChanges {
     }
 
     removeFromCart(): void {     
-        if (this.cookieIsSet()) {
-            let idsToDeletFrom = new Set(this.getCookie().split(','));
+        if (this.cookieChangedService.cookieIsSet(this.entity)) {
+            let idsToDeletFrom = new Set(this.cookieChangedService.getCookie(this.entity));
             // Additional guard against unnecessary requests to server
-            let oldIdsToDeletFrom = new Set(this.getCookie().split(','));
+            let oldIdsToDeletFrom = new Set(this.cookieChangedService.getCookie(this.entity));
             this.idsForShopCart.forEach(element => {
                 idsToDeletFrom.delete(element);
             });
             if (idsToDeletFrom && idsToDeletFrom.size != 0 && idsToDeletFrom.size < oldIdsToDeletFrom.size) {
                 this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(idsToDeletFrom).join());
                 this.cookieChanged(`${this.entity}|cookie is changed`);
+                this.cookieChangedService.notifyOfChange();
             } else if (idsToDeletFrom && idsToDeletFrom.size == 0) {
                 this.cookieService.delete(`${this.cookiePrefix}${this.entity}`);
                 this.cookieChanged(`${this.entity}|cookie is deleted`);
+                this.cookieChangedService.notifyOfChange();
             } else {
                 console.log("Error in removeFromCart()")
             }      
@@ -194,13 +202,4 @@ export abstract class MistListComponent implements OnChanges {
         let file = new File([mistFile], `${this.fileNamePrefix}${this.entity}`, {type: "text/plain;charset=utf-8"});
         saveAs(file);
     }
-
-    cookieIsSet(): boolean {
-        return this.cookieService.check(`${this.cookiePrefix}${this.entity}`);
-    }
-
-    getCookie(): string {
-        return this.cookieService.get(`${this.cookiePrefix}${this.entity}`);
-    }
-
 }

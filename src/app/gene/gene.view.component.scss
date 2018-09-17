@@ -6,16 +6,7 @@
     margin: 30px;
 }
 
-.summary {
-    background-color: #889999;
-}
-
-.summary-text {
-    margin-left: 30px;
-    margin-right: 30px;
-    color: white;
-    font-weight: bold;
-}
 .detail-box {
-    border-style: groove;
+    max-width: 82%;
+    min-width: 500px;
 }

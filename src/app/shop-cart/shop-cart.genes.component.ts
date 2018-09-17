@@ -5,6 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MistComponent } from '../core/common/mist-component';
 import * as fromGenesShopCart from './shop-cart-genes.selector';
 import { Entities } from '../core/common/entities';
+import { Misc } from '../core/common/misc-enum';
 import * as MistAction from '../core/common/mist-actions';
 import { CookieChangedService } from './cookie-changed.service';
 
@@ -31,19 +32,14 @@ export class ShopCartGenesComponent extends MistComponent {
     }
     
     sendQuery() {
-        let cookie = this.getCookie();
+        let cookie = this.cookieChangedService.cookieIsSet(ShopCartGenesComponent.baseEntity)
+            ? this.cookieChangedService.getCookie(ShopCartGenesComponent.baseEntity).join(',')
+            : null;
         if (cookie) {
             this.getByIdList(cookie);
         } else {
             this.getByIdList(this.zeroResultCookieQuery);
         }
-    }
-
-    getCookie(): string {
-        if (this.cookieService.check(`mist_Database-${ShopCartGenesComponent.baseEntity}`)) {
-            return this.cookieService.get(`mist_Database-${ShopCartGenesComponent.baseEntity}`);
-        }
-        return null;
     }
 
     getByIdList(query: string) {

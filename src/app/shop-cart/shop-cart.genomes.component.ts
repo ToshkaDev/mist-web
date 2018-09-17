@@ -5,6 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MistComponent } from '../core/common/mist-component';
 import * as fromGenomesShopCart from './shop-cart-genomes.selectors';
 import { Entities } from '../core/common/entities';
+import { Misc } from '../core/common/misc-enum';
 import * as MistAction from '../core/common/mist-actions';
 import { CookieChangedService } from './cookie-changed.service';
 
@@ -31,19 +32,14 @@ import { CookieChangedService } from './cookie-changed.service';
     }
         
     sendQuery() {
-        let cookie = this.getCookie();
+        let cookie = this.cookieChangedService.cookieIsSet(ShopCartGenomesComponent.baseEntity)
+            ? this.cookieChangedService.getCookie(ShopCartGenomesComponent.baseEntity).join(',')
+            : null;
         if (cookie) {
             this.getByIdList(cookie);
         } else {
             this.getByIdList(this.zeroResultCookieQuery);
         }
-    }
-
-    getCookie(): string {
-        if (this.cookieService.check(`mist_Database-${ShopCartGenomesComponent.baseEntity}`)) {
-            return this.cookieService.get(`mist_Database-${ShopCartGenomesComponent.baseEntity}`);
-        }
-        return null;
     }
 
     getByIdList(query: string) {
@@ -54,6 +50,5 @@ import { CookieChangedService } from './cookie-changed.service';
             pageIndex: this.defaultCurrentPage
         }));
     }
-    
 
   }
