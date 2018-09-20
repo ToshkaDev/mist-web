@@ -1,13 +1,14 @@
 import { Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { CookieChangedService } from '../../shop-cart/cookie-changed.service';
+
 import MistDataSource from './mist.datasource';
 import { saveAs } from 'file-saver';
 import { Entities } from './entities';
-import { Misc } from './misc-enum';
+import {AbstractCart } from './abstract-cart';
 
 
-export abstract class MistListComponent implements OnChanges {
+export abstract class MistListComponent extends AbstractCart implements OnChanges {
     @Input() displayedColumns: string[];  
     @Input() result: MistDataSource;
     @Output() cookieEvent = new EventEmitter<any>();
@@ -18,11 +19,9 @@ export abstract class MistListComponent implements OnChanges {
     shopCartIdToIsChecked: any = {};
     checked: string = null;
     readonly fileNamePrefix= "MIST3_";
-    readonly cookiePrefix = Misc.COOKIE_PREFIX;
-    readonly cookieLifeDays = 30;  
-    readonly cookieMaxQuantity = 160;
     
     constructor(private cookieService: CookieService, private cookieChangedService: CookieChangedService, private entity: string, private isShopCart: boolean = false)  {
+        super(isShopCart);
     }
 
     ngOnChanges() {
@@ -53,27 +52,6 @@ export abstract class MistListComponent implements OnChanges {
     onAllCheckBoxChanged(event: any) {
         event.checked ? this.selectAll() : this.unselectAll();
         this.result.connect().subscribe(entitiesList => this.checkBoxesChanged(event, entitiesList));
-    }
-
-    onAddRemoveClickEvent(event: any): void {
-        switch(event) {
-            case 'addToCart': {
-                this.addToCart();
-                break; 
-            }
-            case 'removeFromCart': {
-                this.removeFromCart();
-                break; 
-            }
-            case 'downloadFromCart': {
-                this.downloadFromCart();
-                break; 
-            } 
-            default: { 
-                console.log("Something went wrong in onSelectClickEvent(event)"); 
-                break; 
-            } 
-        } 
     }
 
     selectAll(): void {

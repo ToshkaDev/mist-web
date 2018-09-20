@@ -1,19 +1,22 @@
-.detail-box.detail-uber
-    .summary
-        h5.summary-text Protein/Gene Summary
-    div.row(*ngIf="geneViewModel" class="gene_prot_info")
-        div(class="six columns")
-            table(class="u-full-width")
-                tbody
-                    tr(*ngFor="let property of geneViewModel.geneInfo")
-                        td(style="font-weight: bold;") {{ property.name }}
-                        td(*ngIf="property.genome_version; else notUrlBlock") 
-                            a(routerLink="/genomes/{{property.genome_version}}") {{ property.value }}
-                        ng-template(#notUrlBlock) 
+.detail-gene    
+    .detail-box.detail-uber
+        .summary
+            h5.summary-text Protein/Gene Summary
+        div.row(*ngIf="geneViewModel" class="gene_prot_info")
+            div(class="six columns")
+                table(class="u-full-width")
+                    tbody
+                        tr(*ngFor="let property of geneViewModel.geneInfo")
+                            td(style="font-weight: bold;") {{ property.name }}
+                            td(*ngIf="property.genome_version; else notUrlBlock") 
+                                a(routerLink="/genomes/{{property.genome_version}}") {{ property.value }}
+                            ng-template(#notUrlBlock) 
+                                td {{ property.value }}
+            div(class="six columns")
+                table(class="u-full-width")
+                    tbody
+                        tr(*ngFor="let property of geneViewModel.proteinInfo")
+                            td(style="font-weight: bold;") {{ property.name }}
                             td {{ property.value }}
-        div(class="six columns")
-            table(class="u-full-width")
-                tbody
-                    tr(*ngFor="let property of geneViewModel.proteinInfo")
-                        td(style="font-weight: bold;") {{ property.name }}
-                        td {{ property.value }}
+    div.pull-right.add-to-cart-button
+        cart-select-buttons((selectClickEvent)='onAddRemoveClickEvent($event)' [cart]="cart")

@@ -14,7 +14,10 @@ mat-toolbar {
 
 footer {
   background-color:#889999;
-  height: 140px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mist-logo {
@@ -30,14 +33,18 @@ footer {
   padding-bottom: 30px;
 }
 
-.full-width-container { 
-  max-width: 1800px;
-  clear: both;
-  margin: 0 auto;
-}
-
 .box {
   display: flex;
   justify-content: flex-end;
 }
 
+.footer-logos {
+  width: 220px;
+  height: 150px;
+  filter: grayscale(100%) brightness(3);
+}
+
+.footer-text {
+  color: white;
+  font-size: 24px;
+}

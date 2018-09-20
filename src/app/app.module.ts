@@ -13,7 +13,8 @@ import {
   MatToolbarModule,
   MatGridListModule,
   MatListModule,
-  MatChipsModule
+  MatChipsModule,
+  MatDialogModule
 } from '@angular/material';
 
 import {MatSelectModule} from '@angular/material/select';
@@ -111,6 +112,7 @@ import { GenesScopeListComponent } from './genes/scope/genes-scope-list.componen
     MatGridListModule,
     MatListModule,
     MatChipsModule,
+    MatDialogModule,
     StoreModule.forRoot(reducers, { metaReducers}),
     McBreadcrumbsModule.forRoot()
   ],

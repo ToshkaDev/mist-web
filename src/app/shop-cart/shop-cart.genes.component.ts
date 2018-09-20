@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { CookieService } from 'ngx-cookie-service';
 
 import { MistComponent } from '../core/common/mist-component';
 import * as fromGenesShopCart from './shop-cart-genes.selector';
 import { Entities } from '../core/common/entities';
-import { Misc } from '../core/common/misc-enum';
 import * as MistAction from '../core/common/mist-actions';
 import { CookieChangedService } from './cookie-changed.service';
 
@@ -21,9 +19,9 @@ export class ShopCartGenesComponent extends MistComponent {
     @Input()
     thisEntitySelected;
 
-    constructor(store: Store<any>, private cookieService: CookieService, private cookieChangedService: CookieChangedService) {
+    constructor(store: Store<any>, private cookieChangedService: CookieChangedService) {
         super(store, fromGenesShopCart, ShopCartGenesComponent.genesColumns, Entities.GENES_SHOPCART, true);
-        this.cookieChangedService.cookieChanged$.subscribe(message => this.sendQuery());
+        this.cookieChangedService.cookieChanged$.subscribe(() => this.sendQuery());
         this.sendQuery();
     }
 
