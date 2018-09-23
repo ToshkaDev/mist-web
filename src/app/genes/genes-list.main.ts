@@ -3,9 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { D3Service } from 'd3-ng2-service';
 import DrawProteinFeature from '../core/common/drawSvg/draw-protein-feature';
 import { Entities } from '../core/common/entities';
-import { CookieService } from 'ngx-cookie-service';
 import { MistListComponent } from '../core/common/mist-list-component';
-import { CookieChangedService } from '../shop-cart/cookie-changed.service';
+import { CartChangedService } from '../shop-cart/cart-changed.service';
 
 export abstract class GenesListMain extends MistListComponent implements OnInit {
   @Input() genes$: Observable<any>; 
@@ -19,8 +18,8 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
 
   private htmlElement: string = "div";
     
-  constructor(private elementRef: ElementRef, private d3Service: D3Service, cookieService: CookieService, cookieChangedService: CookieChangedService, isShopCart: boolean = false) {
-    super(cookieService, cookieChangedService, Entities.GENES, isShopCart);
+  constructor(private elementRef: ElementRef, private d3Service: D3Service, cartChangedService: CartChangedService, isShopCart: boolean = false) {
+    super(cartChangedService, Entities.GENES, isShopCart);
   }
  
   ngOnInit() {

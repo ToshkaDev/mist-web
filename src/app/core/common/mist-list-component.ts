@@ -1,6 +1,5 @@
-import { Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
-import { CookieChangedService } from '../../shop-cart/cookie-changed.service';
+import { Input, OnChanges } from '@angular/core';
+import { CartChangedService } from '../../shop-cart/cart-changed.service';
 
 import MistDataSource from './mist.datasource';
 import { saveAs } from 'file-saver';
@@ -11,7 +10,6 @@ import {AbstractCart } from './abstract-cart';
 export abstract class MistListComponent extends AbstractCart implements OnChanges {
     @Input() displayedColumns: string[];  
     @Input() result: MistDataSource;
-    @Output() cookieEvent = new EventEmitter<any>();
     idsForShopCart: Set<string> = new Set();
     idsForShopCartArray:  string[] = [];
     idToIsDisabled: any = {};
@@ -20,7 +18,7 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
     checked: string = null;
     readonly fileNamePrefix= "MIST3_";
     
-    constructor(private cookieService: CookieService, private cookieChangedService: CookieChangedService, private entity: string, private isShopCart: boolean = false)  {
+    constructor(private cartChangedService: CartChangedService, private entity: string, private isShopCart: boolean = false)  {
         super(isShopCart);
     }
 
@@ -39,14 +37,14 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
                     }
                 }); 
             }
-            if (this.cookieChangedService.cookieIsSet(this.entity)) {
-                this.updateDisabledCheckboxes(new Set(this.cookieChangedService.getCookie(this.entity)));
+            if (this.cartChangedService.webStorageItemIsSet(this.entity)) {
+                this.updateDisabledCheckboxes(new Set(this.cartChangedService.getWebStorageItem(this.entity)));
             }
         });
     }
     
-    cookieChanged(message) {
-        this.cookieChangedService.notify(message);
+    shopCartChanged(message) {
+        this.cartChangedService.notify(message);
     }
 
     onAllCheckBoxChanged(event: any) {
@@ -103,51 +101,52 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
     }
 
     addToCart(): void {
-        if (this.cookieChangedService.cookieIsSet(this.entity)) {
-            let currentCookie: Set<string> = new Set(this.cookieChangedService.getCookie(this.entity));
-            let unionCookie = this.union(currentCookie, this.idsForShopCart);
-            let cookieQnt = unionCookie.size;     
-            if (cookieQnt > this.cookieMaxQuantity) {
-                let toRemoveFrom = this.idsForShopCartArray.length - (cookieQnt - this.cookieMaxQuantity);
+        if (this.cartChangedService.webStorageItemIsSet(this.entity)) {
+            let currentCartItems: Set<string> = new Set(this.cartChangedService.getWebStorageItem(this.entity));
+            let unionCartItems = this.union(currentCartItems, this.idsForShopCart);
+            let itemsQnt = unionCartItems.size;     
+            if (itemsQnt > this.cartMaxQuantity) {
+                let toRemoveFrom = this.idsForShopCartArray.length - (itemsQnt - this.cartMaxQuantity);
                 this.idsForShopCartArray.splice(toRemoveFrom);
                 this.idsForShopCart = new Set(this.idsForShopCartArray);
-                unionCookie = this.union(currentCookie, this.idsForShopCart);
+                unionCartItems = this.union(currentCartItems, this.idsForShopCart);
+                alert("You can't add more thant " + this.cartMaxQuantity + " items in the cart.")
             }
-            if (unionCookie.size > currentCookie.size) {
-                this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(unionCookie).join(), this.cookieLifeDays);
-                this.cookieChangedService.notifyOfChange();
+            if (unionCartItems.size > currentCartItems.size) {
+                this.cartChangedService.setWebStorageItem(this.entity, Array.from(unionCartItems).join());
+                this.cartChangedService.notifyOfChange();
             }
             
         } else {
-            this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(this.idsForShopCart).join(), this.cookieLifeDays);
-            this.cookieChangedService.notifyOfChange();
+            this.cartChangedService.setWebStorageItem(this.entity, Array.from(this.idsForShopCart).join());
+            this.cartChangedService.notifyOfChange();
         }
         this.updateDisabledCheckboxes(this.idsForShopCart);
     }
 
-    updateDisabledCheckboxes(cookieSet: Set<string>) {
-        cookieSet.forEach(cookieId => {
-            this.idToIsDisabled[cookieId] = true;
-            this.idToIsChecked[cookieId] = 'checked'; 
+    updateDisabledCheckboxes(cartItemsSet: Set<string>) {
+        cartItemsSet.forEach(itemId => {
+            this.idToIsDisabled[itemId] = true;
+            this.idToIsChecked[itemId] = 'checked'; 
         });
     }
 
     removeFromCart(): void {     
-        if (this.cookieChangedService.cookieIsSet(this.entity)) {
-            let idsToDeletFrom = new Set(this.cookieChangedService.getCookie(this.entity));
+        if (this.cartChangedService.webStorageItemIsSet(this.entity)) {    
+            let idsToDeletFrom = new Set(this.cartChangedService.getWebStorageItem(this.entity));
             // Additional guard against unnecessary requests to server
-            let oldIdsToDeletFrom = new Set(this.cookieChangedService.getCookie(this.entity));
+            let oldIdsToDeletFrom = new Set(this.cartChangedService.getWebStorageItem(this.entity));
             this.idsForShopCart.forEach(element => {
                 idsToDeletFrom.delete(element);
             });
             if (idsToDeletFrom && idsToDeletFrom.size != 0 && idsToDeletFrom.size < oldIdsToDeletFrom.size) {
-                this.cookieService.set(`${this.cookiePrefix}${this.entity}`, Array.from(idsToDeletFrom).join());
-                this.cookieChanged(`${this.entity}|cookie is changed`);
-                this.cookieChangedService.notifyOfChange();
+                this.cartChangedService.setWebStorageItem(this.entity, Array.from(idsToDeletFrom).join());
+                this.shopCartChanged(`${this.entity}|cart is changed`);
+                this.cartChangedService.notifyOfChange();
             } else if (idsToDeletFrom && idsToDeletFrom.size == 0) {
-                this.cookieService.delete(`${this.cookiePrefix}${this.entity}`);
-                this.cookieChanged(`${this.entity}|cookie is deleted`);
-                this.cookieChangedService.notifyOfChange();
+                this.cartChangedService.removeWebStorageItem(this.entity);
+                this.shopCartChanged(`${this.entity}|cart is deleted`);
+                this.cartChangedService.notifyOfChange();
             } else {
                 console.log("Error in removeFromCart()")
             }      

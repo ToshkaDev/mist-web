@@ -1,3 +1,3 @@
 export enum Misc {
-    COOKIE_PREFIX = "mist_Database-"
+    SHOP_CART_PREFIX = "mist_Database-"
 }

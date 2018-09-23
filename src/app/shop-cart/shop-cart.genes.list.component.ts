@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 import { D3Service } from 'd3-ng2-service';
-import { CookieService } from 'ngx-cookie-service';
 
 import { GenesListMain } from '../genes/genes-list.main';
-import { CookieChangedService } from './cookie-changed.service';
+import { CartChangedService } from './cart-changed.service';
 
 
 @Component({
@@ -13,8 +12,8 @@ import { CookieChangedService } from './cookie-changed.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShopCartGenesList extends GenesListMain {
-  constructor(elementRef: ElementRef, d3Service: D3Service, cookieService: CookieService, cookieChangedService: CookieChangedService) {
-    super(elementRef, d3Service, cookieService, cookieChangedService, true)
+  constructor(elementRef: ElementRef, d3Service: D3Service, cartChangedService: CartChangedService) {
+    super(elementRef, d3Service, cartChangedService, true)
   }
  
 }

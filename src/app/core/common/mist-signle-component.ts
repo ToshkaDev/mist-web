@@ -1,9 +1,8 @@
 import { Input } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs/Observable';
 
 import { AbstractCart } from './abstract-cart';
-import { CookieChangedService } from '../../shop-cart/cookie-changed.service';
+import { CartChangedService } from '../../shop-cart/cart-changed.service';
 
 export abstract class MistSingleComponent extends AbstractCart  {
     @Input() entity$: Observable<any>;
@@ -11,7 +10,7 @@ export abstract class MistSingleComponent extends AbstractCart  {
     readonly cartRemove = {"add": false, "remove": true, "download": false};
     readonly cartAdd = {"add": true, "remove": false, "download": false};
 
-    constructor(private cookieService: CookieService, private cookieChangedService: CookieChangedService, private listEntity: string)  {
+    constructor(private cookieChangedService: CartChangedService, private listEntity: string)  {
         super();
     }
 
@@ -23,38 +22,38 @@ export abstract class MistSingleComponent extends AbstractCart  {
     }
 
     addToCart(): void {
-        if (this.cookieChangedService.cookieIsSet(this.listEntity)) {
-            let currentCookie: Set<string> = new Set(this.cookieChangedService.getCookie(this.listEntity));
+        if (this.cookieChangedService.webStorageItemIsSet(this.listEntity)) {
+            let currentCookie: Set<string> = new Set(this.cookieChangedService.getWebStorageItem(this.listEntity));
             currentCookie.add(this.entityId)
             let cookieQnt = currentCookie.size;     
-            if (cookieQnt > this.cookieMaxQuantity) {
-                window.alert("You can't add more thant " + this.cookieMaxQuantity + " in the cart.")
+            if (cookieQnt > this.cartMaxQuantity) {
+                alert("You can't add more thant " + this.cartMaxQuantity + " items in the cart.")
             }
             else {
-                this.cookieService.set(`${this.cookiePrefix}${this.listEntity}`, Array.from(currentCookie).join(), this.cookieLifeDays);
+                this.cookieChangedService.setWebStorageItem(this.listEntity, Array.from(currentCookie).join());
                 this.updateButtons();
                 this.cookieChangedService.notifyOfChange();
             }
         } else {
-            this.cookieService.set(`${this.cookiePrefix}${this.listEntity}`, this.entityId, this.cookieLifeDays);
+            this.cookieChangedService.setWebStorageItem(this.listEntity, this.entityId);
             this.updateButtons();
             this.cookieChangedService.notifyOfChange();
         }
     }
 
     removeFromCart(): void {     
-        if (this.cookieChangedService.cookieIsSet(this.listEntity)) {
-            let idsToDeletFrom = new Set(this.cookieChangedService.getCookie(this.listEntity));
-            let oldIdsToDeletFrom = new Set(this.cookieChangedService.getCookie(this.listEntity));
+        if (this.cookieChangedService.webStorageItemIsSet(this.listEntity)) {
+            let idsToDeletFrom = new Set(this.cookieChangedService.getWebStorageItem(this.listEntity));
+            let oldIdsToDeletFrom = new Set(this.cookieChangedService.getWebStorageItem(this.listEntity));
 
             idsToDeletFrom.delete(this.entityId);
 
             if (idsToDeletFrom && idsToDeletFrom.size != 0 && idsToDeletFrom.size < oldIdsToDeletFrom.size) {
-                this.cookieService.set(`${this.cookiePrefix}${this.listEntity}`, Array.from(idsToDeletFrom).join());
+                this.cookieChangedService.setWebStorageItem(this.listEntity, Array.from(idsToDeletFrom).join());
                 this.updateButtons();
                 this.cookieChangedService.notifyOfChange();
             } else if (idsToDeletFrom && idsToDeletFrom.size == 0) {
-                this.cookieService.delete(`${this.cookiePrefix}${this.listEntity}`);
+                this.cookieChangedService.removeWebStorageItem(this.listEntity);
                 this.updateButtons();
                 this.cookieChangedService.notifyOfChange();
             } else {
@@ -64,8 +63,8 @@ export abstract class MistSingleComponent extends AbstractCart  {
     }
 
     private updateButtons() {
-        let currentCookie: Set<string> = new Set(this.cookieChangedService.getCookie(this.listEntity));
-        if (currentCookie.has(this.entityId))
+        let currentCartItems: Set<string> = new Set(this.cookieChangedService.getWebStorageItem(this.listEntity));
+        if (currentCartItems.has(this.entityId))
             this.cart = this.cartRemove;
         else
             this.cart = this.cartAdd;

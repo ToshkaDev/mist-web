@@ -5,7 +5,7 @@ import { MistComponent } from '../core/common/mist-component';
 import * as fromGenesShopCart from './shop-cart-genes.selector';
 import { Entities } from '../core/common/entities';
 import * as MistAction from '../core/common/mist-actions';
-import { CookieChangedService } from './cookie-changed.service';
+import { CartChangedService } from './cart-changed.service';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,9 +19,9 @@ export class ShopCartGenesComponent extends MistComponent {
     @Input()
     thisEntitySelected;
 
-    constructor(store: Store<any>, private cookieChangedService: CookieChangedService) {
+    constructor(store: Store<any>, private cartChangedService: CartChangedService) {
         super(store, fromGenesShopCart, ShopCartGenesComponent.genesColumns, Entities.GENES_SHOPCART, true);
-        this.cookieChangedService.cookieChanged$.subscribe(() => this.sendQuery());
+        this.cartChangedService.cookieChanged$.subscribe(() => this.sendQuery());
         this.sendQuery();
     }
 
@@ -30,8 +30,8 @@ export class ShopCartGenesComponent extends MistComponent {
     }
     
     sendQuery() {
-        let cookie = this.cookieChangedService.cookieIsSet(ShopCartGenesComponent.baseEntity)
-            ? this.cookieChangedService.getCookie(ShopCartGenesComponent.baseEntity).join(',')
+        let cookie = this.cartChangedService.webStorageItemIsSet(ShopCartGenesComponent.baseEntity)
+            ? this.cartChangedService.getWebStorageItem(ShopCartGenesComponent.baseEntity).join(',')
             : null;
         if (cookie) {
             this.getByIdList(cookie);

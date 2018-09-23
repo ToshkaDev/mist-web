@@ -9,9 +9,7 @@ import * as fromScope from '../../../genes/scope/scope.selectors';
 import { State } from '../../../app.reducers';
 import { Entities } from '../../common/entities';
 import { ScopeService } from './scope.service';
-import { CookieService } from 'ngx-cookie-service';
-import { CookieChangedService } from '../../../shop-cart/cookie-changed.service';
-import { Misc } from '../../common/misc-enum';
+import { CartChangedService } from '../../../shop-cart/cart-changed.service';
 
 import * as MistAction from '../../common/mist-actions';
 
@@ -133,8 +131,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     private router: Router,
     private store: Store<any>,
     private scopeService: ScopeService,
-    private cookieService: CookieService,
-    private cookieChangedService: CookieChangedService
+    private cookieChangedService: CartChangedService
   ) {}
 
   ngOnInit() {
@@ -154,12 +151,12 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
         this.query$ = null;
       }
     }); 
-    this.genesInCart = this.cookieChangedService.refreshCookieCounter(Entities.GENES);
-    this.genomesInCart = this.cookieChangedService.refreshCookieCounter(Entities.GENOMES);
+    this.genesInCart = this.cookieChangedService.refreshWebStorageItemCounter(Entities.GENES);
+    this.genomesInCart = this.cookieChangedService.refreshWebStorageItemCounter(Entities.GENOMES);
 
     this.cookieChangedService.isCookieAddedOrChanged$.subscribe(() => {
-      this.genesInCart = this.cookieChangedService.refreshCookieCounter(Entities.GENES);
-      this.genomesInCart = this.cookieChangedService.refreshCookieCounter(Entities.GENOMES);
+      this.genesInCart = this.cookieChangedService.refreshWebStorageItemCounter(Entities.GENES);
+      this.genomesInCart = this.cookieChangedService.refreshWebStorageItemCounter(Entities.GENOMES);
     });  
     this.scopeService.selectedScope$.subscribe(selectedScope => this.selectScope(selectedScope));
   }

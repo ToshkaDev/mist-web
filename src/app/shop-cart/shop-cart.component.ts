@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 
 import { Entities } from '../core/common/entities';
-import { CookieChangedService } from './cookie-changed.service';
+import { CartChangedService } from './cart-changed.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,12 +23,12 @@ export class ShopCartComponent implements OnInit {
     'genes': {...this.buttonStyle}
 };
   
-  constructor(private cookieService: CookieService, private cookieChangedService: CookieChangedService) {
+  constructor(private cartChangedService: CartChangedService) {
   }
 
   ngOnInit() {
     this.setCookieBooleans();
-    this.cookieChangedService.cookieChanged$.subscribe(message => {
+    this.cartChangedService.cookieChanged$.subscribe(() => {
       let genomesCookieIsSetOld = this.genomesCookieIsSet;
       let genesCookieIsSetOld = this.genesCookieIsSet;
       this.setCookieBooleans();
@@ -42,14 +41,14 @@ export class ShopCartComponent implements OnInit {
   }
 
   setCookieBooleans() {
-    this.genomesCookieIsSet = this.cookieService.check(`mist_Database-${Entities.GENOMES}`);
+    this.genomesCookieIsSet = this.cartChangedService.webStorageItemIsSet(Entities.GENOMES);
     if (!this.genomesCookieIsSet) {
       this.isGenomesActive = false;
       this.isGenesActive = true;
       this.styles.genes["background-color"] = this.selectedButtonColor;
       this.styles.genomes["background-color"] = this.buttonColor;
     }
-    this.genesCookieIsSet = this.cookieService.check(`mist_Database-${Entities.GENES}`);
+    this.genesCookieIsSet = this.cartChangedService.webStorageItemIsSet(Entities.GENES);
   }
 
   buttonClicked(entity: string) {

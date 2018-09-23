@@ -1,9 +1,8 @@
 import { Misc } from './misc-enum';
 
 export abstract class AbstractCart  {
-    readonly cookiePrefix = Misc.COOKIE_PREFIX;
-    readonly cookieLifeDays = 30;  
-    readonly cookieMaxQuantity = 160;
+    readonly cartPrefix = Misc.SHOP_CART_PREFIX; 
+    readonly cartMaxQuantity = 500;
     readonly shopCartIndicators = {"add": false, "remove": true, "download": true}; 
     cart: any = {"add": true, "remove": false, "download": false};
 
