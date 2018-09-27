@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { 
-  MatButtonModule, 
-  MatIconModule, 
-  MatInputModule, 
-  MatProgressSpinnerModule, 
-  MatTableModule, 
-  MatPaginatorModule, 
-  MatCardModule, 
-  MatCheckboxModule, 
+import {
+  MatButtonModule,
+  MatIconModule,
+  MatInputModule,
+  MatProgressSpinnerModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatCardModule,
+  MatCheckboxModule,
   MatExpansionModule,
   MatToolbarModule,
   MatGridListModule,
@@ -55,12 +55,13 @@ import { ShopCartGenesComponent } from './shop-cart/shop-cart.genes.component';
 import { ShopCartGenomesComponent } from './shop-cart/shop-cart.genomes.component';
 import { ShopCartGenesList } from './shop-cart/shop-cart.genes.list.component';
 import { ShopCartGenomesList } from './shop-cart/shop-cart.genomes.list.component';
-import { MistEffects } from './core/common/mist-effects'; 
+import { MistEffects } from './core/common/mist-effects';
 import { CartChangedService } from './shop-cart/cart-changed.service';
 import { ScopeService } from './core/components/main-menu/scope.service';
 import { GenesScopeComponent } from './genes/scope/genes-scope.component';
 import { GenesScopeListComponent } from './genes/scope/genes-scope-list.component';
-
+import { GoogleCharts } from './core/services/google-charts.service';
+import { StProfileComponent } from './core/components/st-profile/st-profile.component';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -88,7 +89,8 @@ import { GenesScopeListComponent } from './genes/scope/genes-scope-list.componen
     ShopCartGenesList,
     ShopCartGenomesList,
     GenesScopeComponent,
-    GenesScopeListComponent
+    GenesScopeListComponent,
+    StProfileComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -116,7 +118,7 @@ import { GenesScopeListComponent } from './genes/scope/genes-scope-list.componen
     McBreadcrumbsModule.forRoot()
   ],
   providers: [
-    MistApi, D3Service, GenomeResolver, GeneResolver, CartChangedService, ScopeService
-  ]
+    MistApi, D3Service, GenomeResolver, GeneResolver, CartChangedService, ScopeService, GoogleCharts,
+  ],
 })
 export class AppModule { }
