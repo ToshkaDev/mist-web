@@ -12,8 +12,8 @@ import { CartChangedService } from './cart-changed.service';
 export class ShopCartComponent implements OnInit {
   isGenomesActive = true;
   isGenesActive = false;
-  genomesCookieIsSet = false;
-  genesCookieIsSet = false;
+  genomesCartElementsIsSet = false;
+  genesCartElementsIsSet = false;
   readonly buttonColor = '#b2c798';
   readonly selectedButtonColor = '#96c75c';
   readonly buttonTextColor = 'white';
@@ -29,26 +29,26 @@ export class ShopCartComponent implements OnInit {
   ngOnInit() {
     this.setCookieBooleans();
     this.cartChangedService.cookieChanged$.subscribe(() => {
-      let genomesCookieIsSetOld = this.genomesCookieIsSet;
-      let genesCookieIsSetOld = this.genesCookieIsSet;
+      let genomesCookieIsSetOld = this.genomesCartElementsIsSet;
+      let genesCookieIsSetOld = this.genesCartElementsIsSet;
       this.setCookieBooleans();
-      if (genomesCookieIsSetOld && !this.genomesCookieIsSet && this.genesCookieIsSet) {
+      if (genomesCookieIsSetOld && !this.genomesCartElementsIsSet && this.genesCartElementsIsSet) {
         this.buttonClicked(Entities.GENES);
-      } else if (genesCookieIsSetOld && !this.genesCookieIsSet && this.genomesCookieIsSet) {
+      } else if (genesCookieIsSetOld && !this.genesCartElementsIsSet && this.genomesCartElementsIsSet) {
         this.buttonClicked(Entities.GENOMES);
       }
     });
   }
 
   setCookieBooleans() {
-    this.genomesCookieIsSet = this.cartChangedService.webStorageItemIsSet(Entities.GENOMES);
-    if (!this.genomesCookieIsSet) {
+    this.genomesCartElementsIsSet = this.cartChangedService.webStorageItemIsSet(Entities.GENOMES);
+    if (!this.genomesCartElementsIsSet) {
       this.isGenomesActive = false;
       this.isGenesActive = true;
       this.styles.genes["background-color"] = this.selectedButtonColor;
       this.styles.genomes["background-color"] = this.buttonColor;
     }
-    this.genesCookieIsSet = this.cartChangedService.webStorageItemIsSet(Entities.GENES);
+    this.genesCartElementsIsSet = this.cartChangedService.webStorageItemIsSet(Entities.GENES);
   }
 
   buttonClicked(entity: string) {

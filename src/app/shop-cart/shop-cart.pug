@@ -1,12 +1,15 @@
-div(*ngIf="genomesCookieIsSet || genesCookieIsSet; else cookieIsNotSetBlock")
+div(*ngIf="genomesCartElementsIsSet || genesCartElementsIsSet; else cartIsNotSetBlock")
   div.center
-      button.shop-cart-button(mat-button (click)="buttonClicked('genomes')" *ngIf="genomesCookieIsSet" [ngStyle]="styles.genomes") Genomes
-      button.shop-cart-button(mat-button (click)="buttonClicked('genes')" *ngIf="genesCookieIsSet" [ngStyle]="styles.genes") Genes
+      button.shop-cart-button(mat-button (click)="buttonClicked('genomes')" *ngIf="genomesCartElementsIsSet" [ngStyle]="styles.genomes") Genomes
+      button.shop-cart-button(mat-button (click)="buttonClicked('genes')" *ngIf="genesCartElementsIsSet" [ngStyle]="styles.genes") Genes
 
   shop-cart-genomes(*ngIf="isGenomesActive")
   shop-cart-genes(*ngIf="isGenesActive")
 
-ng-template(#cookieIsNotSetBlock)
-  h3 Your cart is empty
+ng-template(#cartIsNotSetBlock)
+  .center
+    mat-card
+      h5 Your cart is empty
+      p.center Add items to the cart.
 
 

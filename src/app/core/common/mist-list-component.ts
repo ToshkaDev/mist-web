@@ -17,14 +17,22 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
     shopCartIdToIsChecked: any = {};
     checked: string = null;
     readonly fileNamePrefix= "MIST3_";
+    isIndetermined = false;
+    resultsNumber: number;
+    checkedAll = null;
     
     constructor(private cartChangedService: CartChangedService, private entity: string, private isShopCart: boolean = false)  {
         super(isShopCart);
     }
 
     ngOnChanges() {
-        this.result.connect().subscribe(entitiesList => { 
+        this.result.connect().subscribe(entitiesList => {
+            // need to empty shop-cart collections and update checkboxes states
+            this.idsForShopCartArray = [];
+            this.idsForShopCart.clear();
+            this.updateUnderteminedStateAndCheckAll();
             if (entitiesList && entitiesList.length > 0) {
+                this.resultsNumber = entitiesList.length; 
                 entitiesList.forEach(entity => {
                     // We need to control differently checkboxes in the shopping cart and when we're displaying the data.
                     // Id-wise checkbox control in shooping cart needed to avoid selection of thouse items which were not displayed 
@@ -86,6 +94,24 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
             let elementIndex = this.idsForShopCartArray.indexOf(element);
             this.idsForShopCartArray.splice(elementIndex, 1);
             this.idsForShopCart.delete(element);
+        }
+        this.updateUnderteminedStateAndCheckAll();
+    }
+
+    updateUnderteminedStateAndCheckAll() {
+        console.log("this.idsForShopCartArray.length " + this.idsForShopCartArray.length)
+        console.log("this.resultsNumber " + this.resultsNumber)
+        if (this.idsForShopCartArray.length === 0) {
+            this.isIndetermined = false;
+            this.checkedAll = null;
+        } 
+        else if (this.idsForShopCartArray.length !== this.resultsNumber) {
+            this.isIndetermined = true;
+            this.checkedAll = null;
+        }
+        else {
+            this.isIndetermined = false;
+            this.checkedAll = true;
         }
     }
 
