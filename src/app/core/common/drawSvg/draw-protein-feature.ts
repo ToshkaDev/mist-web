@@ -108,14 +108,20 @@ export default class DrawProteinFeature {
         let nameDomain = this.nameDomain;
         let domainBorder = this.domainBorder;
         let getUniqueFeatureName = this.getUniqueFeatureName;
+        let removeOverlapps = this.removeOverlapps;
+        let compareEvalues = this.compareEvalues;
+        let pfam31NotOverlapped: pfamInterface[];
         
         container.each(function(d, i) {
             let selectedElement = d3.select(this);
-            d.coils ? drawCoiledCoils(selectedElement, d, kCoilsYstart, featureScale, getUniqueFeatureName) : null;                
-            d.segs ? drawLowComplexityRegion(selectedElement, d, kLcrYstart, featureScale, getUniqueFeatureName) : null;
-            d.tmhmm2 ? drawTransmembraneRegin(selectedElement, d, kTransmembraneYstart, featureScale, getUniqueFeatureName) : null;
-            d.pfam31 ? drawDomain(selectedElement, d, drawDomainBorders, nameDomain, 
-                domainBorder, kDomainYstart, kDomainYend, kMiddleY, featureScale, getUniqueFeatureName) : null;
+            d.coils && d.coils.length ? drawCoiledCoils(selectedElement, d, kCoilsYstart, featureScale, getUniqueFeatureName) : null;                
+            d.segs && d.segs.length ? drawLowComplexityRegion(selectedElement, d, kLcrYstart, featureScale, getUniqueFeatureName) : null;
+            d.tmhmm2 && d.tmhmm2.length ? drawTransmembraneRegin(selectedElement, d, kTransmembraneYstart, featureScale, getUniqueFeatureName) : null;
+            if (d.pfam31 && d.pfam31.length) {
+                pfam31NotOverlapped = Array.from(removeOverlapps(d.pfam31, compareEvalues));
+                drawDomain(selectedElement, pfam31NotOverlapped, drawDomainBorders, nameDomain, 
+                domainBorder, kDomainYstart, kDomainYend, kMiddleY, featureScale, getUniqueFeatureName);
+            }
         })
     }
 
@@ -179,13 +185,12 @@ export default class DrawProteinFeature {
             });
     }
 
-    private drawDomain(selectedElement: any, data: any, drawDomainBorders, nameDomain, domainBorder, 
+    private drawDomain(selectedElement: any, pfam31: pfamInterface[], drawDomainBorders, nameDomain, domainBorder, 
         kDomainYstart, kDomainYend, kMiddleY, featureScale, getUniqueFeatureName) {
         let domain = selectedElement.selectAll('svg')
-            .data(data.pfam31 ? data.pfam31 : [])
+            .data(pfam31 && pfam31.length > 0 ? pfam31 : [])
             .enter()
             .append('g');
-
         domain.append('rect')
             .filter(function(d){ return d.ali_to - d.ali_from > 0 })
             .attr("x", function(d) { return featureScale(d.ali_from) })
@@ -204,6 +209,62 @@ export default class DrawProteinFeature {
 
         drawDomainBorders(domain, domainBorder, kDomainYstart, kDomainYend, featureScale, getUniqueFeatureName);
         nameDomain(domain, kMiddleY, featureScale, getUniqueFeatureName);
+    }
+
+    private removeOverlapps(pfam31: pfamInterface[], compareEvalues) {
+        let pfam31Sorted: pfamInterface[] = Array.from(pfam31).sort((pfam1,pfam2) => pfam1.ali_from - pfam2.ali_from);
+        // overlap threshold is 10 aa
+        let tolerance = 10;
+        let pfam31Final: Set<pfamInterface> = new Set();
+        let pfam1 = pfam31Sorted[0];
+        let significantPfam = pfam1;
+        let overlapLength;
+        let lastAdded = pfam1;
+        pfam31Final.add(pfam1);        
+
+        pfam31Sorted.slice(1).forEach(pfam2 => {
+            if (pfam1.ali_to > pfam2.ali_from) {
+                overlapLength = pfam1.ali_to - pfam2.ali_from;
+                if (overlapLength > tolerance) {
+                    significantPfam = compareEvalues(pfam1, pfam2);
+                    // if the previously added is pfam1 and it's less significant than pfam 2
+                    // then remove this previously added
+                    if (lastAdded === pfam1 && lastAdded !== significantPfam) {
+                        pfam31Final.delete(lastAdded);
+                    }
+                    pfam31Final.add(significantPfam);
+                    lastAdded = significantPfam;
+                } else {
+                    pfam31Final.add(pfam2);
+                    lastAdded = pfam2;
+                    significantPfam = pfam2;
+                }
+                pfam1 = significantPfam;
+            } else {
+                pfam31Final.add(pfam2);
+                lastAdded = pfam2;
+                significantPfam = pfam2;
+                pfam1 = significantPfam;
+            }
+        })
+        return pfam31Final;
+    }
+
+    private compareEvalues(pfam1: pfamInterface, pfam2: pfamInterface) {
+        let eval1 = pfam1.i_evalue;
+        let eval2 = pfam2.i_evalue;
+        let significantPfam;
+        if (eval1 < eval2)
+            significantPfam = pfam1;
+        else if (eval1 > eval2)
+            significantPfam = pfam2;
+        else if (eval1 == eval2) {
+            if (pfam1.ali_to - pfam1.ali_from >= pfam2.ali_to - pfam2.ali_from)
+                significantPfam = pfam1;
+            else
+                significantPfam = pfam2;
+        }
+        return significantPfam;
     }
 
     private drawDomainBorders(domain: any, domainBorder, kDomainYstart, kDomainYend, featureScale, getUniqueFeatureName) {
