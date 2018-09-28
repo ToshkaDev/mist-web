@@ -16,22 +16,17 @@ export class NeighborGenesView implements OnInit {
     private theseNeighbourGenes: any[];
     private drawNeighborGenesObject: DrawNeighborGenes;
     static readonly minSvgWidth = 650;
-    static readonly svgWidthToScreenWidthFactor = 0.94;
+    static readonly maxSvgWidth = 1200;
+    static readonly svgWidthToScreenWidthFactor = 1;
 
     private itemNumber = 1;
     private isDrawn = false;
     
     constructor(private elementRef: ElementRef, private d3Service: D3Service) {
     }
-
+      
     ngOnInit() {
-        let geneClusterSvgWidth = (window.innerWidth > 0) 
-            ? window.innerWidth*NeighborGenesView.svgWidthToScreenWidthFactor
-            : screen.width*NeighborGenesView.svgWidthToScreenWidthFactor;
-        geneClusterSvgWidth = geneClusterSvgWidth > NeighborGenesView.minSvgWidth 
-            ? geneClusterSvgWidth 
-            : NeighborGenesView.minSvgWidth;
-            
+        let geneClusterSvgWidth = this.getSvgWidth();
         this.drawNeighborGenesObject = new DrawNeighborGenes(this.elementRef, this.d3Service);
         this.drawNeighborGenesObject.setSvgSize(geneClusterSvgWidth);
         this.itemNumber = 1;
@@ -46,13 +41,7 @@ export class NeighborGenesView implements OnInit {
 
     @HostListener('window:resize', ['$event'])
     onWindowResize(ev) {
-        let geneClusterSvgWidth = (window.innerWidth > 0) 
-            ? window.innerWidth*NeighborGenesView.svgWidthToScreenWidthFactor
-            : screen.width*NeighborGenesView.svgWidthToScreenWidthFactor;
-        geneClusterSvgWidth = geneClusterSvgWidth > NeighborGenesView.minSvgWidth 
-            ? geneClusterSvgWidth 
-            : NeighborGenesView.minSvgWidth;
-
+        let geneClusterSvgWidth = this.getSvgWidth();
         this.itemNumber = 1;
         this.drawNeighborGenesObject.removeElement(this.htmlElement);
         this.drawNeighborGenesObject.setSvgSize(geneClusterSvgWidth);
@@ -78,5 +67,19 @@ export class NeighborGenesView implements OnInit {
             }
             this.itemNumber++;
         });
+    }
+
+    private getSvgWidth(): number {
+        let geneClusterSvgWidth = (window.innerWidth > 0) 
+            ? window.innerWidth*NeighborGenesView.svgWidthToScreenWidthFactor
+            : screen.width*NeighborGenesView.svgWidthToScreenWidthFactor;
+    
+        let svgWidthReady = geneClusterSvgWidth;
+        if (geneClusterSvgWidth < NeighborGenesView.minSvgWidth ) 
+          svgWidthReady = NeighborGenesView.minSvgWidth ;
+        else if (geneClusterSvgWidth > NeighborGenesView.maxSvgWidth)
+          svgWidthReady = NeighborGenesView.maxSvgWidth;
+    
+        return svgWidthReady;
     }
 }

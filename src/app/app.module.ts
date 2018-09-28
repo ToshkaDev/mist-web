@@ -60,6 +60,7 @@ import { CartChangedService } from './shop-cart/cart-changed.service';
 import { ScopeService } from './core/components/main-menu/scope.service';
 import { GenesScopeComponent } from './genes/scope/genes-scope.component';
 import { GenesScopeListComponent } from './genes/scope/genes-scope-list.component';
+import { ReplacePipe } from './core/common/util';
 
 
 @NgModule({
@@ -88,7 +89,8 @@ import { GenesScopeListComponent } from './genes/scope/genes-scope-list.componen
     ShopCartGenesList,
     ShopCartGenomesList,
     GenesScopeComponent,
-    GenesScopeListComponent
+    GenesScopeListComponent,
+    ReplacePipe
   ],
   imports: [
     AppRoutingModule,

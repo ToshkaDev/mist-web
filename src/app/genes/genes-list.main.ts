@@ -8,9 +8,9 @@ import { CartChangedService } from '../shop-cart/cart-changed.service';
 
 export abstract class GenesListMain extends MistListComponent implements OnInit {
   @Input() genes$: Observable<any>; 
-  static readonly minSvgWidth = 100;
-  static readonly maxSvgWidth = 800;
-  static readonly svgWidthToScreenWidthFactor = 0.30;
+  static readonly minSvgWidth = 290;
+  static readonly maxSvgWidth = 320;
+  static readonly svgWidthToScreenWidthFactor = 0.26;
 
   private geneToAseq = new Map<string, any>();
   private geneIsDrawn = new Map<string, boolean>();
