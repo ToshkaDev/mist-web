@@ -2,11 +2,29 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { fieldMap as FieldMap } from '../common/fields';
 import { Entities } from '../common/entities';
+import { Observable } from 'rxjs/Observable';
+
+export enum SignalDomainKind {
+  Chemotaxis = 'chemotaxis',
+  Transmitter = 'transmitter',
+  Receiver = 'receiver',
+  Input = 'input',
+  Output = 'output',
+  ECF = 'ecf',
+  Unknown = 'unknown',
+}
+
+export interface SignalProfileCount {
+  kind: SignalDomainKind;
+  function: string;
+  numDomains: number;
+}
 
 @Injectable()
 export class MistApi {
   // static BASE_URL = 'https://api.mistdb.com/v1';
   static BASE_URL = 'http://localhost:5000/v1';
+  // static BASE_URL = 'https://api.mistdb.caltech.edu/v1';
   static GENOMES_ROOT = '/genomes';
   static GENES_ROOT = '/genes';
   static paginationParams = "page=%pageNumber%&per_page=%perPage%";
@@ -26,7 +44,7 @@ export class MistApi {
 
   processGenomesFilter(query: any, url: string): string {
     for (let option in query.filter) {
-      if ((query.filter.taxonmoyToRank.has(option) || option == "assembly_level") && query.filter[option]) { 
+      if ((query.filter.taxonmoyToRank.has(option) || option == "assembly_level") && query.filter[option]) {
         let optionReady = option === "clazz" ? "class" : option;
         url = `${url}&where.${optionReady}=${query.filter[option].trim()}`;
       }
@@ -86,5 +104,11 @@ export class MistApi {
 
   getBaseUrl(entity: string) {
     return MistApi.ENTITY_TO_BASEURL.get(entity);
+  }
+
+  fetchStProfileData(genomeVersion): Observable<SignalProfileCount[]> {
+    const url = this.getBaseUrl(Entities.GENOME) + `/${genomeVersion}/st-profile`;
+    return this.http.get(url)
+      .map((response) => <SignalProfileCount[]>response.json());
   }
 }
