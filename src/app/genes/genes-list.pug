@@ -2,7 +2,7 @@ cart-select-buttons((selectClickEvent)='onAddRemoveClickEvent($event)' [cart]="c
 mat-table([dataSource]="result" class="gene-table")
   ng-container(matColumnDef="Select")
     mat-header-cell(*matHeaderCellDef class="select-header") 
-      mat-checkbox((change)="onAllCheckBoxChanged($event)" [indeterminate]="isIndetermined" [checked]='checkedAll') 
+      mat-checkbox((change)="onAllCheckBoxChanged($event)" [indeterminate]="isIndeterminate" [checked]='checkedAll') 
     mat-cell(*matCellDef="let gene" class="select-cell")
       mat-checkbox(disabled='{{idToIsDisabled[gene.id]}}' checked='{{idToIsChecked[gene.id]}}' (change)="checkBoxChanged($event, gene.id)") 
   ng-container(matColumnDef="Mist Id")

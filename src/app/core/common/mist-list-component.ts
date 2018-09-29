@@ -17,9 +17,9 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
     shopCartIdToIsChecked: any = {};
     checked: string = null;
     readonly fileNamePrefix= "MIST3_";
-    isIndetermined = false;
+    isIndeterminate: boolean = false;
     resultsNumber: number;
-    checkedAll = null;
+    checkedAll: boolean = false;
     
     constructor(private cartChangedService: CartChangedService, private entity: string, private isShopCart: boolean = false)  {
         super(isShopCart);
@@ -30,7 +30,7 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
             // need to empty shop-cart collections and update checkboxes states
             this.idsForShopCartArray = [];
             this.idsForShopCart.clear();
-            this.updateUnderteminedStateAndCheckAll();
+            this.updateInderteminateStateAndCheckAll();
             if (entitiesList && entitiesList.length > 0) {
                 this.resultsNumber = entitiesList.length; 
                 entitiesList.forEach(entity => {
@@ -86,7 +86,7 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
 
     checkBoxChanged(event: any, entityId: number): void {
         let element = entityId+"";
-        if (event.checked ) {
+        if (event.checked) {
             if (!this.idsForShopCart.has(element)) 
                 this.idsForShopCartArray.push(element);
             this.idsForShopCart.add(element);
@@ -95,23 +95,23 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
             this.idsForShopCartArray.splice(elementIndex, 1);
             this.idsForShopCart.delete(element);
         }
-        this.updateUnderteminedStateAndCheckAll();
+        this.updateInderteminateStateAndCheckAll();
     }
 
-    updateUnderteminedStateAndCheckAll() {
-        console.log("this.idsForShopCartArray.length " + this.idsForShopCartArray.length)
-        console.log("this.resultsNumber " + this.resultsNumber)
+    updateInderteminateStateAndCheckAll() {
         if (this.idsForShopCartArray.length === 0) {
-            this.isIndetermined = false;
-            this.checkedAll = null;
+            this.isIndeterminate = false;
+            this.checkedAll = false;
         } 
         else if (this.idsForShopCartArray.length !== this.resultsNumber) {
-            this.isIndetermined = true;
-            this.checkedAll = null;
+            this.isIndeterminate = true;
+            this.checkedAll = false;
         }
         else {
-            this.isIndetermined = false;
+            this.isIndeterminate = false;
             this.checkedAll = true;
+            // we need to fill in this.idToIsChecked json object
+            this.selectAll();
         }
     }
 
