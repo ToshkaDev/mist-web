@@ -57,7 +57,10 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
 
     onAllCheckBoxChanged(event: any) {
         event.checked ? this.selectAll() : this.unselectAll();
-        this.result.connect().subscribe(entitiesList => this.checkBoxesChanged(event, entitiesList));
+        this.result.connect().subscribe(entitiesList => {
+            if (entitiesList && entitiesList.length)
+                this.checkBoxesChanged(event, entitiesList);
+        });
     }
 
     selectAll(): void {
