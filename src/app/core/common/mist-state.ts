@@ -94,7 +94,6 @@ export function scopeReducer(state = initialState, action: MistAction.Actions) {
 function reducer (state, action: MistAction.Actions,  actions) {
     switch (action.type) {
         case actions[0]:
-            console.log("search or getByIdList")
             return {
                 ...state,
                 search: {
@@ -110,7 +109,6 @@ function reducer (state, action: MistAction.Actions,  actions) {
                 },
             }; 
         case actions[1]:
-            console.log("fetch")
             const url = action.payload.url;
             if (url) {
                 return {
@@ -125,7 +123,6 @@ function reducer (state, action: MistAction.Actions,  actions) {
             }
             break;
         case actions[2]:
-            console.log("fetch done")
             const { payload } = action;
             return {
                 ...state,
@@ -141,7 +138,6 @@ function reducer (state, action: MistAction.Actions,  actions) {
                 },
             };
         case actions[3]:
-            console.log("error")
             return {
                 ...state,
                 search: {

@@ -10,6 +10,8 @@ import { CartChangedService } from './cart-changed.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShopCartGenomesList extends GenomesListMain {
+  readonly cart = {"add": false, "remove": true, "download": false};
+  
   constructor(cartChangedService: CartChangedService) {
     super(cartChangedService, true);
   }

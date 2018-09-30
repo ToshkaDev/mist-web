@@ -98,10 +98,11 @@ export default class DrawNeighborGenes {
         this.addHtmlEventListeneres(divs, d3, geneScale);
     }
 
-    private addHtml(neighbourGenes, d3ParentElement) {      
+    private addHtml(neighbourGenes, d3ParentElement) { 
         let divs = d3ParentElement
-        .selectAll("div")
-        .data(neighbourGenes)
+        .selectAll('div')
+        // seems like the first item from neighbourGenes gets bind up to d3ParentElement; so adding an additional dummy item
+        .data(["", ...neighbourGenes])
         .enter()
         .append('div')
         .style("display", "none")
