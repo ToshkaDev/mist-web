@@ -1,8 +1,8 @@
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { zip } from 'rxjs/observable/zip';
 
-import { GoogleCharts } from '../../services/google-charts.service';
-import { MistApi, SignalProfileCount } from '../../services/mist-api.service';
+import { GoogleCharts } from '../../../app/core/services/google-charts.service';
+import { MistApi, SignalProfileCount } from '../../../app/core/services/mist-api.service';
 
 const ucFirst = (value) => value[0].toUpperCase() + value.substr(1);
 

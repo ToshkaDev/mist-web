@@ -10,6 +10,7 @@ import { HelpComponent } from './home/help.component';
 import { ShopCartComponent } from './shop-cart/shop-cart.component';
 import { GenomeResolver } from './genome/genome.resolver';
 import { GeneResolver } from './gene/gene.resolver';
+import { SignalGenes } from './genome/signal_genes/signal_genes';
 
 const routes: Routes = [
   { path: '', 
@@ -38,10 +39,20 @@ const routes: Routes = [
           },
           {
             path: ':version',
-            component: GenomeComponent,
             data: { breadcrumbs: '{{ genome.version }}' },
-            resolve: { genome: GenomeResolver }
-          } 
+            resolve: { genome: GenomeResolver },
+            children: [
+              {
+                path: '',
+                component: GenomeComponent
+              },
+              {
+                path: 'signal_genes',
+                component: SignalGenes,
+                data: { breadcrumbs: 'Signal Genes' }
+              }  
+            ]
+          },
         ],
       },
       {
