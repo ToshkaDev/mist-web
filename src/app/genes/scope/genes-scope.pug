@@ -1,4 +1,4 @@
-div(*ngIf="query$ | async" class="flex-container scope")
+div(*ngIf="(query$ | async) && (dataSource.connect() | async).length" class="flex-container scope")
   h5.scope-text Select Genome
   mat-paginator.paginator-txt-size([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
   mist-genes-scope-list(

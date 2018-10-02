@@ -5,11 +5,15 @@ $example-font-size: 14px;
     display: flex;
 }
 
+.min-size {
+    min-width: 850px;
+}
+
 .examples {
     position:relative;
     display: flex;
     justify-content: center;
-    margin-top: -160px;
+    margin-top: -120px;
     color: $txt-color;
     font-size: $example-font-size;
 }
@@ -47,6 +51,11 @@ $example-font-size: 14px;
     color: #24d1b4;
 }
 
+.non-decor-green {
+    color: #96c75c;
+    text-decoration: none;
+}
+
 @mixin md-icon-size($size: 24px) {
     font-size: $size;
     height: $size;
@@ -60,11 +69,6 @@ $example-font-size: 14px;
 
 .cart-icon {
     margin-left: 14px;
-}
-
-.non-decor {
-    color: #96c75c;
-    text-decoration: none;
 }
 
 .cart-details {

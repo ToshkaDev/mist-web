@@ -91,6 +91,15 @@
     }
  }
 
+.genes-container {
+    min-width: 1100px;
+}
+
+.genomes-container {
+    max-width: 1500px;
+    min-width: 850px;
+}
+
 .pull-right {
     display: flex;
     justify-content: flex-end;
@@ -126,7 +135,7 @@ mat-checkbox.mat-checked ._mat-icon {
 .flex-container {
     padding-left: 3%;
     padding-right: 3%;
-    width:90%;
+    width: 90%;
 }
 
 .summary {
@@ -166,5 +175,5 @@ mat-checkbox.mat-checked ._mat-icon {
 }
 
 .gText {
-    white-space:nowrap;
+    white-space: nowrap;
 }

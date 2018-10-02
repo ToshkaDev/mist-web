@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/observable/from';
@@ -12,7 +12,6 @@ import * as MistAction from '../core/common/mist-actions';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'mist-genomes',
-  styleUrls: ['./genomes.scss'],
   templateUrl: './genomes.pug',
 })
 export class GenomesComponent extends MistComponent {
@@ -32,10 +31,26 @@ export class GenomesComponent extends MistComponent {
     {'value':'Scaffold', 'viewValue' : 'Scaffold'}, 
     {'value':'Contig', 'viewValue' : 'Contig'}];
   static readonly genomesColumns = ['Select', 'Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
+  filterClass = "two columns";
+  filterStyle;
 
   constructor(store: Store<any>) {
     super(store, fromGenomes, GenomesComponent.genomesColumns, Entities.GENOMES);
+    this.onWindowResize();
   } 
+
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    if (window.innerWidth <= 1155) {
+      this.filterClass = "eight columns"; 
+      this.filterStyle = {"margin-left": "7%"};
+    } else {
+      this.filterClass = "two columns"; 
+      this.filterStyle = null;
+    }
+
+  }
 
   search(query: string, scope: string) {
     super.getStore().dispatch(new MistAction.Search(MistAction.SEARCH_GENOMES, {

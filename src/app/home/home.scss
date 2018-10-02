@@ -1,7 +1,5 @@
 mat-grid-tile {
     background: #3dbfc1;
-    display: flex;
-    justify-content: center;
 }
 
 .right-side {
@@ -14,7 +12,9 @@ mat-grid-tile {
     clear: both;
     margin: 0 auto;
 }
-.info {
-    display: flex;
-    justify-content: center; 
+
+.home-info {
+    list-style-type: none;
+    font-size: 18px;
+    margin: 5%;
 }

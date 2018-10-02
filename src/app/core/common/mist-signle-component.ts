@@ -10,7 +10,7 @@ export abstract class MistSingleComponent extends AbstractCart  {
     readonly cartRemove = {"add": false, "remove": true, "download": false};
     readonly cartAdd = {"add": true, "remove": false, "download": false};
 
-    constructor(private cookieChangedService: CartChangedService, private listEntity: string)  {
+    constructor(private cartChangedService: CartChangedService, private listEntity: string)  {
         super();
     }
 
@@ -22,40 +22,40 @@ export abstract class MistSingleComponent extends AbstractCart  {
     }
 
     addToCart(): void {
-        if (this.cookieChangedService.webStorageItemIsSet(this.listEntity)) {
-            let currentCookie: Set<string> = new Set(this.cookieChangedService.getWebStorageItem(this.listEntity));
-            currentCookie.add(this.entityId)
-            let cookieQnt = currentCookie.size;     
-            if (cookieQnt > this.cartMaxQuantity) {
+        if (this.cartChangedService.webStorageItemIsSet(this.listEntity)) {
+            let currentShopCartItems: Set<string> = new Set(this.cartChangedService.getWebStorageItem(this.listEntity));
+            currentShopCartItems.add(this.entityId)
+            let shopCartQnt = currentShopCartItems.size;     
+            if (shopCartQnt > this.cartMaxQuantity) {
                 alert("You can't add more thant " + this.cartMaxQuantity + " items in the cart.")
             }
             else {
-                this.cookieChangedService.setWebStorageItem(this.listEntity, Array.from(currentCookie).join());
+                this.cartChangedService.setWebStorageItem(this.listEntity, Array.from(currentShopCartItems).join());
                 this.updateButtons();
-                this.cookieChangedService.notifyOfChange();
+                this.cartChangedService.notifyOfChange();
             }
         } else {
-            this.cookieChangedService.setWebStorageItem(this.listEntity, this.entityId);
+            this.cartChangedService.setWebStorageItem(this.listEntity, this.entityId);
             this.updateButtons();
-            this.cookieChangedService.notifyOfChange();
+            this.cartChangedService.notifyOfChange();
         }
     }
 
     removeFromCart(): void {     
-        if (this.cookieChangedService.webStorageItemIsSet(this.listEntity)) {
-            let idsToDeletFrom = new Set(this.cookieChangedService.getWebStorageItem(this.listEntity));
-            let oldIdsToDeletFrom = new Set(this.cookieChangedService.getWebStorageItem(this.listEntity));
+        if (this.cartChangedService.webStorageItemIsSet(this.listEntity)) {
+            let idsToDeletFrom = new Set(this.cartChangedService.getWebStorageItem(this.listEntity));
+            let oldIdsToDeletFrom = new Set(this.cartChangedService.getWebStorageItem(this.listEntity));
 
             idsToDeletFrom.delete(this.entityId);
 
             if (idsToDeletFrom && idsToDeletFrom.size != 0 && idsToDeletFrom.size < oldIdsToDeletFrom.size) {
-                this.cookieChangedService.setWebStorageItem(this.listEntity, Array.from(idsToDeletFrom).join());
+                this.cartChangedService.setWebStorageItem(this.listEntity, Array.from(idsToDeletFrom).join());
                 this.updateButtons();
-                this.cookieChangedService.notifyOfChange();
+                this.cartChangedService.notifyOfChange();
             } else if (idsToDeletFrom && idsToDeletFrom.size == 0) {
-                this.cookieChangedService.removeWebStorageItem(this.listEntity);
+                this.cartChangedService.removeWebStorageItem(this.listEntity);
                 this.updateButtons();
-                this.cookieChangedService.notifyOfChange();
+                this.cartChangedService.notifyOfChange();
             } else {
                 console.log("Error in removeFromCart()");
             }      
@@ -63,7 +63,7 @@ export abstract class MistSingleComponent extends AbstractCart  {
     }
 
     private updateButtons() {
-        let currentCartItems: Set<string> = new Set(this.cookieChangedService.getWebStorageItem(this.listEntity));
+        let currentCartItems: Set<string> = new Set(this.cartChangedService.getWebStorageItem(this.listEntity));
         if (currentCartItems.has(this.entityId))
             this.cart = this.cartRemove;
         else

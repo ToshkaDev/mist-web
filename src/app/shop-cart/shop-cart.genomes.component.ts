@@ -14,14 +14,14 @@ import { CartChangedService } from './cart-changed.service';
   })
   export class ShopCartGenomesComponent extends MistComponent {
     static readonly genomesColumns = ['Select', 'Genome', 'Taxonomy', 'Genbank Version', 'Assembly level'];
-    readonly zeroResultCookieQuery = "-1";
+    readonly zeroResultShopCartQuery = "-1";
     static readonly baseEntity: string = Entities.GENOMES;
     @Input()
     thisEntitySelected;
     
     constructor(store: Store<any>, private cartChangedService: CartChangedService) {
         super(store, fromGenomesShopCart, ShopCartGenomesComponent.genomesColumns, Entities.GENOMES_SHOPCART, true);
-        this.cartChangedService.cookieChanged$.subscribe(() => this.sendQuery());
+        this.cartChangedService.cartChanged$.subscribe(() => this.sendQuery());
         this.sendQuery();
     }
 
@@ -30,13 +30,13 @@ import { CartChangedService } from './cart-changed.service';
     }
         
     sendQuery() {
-        let cookie = this.cartChangedService.webStorageItemIsSet(ShopCartGenomesComponent.baseEntity)
+        let shopCartItems = this.cartChangedService.webStorageItemIsSet(ShopCartGenomesComponent.baseEntity)
             ? this.cartChangedService.getWebStorageItem(ShopCartGenomesComponent.baseEntity).join(',')
             : null;
-        if (cookie) {
-            this.getByIdList(cookie);
+        if (shopCartItems) {
+            this.getByIdList(shopCartItems);
         } else {
-            this.getByIdList(this.zeroResultCookieQuery);
+            this.getByIdList(this.zeroResultShopCartQuery);
         }
     }
 

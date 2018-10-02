@@ -14,14 +14,14 @@ import { CartChangedService } from './cart-changed.service';
   })
 export class ShopCartGenesComponent extends MistComponent {
     static readonly genesColumns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
-    readonly zeroResultCookieQuery = "-1";
+    readonly zeroResultShopCartQuery = "-1";
     static readonly baseEntity: string = Entities.GENES;
     @Input()
     thisEntitySelected;
 
     constructor(store: Store<any>, private cartChangedService: CartChangedService) {
         super(store, fromGenesShopCart, ShopCartGenesComponent.genesColumns, Entities.GENES_SHOPCART, true);
-        this.cartChangedService.cookieChanged$.subscribe(() => this.sendQuery());
+        this.cartChangedService.cartChanged$.subscribe(() => this.sendQuery());
         this.sendQuery();
     }
 
@@ -30,13 +30,13 @@ export class ShopCartGenesComponent extends MistComponent {
     }
     
     sendQuery() {
-        let cookie = this.cartChangedService.webStorageItemIsSet(ShopCartGenesComponent.baseEntity)
+        let shopCartItems = this.cartChangedService.webStorageItemIsSet(ShopCartGenesComponent.baseEntity)
             ? this.cartChangedService.getWebStorageItem(ShopCartGenesComponent.baseEntity).join(',')
             : null;
-        if (cookie) {
-            this.getByIdList(cookie);
+        if (shopCartItems) {
+            this.getByIdList(shopCartItems);
         } else {
-            this.getByIdList(this.zeroResultCookieQuery);
+            this.getByIdList(this.zeroResultShopCartQuery);
         }
     }
 

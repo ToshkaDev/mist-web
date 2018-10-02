@@ -131,7 +131,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     private router: Router,
     private store: Store<any>,
     private scopeService: ScopeService,
-    private cookieChangedService: CartChangedService
+    private cartChangedService: CartChangedService
   ) {}
 
   ngOnInit() {
@@ -151,12 +151,12 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
         this.query$ = null;
       }
     }); 
-    this.genesInCart = this.cookieChangedService.refreshWebStorageItemCounter(Entities.GENES);
-    this.genomesInCart = this.cookieChangedService.refreshWebStorageItemCounter(Entities.GENOMES);
+    this.genesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENES);
+    this.genomesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENOMES);
 
-    this.cookieChangedService.isCookieAddedOrChanged$.subscribe(() => {
-      this.genesInCart = this.cookieChangedService.refreshWebStorageItemCounter(Entities.GENES);
-      this.genomesInCart = this.cookieChangedService.refreshWebStorageItemCounter(Entities.GENOMES);
+    this.cartChangedService.isItemsAddedOrChanged$.subscribe(() => {
+      this.genesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENES);
+      this.genomesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENOMES);
     });  
     this.scopeService.selectedScope$.subscribe(selectedScope => this.selectScope(selectedScope));
   }
@@ -191,11 +191,12 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     // We can't use distinctUntilChanged() on onScopeChange in search-input.component.ts because
     // the 'All Genomes' default scope searchterm can't be deleted in this case by clicking on delete icon
     // in search-input.pug
-   if (!scope || scope.length == 0) {
+    if (!scope || scope.length == 0) {
         this.clearAndPrepare();
     } else if (this.scopeSearchTerm === scope || this.scopeName === scope) {
         return;
     } else if (scope && scope.length > 0) {
+        this.router.navigate([this.selectionOptionToRoute.get(Entities.GENES)]);
         this.launchScopeSearch(scope); 
     }
   }

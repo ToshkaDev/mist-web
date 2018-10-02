@@ -4,19 +4,19 @@ import { Misc } from '../core/common/misc-enum';
  
 @Injectable()
 export class CartChangedService {
-  private cookieChangedSource = new Subject<string>();
-  private isCookieAddedOrChangedSource = new Subject<boolean>();
-  cookieChanged$ = this.cookieChangedSource.asObservable();
-  isCookieAddedOrChanged$ = this.isCookieAddedOrChangedSource.asObservable();
+  private cartChangedSource = new Subject<string>();
+  private isItemsAddedOrChangedSource = new Subject<boolean>();
+  cartChanged$ = this.cartChangedSource.asObservable();
+  isItemsAddedOrChanged$ = this.isItemsAddedOrChangedSource.asObservable();
   private webStorageLifeDays: number = 30; 
   private milliSecsInOneDay: number = 8.64e+7; 
 
   notify(message: string) {
-    this.cookieChangedSource.next(message);
+    this.cartChangedSource.next(message);
   }
 
   notifyOfChange() {
-    this.isCookieAddedOrChangedSource.next(true);
+    this.isItemsAddedOrChangedSource.next(true);
   }
  
   getWebStorageItemString(entity: string): string {

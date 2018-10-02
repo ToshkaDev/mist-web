@@ -1,6 +1,6 @@
 .container(class="full-width-container")
   .row
-    .mist-box
+    .mist-box.min-size
       mat-form-field.select-genome
         mat-select([(value)]="selectedComponent" (change)="entityChanged($event)")
           mat-option(value="genomes") Genomes
@@ -18,24 +18,23 @@
       .right-side
         div.cart
           mat-icon.cart-icon
-            a.non-decor(routerLink="/shop-cart") shopping_cart 
+            a.non-decor-green(routerLink="/shop-cart") shopping_cart 
           div.cart-details  
             div {{ genesInCart }}
             div {{ genomesInCart }}
         mat-list.info([ngStyle]="smallMenuDisplay")
-          mat-list-item
-              a(routerLink="/member-genomes") Member Genomes
+          //- mat-list-item
+          //-     a(routerLink="/member-genomes") Member Genomes
           mat-list-item
               a(routerLink="/help") Help
           mat-list-item
-              a(href="https://api.mistdb.com/") API
-  .row 
+              a(href="https://api.mistdb.caltech.edu/") API
+  .row.min-size 
     div.examples Examples:
       span.exmaple(*ngFor="let example of examples; last as isLast") 
         a(routerLink="{{ example.link }}" (click)="putQuery(example.queryString)") {{ example.queryString }}
         span(*ngIf="!isLast") {{ "; " }}
   mist-genes-scope(*ngIf="isScope")
 
-      
 
 

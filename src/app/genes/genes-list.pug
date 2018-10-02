@@ -27,6 +27,6 @@ mat-table([dataSource]="result" class="gene-table")
           div ({{ gene.Component.definition }})
   ng-container(matColumnDef="Location")
     mat-header-cell(*matHeaderCellDef class="location-header table-txt-size") Location
-    mat-cell(*matCellDef="let gene" class="location-cell") {{ gene.Component.version}} [{{gene.location}}]
+    mat-cell(*matCellDef="let gene" class="location-cell") {{ gene.Component.version}} [{{ gene.location | replace:['(', ' ('] }}]
   mat-header-row(*matHeaderRowDef="displayedColumns")
   mat-row(*matRowDef="let row; columns: displayedColumns;")

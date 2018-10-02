@@ -12,7 +12,6 @@ import { ScopeService } from '../core/components/main-menu/scope.service';
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'mist-genes',
-    styleUrls: ['./genes.scss'],
     templateUrl: './genes.pug',
   })
 export class GenesComponent extends MistComponent {

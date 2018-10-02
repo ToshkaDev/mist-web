@@ -1,12 +1,22 @@
-.container(class="nofull-width-container")
+.container.nofull-width-container
   .row
     hr
 
   .row
     mat-grid-list(cols="3" rowHeight="3:4")
-      mat-grid-tile 
-        h2 Introduction
-      mat-grid-tile 
-        h2 Statistics
       mat-grid-tile
-        h2 Citation
+        ul.home-info
+          li
+            h4 Introduction
+      mat-grid-tile
+        ul.home-info
+          li
+            h4 Statistics
+          li > 132 000 genomes
+          li > 480 000 000 genes 
+          li > 80 000 000 precomputed features 
+      mat-grid-tile
+        ul.home-info
+          li
+            h4 Citation
+          li Manuscript describing MiST3.0 is in preparation. 

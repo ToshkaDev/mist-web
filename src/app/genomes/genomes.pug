@@ -1,7 +1,7 @@
-div(*ngIf="query$ | async" class="flex-container")
-    mat-paginator.paginator-txt-size([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
+div(*ngIf="(query$ | async) && (dataSource.connect() | async).length" class="flex-container")
+    mat-paginator.genomes-container.paginator-txt-size([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
     div(class="row")
-      div(*ngIf="displayedColumns" class="two columns")
+      div(*ngIf="displayedColumns" [className]="filterClass" [ngStyle]="filterStyle")
         form( (ngSubmit)="filter()" #filterForm="ngForm")
           div.form-group
             mat-form-field
@@ -22,7 +22,7 @@ div(*ngIf="query$ | async" class="flex-container")
             div.pull-right
               button(mat-button type="submit" class="mist-button-standard" [disabled]="!filterForm.form.valid") Filter
               button(mat-button type="submit" class="mist-button-standard" [disabled]="!filterForm.form.valid" (click)="reset()") Reset
-      div(class="ten columns")
+      div(class="ten columns").genomes-container
         mist-genomes-list(
           [selected]="selected"
           (taxonomyEvent)="filterTaxonomy($event)"

@@ -21,26 +21,26 @@ export class ShopCartComponent implements OnInit {
   private styles = {
     'genomes': {...this.buttonStyle, 'background-color': this.selectedButtonColor}, 
     'genes': {...this.buttonStyle}
-};
+  };
   
   constructor(private cartChangedService: CartChangedService) {
   }
 
   ngOnInit() {
-    this.setCookieBooleans();
-    this.cartChangedService.cookieChanged$.subscribe(() => {
-      let genomesCookieIsSetOld = this.genomesCartElementsIsSet;
-      let genesCookieIsSetOld = this.genesCartElementsIsSet;
-      this.setCookieBooleans();
-      if (genomesCookieIsSetOld && !this.genomesCartElementsIsSet && this.genesCartElementsIsSet) {
+    this.setShopCartBooleans();
+    this.cartChangedService.cartChanged$.subscribe(() => {
+      let genomesCartElementsIsSetOld = this.genomesCartElementsIsSet;
+      let genesCartElementsIsSetOld = this.genesCartElementsIsSet;
+      this.setShopCartBooleans();
+      if (genomesCartElementsIsSetOld && !this.genomesCartElementsIsSet && this.genesCartElementsIsSet) {
         this.buttonClicked(Entities.GENES);
-      } else if (genesCookieIsSetOld && !this.genesCartElementsIsSet && this.genomesCartElementsIsSet) {
+      } else if (genesCartElementsIsSetOld && !this.genesCartElementsIsSet && this.genomesCartElementsIsSet) {
         this.buttonClicked(Entities.GENOMES);
       }
     });
   }
 
-  setCookieBooleans() {
+  setShopCartBooleans() {
     this.genomesCartElementsIsSet = this.cartChangedService.webStorageItemIsSet(Entities.GENOMES);
     if (!this.genomesCartElementsIsSet) {
       this.isGenomesActive = false;

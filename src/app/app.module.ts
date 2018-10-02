@@ -62,6 +62,7 @@ import { GenesScopeComponent } from './genes/scope/genes-scope.component';
 import { GenesScopeListComponent } from './genes/scope/genes-scope-list.component';
 import { GoogleCharts } from './core/services/google-charts.service';
 import { StProfileComponent } from './core/components/st-profile/st-profile.component';
+import { ReplacePipe } from './core/common/util';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -91,6 +92,7 @@ import { StProfileComponent } from './core/components/st-profile/st-profile.comp
     GenesScopeComponent,
     GenesScopeListComponent,
     StProfileComponent,
+    ReplacePipe
   ],
   imports: [
     AppRoutingModule,

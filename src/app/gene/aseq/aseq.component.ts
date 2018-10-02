@@ -29,7 +29,7 @@ export class AseqComponent implements OnInit {
         'sequence': {...this.buttonStyle}
     };
     static readonly higlightColor = '#daf8b5';
-    static readonly minSvgWidth = 100;
+    static readonly minSvgWidth = 350;
     static readonly svgWidthToScreenWidthFactor = 0.33;
     private drawProteinFeature: DrawProteinFeature;
     private aseqData: any;
