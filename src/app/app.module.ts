@@ -61,7 +61,7 @@ import { ScopeService } from './core/components/main-menu/scope.service';
 import { GenesScopeComponent } from './genes/scope/genes-scope.component';
 import { GenesScopeListComponent } from './genes/scope/genes-scope-list.component';
 import { GoogleCharts } from './core/services/google-charts.service';
-import { StProfileComponent } from './genome/st-profile/st-profile.component';
+import { StProfileComponent } from '../app/core/components/st-profile/st-profile.component';
 import { ReplacePipe } from './core/common/util';
 import { SignalGenes } from './genome/signal_genes/signal_genes';
 

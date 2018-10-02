@@ -82,6 +82,7 @@ export class AseqViewModel {
 
 
     private initializeProperties(pfamData: any[], property: any, headers: any[])  {
+        pfamData = Array.from(pfamData).sort((pfam1,pfam2) => pfam1.ali_from - pfam2.ali_from);
         for (let index in pfamData) {
             let properties = [];
             let elementToPush;
