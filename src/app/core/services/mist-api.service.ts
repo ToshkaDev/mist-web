@@ -37,20 +37,11 @@ export class MistApi {
     [Entities.GENES, MistApi.BASE_URL + MistApi.GENES_ROOT],
     [Entities.GENES_SHOPCART, MistApi.BASE_URL + MistApi.GENES_ROOT],
     [Entities.GENE, MistApi.BASE_URL + MistApi.GENES_ROOT],
-    [Entities.NEIGHBOUR_GENES, MistApi.BASE_URL + MistApi.GENES_ROOT]
+    [Entities.NEIGHBOUR_GENES, MistApi.BASE_URL + MistApi.GENES_ROOT],
+    [Entities.SIGNAL_GENES, MistApi.BASE_URL + MistApi.GENOMES_ROOT]
   ]);
 
   constructor(private http: Http) {}
-
-  processGenomesFilter(query: any, url: string): string {
-    for (let option in query.filter) {
-      if ((query.filter.taxonmoyToRank.has(option) || option == "assembly_level") && query.filter[option]) {
-        let optionReady = option === "clazz" ? "class" : option;
-        url = `${url}&where.${optionReady}=${query.filter[option].trim()}`;
-      }
-    }
-    return url;
-  }
 
   searchWithPaginationUrl(query: any, entity: string): string {
     let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
@@ -76,8 +67,20 @@ export class MistApi {
       return this.processGenomesFilter(query, url);
     } else if (entity == Entities.GENES) {
       return this.processGenesFilter(query, url);
+    } else if (entity == Entities.SIGNAL_GENES) {
+      return this.processSignalGenesFilter(query, url);
     }
     // will need to reconsider
+    return url;
+  }
+
+  processGenomesFilter(query: any, url: string): string {
+    for (let option in query.filter) {
+      if ((query.filter.taxonmoyToRank.has(option) || option == "assembly_level") && query.filter[option]) {
+        let optionReady = option === "clazz" ? "class" : option;
+        url = `${url}&where.${optionReady}=${query.filter[option].trim()}`;
+      }
+    }
     return url;
   }
 
@@ -86,10 +89,23 @@ export class MistApi {
     return url;
   }
 
+  processSignalGenesFilter(query: any, url: string): string {
+    url = `${url}&where.ranks=${query.filter.ranks}&where.component_id=${query.filter.componentId}`;
+    return url;
+  }
+
   getByIdList(query: any, entity: string): string {
     let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
     url = this.specifyFields(`${url}&`, FieldMap.get(entity));
     return this.getBaseUrl(entity) + `?count&where.id=${query.search}` + "&" + url;
+  }
+
+  getByRanks(query: any, entity: string): string {
+    let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
+    url = this.processFilter(query, url, entity);
+    url = this.specifyFields(`${url}&`, FieldMap.get(entity));
+    url = this.getBaseUrl(entity) + `/${query.search}` + "/signal_genes?" + url;
+    return url;
   }
 
   specifyFields(url: string, fields: string): string {

@@ -25,10 +25,6 @@ import { CartChangedService } from './cart-changed.service';
         this.sendQuery();
     }
 
-    initialyzeFilter() {
-        return null;
-    }
-        
     sendQuery() {
         let shopCartItems = this.cartChangedService.webStorageItemIsSet(ShopCartGenomesComponent.baseEntity)
             ? this.cartChangedService.getWebStorageItem(ShopCartGenomesComponent.baseEntity).join(',')

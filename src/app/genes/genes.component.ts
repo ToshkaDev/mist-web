@@ -7,7 +7,6 @@ import { MistComponent } from '../core/common/mist-component';
 import * as fromGenes from './genes.selectors';
 import { Entities } from '../core/common/entities';
 import * as MistAction from '../core/common/mist-actions';
-import { ScopeService } from '../core/components/main-menu/scope.service';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,8 +17,7 @@ export class GenesComponent extends MistComponent {
   static readonly genesColumns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
   private genesFilter: GenesFilter = new GenesFilter(); 
 
-  // scopeService is used in the template
-  constructor(store: Store<any>, private scopeService: ScopeService) {
+  constructor(store: Store<any>) {
     super(store, fromGenes, GenesComponent.genesColumns, Entities.GENES);
   }
 
@@ -33,11 +31,6 @@ export class GenesComponent extends MistComponent {
     }));
   }
 
-  initialyzeFilter() {
-    //No filter in genes
-    return null;
-  }
-  
   sendQuery() {
     let scope, searchterm;
     this.query$.subscribe(currentSearchterm => searchterm = currentSearchterm).unsubscribe();

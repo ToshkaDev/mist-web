@@ -70,6 +70,13 @@ const scopeActionTypes = [
     MistAction.FETCH_ERROR_SCOPE, 
     MistAction.CLEAR_SCOPE
 ];
+const signalGenesTypes = [
+    MistAction.GETBY_RANKS_SIGNAL_GENES,
+    MistAction.FETCH_SIGNAL_GENES, 
+    MistAction.FETCH_DONE_SIGNAL_GENES, 
+    MistAction.FETCH_ERROR_SIGNAL_GENES, 
+    MistAction.CLEAR_SIGNAL_GENES
+];
 
 export function genomesReducer(state = initialState, action: MistAction.Actions) {
     return reducer(state, action, genomesActionTypes);
@@ -89,6 +96,10 @@ export function genesReducerShopCart(state = initialState, action: MistAction.Ac
 
 export function scopeReducer(state = initialState, action: MistAction.Actions) {
     return reducer(state, action, scopeActionTypes);
+}
+
+export function signalGenesReducer(state = initialState, action: MistAction.Actions) {
+    return reducer(state, action, signalGenesTypes);
 }
 
 function reducer (state, action: MistAction.Actions,  actions) {

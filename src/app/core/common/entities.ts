@@ -6,5 +6,6 @@ export enum Entities {
     GENOMES = "genomes",
     GENOMES_SHOPCART = "genomes_shopcart",
     GENOME = "genome",
-    SCOPE = "scope"
+    SCOPE = "scope",
+    SIGNAL_GENES = "signal_genes"
 }

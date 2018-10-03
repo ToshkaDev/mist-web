@@ -25,10 +25,6 @@ export class ShopCartGenesComponent extends MistComponent {
         this.sendQuery();
     }
 
-    initialyzeFilter() {
-        return null;
-    }
-    
     sendQuery() {
         let shopCartItems = this.cartChangedService.webStorageItemIsSet(ShopCartGenesComponent.baseEntity)
             ? this.cartChangedService.getWebStorageItem(ShopCartGenesComponent.baseEntity).join(',')

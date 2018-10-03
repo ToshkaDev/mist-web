@@ -1,1 +1,6 @@
 h4 Signal Genes
+
+ul(*ngFor="let el of (result$ | async)") 
+    li Id: {{ el.id }} 
+    li Ranks: {{ el.ranks }} 
+    li Version: {{ el.Component.version }}

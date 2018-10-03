@@ -15,7 +15,8 @@ export interface State {
   genes: mistState.State,
   genes_shopcart: mistState.State,
   gene: fromGene.State,
-  scope: mistState.State
+  scope: mistState.State,
+  signal_genes: mistState.State
 }
 
 export const reducers: ActionReducerMap<State> = {
@@ -25,7 +26,8 @@ export const reducers: ActionReducerMap<State> = {
   genes: mistState.genesReducer,
   genes_shopcart: mistState.genesReducerShopCart,
   gene: fromGene.reducer,
-  scope: mistState.scopeReducer
+  scope: mistState.scopeReducer,
+  signal_genes: mistState.signalGenesReducer
 };
 
 const isProduction = false;

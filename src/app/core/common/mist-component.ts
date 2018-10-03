@@ -73,7 +73,7 @@ export abstract class MistComponent implements OnInit {
         }
     }
     
-    abstract initialyzeFilter(): Filter;
+    protected initialyzeFilter(): Filter { return null };
 
     abstract sendQuery(): void;
 

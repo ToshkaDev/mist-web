@@ -15,6 +15,8 @@ import { MistApi } from '../services/mist-api.service';
 import { Navigation }  from './navigation';
 
 import * as MistAction from './mist-actions';
+import { Entities } from './entities';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable()
 export class MistEffects {
@@ -45,12 +47,23 @@ export class MistEffects {
     });
 
   @Effect()
+  getByRanks$: Observable<Action> = this.actions$
+    .ofType<MistAction.GetByRanks>(
+      MistAction.GETBY_RANKS_SIGNAL_GENES
+    ).map((action) => {
+      const entity = action.type.split("]")[0].replace("[", "");
+      const url = this.mistApi.getByRanks(action.payload, entity);
+      return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH),  new Navigation(url, null, action.payload.filter));
+    });
+
+  @Effect()
   fetch$: Observable<Action> = this.actions$.ofType<MistAction.Fetch>(
     MistAction.FETCH_GENOMES, 
     MistAction.FETCH_GENES,
     MistAction.FETCH_GENOMES_SHOPCART, 
     MistAction.FETCH_GENES_SHOPCART,
-    MistAction.FETCH_SCOPE
+    MistAction.FETCH_SCOPE,
+    MistAction.FETCH_SIGNAL_GENES
     ).switchMap((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
       const nextFetch$ = this.actions$.ofType<MistAction.Fetch>(
@@ -58,7 +71,8 @@ export class MistEffects {
         MistAction.FETCH_GENES,
         MistAction.FETCH_GENOMES_SHOPCART, 
         MistAction.FETCH_GENES_SHOPCART,
-        MistAction.FETCH_SCOPE
+        MistAction.FETCH_SCOPE,
+        MistAction.FETCH_SIGNAL_GENES
       ).skip(1);
       return this.http.get(action.payload.url)
         .takeUntil(nextFetch$)
@@ -66,7 +80,6 @@ export class MistEffects {
           const matches = response.json();
           const count = parseInt(response.headers.get('x-total-count'), 10);
           const parsed = queryString.parse(queryString.extract(action.payload.url));
-          
           const totalPages = Math.ceil(count / parsed.per_page);
           const currentPage = +parsed.page;
           let next, prev, first, last;
@@ -75,6 +88,13 @@ export class MistEffects {
             prev = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
             first = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
             last = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
+          } else if (entity === Entities.SIGNAL_GENES)  {
+            let urlArray = action.payload.url.split("/")
+            let genome_version = urlArray[urlArray.length-2];
+            next = this.mistApi.getByRanks({search: genome_version, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
+            prev = this.mistApi.getByRanks({search: genome_version, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
+            first = this.mistApi.getByRanks({search: genome_version, perPage: parsed.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
+            last = this.mistApi.getByRanks({search: genome_version, perPage: parsed.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
           } else {
               next = this.mistApi.searchWithPaginationUrl({search: parsed.search, scope: action.payload.scope, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
               prev = this.mistApi.searchWithPaginationUrl({search: parsed.search, scope: action.payload.scope, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
@@ -100,7 +120,8 @@ export class MistEffects {
     MistAction.FIRST_PAGE_GENES,
     MistAction.FIRST_PAGE_GENOMES_SHOPCART, 
     MistAction.FIRST_PAGE_GENES_SHOPCART,
-    MistAction.FIRST_PAGE_SCOPE
+    MistAction.FIRST_PAGE_SCOPE,
+    MistAction.FIRST_PAGE_SIGNAL_GENES
     ).map((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
       return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH), action.payload); 
@@ -112,7 +133,8 @@ export class MistEffects {
     MistAction.LAST_PAGE_GENES,
     MistAction.LAST_PAGE_GENOMES_SHOPCART, 
     MistAction.LAST_PAGE_GENES_SHOPCART,
-    MistAction.LAST_PAGE_SCOPE
+    MistAction.LAST_PAGE_SCOPE,
+    MistAction.LAST_PAGE_SIGNAL_GENES
     ).map((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
       return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH), action.payload); 
@@ -124,7 +146,8 @@ export class MistEffects {
     MistAction.PREV_PAGE_GENES,
     MistAction.PREV_PAGE_GENOMES_SHOPCART, 
     MistAction.PREV_PAGE_GENES_SHOPCART,
-    MistAction.PREV_PAGE_SCOPE
+    MistAction.PREV_PAGE_SCOPE,
+    MistAction.PREV_PAGE_SIGNAL_GENES
     ).map((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
       return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH), action.payload); 
@@ -136,13 +159,15 @@ export class MistEffects {
     MistAction.NEXT_PAGE_GENES,
     MistAction.NEXT_PAGE_GENOMES_SHOPCART, 
     MistAction.NEXT_PAGE_GENES_SHOPCART,
-    MistAction.NEXT_PAGE_SCOPE
+    MistAction.NEXT_PAGE_SCOPE,
+    MistAction.NEXT_PAGE_SIGNAL_GENES
     ).map((action) => {
         const entity = action.type.split("]")[0].replace("[", "");
         return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH), action.payload); 
     });
 
   constructor(
+    private route: ActivatedRoute,
     private http: Http,
     private actions$: Actions,
     private mistApi: MistApi

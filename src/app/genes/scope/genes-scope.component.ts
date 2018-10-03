@@ -32,10 +32,6 @@ export class GenesScopeComponent extends MistComponent {
     }));
   }
 
-  initialyzeFilter() {
-      return null;
-  }
-  
   sendQuery() {
     let scope, searchterm;
     this.query$.subscribe(currentSearchterm => searchterm = currentSearchterm).unsubscribe();
