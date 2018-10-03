@@ -30,6 +30,7 @@ export class GenomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.errorMessage$ = this.store.select(fromGenomes.getFetchErrorMessage);
     this.genome$ = this.store.select(fromGenomes.getFetchResult);
     this.getGenome(this.assemblyVersion);

@@ -26,6 +26,7 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
     }
 
     ngOnChanges() {
+        window.scrollTo(0, 0);
         this.result.connect().subscribe(entitiesList => {
             // need to empty shop-cart collections and update checkboxes states
             this.idsForShopCartArray = [];

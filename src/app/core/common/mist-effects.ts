@@ -47,12 +47,12 @@ export class MistEffects {
     });
 
   @Effect()
-  getByRanks$: Observable<Action> = this.actions$
-    .ofType<MistAction.GetByRanks>(
-      MistAction.GETBY_RANKS_SIGNAL_GENES
+  getSignalGenes$: Observable<Action> = this.actions$
+    .ofType<MistAction.GetSignalGenes>(
+      MistAction.GET_SIGNAL_GENES
     ).map((action) => {
       const entity = action.type.split("]")[0].replace("[", "");
-      const url = this.mistApi.getByRanks(action.payload, entity);
+      const url = this.mistApi.getSignalGenes(action.payload, entity);
       return new MistAction.Fetch(MistAction.entityToActionType.get(entity).get(MistAction.FETCH),  new Navigation(url, null, action.payload.filter));
     });
 
@@ -91,10 +91,10 @@ export class MistEffects {
           } else if (entity === Entities.SIGNAL_GENES)  {
             let urlArray = action.payload.url.split("/")
             let genome_version = urlArray[urlArray.length-2];
-            next = this.mistApi.getByRanks({search: genome_version, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
-            prev = this.mistApi.getByRanks({search: genome_version, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
-            first = this.mistApi.getByRanks({search: genome_version, perPage: parsed.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
-            last = this.mistApi.getByRanks({search: genome_version, perPage: parsed.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
+            next = this.mistApi.getSignalGenes({search: genome_version, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
+            prev = this.mistApi.getSignalGenes({search: genome_version, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
+            first = this.mistApi.getSignalGenes({search: genome_version, perPage: parsed.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
+            last = this.mistApi.getSignalGenes({search: genome_version, perPage: parsed.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
           } else {
               next = this.mistApi.searchWithPaginationUrl({search: parsed.search, scope: action.payload.scope, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
               prev = this.mistApi.searchWithPaginationUrl({search: parsed.search, scope: action.payload.scope, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);

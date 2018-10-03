@@ -2,7 +2,7 @@
     .detail-box.detail-uber
         .summary
             h5.summary-text Genome Summary
-        div.detail(*ngIf="genomeViewModel")
+        .detail(*ngIf="genomeViewModel")
                 table(class="u-full-width")
                     tbody
                         tr
@@ -17,6 +17,6 @@
                                 a(href="{{property.ftp_path}}") {{ property.value }}
                             ng-template(#notFtpBlock)
                                 td {{ property.value }}
-    div.pull-right.add-to-cart-button
+    .pull-right.add-to-cart-button
         cart-select-buttons((selectClickEvent)='onAddRemoveClickEvent($event)' [cart]="cart")
 

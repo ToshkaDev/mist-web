@@ -152,7 +152,9 @@ export class MistApi {
   }
 
   processSignalGenesFilter(query: any, url: string): string {
-    url = `${url}&where.ranks=${query.filter.ranks}&where.component_id=${query.filter.componentId}`;
+    let ranks = query.filter.ranks ? `&where.ranks=${query.filter.ranks}` : "";
+    let componentId = query.filter.componentId ? `&where.component_id=${query.filter.componentId}` : ""
+    url = `${url}${ranks}${componentId}`;
     return url;
   }
 
@@ -162,11 +164,11 @@ export class MistApi {
     return this.getBaseUrl(entity) + `?count&where.id=${query.search}` + "&" + url;
   }
 
-  getByRanks(query: any, entity: string): string {
+  getSignalGenes(query: any, entity: string): string {
     let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
     url = this.processFilter(query, url, entity);
     url = this.specifyFields(`${url}&`, FieldMap.get(entity));
-    url = this.getBaseUrl(entity) + `/${query.search}` + "/signal_genes?" + url;
+    url = this.getBaseUrl(entity) + `/${query.search}` + "/signal-genes?count&" + url;
     return url;
   }
 

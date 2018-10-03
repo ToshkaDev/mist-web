@@ -20,6 +20,7 @@ export class GeneComponent implements OnInit {
     }
 
     ngOnInit() {
+        window.scrollTo(0, 0);
         this.errorMessage$ = this.store.select(fromGenes.getFetchErrorMessage);
         this.gene$ = this.store.select(fromGenes.getGene);
         this.geneStableId = this.route.snapshot.paramMap.get('stable_id');
