@@ -1,0 +1,172 @@
+table(*ngIf="stpMatrix")
+  thead
+    tr
+      th(colspan="4")
+      th.tcp-group(
+        colspan="6"
+      ) Two-component
+      th(colspan="3")
+    tr
+      th.text-left Accession
+      th.text-left Name
+      th Size (Mbp)
+      th One-component
+      th
+        abbr(title="Histidine kinase") HK
+      th
+        abbr(title="Hybrid histidine kinase") HHK
+      th
+        abbr(title="Response regulator") RR
+      th
+        abbr(title="Hybrid response regulator") HRR
+      th Other
+      th Chemotaxis
+      th
+        abbr(title="Extra cytoplasmic function") ECF
+      th Other
+      th Total
+  tbody
+    ng-template(
+      ngFor
+      let-component
+      [ngForOf]="stpMatrix.components"
+    )
+      tr
+        td.text-left.no-border {{ component.version }}
+        td.text-left.no-border {{ component.name }}
+        td {{ component.length / 1000000 | number:'1.2' }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.Ocp] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.Ocp}"
+          ) {{ component.counts[JointRank.Ocp] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.TcpHK] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.TcpHK}"
+          ) {{ component.counts[JointRank.TcpHK] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.TcpHHK] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.TcpHHK}"
+          ) {{ component.counts[JointRank.TcpHHK] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.TcpRR] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.TcpRR}"
+          ) {{ component.counts[JointRank.TcpRR] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.TcpHRR] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.TcpHRR}"
+          ) {{ component.counts[JointRank.TcpHRR] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.TcpOther] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.TcpOther}"
+          ) {{ component.counts[JointRank.TcpOther] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.Chemotaxis] > 0"
+            routerLink="signal-genes"
+           [queryParams]="{componentId: component.id, ranks: JointRank.Chemotaxis}"
+          ) {{ component.counts[JointRank.Chemotaxis] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.ECF] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.ECF}"
+          ) {{ component.counts[JointRank.ECF] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.Other] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.Other}"
+          ) {{ component.counts[JointRank.Other] }}
+        td
+          a(
+            *ngIf="component.numStp > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id}"
+          ) {{ component.numStp }}
+    tr(*ngIf="stpMatrix.numComponents > stpMatrixLimit")
+      td.no-border(colspan="2")
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+    tr
+      th.text-right.no-border(colspan="2") Total
+      td {{ stpMatrix.totalLength / 1000000 | number:'1.2' }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.Ocp] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.Ocp}"
+        ) {{ stpMatrix.counts[JointRank.Ocp] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.TcpHK] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.TcpHK}"
+        ) {{ stpMatrix.counts[JointRank.TcpHK] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.TcpHHK] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.TcpHHK}"
+        ) {{ stpMatrix.counts[JointRank.TcpHHK] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.TcpRR] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.TcpRR}"
+        ) {{ stpMatrix.counts[JointRank.TcpRR] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.TcpHRR] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.TcpHRR}"
+        ) {{ stpMatrix.counts[JointRank.TcpHRR] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.TcpOther] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.TcpOther}"
+        ) {{ stpMatrix.counts[JointRank.TcpOther] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.Chemotaxis] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.Chemotaxis}"
+        ) {{ stpMatrix.counts[JointRank.Chemotaxis] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.ECF] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.ECF}"
+        ) {{ stpMatrix.counts[JointRank.ECF] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.Other] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.Other}"
+        ) {{ stpMatrix.counts[JointRank.Other] }}
+      td
+        a(
+          *ngIf="stpMatrix.numStp > 0"
+          routerLink="signal-genes"
+        ) {{ stpMatrix.numStp }}

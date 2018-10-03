@@ -9,7 +9,13 @@
  $linkColorHover: #96c75c;
  $bacground-color: #ece9e9;
  $text-color: rgb(138, 136, 136);
- 
+
+a {
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
 
  .breadcrumb {
     list-style: none;
@@ -19,7 +25,7 @@
     color: $text-color;
     padding: 2px;
     padding-top: 10px;
-   
+
      li:not(.active) {
         display: block;
         float: left;
@@ -28,16 +34,16 @@
         height: 30px;
         margin-right: 31px;
         position: relative;
-    
+
         & a {
             text-decoration: none;
             color: $text-color;
         }
-        
+
         &:last-of-type {
             margin-right: 25px;
         }
-        
+
         &:before {
             content: "";
             display: block;
@@ -50,7 +56,7 @@
             border-color: $bacground-color;
             border-left-color: transparent;
         }
-        
+
         &:after {
             content: "";
             display: block;
@@ -62,7 +68,7 @@
             border: 15px solid transparent;
             border-left-color: $bacground-color;
         }
-        
+
         &:first-of-type {
             padding-left: 15px;
 
@@ -70,20 +76,20 @@
                 display: none;
             }
         }
-        
+
         &:hover {
-            background: $linkColorHover;  
+            background: $linkColorHover;
 
             & a {
                 color: white;
                 text-decoration: none;
-            }   
+            }
 
             &:before {
                 border-color: $linkColorHover;
                 border-left-color: transparent;
             }
-            
+
             &:after {
                 border-left-color: $linkColorHover;
             }
@@ -159,7 +165,7 @@ mat-checkbox.mat-checked ._mat-icon {
     margin-left: 8%;
 }
 
-.full-width-container { 
+.full-width-container {
     max-width: 1800px;
     clear: both;
     margin: 0 auto;
@@ -176,4 +182,59 @@ mat-checkbox.mat-checked ._mat-icon {
 
 .gText {
     white-space: nowrap;
+}
+
+// Utility classes
+.text-right {
+    text-align: right !important;
+}
+
+.text-left {
+    text-align: left !important;
+}
+
+// Distribution table
+.distribution-table {
+    h4 {
+        color: #ae6500;
+        margin: .5em 1em;
+        font-size: 24px;
+    }
+
+    table {
+        width: auto;
+        font-size: 13px;
+        margin: 0 1em;
+        border-collapse: collapse;
+        border-spacing: 0;
+
+        tbody tr:hover {
+            background-color: #cef;
+        }
+
+        th {
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        th, td {
+            line-height: 1.6em;
+            padding: 0 .5em;
+            vertical-align: top;
+            text-align: center;
+            border: none;
+        }
+
+        tbody td {
+            border: 1px solid #ccc;
+        }
+
+        .no-border {
+            border: none !important;
+        }
+
+        a {
+            display: block;
+        }
+    }
 }

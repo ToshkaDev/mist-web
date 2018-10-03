@@ -1,0 +1,176 @@
+table.distribution-table(*ngIf="stpMatrix")
+  thead
+    tr
+      th Accession
+      th Name
+      th Size (Mbp)
+      th
+        abbr(title="Methyl-accepting chemotaxis protein") MCP
+      th CheW
+      th CheA
+      th CheR
+      th CheB
+      th CheCX
+      th CheV
+      th CheD
+      th CheZ
+      th Other
+      th Total
+  tbody
+    ng-template(
+      ngFor
+      let-component
+      [ngForOf]="stpMatrix.components"
+    )
+      tr
+        td.text-left.no-border {{ component.version }}
+        td.text-left.no-border {{ component.name }}
+        td {{ component.length / 1000000 | number:'1.2' }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.ChemotaxisMCP] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.ChemotaxisMCP}"
+          ) {{ component.counts[JointRank.ChemotaxisMCP] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.ChemotaxisCheW] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.ChemotaxisCheW}"
+          ) {{ component.counts[JointRank.ChemotaxisCheW] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.ChemotaxisCheA] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.ChemotaxisCheA}"
+          ) {{ component.counts[JointRank.ChemotaxisCheA] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.ChemotaxisCheR] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.ChemotaxisCheR}"
+          ) {{ component.counts[JointRank.ChemotaxisCheR] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.ChemotaxisCheB] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.ChemotaxisCheB}"
+          ) {{ component.counts[JointRank.ChemotaxisCheB] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.ChemotaxisCheCX] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.ChemotaxisCheCX}"
+          ) {{ component.counts[JointRank.ChemotaxisCheCX] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.ChemotaxisCheV] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.ChemotaxisCheV}"
+          ) {{ component.counts[JointRank.ChemotaxisCheV] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.ChemotaxisCheD] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.ChemotaxisCheD}"
+          ) {{ component.counts[JointRank.ChemotaxisCheD] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.ChemotaxisCheZ] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.ChemotaxisCheZ}"
+          ) {{ component.counts[JointRank.ChemotaxisCheZ] }}
+        td
+          a(
+            *ngIf="component.counts[JointRank.ChemotaxisOther] > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.ChemotaxisOther}"
+          ) {{ component.counts[JointRank.ChemotaxisOther] }}
+        td
+          a(
+            *ngIf="component.numChemotaxis > 0"
+            routerLink="signal-genes"
+            [queryParams]="{componentId: component.id, ranks: JointRank.Chemotaxis}"
+          ) {{ component.numChemotaxis }}
+    tr(*ngIf="stpMatrix.numComponents > stpMatrixLimit")
+      td.no-border(colspan="2")
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+      td ...
+    tr
+      th.text-right.no-border(colspan="2") Total
+      td {{ stpMatrix.totalLength / 1000000 | number:'1.2' }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.ChemotaxisMCP] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.ChemotaxisMCP}"
+        ) {{ stpMatrix.counts[JointRank.ChemotaxisMCP] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.ChemotaxisCheW] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.ChemotaxisCheW}"
+        ) {{ stpMatrix.counts[JointRank.ChemotaxisCheW] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.ChemotaxisCheA] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.ChemotaxisCheA}"
+        ) {{ stpMatrix.counts[JointRank.ChemotaxisCheA] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.ChemotaxisCheR] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.ChemotaxisCheR}"
+        ) {{ stpMatrix.counts[JointRank.ChemotaxisCheR] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.ChemotaxisCheB] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.ChemotaxisCheB}"
+        ) {{ stpMatrix.counts[JointRank.ChemotaxisCheB] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.ChemotaxisCheCX] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.ChemotaxisCheCX}"
+        ) {{ stpMatrix.counts[JointRank.ChemotaxisCheCX] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.ChemotaxisCheV] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.ChemotaxisCheV}"
+        ) {{ stpMatrix.counts[JointRank.ChemotaxisCheV] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.ChemotaxisCheD] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.ChemotaxisCheD}"
+        ) {{ stpMatrix.counts[JointRank.ChemotaxisCheD] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.ChemotaxisCheZ] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.ChemotaxisCheZ}"
+        ) {{ stpMatrix.counts[JointRank.ChemotaxisCheZ] }}
+      td
+        a(
+          *ngIf="stpMatrix.counts[JointRank.ChemotaxisOther] > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.ChemotaxisOther}"
+        ) {{ stpMatrix.counts[JointRank.ChemotaxisOther] }}
+      td
+        a(
+          *ngIf="stpMatrix.numChemotaxis > 0"
+          routerLink="signal-genes"
+          [queryParams]="{ranks: JointRank.Ocp}"
+        ) {{ stpMatrix.numChemotaxis }}
