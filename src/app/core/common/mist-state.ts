@@ -71,7 +71,7 @@ const scopeActionTypes = [
     MistAction.CLEAR_SCOPE
 ];
 const signalGenesTypes = [
-    MistAction.GETBY_RANKS_SIGNAL_GENES,
+    MistAction.GET_SIGNAL_GENES,
     MistAction.FETCH_SIGNAL_GENES, 
     MistAction.FETCH_DONE_SIGNAL_GENES, 
     MistAction.FETCH_ERROR_SIGNAL_GENES, 

@@ -1,22 +1,22 @@
-.detail-genome 
+.detail-genome
     .detail-box.detail-uber
         .summary
             h5.summary-text Genome Summary
-        div.detail(*ngIf="genomeViewModel")
-                table(class="u-full-width")                                    
+        .detail(*ngIf="genomeViewModel")
+                table(class="u-full-width")
                     tbody
-                        tr  
+                        tr
                             td(style="font-weight: bold; width: 30%;") Taxonomy
-                            td 
+                            td
                                 span(*ngFor="let taxon of genomeViewModel.taxonomy")
-                                    span(*ngIf="taxon.level != 'genus'; else genusBlock" ) {{ taxon.value }},{{" "}} 
+                                    span(*ngIf="taxon.level != 'genus'; else genusBlock" ) {{ taxon.value }},{{" "}}
                                     ng-template(#genusBlock) {{ taxon.value }}
                         tr(*ngFor="let property of genomeViewModel.mainInfo")
                             td(style="font-weight: bold;") {{ property.name }}
-                            td(*ngIf="property.ftp_path; else notFtpBlock") 
+                            td(*ngIf="property.ftp_path; else notFtpBlock")
                                 a(href="{{property.ftp_path}}") {{ property.value }}
-                            ng-template(#notFtpBlock) 
+                            ng-template(#notFtpBlock)
                                 td {{ property.value }}
-    div.pull-right.add-to-cart-button
+    .pull-right.add-to-cart-button
         cart-select-buttons((selectClickEvent)='onAddRemoveClickEvent($event)' [cart]="cart")
 

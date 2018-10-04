@@ -30,9 +30,11 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
         this.geneIsDrawn.clear();
         this.geneToProteinObject.clear();
         for (let gene of result) {
-          if (gene.Aseq) {
-            this.geneToAseq.set(gene.id, gene.Aseq);
-            this.geneIsDrawn.set(gene.id, false);
+          if (gene.Aseq || (gene.Gene && gene.Gene.Aseq) ) {
+            let geneId = gene.Aseq ? gene.id : gene.Gene.id;
+            let aseq = gene.Aseq ? gene.Aseq : gene.Gene.Aseq;
+            this.geneToAseq.set(geneId, aseq);
+            this.geneIsDrawn.set(geneId, false);
           }
         }
       }

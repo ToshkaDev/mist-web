@@ -13,7 +13,7 @@ export const FETCH_DONE = 'Fetch Done';
 export const FETCH_ERROR = 'Fetch Error';
 export const CLEAR = 'Clear';
 export const GETBY_ID_LIST = 'Get By Id List';
-export const GETBY_RANKS = 'Get By Ranks';
+export const GET_SIGNAL = 'Get Signal Genes';
 
 // Genes actions
 export const SEARCH_GENES = `[${Entities.GENES}] Search`;
@@ -71,7 +71,7 @@ export const CLEAR_GENOMES_SHOPCART = `[${Entities.GENOMES_SHOPCART}] Shop Cart 
 export const GETBY_ID_LIST_GENOMES_SHOPCART = `[${Entities.GENOMES_SHOPCART}] Shop Cart Get By Id List`;
 
 // Signal Genes actions
-export const GETBY_RANKS_SIGNAL_GENES = `[${Entities.SIGNAL_GENES}] Signal Genes Get By Ranks`;
+export const GET_SIGNAL_GENES = `[${Entities.SIGNAL_GENES}] Signal Genes Get By Genome Version`;
 export const NEXT_PAGE_SIGNAL_GENES = `[${Entities.SIGNAL_GENES}] Signal Genes Next Page`;
 export const PREV_PAGE_SIGNAL_GENES = `[${Entities.SIGNAL_GENES}] Signal Genes Prev Page`;
 export const FIRST_PAGE_SIGNAL_GENES = `[${Entities.SIGNAL_GENES}] Signal Genes First Page`;
@@ -122,7 +122,7 @@ export class GetByIdList implements Action {
     constructor(public type: string, public payload: any) {}
 }
 
-export class GetByRanks implements Action {
+export class GetSignalGenes implements Action {
     constructor(public type: string, public payload: any) {}
 }
 
@@ -137,7 +137,7 @@ export type Actions =
   | FetchError
   | Clear
   | GetByIdList
-  | GetByRanks;
+  | GetSignalGenes;
 
 export const entityToActionType: Map<string, Map<string, string>> = new Map([
     [Entities.GENOMES, new Map([
@@ -191,7 +191,7 @@ export const entityToActionType: Map<string, Map<string, string>> = new Map([
         [PREV_PAGE, PREV_PAGE_GENES_SHOPCART],
     ])],
     [Entities.SIGNAL_GENES, new Map([
-        [GETBY_RANKS, GETBY_RANKS_SIGNAL_GENES],
+        [GET_SIGNAL, GET_SIGNAL_GENES],
         [FETCH, FETCH_SIGNAL_GENES],
         [FETCH_DONE, FETCH_DONE_SIGNAL_GENES],
         [FETCH_ERROR, FETCH_ERROR_SIGNAL_GENES],

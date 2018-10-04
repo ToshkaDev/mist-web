@@ -10,19 +10,19 @@ import { HelpComponent } from './home/help.component';
 import { ShopCartComponent } from './shop-cart/shop-cart.component';
 import { GenomeResolver } from './genome/genome.resolver';
 import { GeneResolver } from './gene/gene.resolver';
-import { SignalGenes } from './genome/signal_genes/signal_genes';
+import { SignalGenesComponent } from './genome/signal_genes/signal_genes.component';
 
 const routes: Routes = [
-  { path: '', 
-    data: { breadcrumbs: 'Home' }, 
+  { path: '',
+    data: { breadcrumbs: 'Home' },
     children: [
       {
-        path: '', 
+        path: '',
         component: HomeComponent
       },
       { path: 'help',
-        component: HelpComponent, 
-        data: { breadcrumbs: 'Help' } 
+        component: HelpComponent,
+        data: { breadcrumbs: 'Help' }
       },
       {
         path: 'shop-cart',
@@ -47,10 +47,10 @@ const routes: Routes = [
                 component: GenomeComponent
               },
               {
-                path: 'signal_genes',
-                component: SignalGenes,
+                path: 'signal-genes',
+                component: SignalGenesComponent,
                 data: { breadcrumbs: 'Signal Genes' }
-              }  
+              }
             ]
           },
         ],
@@ -68,10 +68,10 @@ const routes: Routes = [
             component: GeneComponent,
             data: { breadcrumbs: '{{ gene.stableId }}' },
             resolve: { gene: GeneResolver }
-          }  
+          }
         ]
       }
-    ] 
+    ]
   }
 ];
 

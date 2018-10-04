@@ -63,7 +63,9 @@ import { GenesScopeListComponent } from './genes/scope/genes-scope-list.componen
 import { GoogleCharts } from './core/services/google-charts.service';
 import { StProfileComponent } from '../app/core/components/st-profile/st-profile.component';
 import { ReplacePipe } from './core/common/util';
-import { SignalGenes } from './genome/signal_genes/signal_genes';
+import { SignalGenesComponent } from './genome/signal_genes/signal_genes.component';
+import { MajorModeTableComponent } from './core/components/major-mode-table/major-mode-table.component';
+import { ChemotaxisTableComponent } from './core/components/chemotaxis-table/chemotaxis-table.component';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -93,8 +95,10 @@ import { SignalGenes } from './genome/signal_genes/signal_genes';
     GenesScopeComponent,
     GenesScopeListComponent,
     StProfileComponent,
-    SignalGenes,
-    ReplacePipe
+    SignalGenesComponent,
+    MajorModeTableComponent,
+    ChemotaxisTableComponent,
+    ReplacePipe,
   ],
   imports: [
     AppRoutingModule,

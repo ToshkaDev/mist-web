@@ -20,6 +20,68 @@ export interface SignalProfileCount {
   numDomains: number;
 }
 
+export enum JointRank {
+  Chemotaxis = 'chemotaxis',
+  ChemotaxisCheA = 'chemotaxis,chea',
+  ChemotaxisCheB = 'chemotaxis,cheb',
+  ChemotaxisCheCX = 'chemotaxis,checx',
+  ChemotaxisCheD = 'chemotaxis,ched',
+  ChemotaxisCheR = 'chemotaxis,cher',
+  ChemotaxisCheV = 'chemotaxis,chev',
+  ChemotaxisCheW = 'chemotaxis,chew',
+  ChemotaxisCheZ = 'chemotaxis,chez',
+  ChemotaxisMCP = 'chemotaxis,mcp',
+  ChemotaxisOther = 'chemotaxis,other',
+  ECF = 'ecf',
+  Ocp = 'ocp',
+  Other = 'other',
+  TcpHK = 'tcp,hk',
+  TcpHHK = 'tcp,hhk',
+  TcpRR = 'tcp,rr',
+  TcpHRR = 'tcp,hrr',
+  TcpOther = 'tcp,other',
+}
+
+export interface JointRankCounts {
+  ChemotaxisCheA?: number;
+  ChemotaxisCheB?: number;
+  ChemotaxisCheCX?: number;
+  ChemotaxisCheD?: number;
+  ChemotaxisCheR?: number;
+  ChemotaxisCheV?: number;
+  ChemotaxisCheW?: number;
+  ChemotaxisCheZ?: number;
+  ChemotaxisMCP?: number;
+  ChemotaxisOther?: number;
+  ECF?: number;
+  Ocp?: number;
+  Other?: number;
+  TcpHK?: number;
+  TcpHHK?: number;
+  TcpRR?: number;
+  TcpHRR?: number;
+  TcpOther?: number;
+}
+
+export interface ComponentStpInfo {
+  id: number;
+  version: string;
+  name: string;
+  length: number;
+  counts: JointRankCounts;
+  numChemotaxis: number;
+  numStp: number;
+}
+
+export interface GenomeStpMatrix {
+  components: ComponentStpInfo[];
+  counts: JointRankCounts;
+  numChemotaxis: number;
+  numStp: number;
+  numComponents: number;
+  totalLength: number;
+}
+
 @Injectable()
 export class MistApi {
   // static BASE_URL = 'https://api.mistdb.com/v1';
@@ -90,7 +152,9 @@ export class MistApi {
   }
 
   processSignalGenesFilter(query: any, url: string): string {
-    url = `${url}&where.ranks=${query.filter.ranks}&where.component_id=${query.filter.componentId}`;
+    let ranks = query.filter.ranks ? `&where.ranks=${query.filter.ranks}` : "";
+    let componentId = query.filter.componentId ? `&where.component_id=${query.filter.componentId}` : ""
+    url = `${url}${ranks}${componentId}`;
     return url;
   }
 
@@ -100,11 +164,11 @@ export class MistApi {
     return this.getBaseUrl(entity) + `?count&where.id=${query.search}` + "&" + url;
   }
 
-  getByRanks(query: any, entity: string): string {
+  getSignalGenes(query: any, entity: string): string {
     let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
     url = this.processFilter(query, url, entity);
     url = this.specifyFields(`${url}&`, FieldMap.get(entity));
-    url = this.getBaseUrl(entity) + `/${query.search}` + "/signal_genes?" + url;
+    url = this.getBaseUrl(entity) + `/${query.search}` + "/signal-genes?count&" + url;
     return url;
   }
 
@@ -126,5 +190,11 @@ export class MistApi {
     const url = this.getBaseUrl(Entities.GENOME) + `/${genomeVersion}/st-profile`;
     return this.http.get(url)
       .map((response) => <SignalProfileCount[]>response.json());
+  }
+
+  fetchStpMatrix(genomeVersion, perPage: number = 20): Observable<GenomeStpMatrix> {
+    const url = this.getBaseUrl(Entities.GENOME) + `/${genomeVersion}/stp-matrix?per_page=${perPage}`;
+    return this.http.get(url)
+      .map((response) => <GenomeStpMatrix>response.json());
   }
 }

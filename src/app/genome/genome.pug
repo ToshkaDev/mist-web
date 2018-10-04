@@ -1,8 +1,31 @@
-mist-genome-view(
-    [entity$]="genome$"
-    [genomeViewModel]="genomeViewModel"
-)
+.row
+  .six.columns
+    mist-genome-view(
+      [entity$]="genome$"
+      [genomeViewModel]="genomeViewModel"
+    )
 
-mist-st-profile(
-    [genomeVersion]="assemblyVersion"
-)
+  .six.columns
+    mist-st-profile(
+      [genomeVersion]="assemblyVersion"
+    )
+
+.row
+  .twelve-columns
+    h3 Genomic distribution of signal transduction proteins
+
+.row
+  .twelve.columns.distribution-table
+    h4 Major modes
+    mist-major-mode-table(
+      [stpMatrix]="stpMatrix$ | async"
+      [stpMatrixLimit]="stpMatrixLimit"
+    )
+
+.row
+  .twelve.columns.distribution-table
+    h4 Chemotaxis
+    mist-chemotaxis-table(
+      [stpMatrix]="stpMatrix$ | async"
+      [stpMatrixLimit]="stpMatrixLimit"
+    )

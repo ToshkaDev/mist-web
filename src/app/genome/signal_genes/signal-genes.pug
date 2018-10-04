@@ -1,6 +1,9 @@
-h4 Signal Genes
-
-ul(*ngFor="let el of (result$ | async)") 
-    li Id: {{ el.id }} 
-    li Ranks: {{ el.ranks }} 
-    li Version: {{ el.Component.version }}
+div(*ngIf="result$ | async")
+  h4.gene-detail.detail-uber Signal Genes 
+  .genes-container(*ngIf="(query$ | async) && (dataSource.connect() | async).length" class="flex-container")
+    mat-paginator.paginator-txt-size([length]="count" [pageSize]="perPage" [pageIndex]="currentPage-1" [pageSizeOptions]="pageSizeOptions" (page)="pageApply($event)")
+    mist-genes-list(
+      [genes$]="result$"
+      [result]="dataSource"
+      [displayedColumns]="displayedColumns"
+    )
