@@ -7,9 +7,42 @@ h1 {
   color: #495EB5;
 }
 
-mat-toolbar {
+header {
   background-color: #197477;
+
+  .notice {
+    padding: 1em;
+    text-align: center;
+    color: white;
+    font-size: 1.25em;
+  }
+
+  .row {
+    margin: 0;
+  }
+}
+
+.mist-logo {
+  text-align: center;
+}
+
+.mist-svg {
+  width: 250px;
   height: 140px;
+}
+
+@media screen and (min-width: 550px) {
+  header {
+    height: 140px;
+  }
+
+  header .notice {
+    text-align: right;
+  }
+
+  .mist-logo {
+    text-align: left;
+  }
 }
 
 footer {
@@ -18,14 +51,6 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.mist-logo {
-  margin-top: 80px;
-}
-.mist-svg {
-  width: 250px;
-  height: 140px;
 }
 
 .content {
@@ -49,11 +74,4 @@ footer {
   font-size: 24px;
   text-decoration: none;
   margin-left: 8%;
-}
-
-.non-decor-white {
-  margin-left: 20%;
-  color: white;
-  text-decoration: none;
-  text-align: center;
 }

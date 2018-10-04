@@ -9,7 +9,7 @@ import * as fromSignalGenes from './signal_genes.selectors';
 import { Filter } from '../../core/common/navigation';
 
 export default class SignalGenesFilter implements Filter {
-  constructor(public ranks, public componentId) {}
+  constructor(public ranks, public componentId, public kind, public stFunction) {}
   reset() {}
 }
 
@@ -34,11 +34,16 @@ export class SignalGenesComponent extends MistComponent {
       scope: null,
       perPage: this.perPage,
       pageIndex: this.defaultCurrentPage,
-      filter: this.initialyzeFilter()
+      filter: this.initialyzeFilter(),
     }));
   }
 
   initialyzeFilter(): Filter {
-    return new SignalGenesFilter(this.queryParams.ranks, this.queryParams.componentId);
+    return new SignalGenesFilter(
+      this.queryParams.ranks,
+      this.queryParams.componentId,
+      this.queryParams.kind,
+      this.queryParams.function,
+    );
   }
 }

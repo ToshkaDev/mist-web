@@ -3,6 +3,7 @@ import { zip } from 'rxjs/observable/zip';
 
 import { GoogleCharts } from '../../services/google-charts.service';
 import { MistApi, SignalProfileCount } from '../../services/mist-api.service';
+import { Router, Route, ActivatedRoute } from '@angular/router';
 
 const ucFirst = (value) => value[0].toUpperCase() + value.substr(1);
 
@@ -40,6 +41,7 @@ export class StProfileComponent implements OnInit {
       top: '8%',
       width: '85%',
     },
+    enableInteractivity: true,
     hAxis: {
       slantedText: true,
       slantedTextAngle: 60,
@@ -70,6 +72,8 @@ export class StProfileComponent implements OnInit {
     private mistApi: MistApi,
     private googleCharts: GoogleCharts,
     private element: ElementRef,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
@@ -91,6 +95,22 @@ export class StProfileComponent implements OnInit {
         (<any>window).google.visualization.events.addListener(chart, 'ready', () => {
           this.legendHidden = false;
         });
+        (<any>window).google.visualization.events.addListener(chart, 'select', () => {
+          const selection = chart.getSelection();
+          console.log(selection[0]);
+          if (!selection.length) {
+            return;
+          }
+
+          const profileItem = profile[selection[0].row];
+          const queryParams = {
+            kind: profileItem.kind,
+          };
+          if (profileItem.kind !== profileItem.function) {
+            queryParams['function'] = profileItem.function;
+          }
+          this.router.navigate(['signal-genes'], {relativeTo: this.route, queryParams});
+        });
         chart.draw(dataTable, this.options);
       });
   }
@@ -107,11 +127,14 @@ export class StProfileComponent implements OnInit {
     const maxNumDomains = this.getMaxNumDomains(profile);
     this.setAxisMax(maxNumDomains + AXIS_COUNT_EXTRA);
 
-    return profile.map((row) => [
+    const x = profile.map((row) => [
       row.function === 'ecf' ? 'ECF' : ucFirst(row.function),
       row.numDomains,
       COLORS_BY_KIND[row.kind],
     ]);
+
+    console.log({profile});
+    return x;
   }
 
   private getMaxNumDomains(profile: SignalProfileCount[]): number {
