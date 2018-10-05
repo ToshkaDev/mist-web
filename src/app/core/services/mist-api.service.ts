@@ -152,10 +152,11 @@ export class MistApi {
   }
 
   processSignalGenesFilter(query: any, url: string): string {
-    let ranks = query.filter.ranks ? `&where.ranks=${query.filter.ranks}` : "";
-    let componentId = query.filter.componentId ? `&where.component_id=${query.filter.componentId}` : ""
-    url = `${url}${ranks}${componentId}`;
-    return url;
+    const ranks = query.filter.ranks ? `&where.ranks=${query.filter.ranks}` : '';
+    const componentId = query.filter.componentId ? `&where.component_id=${query.filter.componentId}` : '';
+    const kind = query.filter.kind ? `&kind=${query.filter.kind}` : '';
+    const func = query.filter.stFunction ? `&function=${query.filter.stFunction}` : '';
+    return url + ranks + componentId + kind + func;
   }
 
   getByIdList(query: any, entity: string): string {

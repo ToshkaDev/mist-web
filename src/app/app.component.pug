@@ -1,29 +1,25 @@
 header
-  mat-toolbar
-    div.mist-logo
+  .row
+    .five.columns.mist-logo
       a(routerLink="/")
         img.mist-svg(src="assets/images/mist_logo_white_green.svg")
-    .non-decor-white
-      br
-      br
-      p Attention: MIST3.0 database is in alpha phase. Development is underway. 
-      span Click {{ " " }}
-        a(href="http://u.osu.edu/zhulinlab/services/") here
-        span  {{ " " }} for additional information.
+    .seven.columns.notice
+      p MiST3 is currently in alpha and under development.
+        br
+        a(href="http://u.osu.edu/zhulinlab/services/") More info
+        br
+        span(style="font-size: 14px") Feedback&Bug report: gumerov.1@osu.edu
 
-      
 .content
   mc-breadcrumbs
   div.box
-    
-  mist-main-menu
 
+  mist-main-menu
 
   .main.full-width-container
     router-outlet
 
-
 footer
   img.footer-logos(src="assets/images/NIH-min.png")
-  a.footer-style(href="http://u.osu.edu/zhulinlab/") {{ "Zhulin Lab" }}
+  a.footer-style(href="http://u.osu.edu/zhulinlab/") Zhulin Lab
   img.footer-style.footer-logos(src="assets/images/OSU.png")

@@ -1,22 +1,28 @@
-.container.nofull-width-container
-  .row
-    hr
+hr
 
-  .row
-    mat-grid-list(cols="3" rowHeight="3:4")
-      mat-grid-tile
-        ul.home-info
-          li
-            h4 Introduction
-      mat-grid-tile
-        ul.home-info
-          li
-            h4 Statistics
-          li > 132 000 genomes
-          li > 480 000 000 genes 
-          li > 80 000 000 precomputed features 
-      mat-grid-tile
-        ul.home-info
-          li
-            h4 Citation
-          li Manuscript describing MiST3.0 is in preparation. 
+.row
+  .four.columns
+    h4 Introduction
+    p The MiST database was born in 2010 as to both predict and document signal transduction in bacteria and archaea and provide a convenient portal for scientists to explore this knowledge.
+    p We have completely rewritten the MiST database from the ground up. The backend pipeline and database is virtually complete and accessible via its REST API, which powers this website. The frontend still has much work to be done. Please be patient as we continue its development.
+
+  .four.columns
+    h4 Statistics
+    ul(style="list-style-type: none")
+      li
+        strong 125,000+
+        |  genomes
+      li
+        strong 13 million
+        |  replicons / contigs
+      li
+        strong 516 million
+        |  genes
+      li
+        strong 100 million
+        |  unique protein sequences
+    p Prediction of full domain architectures for 20,000 genomes is currently complete and we are continuously processing both existing and newly deposited genomes.
+
+  .four.columns
+    h4 Citation
+    p Manuscript describing MiST3.0 is in preparation.
