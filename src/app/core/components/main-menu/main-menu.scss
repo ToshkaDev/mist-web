@@ -1,54 +1,9 @@
-$txt-color: #197477;
-$example-font-size: 14px;
-
-.mist-box {
-    display: flex;
+.row {
+    margin: 0 2em;
 }
 
-.min-size {
-    min-width: 850px;
-}
-
-.examples {
-    position:relative;
-    display: flex;
-    justify-content: center;
-    margin-top: -120px;
-    color: $txt-color;
-    font-size: $example-font-size;
-}
-
-.exmaple {
-    margin-left: 5px;
-    font-size: $example-font-size;
-}
-
-.select-genome {
-    margin-left: auto;
-    padding-left: 12%;
-}
-
-.full-width-container { 
-    max-width: 1800px;
-    clear: both;
-    margin: 0 auto;
-}
-
-.right-side {
-    margin-left: auto;
-}
-
-.info a {
-    text-decoration: none;
-    color: $txt-color;
-}
-
-.info a:hover {
-    color: #28b8bd;
-}
-
-.info a:active {
-    color: #24d1b4;
+mat-form-field {
+    margin-right: 1em;
 }
 
 .non-decor-green {
@@ -67,16 +22,6 @@ $example-font-size: 14px;
     @include md-icon-size(58px);
 }
 
-.cart-icon {
-    margin-left: 14px;
-}
-
 .cart-details {
     color: #4d4d4d;
-    font-size: 14px;
-    margin-left: 3px;
-}
-
-.cart {
-    display: flex;
 }
