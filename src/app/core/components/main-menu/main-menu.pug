@@ -1,40 +1,32 @@
-.container(class="full-width-container")
-  .row
-    .mist-box.min-size
-      mat-form-field.select-genome
-        mat-select([(value)]="selectedComponent" (change)="entityChanged($event)")
-          mat-option(value="genomes") Genomes
-          mat-option(value="genes") Genes/Proteins
+.row
+  .eight.columns
+    mat-form-field
+      mat-select([(value)]="selectedComponent" (change)="entityChanged($event)")
+        mat-option(value="genomes") Genomes
+        mat-option(value="genes") Genes / Proteins
+    mist-search-input(
+      [query]="query$ | async"
+      [scope]="scopeName$ | async"
+      [isFetching]="isFetching$ | async"
+      [errorMessage]="errorMessage$ | async"
+      (onQueryChange)="putQuery($event)"
+      (onScopeChange)="putScope($event)"
+      [selectedComponent]="selectedComponent"
+    )
 
-      mist-search-input(
-        [query]="query$ | async"
-        [scope]="scopeName$ | async"
-        [isFetching]="isFetching$ | async"
-        [errorMessage]="errorMessage$ | async"
-        (onQueryChange)="putQuery($event)"
-        (onScopeChange)="putScope($event)"
-        [selectedComponent]="selectedComponent"
-      ) 
-      .right-side
-        div.cart
-          mat-icon.cart-icon
-            a.non-decor-green(routerLink="/shop-cart") shopping_cart 
-          div.cart-details  
-            div {{ genesInCart }}
-            div {{ genomesInCart }}
-        mat-list.info([ngStyle]="smallMenuDisplay")
-          //- mat-list-item
-          //-     a(routerLink="/member-genomes") Member Genomes
-          mat-list-item
-              a(routerLink="/help") Help
-          mat-list-item
-              a(href="https://api.mistdb.caltech.edu/") API
-  .row.min-size 
-    div.examples Examples:
-      span.exmaple(*ngFor="let example of examples; last as isLast") 
+    p Examples:&nbsp;
+      span.example(*ngFor="let example of examples; last as isLast")
         a(routerLink="{{ example.link }}" (click)="putQuery(example.queryString)") {{ example.queryString }}
         span(*ngIf="!isLast") {{ "; " }}
-  mist-genes-scope(*ngIf="isScope")
+
+  .four.columns
+    mat-icon.cart-icon
+      a.non-decor-green(routerLink="/shop-cart") shopping_cart
+    div.cart-details
+      div {{ genesInCart }}
+      div {{ genomesInCart }}
+
+mist-genes-scope(*ngIf="isScope")
 
 
 
