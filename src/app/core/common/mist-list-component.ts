@@ -37,12 +37,13 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
                 entitiesList.forEach(entity => {
                     // We need to control differently checkboxes in the shopping cart and when we're displaying the data.
                     // Id-wise checkbox control in shooping cart needed to avoid selection of thouse items which were not displayed 
-                    // after deleting all the currently displaed items 
+                    // after deleting all the currently displaed items
+                    const geneId = entity.Gene ? entity.Gene.id : entity.id;
                     if (!this.isShopCart) {
-                        this.idToIsDisabled[entity.id+""] = false;
-                        this.idToIsChecked[entity.id+""] = null;
+                        this.idToIsDisabled[geneId+""] = false;
+                        this.idToIsChecked[geneId+""] = null;
                     } else {
-                        this.shopCartIdToIsChecked[entity.id+""] = null;
+                        this.shopCartIdToIsChecked[geneId+""] = null;
                     }
                 }); 
             }
@@ -120,7 +121,10 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
     }
 
     checkBoxesChanged(event: any, entitiesList: any[]): void {
-        entitiesList.forEach(entity => this.checkBoxChanged(event, entity.id));
+        entitiesList.forEach(entity => {
+            const geneId = entity.Gene ? entity.Gene.id : entity.id;
+            this.checkBoxChanged(event, geneId);   
+        });
     }
 
     union(set1, set2) { 

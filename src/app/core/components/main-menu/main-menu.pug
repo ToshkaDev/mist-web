@@ -19,7 +19,7 @@
         a(routerLink="{{ example.link }}" (click)="putQuery(example.queryString)") {{ example.queryString }}
         span(*ngIf="!isLast") {{ "; " }}
 
-  .four.columns
+  .four.columns.pull-right
     mat-icon.cart-icon
       a.non-decor-green(routerLink="/shop-cart") shopping_cart
     div.cart-details
