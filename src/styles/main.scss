@@ -111,6 +111,11 @@ a {
     justify-content: flex-end;
 }
 
+.center {
+    display: flex;
+    justify-content: center;
+}
+
 .mist-button, .mist-button:hover, .mist-button:active, .mist-button:focus  {
     color: white !important;
     background-color: #28b8bd;
@@ -189,6 +194,10 @@ mat-checkbox.mat-checked ._mat-icon {
     margin-bottom: -5px;
     color: #197477;
     font-weight: bold;
+}
+
+.usual-header {
+    color: #197477;
 }
 
 // Utility classes

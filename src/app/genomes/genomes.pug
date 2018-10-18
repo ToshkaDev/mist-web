@@ -3,7 +3,7 @@ div(*ngIf="(query$ | async) && (dataSource.connect() | async).length" class="fle
     div(class="row")
       div(*ngIf="displayedColumns" [className]="filterClass" [ngStyle]="filterStyle")
         form( (ngSubmit)="filter()" #filterForm="ngForm")
-          div.form-group
+          .form-group
             mat-form-field
               input(matInput placeholder="Superkingdom" class="form-control" name="superkingdom" [(ngModel)]="genomesFilter.superkingdom")
             mat-form-field
@@ -19,10 +19,10 @@ div(*ngIf="(query$ | async) && (dataSource.connect() | async).length" class="fle
             mat-form-field 
               mat-select( placeholder="Assembly Level" name="assembly_level" [(ngModel)]="genomesFilter.assembly_level")
                 mat-option(*ngFor="let option of asemblyFilterOptions" [value]="option.value") {{option.viewValue}}
-            div.pull-right
+            .pull-right
               button(mat-button type="submit" class="mist-button-standard" [disabled]="!filterForm.form.valid") Filter
               button(mat-button type="submit" class="mist-button-standard" [disabled]="!filterForm.form.valid" (click)="reset()") Reset
-      div(class="ten columns").genomes-container
+      .genomes-container(class="ten columns")
         mist-genomes-list(
           [selected]="selected"
           (taxonomyEvent)="filterTaxonomy($event)"
