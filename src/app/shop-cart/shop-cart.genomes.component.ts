@@ -13,7 +13,7 @@ import { CartChangedService } from './cart-changed.service';
     templateUrl: './shop-cart.genomes.pug',
   })
   export class ShopCartGenomesComponent extends MistComponent {
-    static readonly genomesColumns = ['Select', 'Genome', 'Taxonomy', 'Genbank Version', 'Assembly level'];
+    static readonly genomesColumns = ['Select', 'Genome', 'Taxonomy ID', 'Taxonomy', 'Version', 'Genbank Version', 'Assembly level'];
     readonly zeroResultShopCartQuery = "-1";
     static readonly baseEntity: string = Entities.GENOMES;
     @Input()

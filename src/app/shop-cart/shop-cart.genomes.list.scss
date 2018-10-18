@@ -1,19 +1,19 @@
 .select-header, .select-cell {
-    flex: 0 0 10%;
+    flex: 0 0 5%;
 }
 
 .genome-header, .genome-cell {
-    flex: 0 0 25%;
+    flex: 0 0 15%;
 }
 
 .genome-taxonomy, .taxonomy-cell {
     flex: 0 0 35%
 }
 
+.taxonomy-id-header, .taxonomy-id-cell {
+    flex: 0 0 10%;
+}
+
 .assembly-header, .assembly-cell {
     flex: 0 0 10%;
 }
-.superkingdom-header, .superkingdom-cell {
-    flex: 0 0 15%;
-}
-

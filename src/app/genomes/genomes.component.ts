@@ -30,7 +30,7 @@ export class GenomesComponent extends MistComponent {
     {'value':'Chromosom', 'viewValue' : 'Chromosom'},
     {'value':'Scaffold', 'viewValue' : 'Scaffold'}, 
     {'value':'Contig', 'viewValue' : 'Contig'}];
-  static readonly genomesColumns = ['Select', 'Genome', 'Superkingdom', 'Taxonomy', 'Genbank Version', 'Assembly level'];
+  static readonly genomesColumns = ['Select', 'Genome', 'Superkingdom', 'Taxonomy ID', 'Taxonomy', 'Version', 'GenBank Version', 'Assembly level'];
   filterClass = "two columns";
   filterStyle;
 
