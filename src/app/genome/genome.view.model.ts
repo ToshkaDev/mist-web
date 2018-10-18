@@ -3,6 +3,7 @@ export default class GenomeViewModel {
     private taxonomy: any[] = [];
     private mainInfoFields: any[] = [
         {"name": "Organism", "value": "name"},
+        {"name": "NCBI Taxonomy id", "value": "taxonomy_id"},
         {"name": "Assembly level", "value": "assembly_level"}, 
         {"name": "Genbank version", "value": "genbank_version", "ftp_path": "ftp_path"}, 
         {"name": "Submitter", "value": "submitter"}, 
@@ -22,13 +23,13 @@ export default class GenomeViewModel {
     
     constructor(genomeData: any) {
         if (genomeData) {
-            this.initializePropertis(genomeData, this.mainInfo, this.mainInfoFields);
-            this.initializePropertis(genomeData, this.taxonomy, this.taxonomyFields);
+            this.initializeProperties(genomeData, this.mainInfo, this.mainInfoFields);
+            this.initializeProperties(genomeData, this.taxonomy, this.taxonomyFields);
         }
     }
 
     // Do not display elements if their values in the response object are null
-    private initializePropertis(genomeData: any, property: any[], fields: any[]) {
+    private initializeProperties(genomeData: any, property: any[], fields: any[]) {
         for (let element of fields) {
             if (element.value in genomeData && genomeData[element.value]) {
                 element.value = genomeData[element.value];
