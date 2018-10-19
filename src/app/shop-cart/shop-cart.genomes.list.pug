@@ -18,9 +18,6 @@ mat-table([dataSource]="result" class="genome-table")
   ng-container(matColumnDef="Version")
     mat-header-cell(*matHeaderCellDef class="version-header table-txt-size") Version
     mat-cell(*matCellDef="let genome" class="version-cell" ) {{genome.version}}
-  ng-container(matColumnDef="Genbank Version")
-    mat-header-cell(*matHeaderCellDef class="genbank-version-header table-txt-size") Genbank Version
-    mat-cell(*matCellDef="let genome" class="genbank-version-cell" ) {{genome.genbank_version}}
   ng-container(matColumnDef="Assembly level")
     mat-header-cell(*matHeaderCellDef class="assembly-header table-txt-size") Assembly Level
     mat-cell(*matCellDef="let genome" class="assembly-cell") {{genome.assembly_level}}
