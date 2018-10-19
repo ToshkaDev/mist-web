@@ -4,7 +4,7 @@ export default class GenomeViewModel {
     private mainInfoFields: any[] = [
         {"name": "Organism", "value": "name"},
         {"name": "Assembly level", "value": "assembly_level"}, 
-        {"name": "Genbank version", "value": "genbank_version", "ftp_path": "ftp_path"}, 
+        {"name": "RefSeq version", "value": "version", "ftp_path": "ftp_path"}, 
         {"name": "Submitter", "value": "submitter"}, 
         {"name": "Bioproject", "value": "bioproject"}, 
         {"name": "Biosample", "value": "biosample"}, 

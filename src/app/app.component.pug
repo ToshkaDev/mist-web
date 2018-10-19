@@ -21,6 +21,9 @@ header
     router-outlet
 
 footer
-  img.footer-logos(src="assets/images/NIH-min.png")
-  a.footer-style(href="http://u.osu.edu/zhulinlab/") Zhulin Lab
-  img.footer-style.footer-logos(src="assets/images/OSU.png")
+  .container.footer-content
+    img.footer-style.footer-logos(src="assets/images/NIH-min.png")
+    a(href="http://u.osu.edu/zhulinlab/")
+      img.footer-style.logo-zhulinlab(src="assets/images/zhulinLab.png")
+    img.footer-style.footer-logos(src="assets/images/OSU.png")
+    img.footer-style.logo-netlify(src="assets/images/netlify.png")

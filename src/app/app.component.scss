@@ -45,12 +45,52 @@ header {
   }
 }
 
-footer {
-  background-color:#889999;
-  height: 180px;
+.footer-content {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 437px;
+}
+
+footer {
+  background-color:#889999;
+  min-width: 453px;
+  height: 180px;
+}
+
+@media screen and (min-width: 1145px)
+{
+  .footer-style {
+    margin-right: 5%;
+    margin-left: 10%;
+  }
+}
+
+@media screen and (max-width: 1144px)
+{
+  .footer-style {
+    margin-right: 5%;
+    margin-left: 5%;
+  }
+}
+
+@media screen and (max-width: 920px)
+{
+  footer
+  {
+    height: 500px;
+  }
+
+  .footer-content {
+    display: block;
+    text-align: center;
+  }
+
+  .footer-style {
+    margin-right: 150px;
+    margin-left: 110px;
+    margin-bottom: 15px;
+  }
 }
 
 .content {
@@ -69,9 +109,15 @@ footer {
   filter: grayscale(100%) brightness(3);
 }
 
-.footer-style {
-  color: white;
-  font-size: 24px;
-  text-decoration: none;
-  margin-left: 8%;
+.logo-netlify {
+  width: 140px;
+  height: 50px;
+  filter: grayscale(100%) brightness(3);
 }
+
+.logo-zhulinlab {
+  width: 140px;
+  height: 50px;
+}
+
+
