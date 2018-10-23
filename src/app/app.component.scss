@@ -49,47 +49,62 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 437px;
+  min-width: 341px;
 }
 
 footer {
   background-color:#889999;
-  min-width: 453px;
+  min-width: 341px;
   height: 180px;
 }
 
-@media screen and (min-width: 1145px)
-{
+@media screen and (min-width: 1145px) {
   .footer-style {
     margin-right: 5%;
     margin-left: 10%;
   }
 }
 
-@media screen and (max-width: 1144px)
-{
+@media screen and (max-width: 1144px) {
   .footer-style {
     margin-right: 5%;
     margin-left: 5%;
   }
 }
 
-@media screen and (max-width: 920px)
-{
+@media screen and (max-width: 920px) {
+  footer
+  {
+    height: 350px;
+  }
+
+  .footer-content {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .footer-style {
+    margin-right: 33px;
+    margin-left: 33px;
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (max-width: 527px) {
   footer
   {
     height: 500px;
   }
 
   .footer-content {
-    display: block;
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .footer-style {
-    margin-right: 150px;
-    margin-left: 110px;
-    margin-bottom: 15px;
+    margin-right: 33px;
+    margin-left: 33px;
+    margin-bottom: 19px;
   }
 }
 
@@ -103,21 +118,28 @@ footer {
   justify-content: flex-end;
 }
 
+// Needed to specify min and max, otherwise some browsers shrink logo images
 .footer-logos {
-  width: 220px;
-  height: 150px;
+  max-width: 220px;
+  max-height: 150px;
+  min-width: 220px;
+  min-height: 150px;
   filter: grayscale(100%) brightness(3);
 }
 
 .logo-netlify {
-  width: 140px;
-  height: 50px;
+  max-width: 150px;
+  max-height: 50px;
+  min-width: 150px;
+  min-height: 50px;
   filter: grayscale(100%) brightness(3);
 }
 
 .logo-zhulinlab {
-  width: 140px;
-  height: 50px;
+  max-width: 150px;
+  max-height: 50px;
+  min-width: 150px;
+  min-height: 50px;
 }
 
 
