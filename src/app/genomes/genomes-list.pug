@@ -12,6 +12,9 @@ mat-table([dataSource]="result" class="genome-table")
   ng-container(matColumnDef="Superkingdom")
     mat-header-cell(*matHeaderCellDef class="superkingdom-header table-txt-size") Superkingdom
     mat-cell(*matCellDef="let genome" class="superkingdom-cell") {{genome.superkingdom}}
+  ng-container(matColumnDef="Taxonomy ID")
+    mat-header-cell(*matHeaderCellDef class="taxonomy-id-header table-txt-size") Taxonomy ID
+    mat-cell(*matCellDef="let genome" class="taxonomy-id-cell" ) {{ genome.taxonomy_id }}
   ng-container(matColumnDef="Taxonomy")
     mat-header-cell(*matHeaderCellDef class="table-txt-size") Taxonomy
     mat-cell(*matCellDef="let genome")
@@ -23,9 +26,9 @@ mat-table([dataSource]="result" class="genome-table")
         mat-option(value="{{genome.order}}") {{genome.order}}
         mat-option(value="{{genome.family}}") {{genome.family}}
         mat-option(value="{{genome.genus}}") {{genome.genus}}
-  ng-container(matColumnDef="Genbank Version")
-    mat-header-cell(*matHeaderCellDef class="genbank-version-header table-txt-size") Genbank Version
-    mat-cell(*matCellDef="let genome" class="genbank-version-cell" ) {{genome.genbank_version}}
+  ng-container(matColumnDef="Version")
+    mat-header-cell(*matHeaderCellDef class="version-header table-txt-size") Version
+    mat-cell(*matCellDef="let genome" class="version-cell" ) {{genome.version}}
   ng-container(matColumnDef="Assembly level")
     mat-header-cell(*matHeaderCellDef class="assembly-header table-txt-size") Assembly Level
     mat-cell(*matCellDef="let genome" class="assembly-cell") {{genome.assembly_level}}

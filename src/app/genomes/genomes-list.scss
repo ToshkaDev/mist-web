@@ -6,15 +6,19 @@ mat-select.taxonomy {
     flex: 0 0 5%;
 }
 
-.assembly-header, .assembly-cell {
-    flex: 0 0 10%;
-}
-.superkingdom-header, .superkingdom-cell {
-    flex: 0 0 15%;
-}
-
 .genome-header, .genome-cell {
     flex: 0 0 30%;
 }
 
+.superkingdom-header, .superkingdom-cell {
+    flex: 0 0 10%;
+}
+
+.taxonomy-id-header, .taxonomy-id-cell {
+    flex: 0 0 10%;
+}
+
+.assembly-header, .assembly-cell {
+    flex: 0 0 10%;
+}
 
