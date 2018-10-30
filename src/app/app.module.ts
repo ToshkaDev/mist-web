@@ -14,7 +14,8 @@ import {
   MatGridListModule,
   MatListModule,
   MatChipsModule,
-  MatDialogModule
+  MatDialogModule,
+  MatTooltipModule
 } from '@angular/material';
 
 import {MatSelectModule} from '@angular/material/select';
@@ -122,6 +123,7 @@ import { ChemotaxisTableComponent } from './core/components/chemotaxis-table/che
     MatListModule,
     MatChipsModule,
     MatDialogModule,
+    MatTooltipModule,
     StoreModule.forRoot(reducers, { metaReducers}),
     McBreadcrumbsModule.forRoot()
   ],

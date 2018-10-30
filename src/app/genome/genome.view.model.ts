@@ -1,4 +1,10 @@
+export interface genomeScopeInterface {
+    name: string,
+    refSeqVersion: string
+}
+
 export default class GenomeViewModel {
+    private genome: genomeScopeInterface = {'name': null, 'refSeqVersion': null}; 
     private mainInfo: any[] = [];
     private taxonomy: any[] = [];
     private mainInfoFields: any[] = [
@@ -35,6 +41,10 @@ export default class GenomeViewModel {
                 element.value = genomeData[element.value];
                 if (element.ftp_path && genomeData.ftp_path)
                     element.ftp_path = genomeData.ftp_path;
+                if (element.name === "Organism")
+                    this.genome.name = element.value;
+                if (element.name === "RefSeq version")
+                    this.genome.refSeqVersion = element.value;
                 property.push(element);
             }
         }

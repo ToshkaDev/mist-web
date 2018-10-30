@@ -19,4 +19,5 @@
                                 td {{ property.value }}
     .pull-right.add-to-cart-button
         cart-select-buttons((selectClickEvent)='onAddRemoveClickEvent($event)' [cart]="cart")
+        button.mist-button.scope-button(mat-raised-button (click)="putScope(genomeViewModel.genome)") Set To Scope
 

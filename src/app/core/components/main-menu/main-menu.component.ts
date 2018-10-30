@@ -12,6 +12,7 @@ import { ScopeService } from './scope.service';
 import { CartChangedService } from '../../../shop-cart/cart-changed.service';
 
 import * as MistAction from '../../common/mist-actions';
+import { genomeScopeInterface } from '../../../genome/genome.view.model';
 
 @Component({
   selector: 'mist-main-menu',
@@ -41,7 +42,8 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   private scopeIsSelected: boolean = false;
   private genesInCart: string;
   private genomesInCart: string;
-
+  private scopeSetFromDetailPage: genomeScopeInterface;
+  
   private routeToSmallMenuDisplay = new Map<string, string>([
     ["/", "visible"],
     ["/help", "visible"],
@@ -135,7 +137,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   ) {}
 
   ngOnInit() {
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe(() => {
       let currentUrl = this.getCurrentUrl();
       this.smallMenuDisplay['visibility'] = this.routeToSmallMenuDisplay.get(currentUrl);
       this.changeScopeTo(false);
@@ -145,12 +147,35 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
         this.examples = this.entityToExamples.has(this.selectedComponent) 
           ? this.entityToExamples.get(this.selectedComponent) 
           : null; 
-      } 
-      //TODO: will need remove this
-      else {
+      }  
+      else
         this.query$ = null;
+      // (B) 
+      // 1) We need to put a genome name to copeService.selectGenomeName
+      // in order it to be accessibale to all the places it needed
+      // 2) selectScope(...) gets called in order to initiate a search with the new scope. 
+      // 3) scopeSetFromDetailPage need to be set to null after that,
+      // so that a new scope object could be processed when it gets set by a user
+      if (this.scopeSetFromDetailPage && this.getCurrentUrl() === `/${Entities.GENES}`) {
+        this.scopeService.selectGenomeName(this.scopeSetFromDetailPage.name);
+        this.selectScope(this.scopeSetFromDetailPage.refSeqVersion);
+        this.scopeSetFromDetailPage = null;
+      } 
+    });
+    
+    // (A)
+    // putScopeGenomeName$ observable of scopeService will be called from the Genome detail page
+    // when a user will set the genome to scope and the scope object will be detected here.
+    // Once this activated the route will change (as a result of 'this.entityChanged(...)' calling)
+    // and the router event listener initialzed in ngOnInit() will be called make 
+    // the necessary changes and assign observables for 'Genes'
+    this.scopeService.putScopeGenomeName$.subscribe(scope => {
+      if (scope && scope.refSeqVersion.length) {
+        this.scopeSetFromDetailPage = scope;
+        this.entityChanged({'value': Entities.GENES});            
       }
-    }); 
+    });
+
     this.genesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENES);
     this.genomesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENOMES);
 
@@ -196,7 +221,8 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     } else if (this.scopeSearchTerm === scope || this.scopeName === scope) {
         return;
     } else if (scope && scope.length > 0) {
-        this.router.navigate([this.selectionOptionToRoute.get(Entities.GENES)]);
+        // If we are going from another page we need to navigate to /genes and reasign observables 
+        this.entityChanged({'value': Entities.GENES});
         this.launchScopeSearch(scope); 
     }
   }
@@ -314,6 +340,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
       }
       return this.scope;
     }
+
     return null;
   }
 

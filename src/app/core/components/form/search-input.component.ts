@@ -11,6 +11,7 @@ export class SearchInputComponent {
   scopeChange$ = new EventEmitter<string>();
   scope_placeholder = "Scope";
   
+  @Input() scopeIdentifier;
   @Input() selectedComponent;
   @Input() query = '';
   @Input() scope = '';
@@ -18,5 +19,4 @@ export class SearchInputComponent {
   @Input() isFetching = false;
   @Output() onQueryChange = this.queryChange$.map((value) => value.trim());
   @Output() onScopeChange = this.scopeChange$.map((value) => value.trim());
-
 }
