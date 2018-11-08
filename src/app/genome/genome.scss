@@ -5,3 +5,20 @@ h3 {
   font-size: 24px;
   margin: 0;
 }
+
+.worker-state-table {
+  table {
+      border-collapse: collapse;
+      margin: 0;
+      margin-bottom: 4px;
+      margin-left: 3px;
+      font-size: 14px;
+  }
+  
+  td {
+      border: 2px solid white;
+      padding: 0 .5em;
+      text-align: center;
+  }
+}
+

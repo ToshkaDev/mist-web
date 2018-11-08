@@ -1,5 +1,37 @@
 .row(style="margin-top: 2em;")
   .six.columns
+    .worker-state-table.detail-uber(*ngIf="genomeViewModel")
+        table
+            span Genome analysis status: 
+            tbody
+                tr
+                    ng-template(
+                        ngFor
+                        let-workerModule
+                        [ngForOf]="genomeViewModel.objectKeys(genomeViewModel.workerModules)"
+                        let-i="index"
+                    )
+                        td(*ngIf="i < 4" 
+                          [ngStyle]='genomeViewModel.getWorkerModuelStyle(genomeViewModel.workerModules[workerModule])'
+                          matTooltip="{{ genomeViewModel.workerModulesTooltips[workerModule] }}"
+                          [matTooltipPosition]="'after'" 
+                          [matTooltipClass]="'tooltipClass'"
+                        ) {{ workerModule }}
+                tr
+                    ng-template(
+                        ngFor
+                        let-workerModule
+                        [ngForOf]="genomeViewModel.objectKeys(genomeViewModel.workerModules)"
+                        let-i="index"
+                    )
+                        td(*ngIf="i >= 4" 
+                          [ngStyle]='genomeViewModel.getWorkerModuelStyle(genomeViewModel.workerModules[workerModule])'
+                          matTooltip="{{ genomeViewModel.workerModulesTooltips[workerModule] }}"
+                          [matTooltipPosition]="'after'" 
+                          [matTooltipClass]="'tooltipClass'"
+                        ) {{ workerModule }}
+.row(style="margin-top: -12px;")
+  .six.columns
     mist-genome-view(
       [entity$]="genome$"
       [genomeViewModel]="genomeViewModel"

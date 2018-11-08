@@ -152,6 +152,7 @@ mat-checkbox.mat-checked ._mat-icon {
 .summary {
     background-color: #889999;
     border-radius: 7px 7px 0 0;
+    margin: -3px;
 }
 
 .summary-text {
@@ -254,3 +255,8 @@ mat-checkbox.mat-checked ._mat-icon {
         }
     }
 }
+
+.tooltipClass {
+    font-size: 13px;
+}
+  

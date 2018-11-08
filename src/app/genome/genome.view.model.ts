@@ -5,8 +5,29 @@ export interface genomeScopeInterface {
 
 export default class GenomeViewModel {
     private genome: genomeScopeInterface = {'name': null, 'refSeqVersion': null}; 
+    private objectKeys = Object.keys;
     private mainInfo: any[] = [];
     private taxonomy: any[] = [];
+    private workerModules: any = {
+        "Stp": "unknown", 
+        "segs": "unknown", 
+        "pfam31": "unknown", 
+        "ecf1": "unknown", 
+        "coils": "unknown", 
+        "GeneClusters": "unknown", 
+        "Taxonomy": "unknown", 
+        "NCBICoreData": "unknown"
+    };
+    private workerModulesTooltips: any = {
+        "Stp": "Signal transduction proteins prediction and classification is not complete.", 
+        "segs": "Low-complexity regions prediction is not complete.", 
+        "pfam31": "Pfam domains prediction is not complete.", 
+        "ecf1": "Extracytoplasmic function sigma factors prediction is not complete.", 
+        "coils": "Coiled-coils prediction is not complete.", 
+        "GeneClusters": "Gene neighborhoods identification is not complete.", 
+        "Taxonomy": "Taxonomic classification is not complete.", 
+        "NCBICoreData": "NCBI core genomic data parsing is not complete."
+    };
     private mainInfoFields: any[] = [
         {"name": "Organism", "value": "name"},
         {"name": "NCBI Taxonomy id", "value": "taxonomy_id"},
@@ -26,11 +47,29 @@ export default class GenomeViewModel {
         {"level": "family", "value":"family"},
         {"level": "genus", "value": "genus"}
     ];
-    
+
     constructor(genomeData: any) {
         if (genomeData) {
             this.initializeProperties(genomeData, this.mainInfo, this.mainInfoFields);
             this.initializeProperties(genomeData, this.taxonomy, this.taxonomyFields);
+            this.initializeWorkerModulesStates(genomeData.WorkerModules);
+        }
+    }
+
+    private getWorkerModuelStyle(state: string): any {
+        return state === "done"
+            ? {"color": "white", "background-color": "#28b8bd"}
+            : {"color": "white", "background-color": "#C0BDBD"};
+    }
+
+    private initializeWorkerModulesStates(workerModules: any[]) {
+        for (let workerModule of workerModules) {
+            let workerModuleName = workerModule.module.replace("AseqCompute:", "");
+            if (workerModuleName === "agfam2")
+                continue;
+            this.workerModules[workerModuleName] = workerModule.state;
+            if (workerModule.state === "done") 
+                this.workerModulesTooltips[workerModuleName] = this.workerModulesTooltips[workerModuleName].replace("is not complete.", "is complete.");
         }
     }
 
