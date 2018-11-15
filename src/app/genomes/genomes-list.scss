@@ -1,5 +1,5 @@
 mat-select.taxonomy {
-    width: 60%;
+    max-width: 60%;
 }
 
 .select-header, .select-cell {
@@ -11,14 +11,14 @@ mat-select.taxonomy {
 }
 
 .superkingdom-header, .superkingdom-cell {
-    flex: 0 0 10%;
+    flex: 0 0 13%;
 }
 
 .taxonomy-id-header, .taxonomy-id-cell {
-    flex: 0 0 10%;
+    flex: 0 0 11%;
 }
 
 .assembly-header, .assembly-cell {
-    flex: 0 0 10%;
+    flex: 0 0 6%;
 }
 

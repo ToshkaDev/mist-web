@@ -16,6 +16,7 @@ export class NeighborGenesView implements OnInit {
     private theseNeighbourGenes: any[];
     private drawNeighborGenesObject: DrawNeighborGenes;
     static readonly minSvgWidth = 650;
+    static readonly maxSvgWidth = 1900;
     static readonly svgWidthToScreenWidthFactor = 0.94;
 
     private itemNumber = 1;
@@ -28,9 +29,11 @@ export class NeighborGenesView implements OnInit {
         let geneClusterSvgWidth = (window.innerWidth > 0) 
             ? window.innerWidth*NeighborGenesView.svgWidthToScreenWidthFactor
             : screen.width*NeighborGenesView.svgWidthToScreenWidthFactor;
-        geneClusterSvgWidth = geneClusterSvgWidth > NeighborGenesView.minSvgWidth 
-            ? geneClusterSvgWidth 
-            : NeighborGenesView.minSvgWidth;
+        
+        if (geneClusterSvgWidth <= NeighborGenesView.minSvgWidth)
+            geneClusterSvgWidth = NeighborGenesView.minSvgWidth;
+        else if (geneClusterSvgWidth > 1900) 
+            geneClusterSvgWidth = 1900;
             
         this.drawNeighborGenesObject = new DrawNeighborGenes(this.elementRef, this.d3Service);
         this.drawNeighborGenesObject.setSvgSize(geneClusterSvgWidth);
@@ -49,9 +52,11 @@ export class NeighborGenesView implements OnInit {
         let geneClusterSvgWidth = (window.innerWidth > 0) 
             ? window.innerWidth*NeighborGenesView.svgWidthToScreenWidthFactor
             : screen.width*NeighborGenesView.svgWidthToScreenWidthFactor;
-        geneClusterSvgWidth = geneClusterSvgWidth > NeighborGenesView.minSvgWidth 
-            ? geneClusterSvgWidth 
-            : NeighborGenesView.minSvgWidth;
+
+        if (geneClusterSvgWidth < NeighborGenesView.minSvgWidth)
+            geneClusterSvgWidth = NeighborGenesView.minSvgWidth;
+        else if (geneClusterSvgWidth > NeighborGenesView.maxSvgWidth) 
+            geneClusterSvgWidth = NeighborGenesView.maxSvgWidth;
 
         this.itemNumber = 1;
         this.drawNeighborGenesObject.removeElement(this.htmlElement);

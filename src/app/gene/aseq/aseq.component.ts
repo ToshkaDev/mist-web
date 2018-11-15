@@ -30,6 +30,7 @@ export class AseqComponent implements OnInit {
     };
     static readonly higlightColor = '#daf8b5';
     static readonly minSvgWidth = 350;
+    static readonly maxSvgWidth = 1000;
     static readonly svgWidthToScreenWidthFactor = 0.33;
     private drawProteinFeature: DrawProteinFeature;
     private aseqData: any;
@@ -124,8 +125,12 @@ export class AseqComponent implements OnInit {
         let svgWidth = (window.innerWidth > 0) 
           ? window.innerWidth*AseqComponent.svgWidthToScreenWidthFactor
           : screen.width*AseqComponent.svgWidthToScreenWidthFactor;
-        return svgWidth > AseqComponent.minSvgWidth 
-          ? svgWidth 
-          : AseqComponent.minSvgWidth;
+        
+        if (svgWidth < AseqComponent.minSvgWidth)
+            svgWidth = AseqComponent.minSvgWidth;
+        else if (svgWidth > AseqComponent.maxSvgWidth) 
+            svgWidth = AseqComponent.maxSvgWidth;
+
+        return svgWidth;
     }
 }

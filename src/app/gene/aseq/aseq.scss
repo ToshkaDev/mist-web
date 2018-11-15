@@ -1,20 +1,13 @@
-$padd: 0;
-$padd-left: 1em;
-
 .aseq-details {
     text-align: right;
-    padding: $padd;
-    padding-left: $padd-left;
-}
-
-.domains {
-    padding-left: $padd-left;
+    padding: 0;
+    padding-left: 1em;
 }
 
 div.details {
     padding-top: 1.2em;
-    padding-left: $padd-left;
     max-width: 60%;
+    padding-left: 1em;
 }
 
 div.protSeq {

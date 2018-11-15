@@ -31,8 +31,8 @@ export class StProfileComponent implements OnInit {
   genomeVersion: number;
 
   legendHidden = true;
-  height = 500;
-  width = 500;
+  height = 650;
+  width = 650;
 
   private options = {
     chartArea: {

@@ -10,6 +10,7 @@ export default class GenomeViewModel {
     private taxonomy: any[] = [];
     private workerModules: any = {
         "Stp": "unknown", 
+        "agfam2": "unknown",
         "segs": "unknown", 
         "pfam31": "unknown", 
         "ecf1": "unknown", 
@@ -19,7 +20,8 @@ export default class GenomeViewModel {
         "NCBICoreData": "unknown"
     };
     private workerModulesTooltips: any = {
-        "Stp": "Signal transduction proteins prediction and classification is not complete.", 
+        "Stp": "Signal transduction proteins prediction and classification is not complete.",
+        "agfam2": "Prediction using MiST signal transduction-specific HMM profiles is not complete.", 
         "segs": "Low-complexity regions prediction is not complete.", 
         "pfam31": "Pfam domains prediction is not complete.", 
         "ecf1": "Extracytoplasmic function sigma factors prediction is not complete.", 
@@ -30,7 +32,7 @@ export default class GenomeViewModel {
     };
     private mainInfoFields: any[] = [
         {"name": "Organism", "value": "name"},
-        {"name": "NCBI Taxonomy id", "value": "taxonomy_id"},
+        {"name": "NCBI Taxonomy Id", "value": "taxonomy_id"},
         {"name": "Assembly level", "value": "assembly_level"}, 
         {"name": "RefSeq version", "value": "version", "ftp_path": "ftp_path"}, 
         {"name": "Submitter", "value": "submitter"}, 
@@ -65,8 +67,6 @@ export default class GenomeViewModel {
     private initializeWorkerModulesStates(workerModules: any[]) {
         for (let workerModule of workerModules) {
             let workerModuleName = workerModule.module.replace("AseqCompute:", "");
-            if (workerModuleName === "agfam2")
-                continue;
             this.workerModules[workerModuleName] = workerModule.state;
             if (workerModule.state === "done") 
                 this.workerModulesTooltips[workerModuleName] = this.workerModulesTooltips[workerModuleName].replace("is not complete.", "is complete.");

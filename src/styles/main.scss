@@ -97,13 +97,14 @@ a {
     }
  }
 
-.genes-container {
-    min-width: 1100px;
+.genomes-container {
+    margin-left: 31px;
+    min-width: 1200px;
 }
 
-.genomes-container {
-    max-width: 1500px;
-    min-width: 850px;
+.list-container {
+    margin-left: 8px;
+    min-width: 1150px;
 }
 
 .pull-right {
@@ -144,15 +145,13 @@ mat-checkbox.mat-checked ._mat-icon {
 }
 
 .flex-container {
-    padding-left: 3%;
-    padding-right: 3%;
-    width: 90%;
+    margin-right: 31px;
 }
 
 .summary {
     background-color: #889999;
     border-radius: 7px 7px 0 0;
-    margin: -3px;
+    margin: -1px;
 }
 
 .summary-text {
@@ -163,18 +162,21 @@ mat-checkbox.mat-checked ._mat-icon {
 }
 
 .detail-box {
-    border-style: groove;
+    border-style: solid;
     border-radius: 7px;
+    border-color: #889999;
+    border-width: 2px;
 }
 
 .detail-uber {
-    margin-left: 4.5%;
+    margin: 0 31px;
 }
 
-.full-width-container {
+.content {
     max-width: 1800px;
-    clear: both;
     margin: 0 auto;
+    min-height: calc(100vh - 310px);
+    padding-bottom: 30px;
 }
 
 .add-to-cart-button {
@@ -214,14 +216,14 @@ mat-checkbox.mat-checked ._mat-icon {
 .distribution-table {
     h4 {
         color: #197477;
-        margin: .5em 1em;
+        margin: .5em 1.4em;
         font-size: 24px;
     }
 
     table {
         width: auto;
         font-size: 13px;
-        margin: 0 1em;
+        margin: 0 2.3em;
         border-collapse: collapse;
         border-spacing: 0;
 
@@ -259,4 +261,3 @@ mat-checkbox.mat-checked ._mat-icon {
 .tooltipClass {
     font-size: 13px;
 }
-  

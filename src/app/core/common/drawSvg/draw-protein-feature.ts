@@ -130,12 +130,12 @@ export default class DrawProteinFeature {
             .data(data.coils ? data.coils : [])
             .enter()
             .append('g')
-            .filter(function(d){ return d.end - d.start > 0 })                
+            .filter(function(d){ return d[1] - d[0] > 0 })                
             .append('rect')
-            .attr("x", function(d) { return featureScale(d.start) })
+            .attr("x", function(d) { return featureScale(d[0]) })
             .attr("y", kCoilsYstart)
             .attr("width", function(d) { 
-                return featureScale(d.end-d.start)
+                return featureScale(d[1] - d[0])
             })
             .attr("height", DrawProteinFeature.kCoilsHeight)
             .attr("fill", DrawProteinFeature.domainColors.coils)
@@ -305,9 +305,9 @@ export default class DrawProteinFeature {
         let readyName, name = d.name ? d.name : "genericName";
         if (dataType === DataType.DOMAIN) {
             readyName = `${name}@${d.ali_from}-${d.ali_to}`;
-        } else if (dataType === DataType.COILED_COILS || dataType === DataType.TM) {
+        } else if (dataType === DataType.TM) {
             readyName = `${name}@${d.start}-${d.end}`;
-        } else if (dataType === DataType.LOW_COMPLEXITY) {
+        } else if (dataType === DataType.LOW_COMPLEXITY || dataType === DataType.COILED_COILS) {
             readyName = `${name}@${d[0]}-${d[1]}`;
         }
         return readyName;

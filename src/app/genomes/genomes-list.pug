@@ -12,8 +12,8 @@ mat-table([dataSource]="result" class="genome-table")
   ng-container(matColumnDef="Superkingdom")
     mat-header-cell(*matHeaderCellDef class="superkingdom-header table-txt-size") Superkingdom
     mat-cell(*matCellDef="let genome" class="superkingdom-cell") {{genome.superkingdom}}
-  ng-container(matColumnDef="Taxonomy ID")
-    mat-header-cell(*matHeaderCellDef class="taxonomy-id-header table-txt-size") Taxonomy ID
+  ng-container(matColumnDef="Taxonomy Id")
+    mat-header-cell(*matHeaderCellDef class="taxonomy-id-header table-txt-size") Taxonomy Id
     mat-cell(*matCellDef="let genome" class="taxonomy-id-cell" ) {{ genome.taxonomy_id }}
   ng-container(matColumnDef="Taxonomy")
     mat-header-cell(*matHeaderCellDef class="table-txt-size") Taxonomy

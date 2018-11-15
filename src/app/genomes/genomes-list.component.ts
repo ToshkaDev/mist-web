@@ -12,7 +12,6 @@ import { CartChangedService } from '../shop-cart/cart-changed.service';
 export class GenomesListComponent extends GenomesListMain {
   @Input() selected: string;
   @Output() taxonomyEvent = new EventEmitter<any>();
-
   constructor(cartChangedService: CartChangedService) {
     super(cartChangedService);
   }
