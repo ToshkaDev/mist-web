@@ -9,9 +9,9 @@ export default class DrawNeighborGenes {
 
     //Figure
     private svgWidth: number = 2000;
-    private svgHeight: number = 500;
+    private svgHeight: number = 300;
     
-    private clusterFrameHeight = this.svgHeight*0.4;
+    private clusterFrameHeight = this.svgHeight*0.67;
     static readonly yTranslationOfSvg = 95;
     static readonly frameRectXRadius = 7;
     static readonly frameRectYRadius = 7;
@@ -35,7 +35,7 @@ export default class DrawNeighborGenes {
     //Need to make textPositionFactorDirect, textPositionFactorReverse, 
     //substractions from directGeneInfoBoxY and reverseGeneInfoBoxY calculable, not hard-coded
     static readonly infoBoxWidth = 300;
-    private infoBoxHeight = this.svgHeight*0.3;
+    private infoBoxHeight = this.svgHeight*0.5;
     static readonly infoBoxRectXRadius = 3;
     static readonly infoBoxRectYRadius = 3;
     static readonly directGeneInfoBoxY = DrawNeighborGenes.directGeneFigureTopY-148;

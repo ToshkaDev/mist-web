@@ -22,8 +22,23 @@ header
 
 footer
   .container.footer-content
-    img.footer-style.footer-logos(src="assets/images/NIH-min.png")
-    a(href="http://u.osu.edu/zhulinlab/")
-      img.footer-style.logo-zhulinlab(src="assets/images/zhulinLab.png")
-    img.footer-style.footer-logos(src="assets/images/OSU.png")
-    img.footer-style.logo-netlify(src="assets/images/netlify.png")
+    a.footer-style(href="https://www.nih.gov/" target="_blank")
+      img(src="assets/images/NIH-min.png"
+        [class.logo-nih]="isNnihLogoActive == false" 
+        [class.logo-nih-active]="isNnihLogoActive" #nihLogo)
+    a.footer-style(href="https://www.osu.edu/" target="_blank")
+      img(src="assets/images/OSU.png"
+        [class.logo-osu]="isOsuLogoActive == false" 
+        [class.logo-osu-active]="isOsuLogoActive" #osuLogo)
+    a.footer-style(href="http://www.caltech.edu/" target="_blank")
+      img(src="assets/images/Caltech_LOGO-Orange_RGB.png" 
+        [class.logo-caltech]="isCaltechLogoActive == false"
+        [class.logo-caltech-active]="isCaltechLogoActive" #caltechLogo)
+    a.footer-style(href="https://www.sabanciuniv.edu/en" target="_blank")
+      img(src="assets/images/sabanci_universitesi_logo.png"
+        [class.logo-sabanci]="isSabanciLogoActive == false"
+        [class.logo-sabanci-active]="isSabanciLogoActive" #sabanciLogo)
+    a.footer-style(href="https://www.netlify.com/" target="_blank")
+      img(src="assets/images/netlify.png" 
+        [class.logo-netlify]="isNetlifyLogoActive == false"
+        [class.logo-netlify-active]="isNetlifyLogoActive" #netlifyLogo)

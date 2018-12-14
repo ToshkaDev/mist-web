@@ -55,24 +55,49 @@ header {
 footer {
   background-color:#889999;
   min-width: 341px;
-  height: 180px;
+  height: 150px;
 }
 
-@media screen and (min-width: 1145px) {
+@media screen and (min-width: 1607px) {
   .footer-style {
     margin-right: 5%;
     margin-left: 10%;
   }
 }
 
-@media screen and (max-width: 1144px) {
+@media screen and (max-width: 1606px) {
   .footer-style {
     margin-right: 5%;
     margin-left: 5%;
   }
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 1363px) {
+  .footer-style {
+    margin-right: 3%;
+    margin-left: 3%;
+  }
+}
+
+@media screen and (max-width: 1049px) {
+  footer
+  {
+    height: 250px;
+  }
+
+  .footer-content {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .footer-style {
+    margin-right: 23px;
+    margin-left: 23px;
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (max-width: 565px) {
   footer
   {
     height: 350px;
@@ -84,16 +109,16 @@ footer {
   }
 
   .footer-style {
-    margin-right: 33px;
-    margin-left: 33px;
-    margin-bottom: 15px;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 19px;
   }
 }
 
-@media screen and (max-width: 527px) {
+@media screen and (max-width: 450px) {
   footer
   {
-    height: 500px;
+    height: 550px;
   }
 
   .footer-content {
@@ -102,9 +127,9 @@ footer {
   }
 
   .footer-style {
-    margin-right: 33px;
-    margin-left: 33px;
-    margin-bottom: 19px;
+    margin-right: 15px;
+    margin-left: 15px;
+    margin-bottom: 15px;
   }
 }
 
@@ -114,27 +139,78 @@ footer {
 }
 
 // Needed to specify min and max, otherwise some browsers shrink logo images
-.footer-logos {
-  max-width: 220px;
-  max-height: 150px;
-  min-width: 220px;
-  min-height: 150px;
-  filter: grayscale(100%) brightness(3);
+%nih {
+  max-width: 185px;
+  max-height: 135px;
+  min-width: 185px;
+  min-height: 135px;
+}
+.logo-nih {
+  @extend %nih;
+  filter: grayscale(95%) brightness(1.9);
+}
+.logo-nih-active {
+  @extend %nih;
+  filter:  brightness(2);
 }
 
+%netlify {
+  max-width: 150px;
+  max-height: 50px;
+  min-width: 150px;
+  min-height: 50px;
+}
 .logo-netlify {
-  max-width: 150px;
-  max-height: 50px;
-  min-width: 150px;
-  min-height: 50px;
-  filter: grayscale(100%) brightness(3);
+  @extend %netlify;
+  filter: grayscale(100%) brightness(1.9);
+}
+.logo-netlify-active {
+  @extend %netlify;
+  filter: brightness(2);
 }
 
-.logo-zhulinlab {
-  max-width: 150px;
-  max-height: 50px;
-  min-width: 150px;
-  min-height: 50px;
+%osu {
+  max-width: 170px;
+  max-height: 120px;
+  min-width: 170px;
+  min-height: 120px;
+}
+.logo-osu {
+  @extend %osu;
+  filter: grayscale(90%) brightness(1.1) opacity(0.7);
+}
+.logo-osu-active {
+  @extend %osu;
+  filter: brightness(1.2);
+}
+
+%caltech {
+  max-width: 100px;
+  max-height: 25px;
+  min-width: 100px;
+  min-height: 25px;
+}
+.logo-caltech {
+  @extend %caltech;
+  filter: grayscale(95%) brightness(1.4);
+}
+.logo-caltech-active {
+  @extend %caltech;
+}
+
+%sabanci {
+  max-width: 160px;
+  max-height: 70px;
+  min-width: 160px;
+  min-height: 70px;
+}
+.logo-sabanci {
+  @extend %sabanci;
+  filter: grayscale(100%) brightness(1) opacity(0.5);
+}
+.logo-sabanci-active {
+  @extend %sabanci;
+  filter: brightness(1) opacity(0.9);
 }
 
 .breadcrumbs {
