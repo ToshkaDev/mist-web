@@ -34,7 +34,7 @@ export const getSearchResults = createSelector(
   (searchState) => searchState.matches,
 );
 
-export const PageInfo = createSelector(
+export const getPageInfo = createSelector(
   search,
   (searchState) => { 
     return {
