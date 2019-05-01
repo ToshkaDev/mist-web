@@ -76,10 +76,12 @@ export default class DrawNeighborGenes {
         this.d3Svg = d3ParentElement.select<SVGSVGElement>(htmlElement);
         this.d3Svg.attr('width', svgWidth);
         this.d3Svg.attr('height', svgHeight);
-        let span = neighbGenes[neighbGenes.length-1].stop - neighbGenes[0].start;
-        let genomeNeighbStart = neighbGenes[0].start - span*DrawNeighborGenes.clusterOffsetLeft;
-        let genomeNeighbStop = neighbGenes[neighbGenes.length-1].stop + span*DrawNeighborGenes.clusterOffsetRight;
-        DrawNeighborGenes.lastGeneStop = neighbGenes[neighbGenes.length-1].stop;
+        let spanStart = gene.start < neighbGenes[0].start ? gene.start : neighbGenes[0].start;
+        let spanStop = gene.stop > neighbGenes[neighbGenes.length-1].stop ? gene.stop : neighbGenes[neighbGenes.length-1].stop;
+        let span = spanStop - spanStart;
+        let genomeNeighbStart = spanStart - span*DrawNeighborGenes.clusterOffsetLeft;
+        let genomeNeighbStop = spanStop + span*DrawNeighborGenes.clusterOffsetRight;
+        DrawNeighborGenes.lastGeneStop = spanStop;
         let geneScale = this.d3.scaleLinear()
         .domain([genomeNeighbStart, genomeNeighbStop])
         .range([10, clusterPictureWidth]);
