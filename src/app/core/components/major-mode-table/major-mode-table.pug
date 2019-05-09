@@ -37,64 +37,64 @@ table(*ngIf="stpMatrix")
         td {{ component.length / 1000000 | number:'1.2' }}
         td
           a(
-            *ngIf="component.counts[JointRank.Ocp] > 0"
+            *ngIf="component.counts.ocp?.$total > 0"
             routerLink="signal-genes"
-            [queryParams]="{componentId: component.id, ranks: JointRank.Ocp}"
-          ) {{ component.counts[JointRank.Ocp] }}
+            [queryParams]="{componentId: component.id, ranks: ocp}"
+          ) {{ component.counts.ocp.$total }}
         td
           a(
-            *ngIf="component.counts[JointRank.TcpHK] > 0"
+            *ngIf="component.counts.tcp?.hk?.$total > 0"
             routerLink="signal-genes"
-            [queryParams]="{componentId: component.id, ranks: JointRank.TcpHK}"
-          ) {{ component.counts[JointRank.TcpHK] }}
+            [queryParams]="{componentId: component.id, ranks: 'tcp,hk'}"
+          ) {{ component.counts.tcp.hk.$total }}
         td
           a(
-            *ngIf="component.counts[JointRank.TcpHHK] > 0"
+            *ngIf="component.counts.tcp?.hhk?.$total > 0"
             routerLink="signal-genes"
-            [queryParams]="{componentId: component.id, ranks: JointRank.TcpHHK}"
-          ) {{ component.counts[JointRank.TcpHHK] }}
+            [queryParams]="{componentId: component.id, ranks: 'tcp,hhk'}"
+          ) {{ component.counts.tcp.hhk.$total }}
         td
           a(
-            *ngIf="component.counts[JointRank.TcpRR] > 0"
+            *ngIf="component.counts.tcp?.rr?.$total > 0"
             routerLink="signal-genes"
-            [queryParams]="{componentId: component.id, ranks: JointRank.TcpRR}"
-          ) {{ component.counts[JointRank.TcpRR] }}
+            [queryParams]="{componentId: component.id, ranks: 'tcp,rr'}"
+          ) {{ component.counts.tcp.rr.$total }}
         td
           a(
-            *ngIf="component.counts[JointRank.TcpHRR] > 0"
+            *ngIf="component.counts.tcp?.hrr?.$total > 0"
             routerLink="signal-genes"
-            [queryParams]="{componentId: component.id, ranks: JointRank.TcpHRR}"
-          ) {{ component.counts[JointRank.TcpHRR] }}
+            [queryParams]="{componentId: component.id, ranks: 'tcp,hrr'}"
+          ) {{ component.counts.tcp.hrr.$total }}
         td
           a(
-            *ngIf="component.counts[JointRank.TcpOther] > 0"
+            *ngIf="component.counts.tcp?.other?.$total > 0"
             routerLink="signal-genes"
-            [queryParams]="{componentId: component.id, ranks: JointRank.TcpOther}"
-          ) {{ component.counts[JointRank.TcpOther] }}
+            [queryParams]="{componentId: component.id, ranks: 'tcp,other'}"
+          ) {{ component.counts.tcp.other.$total }}
         td
           a(
-            *ngIf="component.counts[JointRank.Chemotaxis] > 0"
+            *ngIf="component.counts.chemotaxis?.$total > 0"
             routerLink="signal-genes"
-           [queryParams]="{componentId: component.id, ranks: JointRank.Chemotaxis}"
-          ) {{ component.counts[JointRank.Chemotaxis] }}
+           [queryParams]="{componentId: component.id, ranks: chemotaxis}"
+          ) {{ component.counts.chemotaxis.$total }}
         td
           a(
-            *ngIf="component.counts[JointRank.ECF] > 0"
+            *ngIf="component.counts.ecf?.$total > 0"
             routerLink="signal-genes"
-            [queryParams]="{componentId: component.id, ranks: JointRank.ECF}"
-          ) {{ component.counts[JointRank.ECF] }}
+            [queryParams]="{componentId: component.id, ranks: ecf}"
+          ) {{ component.counts.ecf.$total }}
         td
           a(
-            *ngIf="component.counts[JointRank.Other] > 0"
+            *ngIf="component.counts.other?.$total > 0"
             routerLink="signal-genes"
-            [queryParams]="{componentId: component.id, ranks: JointRank.Other}"
-          ) {{ component.counts[JointRank.Other] }}
+            [queryParams]="{componentId: component.id, ranks: other}"
+          ) {{ component.counts.other.$total }}
         td
           a(
-            *ngIf="component.numStp > 0"
+            *ngIf="component.counts.$total > 0"
             routerLink="signal-genes"
             [queryParams]="{componentId: component.id}"
-          ) {{ component.numStp }}
+          ) {{ component.counts.$total }}
     tr(*ngIf="stpMatrix.numComponents > stpMatrixLimit")
       td.no-border(colspan="2")
       td ...
@@ -113,60 +113,60 @@ table(*ngIf="stpMatrix")
       td {{ stpMatrix.totalLength / 1000000 | number:'1.2' }}
       td
         a(
-          *ngIf="stpMatrix.counts[JointRank.Ocp] > 0"
+          *ngIf="stpMatrix.counts.ocp?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: JointRank.Ocp}"
-        ) {{ stpMatrix.counts[JointRank.Ocp] }}
+          [queryParams]="{ranks: ocp}"
+        ) {{ stpMatrix.counts.ocp.$total }}
       td
         a(
-          *ngIf="stpMatrix.counts[JointRank.TcpHK] > 0"
+          *ngIf="stpMatrix.counts.tcp?.hk?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: JointRank.TcpHK}"
-        ) {{ stpMatrix.counts[JointRank.TcpHK] }}
+          [queryParams]="{ranks: 'tcp,hk'}"
+        ) {{ stpMatrix.counts.tcp.hk.$total }}
       td
         a(
-          *ngIf="stpMatrix.counts[JointRank.TcpHHK] > 0"
+          *ngIf="stpMatrix.counts.tcp?.hhk?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: JointRank.TcpHHK}"
-        ) {{ stpMatrix.counts[JointRank.TcpHHK] }}
+          [queryParams]="{ranks: 'tcp,hhk'}"
+        ) {{ stpMatrix.counts.tcp.hhk.$total }}
       td
         a(
-          *ngIf="stpMatrix.counts[JointRank.TcpRR] > 0"
+          *ngIf="stpMatrix.counts.tcp?.rr?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: JointRank.TcpRR}"
-        ) {{ stpMatrix.counts[JointRank.TcpRR] }}
+          [queryParams]="{ranks: 'tcp,rr'}"
+        ) {{ stpMatrix.counts.tcp.rr.$total }}
       td
         a(
-          *ngIf="stpMatrix.counts[JointRank.TcpHRR] > 0"
+          *ngIf="stpMatrix.counts.tcp?.hrr?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: JointRank.TcpHRR}"
-        ) {{ stpMatrix.counts[JointRank.TcpHRR] }}
+          [queryParams]="{ranks: 'tcp,hrr'}"
+        ) {{ stpMatrix.counts.tcp.hrr.$total }}
       td
         a(
-          *ngIf="stpMatrix.counts[JointRank.TcpOther] > 0"
+          *ngIf="stpMatrix.counts.tcp?.other?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: JointRank.TcpOther}"
-        ) {{ stpMatrix.counts[JointRank.TcpOther] }}
+          [queryParams]="{ranks: 'tcp,other'}"
+        ) {{ stpMatrix.counts.tcp.other.$total }}
       td
         a(
-          *ngIf="stpMatrix.counts[JointRank.Chemotaxis] > 0"
+          *ngIf="stpMatrix.counts.chemotaxis?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: JointRank.Chemotaxis}"
-        ) {{ stpMatrix.counts[JointRank.Chemotaxis] }}
+          [queryParams]="{ranks: chemotaxis}"
+        ) {{ stpMatrix.counts.chemotaxis.$total }}
       td
         a(
-          *ngIf="stpMatrix.counts[JointRank.ECF] > 0"
+          *ngIf="stpMatrix.counts.ecf?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: JointRank.ECF}"
-        ) {{ stpMatrix.counts[JointRank.ECF] }}
+          [queryParams]="{ranks: ecf}"
+        ) {{ stpMatrix.counts.ecf.$total }}
       td
         a(
-          *ngIf="stpMatrix.counts[JointRank.Other] > 0"
+          *ngIf="stpMatrix.counts.other?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: JointRank.Other}"
-        ) {{ stpMatrix.counts[JointRank.Other] }}
+          [queryParams]="{ranks: other}"
+        ) {{ stpMatrix.counts.other.$total }}
       td
         a(
-          *ngIf="stpMatrix.numStp > 0"
+          *ngIf="stpMatrix.counts.$total > 0"
           routerLink="signal-genes"
-        ) {{ stpMatrix.numStp }}
+        ) {{ stpMatrix.counts.$total }}

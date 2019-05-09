@@ -20,47 +20,14 @@ export interface SignalProfileCount {
   numDomains: number;
 }
 
-export enum JointRank {
-  Chemotaxis = 'chemotaxis',
-  ChemotaxisCheA = 'chemotaxis,chea',
-  ChemotaxisCheB = 'chemotaxis,cheb',
-  ChemotaxisCheCX = 'chemotaxis,checx',
-  ChemotaxisCheD = 'chemotaxis,ched',
-  ChemotaxisCheR = 'chemotaxis,cher',
-  ChemotaxisCheV = 'chemotaxis,chev',
-  ChemotaxisCheW = 'chemotaxis,chew',
-  ChemotaxisCheZ = 'chemotaxis,chez',
-  ChemotaxisMCP = 'chemotaxis,mcp',
-  ChemotaxisOther = 'chemotaxis,other',
-  ECF = 'ecf',
-  Ocp = 'ocp',
-  Other = 'other',
-  TcpHK = 'tcp,hk',
-  TcpHHK = 'tcp,hhk',
-  TcpRR = 'tcp,rr',
-  TcpHRR = 'tcp,hrr',
-  TcpOther = 'tcp,other',
-}
-
-export interface JointRankCounts {
-  ChemotaxisCheA?: number;
-  ChemotaxisCheB?: number;
-  ChemotaxisCheCX?: number;
-  ChemotaxisCheD?: number;
-  ChemotaxisCheR?: number;
-  ChemotaxisCheV?: number;
-  ChemotaxisCheW?: number;
-  ChemotaxisCheZ?: number;
-  ChemotaxisMCP?: number;
-  ChemotaxisOther?: number;
-  ECF?: number;
-  Ocp?: number;
-  Other?: number;
-  TcpHK?: number;
-  TcpHHK?: number;
-  TcpRR?: number;
-  TcpHRR?: number;
-  TcpOther?: number;
+// Ideally, this would be typed as follows:
+// $total: number
+// [key: string]: RankCounts
+//
+// However, it's not exactly easy to accomplish:
+// https://stackoverflow.com/questions/49969390/how-do-i-type-an-object-with-known-and-unknown-keys-in-typescript
+export interface RankCounts {
+  [key: string]: RankCounts | number;
 }
 
 export interface ComponentStpInfo {
@@ -68,16 +35,12 @@ export interface ComponentStpInfo {
   version: string;
   name: string;
   length: number;
-  counts: JointRankCounts;
-  numChemotaxis: number;
-  numStp: number;
+  counts: RankCounts;
 }
 
 export interface GenomeStpMatrix {
   components: ComponentStpInfo[];
-  counts: JointRankCounts;
-  numChemotaxis: number;
-  numStp: number;
+  counts: RankCounts;
   numComponents: number;
   totalLength: number;
 }

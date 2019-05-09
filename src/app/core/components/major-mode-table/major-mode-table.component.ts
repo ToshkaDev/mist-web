@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { GenomeStpMatrix, JointRank } from '../../services/mist-api.service';
+import { GenomeStpMatrix } from '../../services/mist-api.service';
 
 @Component({
   selector: 'mist-major-mode-table',
@@ -13,6 +13,4 @@ export class MajorModeTableComponent {
 
   @Input()
   stpMatrixLimit: number;
-
-  JointRank = JointRank;
 }

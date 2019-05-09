@@ -1,0 +1,8 @@
+ng-container(*ngIf="counts && counts[secondaryRank]?.$total > 0")
+  a(
+    *ngFor="let type of counts[secondaryRank] | stpCountsKeys"
+    routerLink="signal-genes"
+    [queryParams]="queryParams(secondaryRank, type)"
+  )
+    span.type {{ type }}&nbsp;
+    span.count {{ counts[secondaryRank][type].$total }}
