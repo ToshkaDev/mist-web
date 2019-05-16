@@ -3,11 +3,37 @@ mist-gene-view(
     [geneViewModel]="geneViewModel"
 )
 
+.detail-uber(*ngIf="signalGene")
+    h5 Signal transduction details
+    p: strong {{ signalGene.ranks | geneRanks:true }}
+
+    ul
+        li
+            strong Input domains:
+            |  {{ signalGene.inputs.join(', ') }}
+        li
+            strong Output domains:
+            |  {{ signalGene.outputs.join(', ') }}
+
+    ng-container(*ngIf="signalGene.data.cheHits; let hits")
+        a(routerLink=".", (click)="showHits = !showHits") {{ showHits ? 'Hide' : 'Show' }} chemotaxis classification data
+        table(*ngIf="showHits")
+            thead
+                tr
+                    th(scope="col") Name
+                    th(scope="col") Score
+                    th(scope="col") Cond. E-value
+                    th(scope="col") Ind. E-value
+            tbody
+                tr(*ngFor="let hit of hits")
+                    td {{ hit.name }}
+                    td {{ hit.score }}
+                    td {{ hit.c_evalue }}
+                    td {{ hit.i_evalue }}
 
 mist-aseq(
     [gene$]="gene$"
 )
-
 
 mist-neighbor-genes(
     [gene$]="gene$"

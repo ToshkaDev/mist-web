@@ -39,7 +39,7 @@ table(*ngIf="stpMatrix")
           a(
             *ngIf="component.counts.ocp?.$total > 0"
             routerLink="signal-genes"
-            [queryParams]="{componentId: component.id, ranks: ocp}"
+            [queryParams]="{componentId: component.id, ranks: 'ocp'}"
           ) {{ component.counts.ocp.$total }}
         td
           a(
@@ -75,19 +75,19 @@ table(*ngIf="stpMatrix")
           a(
             *ngIf="component.counts.chemotaxis?.$total > 0"
             routerLink="signal-genes"
-           [queryParams]="{componentId: component.id, ranks: chemotaxis}"
+           [queryParams]="{componentId: component.id, ranks: 'chemotaxis'}"
           ) {{ component.counts.chemotaxis.$total }}
         td
           a(
             *ngIf="component.counts.ecf?.$total > 0"
             routerLink="signal-genes"
-            [queryParams]="{componentId: component.id, ranks: ecf}"
+            [queryParams]="{componentId: component.id, ranks: 'ecf'}"
           ) {{ component.counts.ecf.$total }}
         td
           a(
             *ngIf="component.counts.other?.$total > 0"
             routerLink="signal-genes"
-            [queryParams]="{componentId: component.id, ranks: other}"
+            [queryParams]="{componentId: component.id, ranks: 'other'}"
           ) {{ component.counts.other.$total }}
         td
           a(
@@ -115,7 +115,7 @@ table(*ngIf="stpMatrix")
         a(
           *ngIf="stpMatrix.counts.ocp?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: ocp}"
+          [queryParams]="{ranks: 'ocp'}"
         ) {{ stpMatrix.counts.ocp.$total }}
       td
         a(
@@ -151,19 +151,19 @@ table(*ngIf="stpMatrix")
         a(
           *ngIf="stpMatrix.counts.chemotaxis?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: chemotaxis}"
+          [queryParams]="{ranks: 'chemotaxis'}"
         ) {{ stpMatrix.counts.chemotaxis.$total }}
       td
         a(
           *ngIf="stpMatrix.counts.ecf?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: ecf}"
+          [queryParams]="{ranks: 'ecf'}"
         ) {{ stpMatrix.counts.ecf.$total }}
       td
         a(
           *ngIf="stpMatrix.counts.other?.$total > 0"
           routerLink="signal-genes"
-          [queryParams]="{ranks: other}"
+          [queryParams]="{ranks: 'other'}"
         ) {{ stpMatrix.counts.other.$total }}
       td
         a(
