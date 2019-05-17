@@ -67,6 +67,9 @@ import { ReplacePipe } from './core/common/util';
 import { SignalGenesComponent } from './genome/signal_genes/signal_genes.component';
 import { MajorModeTableComponent } from './core/components/major-mode-table/major-mode-table.component';
 import { ChemotaxisTableComponent } from './core/components/chemotaxis-table/chemotaxis-table.component';
+import { GeneRanksPipe } from './pipes/gene-ranks.pipe';
+import { StpCountsKeysPipe } from './pipes/stp-counts-keys.pipe';
+import { ChemotaxisCountLinksComponent } from './core/components/chemotaxis-count-links/chemotaxis-count-links.component';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -100,6 +103,9 @@ import { ChemotaxisTableComponent } from './core/components/chemotaxis-table/che
     MajorModeTableComponent,
     ChemotaxisTableComponent,
     ReplacePipe,
+    GeneRanksPipe,
+    StpCountsKeysPipe,
+    ChemotaxisCountLinksComponent,
   ],
   imports: [
     AppRoutingModule,

@@ -1,11 +1,11 @@
 cart-select-buttons((selectClickEvent)='onAddRemoveClickEvent($event)' [cart]="cart")
 mat-table([dataSource]="result" class="gene-table")
   ng-container(matColumnDef="Select")
-    mat-header-cell(*matHeaderCellDef class="select-header") 
-      mat-checkbox((change)="onAllCheckBoxChanged($event)" [indeterminate]="isIndeterminate" [checked]='checkedAll') 
+    mat-header-cell(*matHeaderCellDef class="select-header")
+      mat-checkbox((change)="onAllCheckBoxChanged($event)" [indeterminate]="isIndeterminate" [checked]='checkedAll')
     mat-cell(*matCellDef="let gene" class="select-cell")
-      mat-checkbox(*ngIf="!gene.Gene"  disabled='{{idToIsDisabled[gene.id]}}' checked='{{idToIsChecked[gene.id]}}' (change)="checkBoxChanged($event, gene.id)") 
-      mat-checkbox(*ngIf="gene.Gene" disabled='{{idToIsDisabled[gene.Gene.id]}}' checked='{{idToIsChecked[gene.Gene.id]}}' (change)="checkBoxChanged($event, gene.Gene.id)") 
+      mat-checkbox(*ngIf="!gene.Gene"  disabled='{{idToIsDisabled[gene.id]}}' checked='{{idToIsChecked[gene.id]}}' (change)="checkBoxChanged($event, gene.id)")
+      mat-checkbox(*ngIf="gene.Gene" disabled='{{idToIsDisabled[gene.Gene.id]}}' checked='{{idToIsChecked[gene.Gene.id]}}' (change)="checkBoxChanged($event, gene.Gene.id)")
   ng-container(matColumnDef="Mist Id")
     mat-header-cell(*matHeaderCellDef class="gene-header table-txt-size") Mist Id
     mat-cell(*matCellDef="let gene" class="gene-cell")
@@ -13,7 +13,7 @@ mat-table([dataSource]="result" class="gene-table")
       a(*ngIf="gene.Gene" routerLink="/genes/{{gene.Gene.stable_id}}") {{ gene.Gene.stable_id }}
   ng-container(matColumnDef="Protein Id")
     mat-header-cell(*matHeaderCellDef class="proteinId-header table-txt-size") Protein Id
-    mat-cell(*matCellDef="let gene" class="proteinId-cell") 
+    mat-cell(*matCellDef="let gene" class="proteinId-cell")
       span(*ngIf="!gene.Gene") {{ gene.version }}
       span(*ngIf="gene.Gene") {{ gene.Gene.version }}
   ng-container(matColumnDef="Domain Structure")
@@ -21,23 +21,26 @@ mat-table([dataSource]="result" class="gene-table")
     mat-cell(*matCellDef="let gene" class="domain-structure-cell")
       div(*ngIf="!gene.Gene" class="gene{{gene.id}}") {{ !geneIsDrawn.get(gene.id) ? drawProteinFeature(gene.id) : null }}
       div(*ngIf="gene.Gene" class="gene{{gene.Gene.id}}") {{ !geneIsDrawn.get(gene.Gene.id) ? drawProteinFeature(gene.Gene.id) : null }}
+  ng-container(matColumnDef="Type")
+    mat-header-cell(*matHeaderCellDef class="type-header table-txt-size") Type
+    mat-cell(*matCellDef="let gene" class="type-cell") {{ gene?.ranks | geneRanks }}
   ng-container(matColumnDef="Locus")
     mat-header-cell(*matHeaderCellDef class="locus-header table-txt-size") Locus
-    mat-cell(*matCellDef="let gene" class="locus-cell") 
+    mat-cell(*matCellDef="let gene" class="locus-cell")
       span(*ngIf="!gene.Gene") {{ gene.locus }}
       span(*ngIf="gene.Gene") {{ gene.Gene.locus }}
   ng-container(matColumnDef="Description")
     mat-header-cell(*matHeaderCellDef class="description-header table-txt-size") Description
-    mat-cell(*matCellDef="let gene" class="description-cell" ) 
-        div(*ngIf="!gene.Gene") {{ gene.product }} 
+    mat-cell(*matCellDef="let gene" class="description-cell" )
+        div(*ngIf="!gene.Gene") {{ gene.product }}
           span(*ngFor="let name of gene.names") {{ name }}
           div ({{ gene.Component.definition }})
-        div(*ngIf="gene.Gene") {{ gene.Gene.product }} 
+        div(*ngIf="gene.Gene") {{ gene.Gene.product }}
           span(*ngFor="let name of gene.Gene.names") {{ name }}
           div ({{ gene.Component.definition }})
   ng-container(matColumnDef="Location")
     mat-header-cell(*matHeaderCellDef class="location-header table-txt-size") Location
-    mat-cell(*matCellDef="let gene" class="location-cell") 
+    mat-cell(*matCellDef="let gene" class="location-cell")
       span(*ngIf="!gene.Gene") {{ gene.Component.version}} [{{ gene.location | replace:['(', ' ('] }}]
       span(*ngIf="gene.Gene") {{ gene.Component.version}} [{{ gene.Gene.location | replace:['(', ' ('] }}]
   mat-header-row(*matHeaderRowDef="displayedColumns")

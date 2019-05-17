@@ -1,0 +1,10 @@
+a {
+  text-decoration: none;
+  &:hover .count {
+    text-decoration: underline;
+  }
+}
+
+.type {
+  color: #000;
+}

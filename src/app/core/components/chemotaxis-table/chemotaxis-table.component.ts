@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
-import { GenomeStpMatrix, JointRank } from '../../services/mist-api.service';
+import { PrimaryRank, SecondaryRank } from '../../common/stp-utils';
+import { GenomeStpMatrix } from '../../services/mist-api.service';
 
 @Component({
   selector: 'mist-chemotaxis-table',
@@ -14,5 +15,18 @@ export class ChemotaxisTableComponent {
   @Input()
   stpMatrixLimit: number;
 
-  JointRank = JointRank;
+  secondaryRanks = [
+    SecondaryRank.mcp,
+    SecondaryRank.chew,
+    SecondaryRank.chea,
+    SecondaryRank.cher,
+    SecondaryRank.cheb,
+    SecondaryRank.checx,
+    SecondaryRank.chev,
+    SecondaryRank.ched,
+    SecondaryRank.chez,
+    SecondaryRank.other,
+  ];
+
+  PrimaryRank = PrimaryRank;
 }

@@ -18,7 +18,15 @@ export default class SignalGenesFilter implements Filter {
   templateUrl: './signal-genes.pug',
 })
 export class SignalGenesComponent extends MistComponent {
-  static readonly signalGenesColumns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
+  static readonly signalGenesColumns: string[] = [
+    "Select",
+    "Mist Id",
+    "Protein Id",
+    "Domain Structure",
+    "Type",
+    "Locus",
+    "Description",
+  ];
 
   private assemblyVersion = this.route.snapshot.paramMap.get('version');
   private queryParams = this.route.snapshot.queryParams;

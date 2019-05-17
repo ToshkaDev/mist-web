@@ -15,7 +15,9 @@ export class GeneComponent implements OnInit {
     private errorMessage$: Observable<string>;
     private gene$: Observable<any>;
     private geneViewModel: GeneView;
-    
+
+    private signalGene: any;
+
     constructor(private store: Store<any>, private route: ActivatedRoute) {
     }
 
@@ -25,9 +27,12 @@ export class GeneComponent implements OnInit {
         this.gene$ = this.store.select(fromGenes.getGene);
         this.geneStableId = this.route.snapshot.paramMap.get('stable_id');
         this.getGene(this.geneStableId);
-        this.gene$.skip(1).take(1).subscribe(result => result ? this.geneViewModel = new GeneView(result) : this.geneViewModel = null);
+        this.gene$.skip(1).take(1).subscribe((result) => {
+            this.signalGene = result.SignalGene;
+            return result ? this.geneViewModel = new GeneView(result) : this.geneViewModel = null;
+        });
     }
-    
+
     getGene(query: string) {
         this.store.dispatch(new FetchGene(query));
     }
