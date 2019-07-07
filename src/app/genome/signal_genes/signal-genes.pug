@@ -7,3 +7,9 @@ div(*ngIf="result$ | async")
       [result]="dataSource"
       [displayedColumns]="displayedColumns"
     )
+mist-progress-spinner(
+  [isSearchPerformed]="isSearchPerformed$ | async"
+  [isFetching]="isFetching$ | async"
+  [errorMessage]="errorMessage$ | async"
+  [isShopCart]="false"
+  )

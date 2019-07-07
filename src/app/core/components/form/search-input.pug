@@ -1,10 +1,8 @@
 mat-form-field
   input(matInput [placeholder]="placeholder" [value]="query" (keyup)="queryChange$.emit($event.target.value)")
-  mat-spinner(*ngIf="isFetching" matSuffix [diameter]="24" [strokeWidth]="1.5")
   mat-icon(*ngIf="!isFetching && !query" matSuffix) search
-  button(*ngIf="!isFetching && query?.length" type="button" matSuffix mat-button mat-icon-button (click)="queryChange$.emit('')")
+  button(*ngIf="query?.length" type="button" matSuffix mat-button mat-icon-button (click)="queryChange$.emit('')")
     mat-icon close
-  mat-error(*ngIf="errorMessage") {{ errorMessage }}
 mat-form-field(*ngIf="selectedComponent == 'genes'")
   input.scope-input(
     matInput
@@ -14,5 +12,6 @@ mat-form-field(*ngIf="selectedComponent == 'genes'")
     [value]="scope" 
     (keyup)="scopeChange$.emit($event.target.value)"
   )
-  button(type="button" matSuffix mat-button mat-icon-button (click)="scopeChange$.emit('')")
+  mat-icon(*ngIf="!isFetchingScope && !scope" matSuffix) search
+  button(*ngIf="scope?.length" type="button" matSuffix mat-button mat-icon-button (click)="scopeChange$.emit('')")
     mat-icon close

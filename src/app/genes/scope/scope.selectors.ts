@@ -35,6 +35,11 @@ export const getSearchResults = createSelector(
   (searchState) => searchState.matches,
 );
 
+export const getIsSearchPerforemd = createSelector(
+  search,
+  (searchState) => searchState.searchPerforemd,
+);
+
 export const getPageInfo = createSelector(
   search,
   (searchState) => { 

@@ -20,6 +20,9 @@ export abstract class MistComponent implements OnInit {
     protected query$: Observable<string>;
     protected links$: Observable<any>;
     protected scope$: Observable<string>;
+    protected isFetching$: Observable<string>;
+    protected errorMessage$: Observable<string>;
+    protected isSearchPerformed$: Observable<string>;
     protected count: number;
     protected totalPages: number;
     protected perPage: number = 30;
@@ -30,6 +33,9 @@ export abstract class MistComponent implements OnInit {
     protected pageInfoSelector: MemoizedSelector<State, any>;
     protected pageLinksSelector: MemoizedSelector<State, any>;
     protected searchScopeSelector: MemoizedSelector<State, string>;
+    protected isFetchingSelector: MemoizedSelector<State, string>;
+    protected errorMessageSelector: MemoizedSelector<State, string>;
+    protected isSearchPerformedSelector: MemoizedSelector<State, string>;
     protected dataSource;
 
     constructor(private store: Store<any>, selectors: any, private columns: string[], private entity: string, private isGetById: boolean = false) {
@@ -42,6 +48,9 @@ export abstract class MistComponent implements OnInit {
         this.result$ = this.store.select(this.resultsSelector);
         this.links$ = this.store.select(this.pageLinksSelector);
         this.scope$ = this.store.select(this.searchScopeSelector);
+        this.isFetching$ = this.store.select(this.isFetchingSelector);
+        this.errorMessage$ = this.store.select(this.errorMessageSelector);
+        this.isSearchPerformed$ = this.store.select(this.isSearchPerformedSelector);
         this.store.select(this.pageInfoSelector).subscribe(
           pageInfo => {
             pageInfo.count ? this.count = pageInfo.count : this.count = this.defaultCount;
@@ -83,6 +92,9 @@ export abstract class MistComponent implements OnInit {
         this.pageInfoSelector = selectors.getPageInfo;
         this.pageLinksSelector = selectors.getPageLinks;
         this.searchScopeSelector = selectors.getSearchScope;
+        this.isFetchingSelector = selectors.getSearchIsFetching;
+        this.errorMessageSelector = selectors.getSearchErrorMessage;
+        this.isSearchPerformedSelector = selectors.getIsSearchPerforemd;
     }
 
     protected getStore() {

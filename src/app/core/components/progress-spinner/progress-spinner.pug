@@ -1,0 +1,9 @@
+.mist-spinner
+  div(*ngIf="isFetching")
+    mat-spinner(matSuffix [diameter]="100" [strokeWidth]="2.5")
+    .mist-spinner-text
+      p Downloading...
+  div(*ngIf="errorMessage != null && isShopCart == false")
+    p Please refresh the page and try again.
+  div(*ngIf="isSearchPerformed && errorMessage == null && result?.length == 0")
+    p Nothing found. Please try to change your query.

@@ -1,0 +1,13 @@
+.mist-spinner {
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    /deep/ .mat-progress-spinner circle, .mat-spinner circle {
+        stroke: #197477; 
+    }
+    .mist-spinner-text {
+        margin-top: 7px;
+    }
+}

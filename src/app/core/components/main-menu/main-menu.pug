@@ -8,7 +8,7 @@
       [query]="query$ | async"
       [scope]="scopeName$ | async"
       [isFetching]="isFetching$ | async"
-      [errorMessage]="errorMessage$ | async"
+      [isFetchingScope]="isFetchingScope$ | async"
       (onQueryChange)="putQuery($event)"
       (onScopeChange)="putScope($event)"
       [selectedComponent]="selectedComponent"
@@ -27,7 +27,20 @@
       div {{ genesInCart }}
       div {{ genomesInCart }}
 
-mist-genes-scope(*ngIf="isScope")
+.row(*ngIf="isScope")
+  mist-progress-spinner(
+    [isSearchPerformed]="isSearchPerformed$ | async"
+    [isFetching]="isFetchingScope$ | async"
+    [errorMessage]="errorMessage$ | async"
+    [isShopCart]="false"
+    [result]="resultScope$ | async"
+  )
+  mist-genes-scope
 
-
-
+mist-progress-spinner(
+  [isSearchPerformed]="isSearchPerformed$ | async"
+  [isFetching]="isFetching$ | async"
+  [errorMessage]="errorMessage$ | async"
+  [isShopCart]="false"
+  [result]="result$ | async"
+)

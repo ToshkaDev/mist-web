@@ -1,11 +1,11 @@
 import { createSelector } from '@ngrx/store';
 import { State } from '../app.reducers';
 
-export const selectGenomes = (state: State) =>
+export const selectGenes = (state: State) =>
   state.genes_shopcart;
 
 export const search = createSelector(
-  selectGenomes,
+  selectGenes,
   (state) => state.search,
 );
 
@@ -32,6 +32,11 @@ export const getSearchErrorMessage = createSelector(
 export const getSearchResults = createSelector(
   search,
   (searchState) => searchState.matches,
+);
+
+export const getIsSearchPerforemd = createSelector(
+  search,
+  (searchState) => searchState.searchPerforemd,
 );
 
 export const getPageInfo = createSelector(

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { MistComponent } from '../core/common/mist-component';
-import * as fromGenesShopCart from './shop-cart-genes.selector';
+import * as fromGenesShopCart from './shop-cart-genes.selectors';
 import { Entities } from '../core/common/entities';
 import * as MistAction from '../core/common/mist-actions';
 import { CartChangedService } from './cart-changed.service';

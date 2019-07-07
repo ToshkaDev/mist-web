@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import * as queryString from 'query-string';
@@ -74,36 +74,39 @@ export class MistEffects {
         MistAction.FETCH_SCOPE,
         MistAction.FETCH_SIGNAL_GENES
       ).skip(1);
+      const body =  queryString.parse(queryString.extract(action.payload.url));
+      const mistUrl = action.payload.url.split("?")[0];
+      const options = { headers: new Headers({'Content-Type': 'application/json'}) };
       return this.http.get(action.payload.url)
+      //return this.http.post(mistUrl, body, options)
         .takeUntil(nextFetch$)
         .map((response) => {
           const matches = response.json();
           const count = parseInt(response.headers.get('x-total-count'), 10);
-          const parsed = queryString.parse(queryString.extract(action.payload.url));
-          const totalPages = Math.ceil(count / parsed.per_page);
-          const currentPage = +parsed.page;
+          const totalPages = Math.ceil(count / body.per_page);
+          const currentPage = +body.page;
           let next, prev, first, last;
           if (action.payload.isGetIdList) {
-            next = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
-            prev = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
-            first = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
-            last = this.mistApi.getByIdList({search: parsed["where.id"], perPage: parsed.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
+            next = this.mistApi.getByIdList({search: body["where.id"], perPage: body.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
+            prev = this.mistApi.getByIdList({search: body["where.id"], perPage: body.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
+            first = this.mistApi.getByIdList({search: body["where.id"], perPage: body.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
+            last = this.mistApi.getByIdList({search: body["where.id"], perPage: body.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
           } else if (entity === Entities.SIGNAL_GENES)  {
             let urlArray = action.payload.url.split("/")
             let genome_version = urlArray[urlArray.length-2];
-            next = this.mistApi.getSignalGenes({search: genome_version, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
-            prev = this.mistApi.getSignalGenes({search: genome_version, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
-            first = this.mistApi.getSignalGenes({search: genome_version, perPage: parsed.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
-            last = this.mistApi.getSignalGenes({search: genome_version, perPage: parsed.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
+            next = this.mistApi.getSignalGenes({search: genome_version, perPage: body.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
+            prev = this.mistApi.getSignalGenes({search: genome_version, perPage: body.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
+            first = this.mistApi.getSignalGenes({search: genome_version, perPage: body.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
+            last = this.mistApi.getSignalGenes({search: genome_version, perPage: body.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
           } else {
-              next = this.mistApi.searchWithPaginationUrl({search: parsed.search, scope: action.payload.scope, perPage: parsed.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
-              prev = this.mistApi.searchWithPaginationUrl({search: parsed.search, scope: action.payload.scope, perPage: parsed.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
-              first = this.mistApi.searchWithPaginationUrl({search: parsed.search, scope: action.payload.scope, perPage: parsed.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
-              last = this.mistApi.searchWithPaginationUrl({search: parsed.search, scope: action.payload.scope, perPage: parsed.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
+              next = this.mistApi.searchWithPaginationUrl({search: body.search, scope: action.payload.scope, perPage: body.per_page, pageIndex: currentPage + 1, filter: action.payload.filter}, entity);
+              prev = this.mistApi.searchWithPaginationUrl({search: body.search, scope: action.payload.scope, perPage: body.per_page, pageIndex: currentPage - 1, filter: action.payload.filter}, entity);
+              first = this.mistApi.searchWithPaginationUrl({search: body.search, scope: action.payload.scope, perPage: body.per_page, pageIndex: 1, filter: action.payload.filter}, entity);
+              last = this.mistApi.searchWithPaginationUrl({search: body.search, scope: action.payload.scope, perPage: body.per_page, pageIndex: totalPages, filter: action.payload.filter}, entity);
           }
           const links = {first: first, last: last, next: next, prev: prev};
           return new MistAction.FetchDone(MistAction.entityToActionType.get(entity).get(MistAction.FETCH_DONE), {
-            perPage: +parsed.per_page,
+            perPage: +body.per_page,
             count,
             currentPage,
             totalPages,
@@ -111,7 +114,7 @@ export class MistEffects {
             matches,
           });
         })
-        .catch((error) => of(new MistAction.FetchError(MistAction.entityToActionType.get(entity).get(MistAction.FETCH_ERROR), error.message)));
+        .catch((error) => of(new MistAction.FetchError(MistAction.entityToActionType.get(entity).get(MistAction.FETCH_ERROR), { errorMessage: "Error happened" })));
     });
 
   @Effect()

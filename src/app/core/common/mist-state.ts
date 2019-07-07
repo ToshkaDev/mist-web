@@ -17,6 +17,7 @@ export interface State {
       query: string;
       scope: string;
       totalPages: number;
+      searchPerforemd: boolean;
     };
   }
   
@@ -32,6 +33,7 @@ export const initialState: State = {
       query: null,
       scope: null,
       totalPages: null,
+      searchPerforemd: false,
     },
   };
 
@@ -117,6 +119,7 @@ function reducer (state, action: MistAction.Actions,  actions) {
                     query: action.payload.search,
                     scope: action.payload.scope,
                     totalPages: null,
+                    searchPerforemd: false,
                 },
             }; 
         case actions[1]:
@@ -129,6 +132,7 @@ function reducer (state, action: MistAction.Actions,  actions) {
                         errorMessage: null,
                         isFetching: true,
                         matches: [],
+                        searchPerforemd: false,
                     },
                 };
             }
@@ -146,6 +150,7 @@ function reducer (state, action: MistAction.Actions,  actions) {
                     links: payload.links,
                     matches: payload.matches,
                     totalPages: payload.totalPages,
+                    searchPerforemd: true,
                 },
             };
         case actions[3]:
@@ -153,8 +158,9 @@ function reducer (state, action: MistAction.Actions,  actions) {
                 ...state,
                 search: {
                     ...state.search,
-                    errorMessage: action.payload,
+                    errorMessage: action.payload.errorMessage,
                     isFetching: false,
+                    searchPerforemd: false,
                 },
             };
         case actions[4]:

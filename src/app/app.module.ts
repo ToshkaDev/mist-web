@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+
 import {
   MatButtonModule,
   MatIconModule,
@@ -70,6 +71,7 @@ import { ChemotaxisTableComponent } from './core/components/chemotaxis-table/che
 import { GeneRanksPipe } from './pipes/gene-ranks.pipe';
 import { StpCountsKeysPipe } from './pipes/stp-counts-keys.pipe';
 import { ChemotaxisCountLinksComponent } from './core/components/chemotaxis-count-links/chemotaxis-count-links.component';
+import { ProgressSpinnerComponent } from './core/components/progress-spinner/progress-spinner.component';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -106,6 +108,7 @@ import { ChemotaxisCountLinksComponent } from './core/components/chemotaxis-coun
     GeneRanksPipe,
     StpCountsKeysPipe,
     ChemotaxisCountLinksComponent,
+    ProgressSpinnerComponent,
   ],
   imports: [
     AppRoutingModule,

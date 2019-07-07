@@ -28,8 +28,11 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   private scopeName$: Observable<string>;
   private scopeName: string;
   private isFetching$: Observable<boolean>;
+  private isFetchingScope$: Observable<boolean>;
   private errorMessage$: Observable<string>;
-  private results$: Observable<any>;
+  private isSearchPerformed$: Observable<boolean>;
+  private result$: Observable<any>;
+  private resultScope$: Observable<any>;
   private selectedComponent: string = Entities.GENOMES;
   private smallMenuDisplay: any = {'visibility': 'visible'};
   private genomesFilter: GenomesFilter = new GenomesFilter(); 
@@ -43,7 +46,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   private genesInCart: string;
   private genomesInCart: string;
   private scopeSetFromDetailPage: genomeScopeInterface;
-  
+
   private routeToSmallMenuDisplay = new Map<string, string>([
     ["/", "visible"],
     ["/help", "visible"],
@@ -87,6 +90,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
 
   private SelectorsResults = new Map<string, MemoizedSelector<State, any>>([
     [Entities.GENES, fromGenes.getSearchResults],
+    [Entities.GENOMES, fromGenomes.getSearchResults],
     //["protein-features", ""],
   ]);
 
@@ -96,12 +100,18 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     //["protein-features", ""],
   ]);
 
+  private SelectorsIsSearchPerformed = new Map<string, MemoizedSelector<State, boolean>>([
+    [Entities.GENOMES, fromGenomes.getIsSearchPerforemd],
+    [Entities.GENES, fromGenes.getIsSearchPerforemd],
+    //["protein-features", ""],
+  ]);
+
   private SelectorsIsFetching = new Map<string, MemoizedSelector<State, boolean>>([
     [Entities.GENOMES, fromGenomes.getSearchIsFetching],
     [Entities.GENES, fromGenes.getSearchIsFetching],
     //["protein-features", ""],
   ]);
-  getSearchScope
+
   private SelectorsErrorMessage = new Map<string, MemoizedSelector<State, string>>([
     [Entities.GENOMES, fromGenomes.getSearchErrorMessage],
     [Entities.GENES, fromGenes.getSearchErrorMessage],
@@ -160,7 +170,12 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
         this.scopeService.selectGenomeName(this.scopeSetFromDetailPage.name);
         this.selectScope(this.scopeSetFromDetailPage.refSeqVersion);
         this.scopeSetFromDetailPage = null;
-      } 
+      }
+
+      // Set isSearchPerformed to null when not in search mode
+      if (!this.routeToSelectionOption.has(currentUrl)) {
+        this.isSearchPerformed$ = null;
+      }
     });
     
     // (A)
@@ -307,7 +322,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   assignObservables(currentUrl: string) {
     this.query$ = null;
     this.scopeName$ = null;
-    this.results$ = null;
+    this.result$ = null;
     if (this.routeToSelectionOption.has(currentUrl)) {
       this.query$ = this.store.select(this.SelectorsQuery.get(this.selectedComponent));
       this.query$.subscribe(query => query ? this.query = query : this.query = null);
@@ -315,17 +330,19 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
       if (this.scopeName$)
         this.scopeName$.subscribe(scopeName => this.scopeName = scopeName);
       if (this.componentHasScope()) {
-        this.results$ = this.store.select(this.SelectorsResults.get(this.selectedComponent));
+        this.result$ = this.store.select(this.SelectorsResults.get(this.selectedComponent));
       }
     }
-
     this.isFetching$ = this.store.select(this.SelectorsIsFetching.get(this.selectedComponent));
+    this.isSearchPerformed$ = this.store.select(this.SelectorsIsSearchPerformed.get(this.selectedComponent));
     this.errorMessage$ = this.store.select(this.SelectorsErrorMessage.get(this.selectedComponent));
   }
 
   assignObservablesForScope() {
     this.query$ = this.store.select(this.SelectorsQuery.get(this.selectedComponent));
-    this.isFetching$ = this.store.select(fromScope.getSearchIsFetching);
+    this.resultScope$ = this.store.select(fromScope.getSearchResults);
+    this.isFetchingScope$ = this.store.select(fromScope.getSearchIsFetching);
+    this.isSearchPerformed$ = this.store.select(fromScope.getIsSearchPerforemd);
     this.errorMessage$ = this.store.select(fromScope.getSearchErrorMessage);
   }
 
@@ -355,9 +372,9 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   // should be called after assignObservables() was called. This happens naturally. Just a warning.
   private compntHasScopeAndResIsLoaded() {
     let isResultLoaded = false;
-    if (this.results$)
-      this.results$.subscribe(result => { if (result && result.length > 0) isResultLoaded = true });
-    return isResultLoaded && this.results$;
+    if (this.result$)
+      this.result$.subscribe(result => { if (result && result.length > 0) isResultLoaded = true });
+    return isResultLoaded && this.result$;
   }
 
 }
