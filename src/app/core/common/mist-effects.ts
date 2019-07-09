@@ -77,8 +77,7 @@ export class MistEffects {
       const body =  queryString.parse(queryString.extract(action.payload.url));
       const mistUrl = action.payload.url.split("?")[0];
       const options = { headers: new Headers({'Content-Type': 'application/json'}) };
-      return this.http.get(action.payload.url)
-      //return this.http.post(mistUrl, body, options)
+      return this.http.post(mistUrl, body, options)
         .takeUntil(nextFetch$)
         .map((response) => {
           const matches = response.json();

@@ -207,8 +207,8 @@ export default class DrawProteinFeature {
                 return getUniqueFeatureName(d, DataType.DOMAIN);
             });
 
-        drawDomainBorders(domain, domainBorder, kDomainYstart, kDomainYend, featureScale, getUniqueFeatureName);
-        nameDomain(domain, kMiddleY, featureScale, getUniqueFeatureName);
+        let leftAndRightPartialPixels = drawDomainBorders(domain, domainBorder, kDomainYstart, kDomainYend, featureScale, getUniqueFeatureName);
+        nameDomain(domain, kMiddleY, featureScale, getUniqueFeatureName, leftAndRightPartialPixels);
     }
 
     private removeOverlapps(pfam31: pfamInterface[], compareEvalues) {
@@ -268,9 +268,14 @@ export default class DrawProteinFeature {
     }
 
     private drawDomainBorders(domain: any, domainBorder, kDomainYstart, kDomainYend, featureScale, getUniqueFeatureName) {
+        let leftAndRightPartialPixels = [0, 0];
         domain.append('path')
             .filter(function(d){ return d.ali_to - d.ali_from > 0 })
-            .attr("d", function(d) { return domainBorder(d, d.hmm_cov ? d.hmm_cov : '[]', kDomainYstart, kDomainYend, featureScale) })
+            .attr("d", function(d) {
+                let domainBorderResult = domainBorder(d, d.hmm_cov ? d.hmm_cov : '[]', kDomainYstart, kDomainYend, featureScale); 
+                leftAndRightPartialPixels = domainBorderResult[1];
+                return domainBorderResult[0];
+            })
             .attr("stroke", DrawProteinFeature.domainColors.domainStroke)
             .attr("stroke-width", DrawProteinFeature.kDomainStrokeWidth)
             .attr("fill", "none")
@@ -279,9 +284,10 @@ export default class DrawProteinFeature {
             .attr("id", function (d){
                 return getUniqueFeatureName(d, DataType.DOMAIN);
             });
+        return leftAndRightPartialPixels;
     }
 
-    private nameDomain(domain: any, kMiddleY, featureScale, getUniqueFeatureName) {
+    private nameDomain(domain: any, kMiddleY, featureScale, getUniqueFeatureName, leftAndRightPartialPixels) {
         domain.append('text')
             .filter(function(d){ return d.ali_to - d.ali_from > 0 })
             .attr("x", function(d) {return featureScale((d.ali_from+d.ali_to)/2) })
@@ -289,8 +295,10 @@ export default class DrawProteinFeature {
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "central")
             .attr("textLength", function(d) { 
-                return Math.min(d.name.length*DrawProteinFeature.kNameLengthToPixelFactor, 
-                d.ali_to-d.ali_from-(DrawProteinFeature.kDomainTextMargin*2)) })
+                let scaledDomainLength = featureScale(d.ali_to)-leftAndRightPartialPixels[0] - featureScale(d.ali_from+13)+leftAndRightPartialPixels[1]
+                let nameLength = Math.min(d.name.length*DrawProteinFeature.kNameLengthToPixelFactor, 
+                    scaledDomainLength)
+                return nameLength})
             .attr("font-family", DrawProteinFeature.kFontFamily)
             .attr("font-size", DrawProteinFeature.kFontSize)
             .attr("lengthAdjust", "spacingAndGlyphs")
@@ -345,7 +353,7 @@ export default class DrawProteinFeature {
                     ' L ' + pathList[9].x + ' ' + pathList[9].y + 
                     ' L ' + pathList[10].x + ' ' + pathList[10].y +
                     ' Z'
-        return path
+        return [path, [partialPixelRight, partialPixelLeft]]
     }
 
 }

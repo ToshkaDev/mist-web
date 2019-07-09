@@ -32,7 +32,6 @@
     [isSearchPerformed]="isSearchPerformed$ | async"
     [isFetching]="isFetchingScope$ | async"
     [errorMessage]="errorMessage$ | async"
-    [isShopCart]="false"
     [result]="resultScope$ | async"
   )
   mist-genes-scope
@@ -41,6 +40,5 @@ mist-progress-spinner(
   [isSearchPerformed]="isSearchPerformed$ | async"
   [isFetching]="isFetching$ | async"
   [errorMessage]="errorMessage$ | async"
-  [isShopCart]="false"
   [result]="result$ | async"
 )

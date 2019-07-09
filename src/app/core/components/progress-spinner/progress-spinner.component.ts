@@ -9,6 +9,5 @@ export class ProgressSpinnerComponent {
     @Input() isSearchPerformed = false;
     @Input() isFetching = false;
     @Input() errorMessage = null;
-    @Input() isShopCart = false;
     @Input() result;
 }
