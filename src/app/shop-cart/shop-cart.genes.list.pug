@@ -1,4 +1,7 @@
-cart-select-buttons((selectClickEvent)='onAddRemoveClickEvent($event)' [cart]="cart")
+.toggel-and-cart-button
+  cart-select-buttons((selectClickEvent)='onAddRemoveClickEvent($event)' [cart]="cart")
+  .features
+    protein-feature-toggler([lcrChecked]="isLcrChecked" [coiledCoilesChecked]="isCoiledCoilsChecked")
 mat-table([dataSource]="result" class="gene-table")
   ng-container(matColumnDef="Select")
     mat-header-cell(*matHeaderCellDef class="select-header")

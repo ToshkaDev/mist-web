@@ -61,7 +61,7 @@ export default class DrawProteinFeature {
         d3Element.selectAll("svg.protein-feature").remove();
     }
 
-    drawProteinFeature(htmlElement, data: Aseq[]) {
+    drawProteinFeature(htmlElement, data: Aseq[], drawLCR=true, drawCoiled=true, drawDomains=true) {
         let d3 = this.d3;
         let kSvgWidth = this.kSvgWidth;
         let kSvgHeight = this.kSvgHeight;
@@ -114,10 +114,13 @@ export default class DrawProteinFeature {
         
         container.each(function(d, i) {
             let selectedElement = d3.select(this);
-            d.coils && d.coils.length ? drawCoiledCoils(selectedElement, d, kCoilsYstart, featureScale, getUniqueFeatureName) : null;                
-            d.segs && d.segs.length ? drawLowComplexityRegion(selectedElement, d, kLcrYstart, featureScale, getUniqueFeatureName) : null;
-            d.tmhmm2 && d.tmhmm2.length ? drawTransmembraneRegin(selectedElement, d, kTransmembraneYstart, featureScale, getUniqueFeatureName) : null;
-            if (d.pfam31 && d.pfam31.length) {
+            if (drawCoiled && d.coils && d.coils.length)
+                drawCoiledCoils(selectedElement, d, kCoilsYstart, featureScale, getUniqueFeatureName);                
+            if (drawLCR && d.segs && d.segs.length)
+                drawLowComplexityRegion(selectedElement, d, kLcrYstart, featureScale, getUniqueFeatureName);
+            if (d.tmhmm2 && d.tmhmm2.length)
+                drawTransmembraneRegin(selectedElement, d, kTransmembraneYstart, featureScale, getUniqueFeatureName);
+            if (drawDomains && d.pfam31 && d.pfam31.length) {
                 pfam31NotOverlapped = Array.from(removeOverlapps(d.pfam31, compareEvalues));
                 drawDomain(selectedElement, pfam31NotOverlapped, drawDomainBorders, nameDomain, 
                 domainBorder, kDomainYstart, kDomainYend, kMiddleY, featureScale, getUniqueFeatureName);

@@ -6,6 +6,7 @@ import * as fromGenesShopCart from './shop-cart-genes.selectors';
 import { Entities } from '../core/common/entities';
 import * as MistAction from '../core/common/mist-actions';
 import { CartChangedService } from './cart-changed.service';
+import { ToggleChangedService } from '../core/components/protein-feature-toggle/toggle-changed.service';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,10 +19,14 @@ export class ShopCartGenesComponent extends MistComponent {
     static readonly baseEntity: string = Entities.GENES;
     @Input()
     thisEntitySelected;
+    private isLcrChecked = false;
+    private isCoiledCoilsChecked = false;
 
-    constructor(store: Store<any>, private cartChangedService: CartChangedService) {
+    constructor(store: Store<any>, private cartChangedService: CartChangedService, private toggleChanegsService: ToggleChangedService) {
         super(store, fromGenesShopCart, ShopCartGenesComponent.genesColumns, Entities.GENES_SHOPCART, true);
         this.cartChangedService.cartChanged$.subscribe(() => this.sendQuery());
+        this.toggleChanegsService.lcrChanged$.subscribe(isChecked => this.isLcrChecked = isChecked);
+        this.toggleChanegsService.coiledCoilsChanged$.subscribe(isChecked => this.isCoiledCoilsChecked = isChecked);
         this.sendQuery();
     }
 

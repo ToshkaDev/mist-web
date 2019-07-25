@@ -36,6 +36,13 @@ export class AseqComponent implements OnInit {
     private aseqData: any;
     private currentSelection;
 
+    private isDomainsChecked = true;
+    private isLcrChecked = true;
+    private isCoiledCoilsChecked = true;
+    private domainsPresent = true;
+    private lcrPresent = true;
+    private coiledCoilesPresent = true;
+
     constructor(private elementRef: ElementRef, private d3Service: D3Service) {
     }
 
@@ -45,6 +52,10 @@ export class AseqComponent implements OnInit {
         this.drawProteinFeature.setSvgSize(svgWidth);
         this.gene$.skip(1).take(1).subscribe(result => {
             if (result && result.Aseq) {
+                console.log(result)
+                result.Aseq.pfam31 && result.Aseq.pfam31.length ? this.domainsPresent = true : this.domainsPresent = false;
+                result.Aseq.segs && result.Aseq.segs.length ? this.lcrPresent = true : this.lcrPresent = false;
+                result.Aseq.coils && result.Aseq.coils.length ? this.coiledCoilesPresent = true : this.coiledCoilesPresent = false;
                 this.aseqViewModel = new AseqViewModel(result.Aseq);
                 this.drawProteinFeature.drawProteinFeature(this.htmlElement, [result.Aseq]);
                 this.aseqData = result.Aseq;
@@ -113,11 +124,11 @@ export class AseqComponent implements OnInit {
     }
 
     @HostListener('window:resize', ['$event'])
-    onWindowResize() {
+    reRenderProteinFeatures() {
         let svgWidth = this.getSvgWidth();
         this.drawProteinFeature.removeElement(this.htmlElement);
         this.drawProteinFeature.setSvgSize(svgWidth);
-        this.drawProteinFeature.drawProteinFeature(this.htmlElement, [this.aseqData]);
+        this.drawProteinFeature.drawProteinFeature(this.htmlElement, [this.aseqData], this.isLcrChecked, this.isCoiledCoilsChecked, this.isDomainsChecked);
         this.setProteinFeaturesEventListeners();
     }
 
@@ -132,5 +143,28 @@ export class AseqComponent implements OnInit {
             svgWidth = AseqComponent.maxSvgWidth;
 
         return svgWidth;
+    }
+
+    featureCheckboxChanged(event, feature) {
+        switch(feature) {
+            case 'domains': {
+                this.isDomainsChecked = event.checked ? true : false;
+                
+                break; 
+            }
+            case 'lcr': {
+                this.isLcrChecked = event.checked ? true : false;
+                break; 
+            }
+            case 'coiledCoils': {
+                this.isCoiledCoilsChecked = event.checked ? true : false;
+                break; 
+            } 
+            default: { 
+                console.log("Something went wrong in featureCheckboxChanged(event, feature)"); 
+                break; 
+            } 
+        } 
+        this.reRenderProteinFeatures();
     }
 }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 
+
 import {
   MatButtonModule,
   MatIconModule,
@@ -16,7 +17,8 @@ import {
   MatListModule,
   MatChipsModule,
   MatDialogModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatSlideToggleModule
 } from '@angular/material';
 
 import {MatSelectModule} from '@angular/material/select';
@@ -72,6 +74,8 @@ import { GeneRanksPipe } from './pipes/gene-ranks.pipe';
 import { StpCountsKeysPipe } from './pipes/stp-counts-keys.pipe';
 import { ChemotaxisCountLinksComponent } from './core/components/chemotaxis-count-links/chemotaxis-count-links.component';
 import { ProgressSpinnerComponent } from './core/components/progress-spinner/progress-spinner.component';
+import { ProteinFeatureToggleComponent } from './core/components/protein-feature-toggle/protein-feature-toggle.component';
+import { ToggleChangedService } from './core/components/protein-feature-toggle/toggle-changed.service';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -109,6 +113,7 @@ import { ProgressSpinnerComponent } from './core/components/progress-spinner/pro
     StpCountsKeysPipe,
     ChemotaxisCountLinksComponent,
     ProgressSpinnerComponent,
+    ProteinFeatureToggleComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -133,11 +138,12 @@ import { ProgressSpinnerComponent } from './core/components/progress-spinner/pro
     MatChipsModule,
     MatDialogModule,
     MatTooltipModule,
+    MatSlideToggleModule,
     StoreModule.forRoot(reducers, { metaReducers}),
     McBreadcrumbsModule.forRoot()
   ],
   providers: [
-    MistApi, D3Service, GenomeResolver, GeneResolver, CartChangedService, ScopeService, GoogleCharts,
+    MistApi, D3Service, GenomeResolver, GeneResolver, CartChangedService, ScopeService, GoogleCharts, ToggleChangedService
   ],
 })
 export class AppModule { }
