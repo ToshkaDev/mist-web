@@ -1,5 +1,9 @@
 div.detail-uber
     h5.gene-detail Domain architecture
+    .show-features
+        mat-checkbox.feature(*ngIf="domainsPresent" [checked]="isDomainsChecked" (change)="featureCheckboxChanged($event, 'domains')") Domains
+        mat-checkbox.feature(*ngIf="lcrPresent" [checked]="isLcrChecked" (change)="featureCheckboxChanged($event, 'lcr')") Low complexity regions
+        mat-checkbox.feature(*ngIf="coiledCoilesPresent" [checked]="isCoiledCoilsChecked" (change)="featureCheckboxChanged($event, 'coiledCoils')") Coiled coiles
     div.domains
     button(class="aseq-details mist-button-standard" mat-button (click)="toggleDetails()") Details
         mat-icon(aria-hidden="true") {{ arrow }}

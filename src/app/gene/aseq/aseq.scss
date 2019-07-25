@@ -14,3 +14,20 @@ div.protSeq {
     font-family: monospace, serif;
     max-width: 40%;
 }
+
+.show-features {
+    margin-top: 30px;
+    margin-bottom: -15px;
+    
+    .feature {
+        padding-right: 10px;
+    }
+    mat-checkbox {
+        font-weight: lighter;
+    }
+    /deep/ .mat-checkbox-inner-container {
+        height: 15px;
+        width: 15px;
+    }
+
+}

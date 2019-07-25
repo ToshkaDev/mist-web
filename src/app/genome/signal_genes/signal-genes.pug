@@ -6,6 +6,8 @@ div(*ngIf="result$ | async")
       [genes$]="result$"
       [result]="dataSource"
       [displayedColumns]="displayedColumns"
+      [isLcrChecked]="isLcrChecked"
+      [isCoiledCoilsChecked]="isCoiledCoilsChecked"
     )
 mist-progress-spinner(
   [isSearchPerformed]="isSearchPerformed$ | async"

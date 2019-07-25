@@ -7,6 +7,7 @@ import { MistComponent } from '../core/common/mist-component';
 import * as fromGenes from './genes.selectors';
 import { Entities } from '../core/common/entities';
 import * as MistAction from '../core/common/mist-actions';
+import { ToggleChangedService } from '../core/components/protein-feature-toggle/toggle-changed.service';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,9 +17,13 @@ import * as MistAction from '../core/common/mist-actions';
 export class GenesComponent extends MistComponent {
   static readonly genesColumns: string[] = ["Select", "Mist Id", "Protein Id", "Domain Structure", "Locus", "Description", "Location"];
   private genesFilter: GenesFilter = new GenesFilter(); 
+  private isLcrChecked = false;
+  private isCoiledCoilsChecked = false;
 
-  constructor(store: Store<any>) {
+  constructor(store: Store<any>, private toggleChanegsService: ToggleChangedService) {
     super(store, fromGenes, GenesComponent.genesColumns, Entities.GENES);
+    this.toggleChanegsService.lcrChanged$.subscribe(isChecked => this.isLcrChecked = isChecked);
+    this.toggleChanegsService.coiledCoilsChanged$.subscribe(isChecked => this.isCoiledCoilsChecked = isChecked);
   }
 
   search(query: string, scope: string) {

@@ -1,0 +1,20 @@
+.toggle-elements {
+    // align with "Signal transduction proteins" title
+    padding-right: 130px;
+    margin-top: 11px;
+    // change active toggle colours 
+    /deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+        background-color: #8dbdbe;
+    }
+    /deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+        background-color: #197477;
+    }
+    /deep/ .mat-ripple-element {
+        background-color: rgba(40, 184, 189, 0.2) !important;
+    }
+    .lcr {
+        // space after lcr toggle for better look
+        padding-right: 7px;
+    }
+}
+

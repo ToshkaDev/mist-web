@@ -132,9 +132,18 @@ a {
     background-color: #28b8bd;
 }
 
-mat-checkbox.mat-checked ._mat-icon {
-    background-color: white;
+// customize checkbox
+.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background {
+    background-color: #aeb8bb !important;
 }
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #28b8bd;
+}
+.mat-checkbox .mat-ripple-element {
+    background-color: rgba(40, 184, 189, 0.2) !important;
+}
+// end of customize checkbox
 
 .table-txt-size {
     font-size: 16px;
@@ -269,4 +278,12 @@ mat-checkbox.mat-checked ._mat-icon {
 h5 {
     color: #197477;
     font-weight: bold;
+}
+
+.toggel-and-cart-button {
+    display: flex;
+    .features {
+        margin-left: auto;
+        margin-right: auto;
+    }
 }

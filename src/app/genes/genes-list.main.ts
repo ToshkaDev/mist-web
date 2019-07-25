@@ -5,6 +5,8 @@ import DrawProteinFeature from '../core/common/drawSvg/draw-protein-feature';
 import { Entities } from '../core/common/entities';
 import { MistListComponent } from '../core/common/mist-list-component';
 import { CartChangedService } from '../shop-cart/cart-changed.service';
+import { ToggleChangedService } from '../core/components/protein-feature-toggle/toggle-changed.service';
+
 
 export abstract class GenesListMain extends MistListComponent implements OnInit {
   @Input() genes$: Observable<any>; 
@@ -18,8 +20,11 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
   private geneToProteinObject = new Map<string, DrawProteinFeature>();
 
   private htmlElement: string = "div";
+
+  @Input() isLcrChecked = false;
+  @Input() isCoiledCoilsChecked = false;
     
-  constructor(private elementRef: ElementRef, private d3Service: D3Service, cartChangedService: CartChangedService, isShopCart: boolean = false) {
+  constructor(private elementRef: ElementRef, private d3Service: D3Service, cartChangedService: CartChangedService, private toggleChanegsService: ToggleChangedService, isShopCart: boolean = false) {
     super(cartChangedService, Entities.GENES, isShopCart);
   }
  
@@ -39,6 +44,14 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
         }
       }
     });
+    this.toggleChanegsService.lcrChanged$.subscribe(isChecked => {
+      this.isLcrChecked = isChecked;
+      this.reRenderProteinFeatures()
+    });
+    this.toggleChanegsService.coiledCoilsChanged$.subscribe(isChecked => {
+      this.isCoiledCoilsChecked = isChecked;
+      this.reRenderProteinFeatures()
+    });
   }
 
   drawProteinFeature(geneId: string) {
@@ -48,7 +61,7 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
     if (aseqData && !this.geneIsDrawn.get(geneId)) {
       let drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service);
       drawProteinFeature.setSvgSize(svgWidth);
-      drawProteinFeature.drawProteinFeature(`${this.htmlElement}.gene${geneId}`, [aseqData]);
+      drawProteinFeature.drawProteinFeature(`${this.htmlElement}.gene${geneId}`, [aseqData], this.isLcrChecked, this.isCoiledCoilsChecked);
       this.geneToProteinObject.set(geneId, drawProteinFeature);
     }
     // Even if something went wrong rendering shouldn't be repeated
@@ -56,12 +69,12 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
   }
 
   @HostListener('window:resize', ['$event'])
-  onWindowResize(ev) {
+  reRenderProteinFeatures() {
     let svgWidth = this.getSvgWidth();
     this.geneToProteinObject.forEach((proteinObject, geneId) => {
       proteinObject.removeElement(`${this.htmlElement}.gene${geneId}`);
       proteinObject.setSvgSize(svgWidth);
-      proteinObject.drawProteinFeature(`${this.htmlElement}.gene${geneId}`, [this.geneToAseq.get(geneId)]);
+      proteinObject.drawProteinFeature(`${this.htmlElement}.gene${geneId}`, [this.geneToAseq.get(geneId)], this.isLcrChecked, this.isCoiledCoilsChecked);
     })
   }
 
