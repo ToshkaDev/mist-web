@@ -6,7 +6,9 @@ div.detail-uber
         mat-checkbox.feature(*ngIf="coiledCoilesPresent" [checked]="isCoiledCoilsChecked" (change)="featureCheckboxChanged($event, 'coiledCoils')") Coiled coiles
     div.domains
     
-    div(*ngIf="!isProteinPresent") No protein encoded
+    div(*ngIf="!isProteinPresent") 
+        br
+        p No protein encoded.
 
     button(*ngIf="isProteinPresent" class="aseq-details mist-button-standard" mat-button (click)="toggleDetails()") Details
         mat-icon(aria-hidden="true") {{ arrow }}
