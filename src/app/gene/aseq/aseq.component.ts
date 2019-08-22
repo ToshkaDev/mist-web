@@ -42,6 +42,7 @@ export class AseqComponent implements OnInit {
     private domainsPresent = true;
     private lcrPresent = true;
     private coiledCoilesPresent = true;
+    private isProteinPresent = true;
 
     constructor(private elementRef: ElementRef, private d3Service: D3Service) {
     }
@@ -52,7 +53,6 @@ export class AseqComponent implements OnInit {
         this.drawProteinFeature.setSvgSize(svgWidth);
         this.gene$.skip(1).take(1).subscribe(result => {
             if (result && result.Aseq) {
-                console.log(result)
                 result.Aseq.pfam31 && result.Aseq.pfam31.length ? this.domainsPresent = true : this.domainsPresent = false;
                 result.Aseq.segs && result.Aseq.segs.length ? this.lcrPresent = true : this.lcrPresent = false;
                 result.Aseq.coils && result.Aseq.coils.length ? this.coiledCoilesPresent = true : this.coiledCoilesPresent = false;
@@ -60,6 +60,8 @@ export class AseqComponent implements OnInit {
                 this.drawProteinFeature.drawProteinFeature(this.htmlElement, [result.Aseq]);
                 this.aseqData = result.Aseq;
                 this.setProteinFeaturesEventListeners();
+            } else {
+                this.isProteinPresent = false;
             }
         });
     }
@@ -125,11 +127,13 @@ export class AseqComponent implements OnInit {
 
     @HostListener('window:resize', ['$event'])
     reRenderProteinFeatures() {
-        let svgWidth = this.getSvgWidth();
-        this.drawProteinFeature.removeElement(this.htmlElement);
-        this.drawProteinFeature.setSvgSize(svgWidth);
-        this.drawProteinFeature.drawProteinFeature(this.htmlElement, [this.aseqData], this.isLcrChecked, this.isCoiledCoilsChecked, this.isDomainsChecked);
-        this.setProteinFeaturesEventListeners();
+        if (this.isProteinPresent) {
+            let svgWidth = this.getSvgWidth();
+            this.drawProteinFeature.removeElement(this.htmlElement);
+            this.drawProteinFeature.setSvgSize(svgWidth);
+            this.drawProteinFeature.drawProteinFeature(this.htmlElement, [this.aseqData], this.isLcrChecked, this.isCoiledCoilsChecked, this.isDomainsChecked);
+            this.setProteinFeaturesEventListeners();
+        }
     }
 
     private getSvgWidth(): number {
