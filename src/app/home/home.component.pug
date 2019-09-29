@@ -1,15 +1,36 @@
-hr
+.row
+  .six.columns
+    h4 Complete signal transduction profile
+    p MiST 3.0 provides signal transduction profiles of more than 125,000 bacterial and archaeal genomes. This release of the database is a result of a substantial scaling to accommodate constantly growing microbial genomic data. 
+    p The database can be explored using the web-interface or a&nbsp;
+      a(href="https://api.mistdb.caltech.edu/") REST API
+      | , which both powers this website and provides programmatic access to the underlying data.
+    p The first version of MiST database was issued in 2007 to identify and document signal transduction systems in microbes and provide a convenient portal for scientists to explore this knowledge.
+    p Although MiST3 is primarily focused on signal transduction, it stores precomputed features of all proteins encoded in NCBI RefSeq genomes. All NCBI RefSeq genomes and the encoded proteins can be explored using convenient features implemented in MiST without running external software. 
+
+  .six.columns  
+    p: img(src="assets/images/profile.png" style="width: 520px;")
 
 .row
-  .four.columns
-    h4 Introduction
-    p The MiST database was created in 2010 to predict and document signal transduction in microbes and provide a convenient portal for scientists to explore this knowledge.
-    p We have completely rewritten the MiST database from the ground up. The backend computational pipeline and database is virtually complete and accessible via a&nbsp;
-      a(href="https://api.mistdb.caltech.edu/") REST API
-      | , which both powers this website and provides programmatic access to the underlying data. Please be patient as we continue to mature and develop the frontend website.
-
-  .four.columns
+  .six.columns
+    h4 Signal transduction systems classification
+    p  MiST 3.0 provides a comprehensive classification of signal transduction systems and distribution of signal transduction proteins across OCS, TCS and chemosensory systems. The chemosensory systems table shows the chemosensory pathways encoded in the given genome. 
+  .six.columns 
+    br 
+    p: img(src="assets/images/st_tables.png" style="width: 600px;")
+  
+.row
+  .six.columns
+    h4 Signal transduction proteins exploration
+    p  Convenient instruments for signal transduction proteins exploration. Identification of protein domains, low-complexity regions and coiled-coils and mapping them on the protein.  
+  .six.columns 
+    br 
+    p: img(src="assets/images/st_proteins.png" style="width: 600px;")
+  
+.row
+  .six.columns
     h4 Statistics
+    p The database is streamlined to easily and regularly assimilate new genomes and predict their signal transduction properties in a distributed fashion.
     ul(style="list-style-type: none")
       li
         strong 125,000+
@@ -23,9 +44,9 @@ hr
       li
         strong 100 million
         |  unique protein sequences
-    p Our computational pipeline has derived the full domain architectures for the proteomes of more than 20,000 genomes with the remainder currently processing. The database is streamlined to easily and regularly assimilate new genomes and predict their signal transduction properties in a distributed fashion.
-
-  .four.columns
+  .six.columns
     h4 Citation
     p Manuscript is in preparation. Until MiST3 is published, please cite the MiST2 database article:
     p: a(href="https://www.ncbi.nlm.nih.gov/pubmed/19900966") Ulrich, L.E. and Zhulin, I.B. Nucleic Acids Res. (2010)
+
+ 

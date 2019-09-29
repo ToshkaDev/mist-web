@@ -1,3 +1,26 @@
-.container
-    .row
-        h4 Under construction
+.row
+    h5 Overview
+    p The microbial signal transduction (MiST) database was established as a comprehensive signal transduction classification system and has served as a useful community resource since 2007 (1,2). The updated MiST database provides a comprehensive classification of microbial signal transduction systems of all the genomes deposited in NCBI RefSeq database. MiST 3.0 is a result of a substantial scaling to accommodate constantly growing microbial genomic data. 
+    h5 Signal Transduction specific profile HMMs
+    p Genomic evidence suggested that MCPs of certain heptad classes interact preferentially with certain chemosensory pathway classes defined based on evolutionary considerations (3). Specific profile HMMs were built for nineteen classes of chemosensory pathways (3) and twelve classes of MCPs (4). Furthermore, a new class of signal transduction proteins called MAC (methyl-accepting coiled-coil proteins) was identified (3), for which no profile HMM is available.
+    p We integrated profile HMMs for different MCP classes, namely 64H, 58H, 52H, 48H, 44H, 42H, 40H, 38H, 36H, 34H, 28H and 24H, into the MiST3 database. We also integrated HMM profiles for components specific to each chemosensory class (CheA, CheB, CheC, CheD, CheR, CheV and CheZ) (3) and newly built profiles for MAC1 and MAC2 protein families. Thus MiST 3.0 offers a comprehensive set of chemosensory pathway-specific HMMs. Using these new profiles in combination with genome neighborhood analysis a complete chemosensory repertoire of any bacterial and archaeal genome can now be reconstructed. 
+    h5 Genomes
+    p To search for genomes select ‘Genomes’ in the search area and type an organism name, any taxonomy level (genus, family, etc.), RefSeq accession and version, NCBI taxonomy ID or genome assembly level. Genomes can be filtered by taxonomy and assembly level using either embedded filter or selecting corresponding taxonomic name in the drop-down list on the search results table. 
+    p On the genome detail page a comprehensive information about the selected genome is provided including its Bioproject identifier, submitter, and complete description of the signal transduction systems. The signal transduction profile of a genome is presented as a graph of functional domains together with their counts and a table showing distribution of signal transduction proteins across OCS, TCS and chemosensory systems. The chemosensory systems table shows the chemosensory pathways encoded in the given genome. Clicking on the graph bars and on the gene counts in the table leads to the list of corresponding signal transduction proteins.
+    h5 Genes
+    p To search for genes or proteins select ‘Genes/Proteins’ in the search area and type a gene product name, genome locus (using both old and new tags), protein RefSeq identifier, or using our unique internal stable identifier, which includes the genome RefSeq ID and gene locus. A gene/protein detail page contains information about the selected gene, its encoded product, protein domain architecture including details of predicted protein features, and a gene neighborhood graphical representation.
+    h5 Scope
+    p To search for genes/proteins inside the genome of interest use ‘Scope’ field on the ‘Genes/Proteins’  search page. When a genome name or an identifier is entered in the field called ‘Scope’ on the gene/protein search page, a list of corresponding organisms appears. Clicking on one of them will set it as a genome to search for specified genes and proteins in. The scope can also be set on a genome detail page.
+    h5 Cart
+    p Genomes and genes can be added to the cart and analyzed in detail and encoded protein sequences can be downloaded. Genomes and genes added to the cart are marked on the search page to help keep track of the added items. The items added to the cart are stored there for 30 days. 
+    h5 RESTful API
+    p The API provides (i) programmatic access to all the data using a variety of identifiers and parameters and (ii) large-scale analysis of bacterial and archaeal signal transduction systems.  Another function of API is flexibility of interaction with the data. The requested data is returned in JSON format. A well-documented description of MiST3 data structure together with the detailed query examples in several popular programming languages is given on the&nbsp;
+        a(href="https://api.mistdb.caltech.edu/" target="_blank") API page.
+
+.row  
+    br
+    p References
+    p 1. Ulrich, L.E. and Zhulin, I.B. (2007) MiST: a microbial signal transduction database. Nucleic Acids Res, 35, D386-390.
+    p 2. Ulrich, L.E. and Zhulin, I.B. (2010) The MiST2 database: a comprehensive genomics resource on microbial signal transduction. Nucleic Acids Res, 38, D401-407.
+    p 3. Wuichet, K. and Zhulin, I.B. (2010) Origins and diversification of a complex signal transduction system in prokaryotes. Science signaling, 3, ra50.
+    p 4. Alexander, R.P. and Zhulin, I.B. (2007) Evolutionary genomics reveals conserved structural determinants of signaling and adaptation in microbial chemoreceptors. Proceedings of the National Academy of Sciences of the United States of America, 104, 2885-2890.

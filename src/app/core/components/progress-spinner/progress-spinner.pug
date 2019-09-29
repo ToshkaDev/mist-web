@@ -2,7 +2,7 @@
   div(*ngIf="isFetching")
     mat-spinner(matSuffix [diameter]="100" [strokeWidth]="2.5")
     .mist-spinner-text
-      p Downloading...
+      p Searching...
   div(*ngIf="errorMessage != null")
     p Please refresh the page and try again.
   div(*ngIf="isSearchPerformed && errorMessage == null && result?.length == 0")
