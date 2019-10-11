@@ -1,8 +1,66 @@
 .row
     h5 Overview
     p The microbial signal transduction (MiST) database was established as a comprehensive signal transduction classification system and has served as a useful community resource since 2007 (1,2). The updated MiST database provides a comprehensive classification of microbial signal transduction systems of all the genomes deposited in NCBI RefSeq database. MiST 3.0 is a result of a substantial scaling to accommodate constantly growing microbial genomic data. 
+    h5 Signal transduction classification shemes
+    p The current version of MiST utilizes two classification schemes: to categorize signal transduction proteins (provided as “Genomic distribution of signal transduction proteins” tables) and to catalog signal transduction domains (provided as a “Signal transduction profile” graph). 
+    h5 Classification of signal transduction proteins
+    p For signal transduction proteins, we use the “complexity” scheme – one-component, two-component, and chemosensory systems. In addition to classifying pathway components, this scheme allows separating intracellular and extracellular signal transduction pathways: more than 97% of one-component systems are intracellular sensors and the vast majority of two-component systems contain extracellular sensors. The disadvantage of this scheme is that it does not provide a clear separation by protein function for some categories and, in contrast, splits some of the functionally related proteins into different categories. For example, the majority of transcription factors and serine/threonine kinases would be found in the same category of one-component systems; on the other hand, c-di-GMP-cyclases will be split between the three main categories (one-component, two-component or chemosensory) depending on their associated domains and pathways.
+    p An alternative scheme involves classification by protein function, e.g. placing chemoreceptors, histidine kinases, c-di-GMP-cyclases and phosphodiesterases, ser/thr kinases and other key signal transduction proteins in separate categories. While this scheme might seem more attractive, because it emphasizes the functional role of a protein, it has its own shortcomings. For example, the same category of response regulators contains such functionally unrelated proteins as transcription factors and c-di-GMP-cyclases, as long as they are associated with the receiver domain.  In the case of chemosensory pathways, the current functional classification scheme splits their components between several categories providing no connection between the elements of the same pathway. 
+    p Our protein classification scheme does provide functional categorization for several major signal transduction families: chemoreceptors, histidine kinases, response regulators, and extracytoplasmic sigma factors. In the future, we plan to implement a classification scheme based exclusively on the protein function, in addition to our current scheme, so the users can chose which option to use based on the nature of their inquiry. 
+    h5 Signal transduction profiles generation
+    p Signal transduction pathways contain various protein domains: many of them are unique to signal transduction, whereas others can play roles in other processes. Here again, there is no simple and unambiguous way for their classification. We present a summary of signal transduction domains for each genome as a graph titled “Signal transduction profile”. We classified these domains in seven major categories:  
+    ol
+        li Input (sensory)
+            ul
+                li Cofactor-binding (e.g BLUF domains)
+                li Enzymatic (enzyme-like ligand-binding domains)
+                li Protein-protein interactions (e.g. TPR domains)
+                li Signaling
+                li Small-ligand binding (e.g. Cache domains)
+                li Unknown (any input domain, whose role in signal transduction is not understood, but it is found in association with a known signal transduction domain)
+        li Output (regulatory)
+            ul
+                li DNA binding (the majority of transcription factors)
+                li RNA binding (e.g. ANTAR domain)
+                li Enzymatic (EAL, GGDEF, Guanylate_cyc domains)
+                li Protein-protein interactions (e.g. a stand-alone receiver domain)
+        li Chemotaxis (domains specific to chemosensory pathways)
+        li Transmitter (transmit information from Input)
+        li Receiver (receive information from Transmitter)
+        li ECF
+        li Unknown (any domain, whose role in signal transduction is not understood, but it is found in association with a known signal transduction domain)
+    p To classify the extracytoplasmic function (ECF) sigma factor proteins we used the profile HMMs described in&nbsp;
+        a(href="https://www.ncbi.nlm.nih.gov/pubmed/19737356" target="_blank") Staron et al.
+    p Because this scheme classifies domains, not proteins, the same protein would appear in various categories. For example, if a protein has a domain, whose role in signal transduction is unknown, and a well-annotated signal transduction domain (e.g. GGDEF), it will be listed both in the Unknown subcategory of the Input category and in the Enzymatic subcategory of the Output category. Systematic exploring of the Unknown subcategories might lead to the discovery of novel signal transduction domains and understanding the roles of other domains in signal transduction. Below is a list of signal transduction domains and their annotations used for domains classificatoin.
+    button(*ngIf="signalDomains" class="mist-button-smaller" mat-button (click)="toggleTable()") Signal Transduction Domains
+       mat-icon(aria-hidden="true") {{ arrow }}
+    br
+    br
+    table.signal-domains-table(*ngIf="signalDomains && showTable")
+        thead
+            tr
+            th Num
+            th Pfam clan name
+            th Kind
+            th Function
+        tbody
+            ng-template(
+                ngFor
+                let-signalDomain
+                [ngForOf]="signalDomains"
+                let-i="index"
+            )
+                tr
+                    td {{ i+1 }}
+                    td(*ngIf="signalDomain.name.substring(0,4) != 'ECF_'; else notUrlBlock")
+                        a(href="https://pfam.xfam.org/search/keyword?query={{ signalDomain.name }}" target="_blank") {{ signalDomain.name }}
+                    ng-template(#notUrlBlock) {{ signalDomain.name }}
+                    td {{ signalDomain.kind }}
+                    td {{ signalDomain.function }}
+
+
     h5 Signal Transduction specific profile HMMs
-    p Genomic evidence suggested that MCPs of certain heptad classes interact preferentially with certain chemosensory pathway classes defined based on evolutionary considerations (3). Specific profile HMMs were built for nineteen classes of chemosensory pathways (3) and twelve classes of MCPs (4). Furthermore, a new class of signal transduction proteins called MAC (methyl-accepting coiled-coil proteins) was identified (3), for which no profile HMM is available.
+    p Genomic evidence suggested that MCPs of certain heptad classes interact preferentially with certain chemosensory pathway classes defined based on evolutionary considerations (3). Specific profile Hidden Markov models (HMMs) were built for nineteen classes of chemosensory pathways (3) and twelve classes of MCPs (4). Furthermore, a new class of signal transduction proteins called MAC (methyl-accepting coiled-coil proteins) was identified (3), for which no profile HMM is available.
     p We integrated profile HMMs for different MCP classes, namely 64H, 58H, 52H, 48H, 44H, 42H, 40H, 38H, 36H, 34H, 28H and 24H, into the MiST3 database. We also integrated HMM profiles for components specific to each chemosensory class (CheA, CheB, CheC, CheD, CheR, CheV and CheZ) (3) and newly built profiles for MAC1 and MAC2 protein families. Thus MiST 3.0 offers a comprehensive set of chemosensory pathway-specific HMMs. Using these new profiles in combination with genome neighborhood analysis a complete chemosensory repertoire of any bacterial and archaeal genome can now be reconstructed. 
     h5 Genomes
     p To search for genomes select ‘Genomes’ in the search area and type an organism name, any taxonomy level (genus, family, etc.), RefSeq accession and version, NCBI taxonomy ID or genome assembly level. Genomes can be filtered by taxonomy and assembly level using either embedded filter or selecting corresponding taxonomic name in the drop-down list on the search results table. 
@@ -12,7 +70,7 @@
     h5 Scope
     p To search for genes/proteins inside the genome of interest use ‘Scope’ field on the ‘Genes/Proteins’  search page. When a genome name or an identifier is entered in the field called ‘Scope’ on the gene/protein search page, a list of corresponding organisms appears. Clicking on one of them will set it as a genome to search for specified genes and proteins in. The scope can also be set on a genome detail page.
     h5 Cart
-    p Genomes and genes can be added to the cart and analyzed in detail and encoded protein sequences can be downloaded. Genomes and genes added to the cart are marked on the search page to help keep track of the added items. The items added to the cart are stored there for 30 days. 
+    p Genomes and genes can be added to the cart and analyzed in detail and encoded protein sequences can be downloaded. The download format is fasta. A protein title includes RefSeq protein Id, gene locus, MiST stable Id, protein annotation and organism name. Genomes and genes added to the cart are marked on the search page to help keep track of the added items. The items added to the cart are stored there for 30 days. Currently up to 500 items can be added to the cart.
     h5 RESTful API
     p The API provides (i) programmatic access to all the data using a variety of identifiers and parameters and (ii) large-scale analysis of bacterial and archaeal signal transduction systems.  Another function of API is flexibility of interaction with the data. The requested data is returned in JSON format. A well-documented description of MiST3 data structure together with the detailed query examples in several popular programming languages is given on the&nbsp;
         a(href="https://api.mistdb.caltech.edu/" target="_blank") API page.

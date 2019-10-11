@@ -132,6 +132,21 @@ a {
     background-color: #28b8bd;
 }
 
+.mist-button-smaller  {
+    color: #197477 !important;
+    background-color: white;
+    border-radius: 2em;
+    /deep/ .mat-button-ripple {
+        border-radius: 2em;
+    }
+}
+
+.mist-button-smaller:hover, .mist-button-smaller:active {
+    color: white !important;
+    background-color: #28b8bd;
+    border-radius: 2em;
+}
+
 // customize checkbox
 .mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background {
     background-color: #aeb8bb !important;

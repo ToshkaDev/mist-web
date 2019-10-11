@@ -20,6 +20,16 @@ export interface SignalProfileCount {
   numDomains: number;
 }
 
+export interface SignalDomain {
+  id: number;
+  name: string;
+  versin: number;
+  kind: string;
+  function: string;
+  createdAt: string;
+  updateAt: string;
+}
+
 // Ideally, this would be typed as follows:
 // $total: number
 // [key: string]: RankCounts
@@ -160,5 +170,11 @@ export class MistApi {
     const url = this.getBaseUrl(Entities.GENOME) + `/${genomeVersion}/stp-matrix?per_page=${perPage}`;
     return this.http.get(url)
       .map((response) => <GenomeStpMatrix>response.json());
+  }
+
+  fetchSignalDomains(): Observable<SignalDomain[]>  {
+    const url = MistApi.BASE_URL + '/signal_domains';
+    return this.http.get(url)
+      .map((response) => <SignalDomain[]>response.json());
   }
 }

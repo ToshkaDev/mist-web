@@ -17,6 +17,7 @@ export class GeneComponent implements OnInit {
     private geneViewModel: GeneView;
 
     private signalGene: any;
+    private ecfArray: string[] = [];
 
     constructor(private store: Store<any>, private route: ActivatedRoute) {
     }
@@ -29,6 +30,11 @@ export class GeneComponent implements OnInit {
         this.getGene(this.geneStableId);
         this.gene$.skip(1).take(1).subscribe((result) => {
             this.signalGene = result.SignalGene;
+            for (let field in result.SignalGene.counts) {
+                if (field.substring(0, 4) === "ECF_") {
+                    this.ecfArray.push(" " + field);
+                }
+            }
             return result ? this.geneViewModel = new GeneView(result) : this.geneViewModel = null;
         });
     }
