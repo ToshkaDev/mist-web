@@ -20,6 +20,20 @@ export interface SignalProfileCount {
   numDomains: number;
 }
 
+export interface SignalDomainMember {
+  id: number;
+  signal_domain_id: number;
+  accession: number;
+  name: string;
+  superfamily: string;
+  description: string;
+  specific: boolean;
+  source: string;
+  pubmed_ids: number[];
+  pdb_ids: number[];
+  SignalDomainId: number;
+}
+
 export interface SignalDomain {
   id: number;
   name: string;
@@ -28,7 +42,9 @@ export interface SignalDomain {
   function: string;
   createdAt: string;
   updateAt: string;
+  SignalDomainMembers: SignalDomainMember[];
 }
+
 
 // Ideally, this would be typed as follows:
 // $total: number
@@ -172,8 +188,8 @@ export class MistApi {
       .map((response) => <GenomeStpMatrix>response.json());
   }
 
-  fetchSignalDomains(): Observable<SignalDomain[]>  {
-    const url = MistApi.BASE_URL + '/signal_domains';
+  fetchSignalDomainsAndMembers(): Observable<SignalDomain[]>  {
+    const url = MistApi.BASE_URL + '/signal_domains?fields.SignalDomainMember';
     return this.http.get(url)
       .map((response) => <SignalDomain[]>response.json());
   }

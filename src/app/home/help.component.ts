@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './help.pug',
 })
 export class HelpComponent {
-  private signalDomains: any[];
+  private signalDomainsAndMembers: any[];
   private showTable: boolean = false;
   readonly arrowObject = {0: "keyboard_arrow_downc", 1:  "keyboard_arrow_upc"};
   private arrow = "keyboard_arrow_downc";
@@ -16,8 +16,8 @@ export class HelpComponent {
   constructor(private mistApi: MistApi) {}
 
   ngOnInit() {
-    this.mistApi.fetchSignalDomains().subscribe(result => {
-      this.signalDomains = result;
+    this.mistApi.fetchSignalDomainsAndMembers().subscribe(result => {
+      this.signalDomainsAndMembers = result;
     });
   }
 

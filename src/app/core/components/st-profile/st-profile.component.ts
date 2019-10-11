@@ -64,9 +64,27 @@ export class StProfileComponent implements OnInit {
       viewWindowMode: 'explicit',
     },
     width: this.width,
+    tooltip: { isHtml: true },
   };
 
   private chartElement: HTMLElement;
+  private toolTips: any = {
+    "chemotaxis chemotaxis": "Domains specific to chemosensory pathways.", 
+    "transmitter transmitter": "Transmit information from Input.",
+    "receiver receiver": "Receive information from Transmitter.",
+    "input cofactor binding": "<strong>Input domains:</strong> e.g BLUF.",
+    "input enzymatic": "<strong>Input domains:</strong> enzyme-like ligand-binding domains.",
+    "input protein-protein interactions": "<strong>Input domains:</strong> e.g. TPR.",
+    "input signaling": "<strong>Input domains:</strong> signaling.",
+    "input small molecule binding": "<strong>Input domains:</strong> e.g. Cache domains.",
+    "input unknown": "<strong>Input domains:</strong> any input domain, whose role in signal transduction is not understood, but it is found in association with a known signal transduction domain.",
+    "output DNA binding": "<strong>Output domains:</strong> The majority of transcription factors.",
+    "output RNA binding": "<strong>Output domains:</strong> e.g. ANTAR.",
+    "output enzymatic": "<strong>Output domains:</strong> EAL, GGDEF, Guanylate_cyc.",
+    "output protein-protein interactions": "<strong>Output domains:</strong> e.g. a stand-alone receiver domain.",
+    "ecf ecf": "Extracytoplasmic function (ECF) sigma factors.",
+    "unknown unknown": "Any domain, whose role in signal transduction is not understood, but it is found in association with a known signal transduction domain."
+  };
 
   constructor(
     private mistApi: MistApi,
@@ -118,6 +136,7 @@ export class StProfileComponent implements OnInit {
     const table = new (<any>window).google.visualization.DataTable();
     table.addColumn('string', 'Function');
     table.addColumn('number', 'Domains');
+    table.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
     table.addColumn({type: 'string', role: 'style'});
     return table;
   }
@@ -125,10 +144,11 @@ export class StProfileComponent implements OnInit {
   private createDataRowsForProfile(profile) {
     const maxNumDomains = this.getMaxNumDomains(profile);
     this.setAxisMax(maxNumDomains + AXIS_COUNT_EXTRA);
-
+    console.log(profile);
     const x = profile.map((row) => [
       row.function === 'ecf' ? 'ECF' : ucFirst(row.function),
       row.numDomains,
+      "<span style='font-size: 14px'>" + this.toolTips[row.kind + " " + row.function] + "</span>" + "<br/><span style='font-size: 14px'>Domains: " + "<strong>" + row.numDomains + "</strong></span>",
       COLORS_BY_KIND[row.kind],
     ]);
     return x;

@@ -32,31 +32,48 @@
     p To classify the extracytoplasmic function (ECF) sigma factor proteins we used the profile HMMs described in&nbsp;
         a(href="https://www.ncbi.nlm.nih.gov/pubmed/19737356" target="_blank") Staron et al.
     p Because this scheme classifies domains, not proteins, the same protein would appear in various categories. For example, if a protein has a domain, whose role in signal transduction is unknown, and a well-annotated signal transduction domain (e.g. GGDEF), it will be listed both in the Unknown subcategory of the Input category and in the Enzymatic subcategory of the Output category. Systematic exploring of the Unknown subcategories might lead to the discovery of novel signal transduction domains and understanding the roles of other domains in signal transduction. Below is a list of signal transduction domains and their annotations used for domains classificatoin.
-    button(*ngIf="signalDomains" class="mist-button-smaller" mat-button (click)="toggleTable()") Signal Transduction Domains
+    button(*ngIf="signalDomainsAndMembers" class="mist-button-smaller" mat-button (click)="toggleTable()") Signal Transduction Domains
        mat-icon(aria-hidden="true") {{ arrow }}
     br
     br
-    table.signal-domains-table(*ngIf="signalDomains && showTable")
+    table.signal-domains-table(*ngIf="signalDomainsAndMembers && showTable")
         thead
             tr
-            th Num
-            th Pfam clan name
+            th Clan&nbsp;Number
+            th Clan
+            th Superfamily
             th Kind
             th Function
+            th Domain name
+            th Description
+            th Signal transduction specific?
+            th Source
+            th PubMed Ids  
         tbody
             ng-template(
                 ngFor
                 let-signalDomain
-                [ngForOf]="signalDomains"
+                [ngForOf]="signalDomainsAndMembers"
                 let-i="index"
             )
-                tr
-                    td {{ i+1 }}
-                    td(*ngIf="signalDomain.name.substring(0,4) != 'ECF_'; else notUrlBlock")
-                        a(href="https://pfam.xfam.org/search/keyword?query={{ signalDomain.name }}" target="_blank") {{ signalDomain.name }}
-                    ng-template(#notUrlBlock) {{ signalDomain.name }}
-                    td {{ signalDomain.kind }}
-                    td {{ signalDomain.function }}
+                ng-template(
+                    ngFor
+                    let-signalDomainMember
+                    [ngForOf]="signalDomain.SignalDomainMembers"
+                )
+                    tr
+                        td {{ i + 1 }}
+                        td {{ signalDomain.name }}
+                        td {{ signalDomainMember.superfamily }}
+                        td {{ signalDomain.kind }}
+                        td {{ signalDomain.function }}
+                        td(*ngIf="signalDomain.name.substring(0,4) != 'ECF_'; else notUrlBlock")
+                            a(href="https://pfam.xfam.org/search/keyword?query={{ signalDomainMember.name }}" target="_blank") {{ signalDomainMember.name }}
+                        ng-template(#notUrlBlock) {{ signalDomainMember.name }}
+                        td {{ signalDomainMember.description }}
+                        td {{ signalDomainMember.specific }}
+                        td {{ signalDomainMember.source }}
+                        td {{ signalDomainMember.pubmed_ids }}
 
 
     h5 Signal Transduction specific profile HMMs
