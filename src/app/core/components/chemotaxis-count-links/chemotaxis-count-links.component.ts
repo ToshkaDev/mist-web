@@ -14,9 +14,14 @@ export class ChemotaxisCountLinksComponent {
 
   queryParams(secondaryRank: string, type: string) {
     const { componentId } = this;
+    // for some reason 24H,28H and MAC2 need differently ordered query parameters
+    let ranks = type === '24H' || type === '28H' || type === 'MAC2' 
+      ? `${type},${PrimaryRank.chemotaxis},${secondaryRank}`
+      : `${PrimaryRank.chemotaxis},${secondaryRank},${type}`;
+
     return {
       ...(componentId && {componentId}),
-      ranks: `${PrimaryRank.chemotaxis},${secondaryRank},${type}`,
+      ranks: ranks,
     };
   }
 }

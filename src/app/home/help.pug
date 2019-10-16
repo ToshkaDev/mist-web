@@ -67,9 +67,10 @@
                         td {{ signalDomainMember.superfamily }}
                         td {{ signalDomain.kind }}
                         td {{ signalDomain.function }}
-                        td(*ngIf="signalDomain.name.substring(0,4) != 'ECF_'; else notUrlBlock")
+                        td(*ngIf="signalDomain.name.substring(0,4) != 'ECF_' && signalDomainMember.source != 'agfam'; else notUrlBlock")
                             a(href="https://pfam.xfam.org/search/keyword?query={{ signalDomainMember.name }}" target="_blank") {{ signalDomainMember.name }}
-                        ng-template(#notUrlBlock) {{ signalDomainMember.name }}
+                        ng-template(#notUrlBlock) 
+                            td {{ signalDomainMember.name }}
                         td {{ signalDomainMember.description }}
                         td {{ signalDomainMember.specific }}
                         td {{ signalDomainMember.source }}

@@ -80,7 +80,7 @@ export class StProfileComponent implements OnInit {
     "input unknown": "<strong>Input domains:</strong> any input domain, whose role in signal transduction is not understood, but it is found in association with a known signal transduction domain.",
     "output DNA binding": "<strong>Output domains:</strong> The majority of transcription factors.",
     "output RNA binding": "<strong>Output domains:</strong> e.g. ANTAR.",
-    "output enzymatic": "<strong>Output domains:</strong> EAL, GGDEF, Guanylate_cyc.",
+    "output enzymatic": "<strong>Output domains:</strong> e.g. EAL, GGDEF, Guanylate_cyc.",
     "output protein-protein interactions": "<strong>Output domains:</strong> e.g. a stand-alone receiver domain.",
     "ecf ecf": "Extracytoplasmic function (ECF) sigma factors.",
     "unknown unknown": "Any domain, whose role in signal transduction is not understood, but it is found in association with a known signal transduction domain."
