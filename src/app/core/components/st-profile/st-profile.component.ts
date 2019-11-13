@@ -144,7 +144,6 @@ export class StProfileComponent implements OnInit {
   private createDataRowsForProfile(profile) {
     const maxNumDomains = this.getMaxNumDomains(profile);
     this.setAxisMax(maxNumDomains + AXIS_COUNT_EXTRA);
-    console.log(profile);
     const x = profile.map((row) => [
       row.function === 'ecf' ? 'ECF' : ucFirst(row.function),
       row.numDomains,

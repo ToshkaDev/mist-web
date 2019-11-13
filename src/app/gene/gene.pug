@@ -6,7 +6,7 @@ mist-gene-view(
 .detail-uber(*ngIf="signalGene")
     h5 Signal transduction details
     p: strong {{ signalGene.ranks | geneRanks:true }}
-        span(*ngIf="ecfArray.length"): strong ,{{ ecfArray }}
+        span(*ngIf="ecfArray.length"): span ,{{ ecfArray }}
 
     ul
         li
