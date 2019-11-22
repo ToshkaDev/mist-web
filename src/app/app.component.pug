@@ -1,14 +1,22 @@
 header
   .row
     //- .three.columns.mist-logo
-    .five.columns.mist-logo
+    .four.columns.mist-logo
       a(routerLink="/")
         img.mist-svg(src="assets/images/mist_logo_white.svg")
     //- .five.columns.server-works
     //-   br
     //-   p The database is temporarily down due to system update.
     //- .four.columns.notice
-    .seven.columns.notice
+    .five.columns
+      br
+      br
+      br
+      p#citation(style="color:white") Gumerov VM, Ortega DR, Adebali O, Ulrich LE, and Zhulin IB (2019)
+        a(href="https://doi.org/10.1093/nar/gkz988", target="_blank") 
+          span(style="font-style:italic") Nucleic Acids Research, 
+            span(style="font-style:normal") gkz988. 
+    .three.columns.notice
         a(routerLink="/help") Help
         br
         a(href="mailto:gumerov.1@osu.edu") Feedback
