@@ -27,7 +27,7 @@ export class GenomesComponent extends MistComponent {
     .set(6,"genus");
   readonly asemblyFilterOptions = [
     {'value':'Complete Genome', 'viewValue' : 'Complete Genome'}, 
-    {'value':'Chromosom', 'viewValue' : 'Chromosom'},
+    {'value':'Chromosome', 'viewValue' : 'Chromosome'},
     {'value':'Scaffold', 'viewValue' : 'Scaffold'}, 
     {'value':'Contig', 'viewValue' : 'Contig'}];
   static readonly genomesColumns = ['Select', 'Genome', 'Superkingdom', 'Taxonomy Id', 'Taxonomy', 'Version', 'Assembly level'];
