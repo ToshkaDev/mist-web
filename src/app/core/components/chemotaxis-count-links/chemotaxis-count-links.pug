@@ -6,3 +6,12 @@ ng-container(*ngIf="counts && counts[secondaryRank]?.$total > 0")
   )
     span.type {{ type }}&nbsp;
     span.count {{ counts[secondaryRank][type].$total }}
+
+  //- Special case for those chemotaxis proteins that don't have subtypes
+  //- (e.g. CheW)
+  a(
+    *ngIf="!hasSubTypes"
+    routerLink="signal-genes"
+    [queryParams]="queryParams(secondaryRank)"
+  )
+    span.count {{ counts[secondaryRank].$total }}
