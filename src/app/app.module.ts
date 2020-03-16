@@ -27,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { D3Service } from 'd3-ng2-service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -120,6 +121,7 @@ import { ToggleChangedService } from './core/components/protein-feature-toggle/t
     BrowserModule,
     BrowserAnimationsModule,
     EffectsModule.forRoot([MistEffects, GenomeEffects, GeneEffects]),
+    FontAwesomeModule,
     FormsModule,
     HttpClientModule,
     MatButtonModule,

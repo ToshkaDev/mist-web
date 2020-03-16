@@ -13,16 +13,22 @@ header
       br
       br
       p#citation(style="color:white") Gumerov VM, Ortega DR, Adebali O, Ulrich LE, and Zhulin IB (2020)
-        a(href="https://doi.org/10.1093/nar/gkz988", target="_blank") 
+        a(href="https://doi.org/10.1093/nar/gkz988", target="_blank")
           span(style="font-style:italic") NAR,
             span(style="font-style:normal") 48: D459–D464.
-    .three.columns.notice
-        a(routerLink="/help") Help
-        br
-        a(href="mailto:gumerov.1@osu.edu") Feedback
-        br
-        a(href="https://api.mistdb.caltech.edu/" target="_blank") API
-      
+    .three.columns.notice.social-icons
+      br
+      a.social(routerLink="/help")
+        fa-icon([icon]="faLifeRing")
+      a.social(href="mailto:gumerov.1@osu.edu" target="_blank")
+        fa-icon([icon]="faEnvelopeSquare")
+      a.social(href="https://api.mistdb.caltech.edu/" target="_blank")
+        fa-icon([icon]="faBook")
+      br
+      a.social(href="https://twitter.com/mist3db" target="_blank")
+        fa-icon([icon]="faTwitterSquare")
+      a.social(href="https://gitter.im/MiST-db/community" target="_blank")
+        fa-icon([icon]="faGitter")
 
 .content
   .breadcrumbs
@@ -36,14 +42,14 @@ footer
   .container.footer-content
     a.footer-style(href="https://www.nih.gov/" target="_blank")
       img(src="assets/images/NIH-min.png"
-        [class.logo-nih]="isNnihLogoActive == false" 
+        [class.logo-nih]="isNnihLogoActive == false"
         [class.logo-nih-active]="isNnihLogoActive" #nihLogo)
     a.footer-style(href="https://www.osu.edu/" target="_blank")
       img(src="assets/images/OSU.png"
-        [class.logo-osu]="isOsuLogoActive == false" 
+        [class.logo-osu]="isOsuLogoActive == false"
         [class.logo-osu-active]="isOsuLogoActive" #osuLogo)
     a.footer-style(href="http://www.caltech.edu/" target="_blank")
-      img(src="assets/images/Caltech_LOGO-Orange_RGB.png" 
+      img(src="assets/images/Caltech_LOGO-Orange_RGB.png"
         [class.logo-caltech]="isCaltechLogoActive == false"
         [class.logo-caltech-active]="isCaltechLogoActive" #caltechLogo)
     a.footer-style(href="https://www.sabanciuniv.edu/en" target="_blank")
@@ -51,6 +57,6 @@ footer
         [class.logo-sabanci]="isSabanciLogoActive == false"
         [class.logo-sabanci-active]="isSabanciLogoActive" #sabanciLogo)
     a.footer-style(href="https://www.netlify.com/" target="_blank")
-      img(src="assets/images/netlify.png" 
+      img(src="assets/images/netlify.png"
         [class.logo-netlify]="isNetlifyLogoActive == false"
         [class.logo-netlify-active]="isNetlifyLogoActive" #netlifyLogo)
