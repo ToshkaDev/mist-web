@@ -74,8 +74,8 @@ export interface GenomeStpMatrix {
 @Injectable()
 export class MistApi {
   // static BASE_URL = 'https://api.mistdb.com/v1';
-  // static BASE_URL = 'http://localhost:5000/v1';
-  static BASE_URL = 'https://api.mistdb.caltech.edu/v1';
+  static BASE_URL = 'http://localhost:5000/v1';
+  // static BASE_URL = 'https://api.mistdb.caltech.edu/v1';
   static GENOMES_ROOT = '/genomes';
   static GENES_ROOT = '/genes';
   static paginationParams = "page=%pageNumber%&per_page=%perPage%";

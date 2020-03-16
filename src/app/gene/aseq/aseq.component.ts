@@ -22,7 +22,7 @@ export class AseqComponent implements OnInit {
     readonly selectedButtonTextColor = 'white';
     private buttonStyle = {'background-color': this.buttonColor, 'color': this.buttonTextColor};
     private styles = {
-        'pfam': {...this.buttonStyle}, 
+        'pfam': {...this.buttonStyle},
         'lowComplSegs': {...this.buttonStyle},
         'coiledCoils': {...this.buttonStyle},
         'tmHmm': {...this.buttonStyle},
@@ -39,9 +39,11 @@ export class AseqComponent implements OnInit {
     private isDomainsChecked = true;
     private isLcrChecked = true;
     private isCoiledCoilsChecked = true;
+    private isTmhmmChecked = true;
     private domainsPresent = true;
     private lcrPresent = true;
     private coiledCoilesPresent = true;
+    private tmhmmPresent = true;
     private isProteinPresent = true;
 
     constructor(private elementRef: ElementRef, private d3Service: D3Service) {
@@ -53,9 +55,11 @@ export class AseqComponent implements OnInit {
         this.drawProteinFeature.setSvgSize(svgWidth);
         this.gene$.skip(1).take(1).subscribe(result => {
             if (result && result.Aseq) {
+              console.log(result.Aseq)
                 result.Aseq.pfam31 && result.Aseq.pfam31.length ? this.domainsPresent = true : this.domainsPresent = false;
                 result.Aseq.segs && result.Aseq.segs.length ? this.lcrPresent = true : this.lcrPresent = false;
                 result.Aseq.coils && result.Aseq.coils.length ? this.coiledCoilesPresent = true : this.coiledCoilesPresent = false;
+                result.Aseq.tmhmm2 && result.Aseq.tmhmm2.length ? this.tmhmmPresent = true : this.tmhmmPresent = false;
                 this.aseqViewModel = new AseqViewModel(result.Aseq);
                 this.drawProteinFeature.drawProteinFeature(this.htmlElement, [result.Aseq]);
                 this.aseqData = result.Aseq;
@@ -108,18 +112,18 @@ export class AseqComponent implements OnInit {
         let sequenceLastFragment;
         let proteinSequnce = this.aseqViewModel.getSequence();
         let proteinElements = document.getElementsByClassName("protein-element");
-       
+
         for (let i = 0; i < proteinElements.length; i++) {
             proteinElements[i].addEventListener("click", function(){
                 AseqComponentObject.getInfo('sequence');
                 AseqComponentObject.toggleDetails(true);
-                
+
                 let elementCoords = proteinElements[i].id.split("@")[1].split("-");
                 let elementStart = AseqComponentObject.getTranslatedCoordinates(+elementCoords[0]);
                 let elementEnd = AseqComponentObject.getTranslatedCoordinates(+elementCoords[1]);
                 sequenceFirstFragment = (''+proteinSequnce).substring(0, elementStart);
                 sequenceMiddleFragment = `<span style="background-color: ${AseqComponent.higlightColor}">${(''+proteinSequnce).substring(elementStart, elementEnd+1)}</span>`;
-                sequenceLastFragment = (''+proteinSequnce).substring(elementEnd+1, proteinSequnce.length);                
+                sequenceLastFragment = (''+proteinSequnce).substring(elementEnd+1, proteinSequnce.length);
                 AseqComponentObject.currentSelection = sequenceFirstFragment+sequenceMiddleFragment+sequenceLastFragment;
             });
         }
@@ -137,13 +141,13 @@ export class AseqComponent implements OnInit {
     }
 
     private getSvgWidth(): number {
-        let svgWidth = (window.innerWidth > 0) 
+        let svgWidth = (window.innerWidth > 0)
           ? window.innerWidth*AseqComponent.svgWidthToScreenWidthFactor
           : screen.width*AseqComponent.svgWidthToScreenWidthFactor;
-        
+
         if (svgWidth < AseqComponent.minSvgWidth)
             svgWidth = AseqComponent.minSvgWidth;
-        else if (svgWidth > AseqComponent.maxSvgWidth) 
+        else if (svgWidth > AseqComponent.maxSvgWidth)
             svgWidth = AseqComponent.maxSvgWidth;
 
         return svgWidth;
@@ -153,22 +157,26 @@ export class AseqComponent implements OnInit {
         switch(feature) {
             case 'domains': {
                 this.isDomainsChecked = event.checked ? true : false;
-                
-                break; 
+
+                break;
             }
             case 'lcr': {
                 this.isLcrChecked = event.checked ? true : false;
-                break; 
+                break;
             }
             case 'coiledCoils': {
                 this.isCoiledCoilsChecked = event.checked ? true : false;
-                break; 
-            } 
-            default: { 
-                console.log("Something went wrong in featureCheckboxChanged(event, feature)"); 
-                break; 
-            } 
-        } 
+                break;
+            }
+            case 'tmhmm': {
+              this.isTmhmmChecked = event.checked ? true : false;
+              break;
+          }
+            default: {
+                console.log("Something went wrong in featureCheckboxChanged(event, feature)");
+                break;
+            }
+        }
         this.reRenderProteinFeatures();
     }
 }
