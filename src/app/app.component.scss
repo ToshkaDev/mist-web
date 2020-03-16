@@ -222,8 +222,14 @@ footer {
 .breadcrumbs {
   margin-left: 22px;
 }
-#citation {
-  padding: 0 10px;
+a.citation {
+  margin-top: 60px;
+  color: white;
+  text-decoration: underline;
+}
+
+a.citation:hover {
+  color: lightgrey;
 }
 
 a.social {
