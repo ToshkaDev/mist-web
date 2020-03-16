@@ -1,4 +1,4 @@
-import { Http, Response } from '@angular/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import 'rxjs/add/operator/do';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subscription } from 'rxjs/Subscription';
@@ -25,7 +25,7 @@ export class ApiCursor {
   private query: any;
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private baseQuery: string,
   ) {
     this.query = baseQuery;
@@ -36,7 +36,7 @@ export class ApiCursor {
     this.cancelPendingExecute();
     this.execute$ = this.http.get(this.query)
       .do(
-        (response: Response) => this.processResponse(response),
+        (response) => this.processResponse(response),
         (error) => { this.error = error; },
         () => { this.execute$ = null; },
       )
@@ -94,9 +94,9 @@ export class ApiCursor {
     }
   }
 
-  private processResponse(response: Response) {
+  private processResponse(response) {
     this.response = response;
-    this.data$.next(response.json());
+    this.data$.next(response);
   }
 
   private setQueryFromHeader(headerName: string) {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import 'rxjs/add/operator/catch';
@@ -13,7 +13,7 @@ import { Entities } from '../core/common/entities';
 
 @Injectable()
 export class GenomeEffects {
-    
+
     @Effect()
     fetch$: Observable<Action> = this.actions$.ofType<genome.FetchGenome>(genome.FETCH_GENOME)
         .map((action) => action.payload)
@@ -21,7 +21,7 @@ export class GenomeEffects {
         const url = this.mistApi.getUrl(query, Entities.GENOME);
         return this.http.get(url)
         .map((response) => {
-            const fetchedGenome = response.json();
+            const fetchedGenome = response;
             return new genome.FetchGenomeDone({
                 fetchedGenome
             });
@@ -30,7 +30,7 @@ export class GenomeEffects {
         });
 
     constructor(
-    private http: Http,
+    private http: HttpClient,
     private actions$: Actions,
     private mistApi: MistApi,
     private store: Store<any>,

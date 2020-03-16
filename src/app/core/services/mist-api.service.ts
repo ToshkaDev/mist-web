@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { fieldMap as FieldMap } from '../common/fields';
 import { Entities } from '../common/entities';
 import { Observable } from 'rxjs/Observable';
@@ -92,7 +92,7 @@ export class MistApi {
     [Entities.SIGNAL_GENES, MistApi.BASE_URL + MistApi.GENOMES_ROOT]
   ]);
 
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
 
   searchWithPaginationUrl(query: any, entity: string): string {
     let url = MistApi.paginationParams.replace("%pageNumber%", query.pageIndex).replace("%perPage%", query.perPage);
@@ -179,18 +179,18 @@ export class MistApi {
   fetchStProfileData(genomeVersion): Observable<SignalProfileCount[]> {
     const url = this.getBaseUrl(Entities.GENOME) + `/${genomeVersion}/st-profile`;
     return this.http.get(url)
-      .map((response) => <SignalProfileCount[]>response.json());
+      .map((response) => <SignalProfileCount[]>response);
   }
 
   fetchStpMatrix(genomeVersion, perPage: number = 20): Observable<GenomeStpMatrix> {
     const url = this.getBaseUrl(Entities.GENOME) + `/${genomeVersion}/stp-matrix?per_page=${perPage}`;
     return this.http.get(url)
-      .map((response) => <GenomeStpMatrix>response.json());
+      .map((response) => <GenomeStpMatrix>response);
   }
 
   fetchSignalDomainsAndMembers(): Observable<SignalDomain[]>  {
     const url = MistApi.BASE_URL + '/signal_domains?fields.SignalDomainMember';
     return this.http.get(url)
-      .map((response) => <SignalDomain[]>response.json());
+      .map((response) => <SignalDomain[]>response);
   }
 }

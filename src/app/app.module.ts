@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 
 import {
@@ -121,7 +121,7 @@ import { ToggleChangedService } from './core/components/protein-feature-toggle/t
     BrowserAnimationsModule,
     EffectsModule.forRoot([MistEffects, GenomeEffects, GeneEffects]),
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     MatButtonModule,
     MatIconModule,
     MatInputModule,
