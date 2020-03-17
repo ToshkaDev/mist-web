@@ -35,7 +35,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   private resultScope$: Observable<any>;
   private selectedComponent: string = Entities.GENOMES;
   private smallMenuDisplay: any = {'visibility': 'visible'};
-  private genomesFilter: GenomesFilter = new GenomesFilter(); 
+  private genomesFilter: GenomesFilter = new GenomesFilter();
   readonly defaultCurrentPage: number = 1;
   readonly minQueryLenght: number = 1;
   private perPage: number = 30;
@@ -63,7 +63,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     [Entities.GENES, `/${Entities.GENES}`],
     //["protein-features", ""],
   ]);
-  
+
   private routeToSelectionOption = new Map<string, string>([
     [`/${Entities.GENOMES}`, Entities.GENOMES],
     [`/${Entities.GENES}`, Entities.GENES],
@@ -120,24 +120,24 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
 
   private entityToExamples = new Map<string, any[]>([
     [Entities.GENOMES, [
-        {"queryString": "Methanobacteriales", "link": `/${Entities.GENOMES}`}, 
-        {"queryString": "Methanococcus voltae", "link": `/${Entities.GENOMES}`},
-        {"queryString": "GCF_000302455.1", "link": `/${Entities.GENOMES}`}
+        {"queryString": "Vibrionales", "link": `/${Entities.GENOMES}`},
+        {"queryString": "Escherichia coli", "link": `/${Entities.GENOMES}`},
+        {"queryString": "GCF_001315015.1", "link": `/${Entities.GENOMES}`}
       ]
     ],
     [Entities.GENES, [
         //{"queryString": "kinase", "link": `/${Entities.GENES}`},
-        {"queryString": "GCF_000302455.1-A994_RS01845", "link": `/${Entities.GENES}`},
-        {"queryString": "WP_004029250.1", "link": `/${Entities.GENES}`},
-        {"queryString": "A994_RS13120", "link": `/${Entities.GENES}`}
+        {"queryString": "GCF_001315015.1-AMK58_RS20975", "link": `/${Entities.GENES}`},
+        {"queryString": "NP_415938.1", "link": `/${Entities.GENES}`},
+        {"queryString": "PA1098", "link": `/${Entities.GENES}`}
       ]
     ],
     //["/protein-features", ""]
   ]);
-  
-  private examples: any[] = this.entityToExamples.has(this.selectedComponent) 
-    ? this.entityToExamples.get(this.selectedComponent) 
-    : null; 
+
+  private examples: any[] = this.entityToExamples.has(this.selectedComponent)
+    ? this.entityToExamples.get(this.selectedComponent)
+    : null;
 
   constructor(
     private router: Router,
@@ -154,16 +154,16 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
       if (this.routeToSelectionOption.has(currentUrl)) {
         this.selectedComponent = this.routeToSelectionOption.get(currentUrl);
         this.assignObservables(currentUrl);
-        this.examples = this.entityToExamples.has(this.selectedComponent) 
-          ? this.entityToExamples.get(this.selectedComponent) 
-          : null; 
-      }  
+        this.examples = this.entityToExamples.has(this.selectedComponent)
+          ? this.entityToExamples.get(this.selectedComponent)
+          : null;
+      }
       else
         this.query$ = null;
-      // (B) 
+      // (B)
       // 1) We need to put a genome name to copeService.selectGenomeName
       // in order it to be accessibale to all the places it needed
-      // 2) selectScope(...) gets called in order to initiate a search with the new scope. 
+      // 2) selectScope(...) gets called in order to initiate a search with the new scope.
       // 3) scopeSetFromDetailPage need to be set to null after that,
       // so that a new scope object could be processed when it gets set by a user
       if (this.scopeSetFromDetailPage && this.getCurrentUrl() === `/${Entities.GENES}`) {
@@ -177,17 +177,17 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
         this.isSearchPerformed$ = null;
       }
     });
-    
+
     // (A)
     // putScopeGenomeName$ observable of scopeService will be called from the Genome detail page
     // when a user will set the genome to scope and the scope object will be detected here.
     // Once this activated the route will change (as a result of 'this.entityChanged(...)' calling)
-    // and the router event listener initialzed in ngOnInit() will be called make 
+    // and the router event listener initialzed in ngOnInit() will be called make
     // the necessary changes and assign observables for 'Genes'
     this.scopeService.putScopeGenomeName$.subscribe(scope => {
       if (scope && scope.refSeqVersion.length) {
         this.scopeSetFromDetailPage = scope;
-        this.entityChanged({'value': Entities.GENES});            
+        this.entityChanged({'value': Entities.GENES});
       }
     });
 
@@ -197,23 +197,23 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.cartChangedService.isItemsAddedOrChanged$.subscribe(() => {
       this.genesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENES);
       this.genomesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENOMES);
-    });  
+    });
     this.scopeService.selectedScope$.subscribe(selectedScope => this.selectScope(selectedScope));
   }
 
   ngAfterContentChecked() {
-    // put this.scopeName to the obesrvable in scopeService otherwise it's no accesible if a user selected another 
+    // put this.scopeName to the obesrvable in scopeService otherwise it's no accesible if a user selected another
     // entity (Genomes or another future component) and returned back to Genes component
     if (this.scopeName && this.scopeName !== this.scopeSearchTerm)
       this.scopeService.selectGenomeName(this.scopeName);
   }
-  
+
   putQuery(query: string = this.query) {
     this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
     this.changeScopeTo(false);
     this.assignObservables(this.getCurrentUrl());
     // Don't send repeated requests. We don't use distinctUntilChanged() in SearchInputComponent
-    // because the search term can't be deleted in this case by clicking close icon.    
+    // because the search term can't be deleted in this case by clicking close icon.
     if (query && this.query === query && this.compntHasScopeAndResIsLoaded()) {
       return;
     } else if (query && query.length >= this.minQueryLenght) {
@@ -221,8 +221,8 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
         this.search();
     } else {
         this.query = query;
-        this.clear(this.query, this.scope); 
-    } 
+        this.clear(this.query, this.scope);
+    }
   }
 
   putScope(scope: string) {
@@ -236,9 +236,9 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     } else if (this.scopeSearchTerm === scope || this.scopeName === scope) {
         return;
     } else if (scope && scope.length > 0) {
-        // If we are going from another page we need to navigate to /genes and reasign observables 
+        // If we are going from another page we need to navigate to /genes and reasign observables
         this.entityChanged({'value': Entities.GENES});
-        this.launchScopeSearch(scope); 
+        this.launchScopeSearch(scope);
     }
   }
 
@@ -247,12 +247,12 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.scope = MainMenuComponent.allGenomesScope;
     this.scopeService.selectGenomeName('');
     // 1) First we need to dispatch clear action to get rid off the results (and a scope) corresponding to the current
-    // component which got downloaded previously based on the url. 
+    // component which got downloaded previously based on the url.
     // 2) Then we dispatch clear action corresponding to GenesScopeComponent
-    // 3) Finally we set scope to true so that only GenesScopeComponent will get downloaded when the genomes 
+    // 3) Finally we set scope to true so that only GenesScopeComponent will get downloaded when the genomes
     // results from the server will be retrieved
-    this.clear(this.query, null); 
-    this.clear(null, null, MistAction.CLEAR_SCOPE); 
+    this.clear(this.query, null);
+    this.clear(null, null, MistAction.CLEAR_SCOPE);
     this.changeScopeTo(true);
   }
 
@@ -273,9 +273,9 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.searchForScope();
     // At the beginning we set this.scopeIsSelected = false. If a user selects a genome clicking on one of the records
     // on scope search results then this.scopeIsSelected will be changed to true in selectScope(selectedScope: string = null) method.
-    // But if a user doesn't select any genome then the search scope will be defaulted to "All Genomes" 
+    // But if a user doesn't select any genome then the search scope will be defaulted to "All Genomes"
     if (!this.scopeIsSelected)
-      this.scope = MainMenuComponent.allGenomesScope; 
+      this.scope = MainMenuComponent.allGenomesScope;
   }
 
   searchForScope() {
@@ -283,8 +283,8 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.store.dispatch(new MistAction.Search(SEARCH, {
       scope: null,
       search: this.scopeSearchTerm,
-      perPage: this.perPage, 
-      pageIndex: this.defaultCurrentPage, 
+      perPage: this.perPage,
+      pageIndex: this.defaultCurrentPage,
       filter: {}
     }));
   }
@@ -299,9 +299,9 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     let SEARCH = this.selectionOptionToActionType.get(this.selectedComponent);
     this.store.dispatch(new MistAction.Search(SEARCH, {
       scope: this.getScope(),
-      search: this.query, 
-      perPage: this.perPage, 
-      pageIndex: this.defaultCurrentPage, 
+      search: this.query,
+      perPage: this.perPage,
+      pageIndex: this.defaultCurrentPage,
       filter: {}
     }));
   }
@@ -316,7 +316,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
 
   entityChanged(entity: any) {
     this.selectedComponent = entity.value;
-    this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);      
+    this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
   }
 
   assignObservables(currentUrl: string) {
