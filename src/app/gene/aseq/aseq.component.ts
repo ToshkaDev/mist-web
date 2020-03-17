@@ -59,7 +59,7 @@ export class AseqComponent implements OnInit {
                 result.Aseq.pfam31 && result.Aseq.pfam31.length ? this.domainsPresent = true : this.domainsPresent = false;
                 result.Aseq.segs && result.Aseq.segs.length ? this.lcrPresent = true : this.lcrPresent = false;
                 result.Aseq.coils && result.Aseq.coils.length ? this.coiledCoilesPresent = true : this.coiledCoilesPresent = false;
-                result.Aseq.tmhmm2 && result.Aseq.tmhmm2.length ? this.tmhmmPresent = true : this.tmhmmPresent = false;
+                result.Aseq.tmhmm2 && result.Aseq.tmhmm2.tms.length ? this.tmhmmPresent = true : this.tmhmmPresent = false;
                 this.aseqViewModel = new AseqViewModel(result.Aseq);
                 this.drawProteinFeature.drawProteinFeature(this.htmlElement, [result.Aseq]);
                 this.aseqData = result.Aseq;

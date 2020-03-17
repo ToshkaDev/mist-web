@@ -2,9 +2,9 @@ div.detail-uber
     h5.gene-detail Domain architecture
     .show-features(*ngIf="isProteinPresent")
         mat-checkbox.feature(*ngIf="domainsPresent" [checked]="isDomainsChecked" (change)="featureCheckboxChanged($event, 'domains')") Domains
+        mat-checkbox.feature(*ngIf="tmhmmPresent" [checked]="isTmhmmChecked" (change)="featureCheckboxChanged($event, 'tmhmm')") TMHMM
         mat-checkbox.feature(*ngIf="lcrPresent" [checked]="isLcrChecked" (change)="featureCheckboxChanged($event, 'lcr')") Low complexity regions
         mat-checkbox.feature(*ngIf="coiledCoilesPresent" [checked]="isCoiledCoilsChecked" (change)="featureCheckboxChanged($event, 'coiledCoils')") Coiled coiles
-        mat-checkbox.feature(*ngIf="tmhmmPresent" [checked]="isTmhmmChecked" (change)="featureCheckboxChanged($event, 'tmhmm')") TMHMM
     div.domains
 
     div(*ngIf="!isProteinPresent")

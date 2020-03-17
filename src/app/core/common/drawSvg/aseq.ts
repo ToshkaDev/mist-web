@@ -7,7 +7,9 @@ export interface Aseq {
     ecf1: any[];
     segs: any[];
     coils: any[];
-    tmhmm2?: any[];
+    tmhmm2?: {
+      tms: [number, number][];
+    }
 }
 
 export interface pfamInterface {
