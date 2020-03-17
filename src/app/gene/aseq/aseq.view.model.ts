@@ -72,13 +72,13 @@ export class AseqViewModel {
     ]);
 
     constructor(aseqData: any) {
-      console.log('this is something to look at')
-      console.log(aseqData)
         if (aseqData) {
             this.initializeProperties(aseqData.pfam31, this.pfam, this.pfamHeaders);
             this.initializeLowComplAndCoilsProperties(aseqData.segs, this.lowComplSegs);
             this.initializeLowComplAndCoilsProperties(aseqData.coils, this.coiledCoils);
-            this.initializeLowComplAndCoilsProperties(aseqData.tmhmm2.tms, this.tmHmm);
+            if (aseqData.tmhmm2) {
+              this.initializeLowComplAndCoilsProperties(aseqData.tmhmm2.tms, this.tmHmm);
+            }
             this.initializeSequencesProperties(aseqData.sequence, this.sequence);
         }
     }

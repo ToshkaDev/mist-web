@@ -118,7 +118,7 @@ export default class DrawProteinFeature {
                 drawCoiledCoils(selectedElement, d, kCoilsYstart, featureScale, getUniqueFeatureName);
             if (drawLCR && d.segs && d.segs.length)
                 drawLowComplexityRegion(selectedElement, d, kLcrYstart, featureScale, getUniqueFeatureName);
-            if (drawTM && d.tmhmm2.tms.length)
+            if (drawTM && d.tmhmm2 && d.tmhmm2.tms.length)
                 drawTransmembraneRegion(selectedElement, d, kTransmembraneYstart, featureScale, getUniqueFeatureName);
             if (drawDomains && d.pfam31 && d.pfam31.length) {
                 pfam31NotOverlapped = Array.from(removeOverlapps(d.pfam31, compareEvalues));

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ElementRef, HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { D3Service } from 'd3-ng2-service';
-import DrawNeighborGenes from '../../core/common/drawSvg/draw-negihbor-genes';
+import DrawNeighborGenes from '../../core/common/drawSvg/draw-neighbor-genes';
 
 @Component({
     selector: 'mist-neighbor-genes-view',
@@ -21,20 +21,20 @@ export class NeighborGenesView implements OnInit {
 
     private itemNumber = 1;
     private isDrawn = false;
-    
+
     constructor(private elementRef: ElementRef, private d3Service: D3Service) {
     }
 
     ngOnInit() {
-        let geneClusterSvgWidth = (window.innerWidth > 0) 
+        let geneClusterSvgWidth = (window.innerWidth > 0)
             ? window.innerWidth*NeighborGenesView.svgWidthToScreenWidthFactor
             : screen.width*NeighborGenesView.svgWidthToScreenWidthFactor;
-        
+
         if (geneClusterSvgWidth <= NeighborGenesView.minSvgWidth)
             geneClusterSvgWidth = NeighborGenesView.minSvgWidth;
-        else if (geneClusterSvgWidth > 1900) 
+        else if (geneClusterSvgWidth > 1900)
             geneClusterSvgWidth = 1900;
-            
+
         this.drawNeighborGenesObject = new DrawNeighborGenes(this.elementRef, this.d3Service);
         this.drawNeighborGenesObject.setSvgSize(geneClusterSvgWidth);
         this.itemNumber = 1;
@@ -49,13 +49,13 @@ export class NeighborGenesView implements OnInit {
 
     @HostListener('window:resize', ['$event'])
     reRenderGeneNeighbors() {
-        let geneClusterSvgWidth = (window.innerWidth > 0) 
+        let geneClusterSvgWidth = (window.innerWidth > 0)
             ? window.innerWidth*NeighborGenesView.svgWidthToScreenWidthFactor
             : screen.width*NeighborGenesView.svgWidthToScreenWidthFactor;
 
         if (geneClusterSvgWidth < NeighborGenesView.minSvgWidth)
             geneClusterSvgWidth = NeighborGenesView.minSvgWidth;
-        else if (geneClusterSvgWidth > NeighborGenesView.maxSvgWidth) 
+        else if (geneClusterSvgWidth > NeighborGenesView.maxSvgWidth)
             geneClusterSvgWidth = NeighborGenesView.maxSvgWidth;
 
         this.itemNumber = 1;
