@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponseBase } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import * as queryString from 'query-string';
