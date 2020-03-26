@@ -28,7 +28,7 @@ export default class GenomeViewModel {
         "pfam31": "Pfam domains prediction is not complete.",
         "ecf1": "Extracytoplasmic function sigma factors prediction is not complete.",
         "coils": "Coiled-coils prediction is not complete.",
-        "tmhmm2": "Transmembrane Predictions with TMHMM is not complete",
+        "tmhmm2": "Transmembrane Predictions with TMHMM is not complete.",
         "GeneClusters": "Gene neighborhoods identification is not complete.",
         "Taxonomy": "Taxonomic classification is not complete.",
         "NCBICoreData": "NCBI core genomic data parsing is not complete."
