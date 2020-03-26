@@ -169,8 +169,6 @@ export default class DrawProteinFeature {
     }
 
     private drawTransmembraneRegion(selectedElement: any, data: any, kTransmembraneYstart, featureScale, getUniqueFeatureName) {
-      console.log(`let's draw TM`)
-      console.log(data.tmhmm2.tms)
         selectedElement.selectAll('svg')
             .data(data.tmhmm2.tms)
             .enter()
