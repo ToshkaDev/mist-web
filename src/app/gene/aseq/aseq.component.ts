@@ -134,7 +134,7 @@ export class AseqComponent implements OnInit {
             let svgWidth = this.getSvgWidth();
             this.drawProteinFeature.removeElement(this.htmlElement);
             this.drawProteinFeature.setSvgSize(svgWidth);
-            this.drawProteinFeature.drawProteinFeature(this.htmlElement, [this.aseqData], this.isLcrChecked, this.isCoiledCoilsChecked, this.isDomainsChecked);
+            this.drawProteinFeature.drawProteinFeature(this.htmlElement, [this.aseqData], this.isLcrChecked, this.isCoiledCoilsChecked, this.isDomainsChecked, this.isTmhmmChecked);
             this.setProteinFeaturesEventListeners();
         }
     }
