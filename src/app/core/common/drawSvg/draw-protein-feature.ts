@@ -317,7 +317,7 @@ export default class DrawProteinFeature {
         if (dataType === DataType.DOMAIN) {
             readyName = `${name}@${d.ali_from}-${d.ali_to}`;
         } else if (dataType === DataType.TM) {
-            readyName = `${name}@${d.start}-${d.end}`;
+            readyName = `${name}@${d[0]}-${d[1]}`;
         } else if (dataType === DataType.LOW_COMPLEXITY || dataType === DataType.COILED_COILS) {
             readyName = `${name}@${d[0]}-${d[1]}`;
         }
