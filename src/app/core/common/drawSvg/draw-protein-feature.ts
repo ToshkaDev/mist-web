@@ -21,7 +21,7 @@ export default class DrawProteinFeature {
     static readonly kDomainHeight = 40;
     static readonly kDomainStrokeWidth = 3;
     static readonly kPartialPixel = 3;
-    static readonly kTransmembraneHeight = 50;
+    static readonly kTransmembraneHeight = 60;
     static readonly kCoilsHeight = 45;
     static readonly kLcrHeight = 45;
     static readonly kDomainTextMargin = 5;
@@ -31,7 +31,7 @@ export default class DrawProteinFeature {
     static readonly domainColors = {
         "domain"        : "rgba(255,255,255,0.8)",
         "domainStroke"  : "rgba(0,0,0,0.8)",
-        "tm"            : "rgba(100,100,100,0.7)",
+        "tm"            : "rgba(0,126,204,0.7)",
         "coils"         : "rgba(46,139,87,0.7)",
         "lcr"           : "rgba(199,21,133,0.7)"
     };
@@ -61,7 +61,7 @@ export default class DrawProteinFeature {
         d3Element.selectAll("svg.protein-feature").remove();
     }
 
-    drawProteinFeature(htmlElement, data: Aseq[], drawLCR=true, drawCoiled=true, drawDomains=true) {
+    drawProteinFeature(htmlElement, data: Aseq[], drawLCR=true, drawCoiled=true, drawDomains=true, drawTM=true) {
         let d3 = this.d3;
         let kSvgWidth = this.kSvgWidth;
         let kSvgHeight = this.kSvgHeight;
@@ -72,7 +72,7 @@ export default class DrawProteinFeature {
         let kDomainYstart = this.kDomainYstart;
         let kDomainYend = this.kDomainYend;
         let kMiddleY = this.kMiddleY;
-        
+
 
         let d3ParentElement = d3.select(this.parentNativeElement);
         this.d3Element = d3ParentElement.select<HTMLBaseElement>(htmlElement);
@@ -89,7 +89,7 @@ export default class DrawProteinFeature {
             .attr("height", kSvgHeight)
             .attr("width", function(d) { return d.length ? featureScale(d.length) : 0 + 1 })
             .append('g');
-        
+
         // Draw backbone
         container.append('g')
             .filter(function(d){ return d.length && d.length > 0 })
@@ -102,7 +102,7 @@ export default class DrawProteinFeature {
 
         let drawCoiledCoils = this.drawCoiledCoils;
         let drawLowComplexityRegion = this.drawLowComplexityRegion;
-        let drawTransmembraneRegin = this.drawTransmembraneRegin;
+        let drawTransmembraneRegion = this.drawTransmembraneRegion;
         let drawDomain = this.drawDomain;
         let drawDomainBorders = this.drawDomainBorders;
         let nameDomain = this.nameDomain;
@@ -111,18 +111,18 @@ export default class DrawProteinFeature {
         let removeOverlapps = this.removeOverlapps;
         let compareEvalues = this.compareEvalues;
         let pfam31NotOverlapped: pfamInterface[];
-        
+
         container.each(function(d, i) {
             let selectedElement = d3.select(this);
             if (drawCoiled && d.coils && d.coils.length)
-                drawCoiledCoils(selectedElement, d, kCoilsYstart, featureScale, getUniqueFeatureName);                
+                drawCoiledCoils(selectedElement, d, kCoilsYstart, featureScale, getUniqueFeatureName);
             if (drawLCR && d.segs && d.segs.length)
                 drawLowComplexityRegion(selectedElement, d, kLcrYstart, featureScale, getUniqueFeatureName);
-            if (d.tmhmm2 && d.tmhmm2.length)
-                drawTransmembraneRegin(selectedElement, d, kTransmembraneYstart, featureScale, getUniqueFeatureName);
+            if (drawTM && d.tmhmm2 && d.tmhmm2.tms.length)
+                drawTransmembraneRegion(selectedElement, d, kTransmembraneYstart, featureScale, getUniqueFeatureName);
             if (drawDomains && d.pfam31 && d.pfam31.length) {
                 pfam31NotOverlapped = Array.from(removeOverlapps(d.pfam31, compareEvalues));
-                drawDomain(selectedElement, pfam31NotOverlapped, drawDomainBorders, nameDomain, 
+                drawDomain(selectedElement, pfam31NotOverlapped, drawDomainBorders, nameDomain,
                 domainBorder, kDomainYstart, kDomainYend, kMiddleY, featureScale, getUniqueFeatureName);
             }
         })
@@ -133,11 +133,11 @@ export default class DrawProteinFeature {
             .data(data.coils ? data.coils : [])
             .enter()
             .append('g')
-            .filter(function(d){ return d[1] - d[0] > 0 })                
+            .filter(function(d){ return d[1] - d[0] > 0 })
             .append('rect')
             .attr("x", function(d) { return featureScale(d[0]) })
             .attr("y", kCoilsYstart)
-            .attr("width", function(d) { 
+            .attr("width", function(d) {
                 return featureScale(d[1] - d[0])
             })
             .attr("height", DrawProteinFeature.kCoilsHeight)
@@ -157,7 +157,7 @@ export default class DrawProteinFeature {
             .append('rect')
             .attr("x", function(d) { return featureScale(d[0]) })
             .attr("y", kLcrYstart)
-            .attr("width", function(d) { 
+            .attr("width", function(d) {
                 return featureScale(d[1] - d[0])
             })
             .attr("height", DrawProteinFeature.kLcrHeight)
@@ -168,17 +168,17 @@ export default class DrawProteinFeature {
             });
     }
 
-    private drawTransmembraneRegin(selectedElement: any, data: any, kTransmembraneYstart, featureScale, getUniqueFeatureName) {
+    private drawTransmembraneRegion(selectedElement: any, data: any, kTransmembraneYstart, featureScale, getUniqueFeatureName) {
         selectedElement.selectAll('svg')
-            .data(data.tmhmm ? data.tmhmm: [])
+            .data(data.tmhmm2.tms)
             .enter()
             .append('g')
             .append('rect')
-            .filter(function(d){ return d.end - d.start > 0 })
-            .attr("x", function(d) { return featureScale(d.start) })
+            .filter(function(d){ return d[1] - d[0] > 0 })
+            .attr("x", function(d) { return featureScale(d[0]) })
             .attr("y", kTransmembraneYstart)
-            .attr("width", function(d) { 
-                return featureScale(d.end-d.start)
+            .attr("width", function(d) {
+                return featureScale(d[1]-d[0])
             })
             .attr("height", DrawProteinFeature.kTransmembraneHeight)
             .attr("fill", DrawProteinFeature.domainColors.tm)
@@ -188,7 +188,7 @@ export default class DrawProteinFeature {
             });
     }
 
-    private drawDomain(selectedElement: any, pfam31: pfamInterface[], drawDomainBorders, nameDomain, domainBorder, 
+    private drawDomain(selectedElement: any, pfam31: pfamInterface[], drawDomainBorders, nameDomain, domainBorder,
         kDomainYstart, kDomainYend, kMiddleY, featureScale, getUniqueFeatureName) {
         let domain = selectedElement.selectAll('svg')
             .data(pfam31 && pfam31.length > 0 ? pfam31 : [])
@@ -198,7 +198,7 @@ export default class DrawProteinFeature {
             .filter(function(d){ return d.ali_to - d.ali_from > 0 })
             .attr("x", function(d) { return featureScale(d.ali_from) })
             .attr("y", kDomainYstart)
-            .attr("width", function(d) { 
+            .attr("width", function(d) {
                 return featureScale(d.ali_to-d.ali_from);
             })
             .attr("height", DrawProteinFeature.kDomainHeight)
@@ -223,7 +223,7 @@ export default class DrawProteinFeature {
         let significantPfam = pfam1;
         let overlapLength;
         let lastAdded = pfam1;
-        pfam31Final.add(pfam1);        
+        pfam31Final.add(pfam1);
 
         pfam31Sorted.slice(1).forEach(pfam2 => {
             if (pfam1.ali_to > pfam2.ali_from) {
@@ -275,7 +275,7 @@ export default class DrawProteinFeature {
         domain.append('path')
             .filter(function(d){ return d.ali_to - d.ali_from > 0 })
             .attr("d", function(d) {
-                let domainBorderResult = domainBorder(d, d.hmm_cov ? d.hmm_cov : '[]', kDomainYstart, kDomainYend, featureScale); 
+                let domainBorderResult = domainBorder(d, d.hmm_cov ? d.hmm_cov : '[]', kDomainYstart, kDomainYend, featureScale);
                 leftAndRightPartialPixels = domainBorderResult[1];
                 return domainBorderResult[0];
             })
@@ -297,9 +297,9 @@ export default class DrawProteinFeature {
             .attr("y", kMiddleY)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "central")
-            .attr("textLength", function(d) { 
+            .attr("textLength", function(d) {
                 let scaledDomainLength = featureScale(d.ali_to)-leftAndRightPartialPixels[0] - featureScale(d.ali_from+13)+leftAndRightPartialPixels[1]
-                let nameLength = Math.min(d.name.length*DrawProteinFeature.kNameLengthToPixelFactor, 
+                let nameLength = Math.min(d.name.length*DrawProteinFeature.kNameLengthToPixelFactor,
                     scaledDomainLength)
                 return nameLength})
             .attr("font-family", DrawProteinFeature.kFontFamily)
@@ -317,7 +317,7 @@ export default class DrawProteinFeature {
         if (dataType === DataType.DOMAIN) {
             readyName = `${name}@${d.ali_from}-${d.ali_to}`;
         } else if (dataType === DataType.TM) {
-            readyName = `${name}@${d.start}-${d.end}`;
+            readyName = `${name}@${d[0]}-${d[1]}`;
         } else if (dataType === DataType.LOW_COMPLEXITY || dataType === DataType.COILED_COILS) {
             readyName = `${name}@${d[0]}-${d[1]}`;
         }
@@ -331,7 +331,7 @@ export default class DrawProteinFeature {
         let ali_from = featureScale(d.ali_from);
         let ali_to = featureScale(d.ali_to);
 
-        let pathList = [ 
+        let pathList = [
             { "x": ali_from, "y": kDomainYstart},
             { "x": ali_to, "y": kDomainYstart},
             { "x": ali_to - partialPixelRight, "y": kDomainYstart + kQuarterDomainHeight},
@@ -344,16 +344,16 @@ export default class DrawProteinFeature {
             { "x": ali_from + partialPixelLeft, "y": kDomainYend - kQuarterDomainHeight*3},
             { "x": ali_from, "y": kDomainYend - DrawProteinFeature.kDomainHeight}
         ]
-        let path =  ' M ' + pathList[0].x + ' ' + pathList[0].y + 
+        let path =  ' M ' + pathList[0].x + ' ' + pathList[0].y +
                     ' L ' + pathList[1].x + ' ' + pathList[1].y +
                     ' L ' + pathList[2].x + ' ' + pathList[2].y +
                     ' L ' + pathList[3].x + ' ' + pathList[3].y +
-                    ' L ' + pathList[4].x + ' ' + pathList[4].y + 
-                    ' L ' + pathList[5].x + ' ' + pathList[5].y + 
-                    ' L ' + pathList[6].x + ' ' + pathList[6].y + 
-                    ' L ' + pathList[7].x + ' ' + pathList[7].y + 
-                    ' L ' + pathList[8].x + ' ' + pathList[8].y + 
-                    ' L ' + pathList[9].x + ' ' + pathList[9].y + 
+                    ' L ' + pathList[4].x + ' ' + pathList[4].y +
+                    ' L ' + pathList[5].x + ' ' + pathList[5].y +
+                    ' L ' + pathList[6].x + ' ' + pathList[6].y +
+                    ' L ' + pathList[7].x + ' ' + pathList[7].y +
+                    ' L ' + pathList[8].x + ' ' + pathList[8].y +
+                    ' L ' + pathList[9].x + ' ' + pathList[9].y +
                     ' L ' + pathList[10].x + ' ' + pathList[10].y +
                     ' Z'
         return [path, [partialPixelRight, partialPixelLeft]]

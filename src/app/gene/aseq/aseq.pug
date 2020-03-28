@@ -2,11 +2,12 @@ div.detail-uber
     h5.gene-detail Domain architecture
     .show-features(*ngIf="isProteinPresent")
         mat-checkbox.feature(*ngIf="domainsPresent" [checked]="isDomainsChecked" (change)="featureCheckboxChanged($event, 'domains')") Domains
+        mat-checkbox.feature(*ngIf="tmhmmPresent" [checked]="isTmhmmChecked" (change)="featureCheckboxChanged($event, 'tmhmm')") TMHMM
         mat-checkbox.feature(*ngIf="lcrPresent" [checked]="isLcrChecked" (change)="featureCheckboxChanged($event, 'lcr')") Low complexity regions
         mat-checkbox.feature(*ngIf="coiledCoilesPresent" [checked]="isCoiledCoilsChecked" (change)="featureCheckboxChanged($event, 'coiledCoils')") Coiled coiles
     div.domains
-    
-    div(*ngIf="!isProteinPresent") 
+
+    div(*ngIf="!isProteinPresent")
         br
         p No protein encoded.
 
@@ -15,15 +16,15 @@ div.detail-uber
 
     div.details(*ngIf="details")
         div.button-row
-            button(*ngIf="aseqViewModel['typeNameToProperties'].get('pfam').value.length" 
+            button(*ngIf="aseqViewModel['typeNameToProperties'].get('pfam').value.length"
                 mat-button [ngStyle]="styles.pfam" (click)="getInfo('pfam')") Pfam
             button(*ngIf="aseqViewModel['typeNameToProperties'].get('lowComplSegs').value.length"
                 mat-button [ngStyle]="styles.lowComplSegs" (click)="getInfo('lowComplSegs')") Low Complexity Segments
-            button(*ngIf="aseqViewModel['typeNameToProperties'].get('coiledCoils').value.length" 
+            button(*ngIf="aseqViewModel['typeNameToProperties'].get('coiledCoils').value.length"
                 mat-button [ngStyle]="styles.coiledCoils" (click)="getInfo('coiledCoils')") Coiled Coils
-            button(*ngIf="aseqViewModel['typeNameToProperties'].get('tmHmm').value.length" 
+            button(*ngIf="aseqViewModel['typeNameToProperties'].get('tmHmm').value.length"
                 mat-button [ngStyle]="styles.tmHmm" (click)="getInfo('tmHmm')") TM-HMM
-            button(*ngIf="aseqViewModel['typeNameToProperties'].get('sequence').value.length" 
+            button(*ngIf="aseqViewModel['typeNameToProperties'].get('sequence').value.length"
                 mat-button [ngStyle]="styles.sequence" (click)="getInfo('sequence')") Sequence
         div(*ngIf="aseqViewModel && aseqViewModel.activeProperties")
             table
@@ -32,11 +33,11 @@ div.detail-uber
                         th(*ngFor="let property of aseqViewModel.activeHeaders") {{ property.name }}
                     tr(*ngFor="let proteinFeature of aseqViewModel.activeProperties.value")
                         td(*ngFor="let element of proteinFeature; let i = index")
-                            div(*ngIf="aseqViewModel.activeProperties.type != 'sequence'; else sequenceBlock") 
+                            div(*ngIf="aseqViewModel.activeProperties.type != 'sequence'; else sequenceBlock")
                                 div(*ngIf="i == 1 && aseqViewModel.activeProperties.type == 'pfam'; else nonUrBlock")
-                                    a(href="https://pfam.xfam.org/search/keyword?query={{ element }}", target="_blank") 
+                                    a(href="https://pfam.xfam.org/search/keyword?query={{ element }}", target="_blank")
                                         span.gText {{ element }}
                                 ng-template(#nonUrBlock)
                                     span.gText {{ element }}
-                            ng-template(#sequenceBlock) 
+                            ng-template(#sequenceBlock)
                                 div.protSeq {{ highlightSelection() }} {{ element }}

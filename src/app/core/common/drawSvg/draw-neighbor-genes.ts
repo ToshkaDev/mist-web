@@ -5,12 +5,12 @@ export default class DrawNeighborGenes {
     private d3: D3;
     private parentNativeElement: any;
     private d3Element: Selection<HTMLBaseElement, any, null, undefined>;
-    private d3Svg: Selection<SVGSVGElement, any, null, undefined>; 
+    private d3Svg: Selection<SVGSVGElement, any, null, undefined>;
 
     //Figure
     private svgWidth: number = 2000;
     private svgHeight: number = 300;
-    
+
     private clusterFrameHeight = this.svgHeight*0.67;
     static readonly yTranslationOfSvg = 95;
     static readonly frameRectXRadius = 7;
@@ -32,7 +32,7 @@ export default class DrawNeighborGenes {
     static lastGeneStop;
 
     //Gene info box
-    //Need to make textPositionFactorDirect, textPositionFactorReverse, 
+    //Need to make textPositionFactorDirect, textPositionFactorReverse,
     //substractions from directGeneInfoBoxY and reverseGeneInfoBoxY calculable, not hard-coded
     static readonly infoBoxWidth = 300;
     private infoBoxHeight = this.svgHeight*0.5;
@@ -48,7 +48,7 @@ export default class DrawNeighborGenes {
     static readonly xShiftLeftLast = 0.05;
     static readonly clusterOffsetLeft = 0.05;
     static readonly clusterOffsetRight = 0.084;
-    
+
 
     constructor(element: ElementRef, d3Service: D3Service) {
         this.d3 = d3Service.getD3();
@@ -100,7 +100,7 @@ export default class DrawNeighborGenes {
         this.addHtmlEventListeneres(divs, d3, geneScale);
     }
 
-    private addHtml(neighbourGenes, d3ParentElement) { 
+    private addHtml(neighbourGenes, d3ParentElement) {
         let divs = d3ParentElement
         .selectAll('div')
         // seems like the first item from neighbourGenes gets bind up to d3ParentElement; so adding an additional dummy item
@@ -115,8 +115,8 @@ export default class DrawNeighborGenes {
         .html(function(gene) {
             let format = gene.strand === "-" ? "complement(coords)" : "(coords)";
             let geneCoordinates = format.replace("coords", gene.start + ".." + gene.stop);
-            return `<div><a routerLink href="/genes/${gene.stable_id}">${gene.stable_id}</a></div>` + 
-                `<div>${gene.version}</div><div>${geneCoordinates}</div>` + 
+            return `<div><a routerLink href="/genes/${gene.stable_id}">${gene.stable_id}</a></div>` +
+                `<div>${gene.version}</div><div>${geneCoordinates}</div>` +
                 `<div>${gene.product}<div/>`;
         })
         return divs;
@@ -155,18 +155,18 @@ export default class DrawNeighborGenes {
         let isComplement = gene.strand === "-" ? true : false;
         if (!isComplement) {
             genePath = [
-                `M${geneScale(gene.start)}`, DrawNeighborGenes.directGeneFigureTopY, 
-                `L${geneScale(gene.stop)-DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.directGeneFigureTopY, 
-                `L${geneScale(gene.stop)}`, DrawNeighborGenes.directGeneFigureMiddlePointY, 
-                `L${geneScale(gene.stop)-DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.directGeneFigureBottomY, 
+                `M${geneScale(gene.start)}`, DrawNeighborGenes.directGeneFigureTopY,
+                `L${geneScale(gene.stop)-DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.directGeneFigureTopY,
+                `L${geneScale(gene.stop)}`, DrawNeighborGenes.directGeneFigureMiddlePointY,
+                `L${geneScale(gene.stop)-DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.directGeneFigureBottomY,
                 `L${geneScale(gene.start)}`, DrawNeighborGenes.directGeneFigureBottomY, 'Z'
             ].join(" ");
         } else {
             genePath = [
-                `M${geneScale(gene.start)}`, DrawNeighborGenes.reverseGeneFigureMiddlePointY, 
-                `L${geneScale(gene.start)+DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.reverseGeneFigureTopY, 
+                `M${geneScale(gene.start)}`, DrawNeighborGenes.reverseGeneFigureMiddlePointY,
+                `L${geneScale(gene.start)+DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.reverseGeneFigureTopY,
                 `L${geneScale(gene.stop)}`, DrawNeighborGenes.reverseGeneFigureTopY,
-                `L${geneScale(gene.stop)}`, DrawNeighborGenes.reverseGeneFigureBottomY, 
+                `L${geneScale(gene.stop)}`, DrawNeighborGenes.reverseGeneFigureBottomY,
                 `L${geneScale(gene.start)+DrawNeighborGenes.geneFigureArrowLen}`, DrawNeighborGenes.reverseGeneFigureBottomY, 'Z'
             ].join(" ");
         }
@@ -226,24 +226,24 @@ export default class DrawNeighborGenes {
                     top = yAbsolute - DrawNeighborGenes.textPositionFactorDirectY + "px;";
                 else top = yAbsolute - DrawNeighborGenes.textPositionFactorReverseY + "px;";
                 if (gene.stop === DrawNeighborGenes.lastGeneStop) {
-                    textPositionFactorXMain = DrawNeighborGenes.textPositionFactorXLast; 
-                }   
-                else 
+                    textPositionFactorXMain = DrawNeighborGenes.textPositionFactorXLast;
+                }
+                else
                     textPositionFactorXMain = DrawNeighborGenes.textPositionFactorX;
                 left = geneScale(gene.start) + xAbsolute + textPositionFactorXMain + "px;";
             });
 
             let elementsOfTheClass = document.getElementsByClassName(element.attr("class"));
             let textDiv = elementsOfTheClass[2];
-            let textDivStyles = textDiv.getAttribute("style").replace("display: none","display: inline");          
-            
+            let textDivStyles = textDiv.getAttribute("style").replace("display: none","display: inline");
+
             let regTop = /top: \d+.+px;/;
             let regLeft = /left: \d+.+px;/;
-            regTop.test(textDivStyles) 
-                ? textDivStyles = textDivStyles.replace(regTop, "top: " + top) 
-                : textDivStyles = textDivStyles + "top: " + top; 
-                
-            regLeft.test(textDivStyles) 
+            regTop.test(textDivStyles)
+                ? textDivStyles = textDivStyles.replace(regTop, "top: " + top)
+                : textDivStyles = textDivStyles + "top: " + top;
+
+            regLeft.test(textDivStyles)
                 ? textDivStyles = textDivStyles.replace(regLeft, "left: " + left)
                 : textDivStyles = textDivStyles + "left: " + left;
             textDiv.setAttribute("style", textDivStyles);
@@ -280,12 +280,12 @@ export default class DrawNeighborGenes {
                 if (!isComplement)
                     return yAbsolute - DrawNeighborGenes.textPositionFactorDirectY + "px";
                 return yAbsolute - DrawNeighborGenes.textPositionFactorReverseY + "px";
-                
+
             })
             .style("left", function(gene) {
                 if (gene.stop === DrawNeighborGenes.lastGeneStop)
-                    textPositionFactorXMain = DrawNeighborGenes.textPositionFactorXLast; 
-                else 
+                    textPositionFactorXMain = DrawNeighborGenes.textPositionFactorXLast;
+                else
                     textPositionFactorXMain = DrawNeighborGenes.textPositionFactorX;
                 return geneScale(gene.start) + xAbsolute + textPositionFactorXMain + "px";
             })

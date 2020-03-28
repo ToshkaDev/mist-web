@@ -42,28 +42,33 @@ export class AseqViewModel {
         {"name": "Stop"}
     ];
 
-    private typeNameToProperties: Map<string, any> = new Map([
-        [TypeNames.PFAM, this.pfam],
-        [TypeNames.LOW_COMPL_SEGS, this.lowComplSegs],
-        [TypeNames.COILED_COILS, this.coiledCoils],
-        [TypeNames.TM_HMM, this.tmHmm],
-        [TypeNames.SEQUENCE, this.sequence]
-    ]);
-
     private coiledCoilsHeaders: any[] = [
         {"name": "#"},
         {"name": "Start"},
         {"name": "Stop"}
     ];
     //TODO
-    private tmHmmHeaders: Map<string, any[]>;
+    private tmHmmHeaders: any[] = [
+      { "name": "#"},
+      { "name": "Start"},
+      { "name": "Stop"}
+    ]
 
     //ADD here other headers when they done
     private typeNameToHeaders: Map<string, any[]> = new Map([
         [TypeNames.PFAM, this.pfamHeaders],
         [TypeNames.LOW_COMPL_SEGS, this.lowComplSegsHeaders],
         [TypeNames.COILED_COILS, this.coiledCoilsHeaders],
+        [TypeNames.TM_HMM, this.tmHmmHeaders],
         [TypeNames.SEQUENCE, []]
+    ]);
+
+    private typeNameToProperties: Map<string, any> = new Map([
+      [TypeNames.PFAM, this.pfam],
+      [TypeNames.LOW_COMPL_SEGS, this.lowComplSegs],
+      [TypeNames.COILED_COILS, this.coiledCoils],
+      [TypeNames.TM_HMM, this.tmHmm],
+      [TypeNames.SEQUENCE, this.sequence]
     ]);
 
     constructor(aseqData: any) {
@@ -71,6 +76,9 @@ export class AseqViewModel {
             this.initializeProperties(aseqData.pfam31, this.pfam, this.pfamHeaders);
             this.initializeLowComplAndCoilsProperties(aseqData.segs, this.lowComplSegs);
             this.initializeLowComplAndCoilsProperties(aseqData.coils, this.coiledCoils);
+            if (aseqData.tmhmm2) {
+              this.initializeLowComplAndCoilsProperties(aseqData.tmhmm2.tms, this.tmHmm);
+            }
             this.initializeSequencesProperties(aseqData.sequence, this.sequence);
         }
     }
@@ -87,7 +95,7 @@ export class AseqViewModel {
 
 
     private initializeProperties(pfamData: any[], property: any, headers: any[])  {
-        if (pfamData) 
+        if (pfamData)
             pfamData = Array.from(pfamData).sort((pfam1,pfam2) => pfam1.ali_from - pfam2.ali_from);
         for (let index in pfamData) {
             let properties = [];
@@ -95,11 +103,11 @@ export class AseqViewModel {
             for (let element of headers) {
                 if (element.name === "#")
                     elementToPush = +index+1+'.';
-                else 
+                else
                     elementToPush = _.get(pfamData[index], element.value);
                 properties.push(elementToPush);
             }
-            property.value.push(properties);    
+            property.value.push(properties);
         }
     }
 
