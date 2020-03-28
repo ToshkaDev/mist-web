@@ -71,12 +71,8 @@ export default class GenomeViewModel {
         for (let workerModule of workerModules) {
             let workerModuleName = workerModule.module.replace("AseqCompute:", "");
             this.workerModules[workerModuleName] = workerModule.state;
-            if (workerModule.state === "done")
-            try {
+            if (workerModule.state === "done" && this.workerModulesTooltips.hasOwnProperty(workerModuleName)) {
               this.workerModulesTooltips[workerModuleName] = this.workerModulesTooltips[workerModuleName].replace("is not complete.", "is complete.");
-            }
-            catch ( err ) {
-              console.log(workerModuleName)
             }
         }
     }
