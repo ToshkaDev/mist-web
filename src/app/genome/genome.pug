@@ -11,7 +11,7 @@
                         [ngForOf]="genomeViewModel.objectKeys(genomeViewModel.workerModules)"
                         let-i="index"
                     )
-                        td(*ngIf="i < 4" 
+                        td(*ngIf="i < 5" 
                           [ngStyle]='genomeViewModel.getWorkerModuelStyle(genomeViewModel.workerModules[workerModule])'
                           matTooltip="{{ genomeViewModel.workerModulesTooltips[workerModule] }}"
                           [matTooltipPosition]="'after'" 
@@ -24,7 +24,7 @@
                         [ngForOf]="genomeViewModel.objectKeys(genomeViewModel.workerModules)"
                         let-i="index"
                     )
-                        td(*ngIf="i >= 4" 
+                        td(*ngIf="i >= 5" 
                           [ngStyle]='genomeViewModel.getWorkerModuelStyle(genomeViewModel.workerModules[workerModule])'
                           matTooltip="{{ genomeViewModel.workerModulesTooltips[workerModule] }}"
                           [matTooltipPosition]="'after'" 
