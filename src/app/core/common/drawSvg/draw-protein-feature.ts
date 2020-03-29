@@ -28,6 +28,7 @@ export default class DrawProteinFeature {
     static readonly kNameLengthToPixelFactor = 10;
     static readonly kFontFamily = "Verdana";
     static readonly kFontSize = 18;
+    static readonly nonDomainFeaturesSet = new Set([DataType.TM, DataType.COILED_COILS, DataType.LOW_COMPLEXITY]);
     static readonly domainColors = {
         "domain"        : "rgba(255,255,255,0.8)",
         "domainStroke"  : "rgba(0,0,0,0.8)",
@@ -314,13 +315,10 @@ export default class DrawProteinFeature {
 
     private getUniqueFeatureName(d, dataType): string {
         let readyName, name = d.name ? d.name : "genericName";
-        if (dataType === DataType.DOMAIN) {
+        if (dataType === DataType.DOMAIN)
             readyName = `${name}@${d.ali_from}-${d.ali_to}`;
-        } else if (dataType === DataType.TM) {
+        else if (DrawProteinFeature.nonDomainFeaturesSet.has(dataType)) 
             readyName = `${name}@${d[0]}-${d[1]}`;
-        } else if (dataType === DataType.LOW_COMPLEXITY || dataType === DataType.COILED_COILS) {
-            readyName = `${name}@${d[0]}-${d[1]}`;
-        }
         return readyName;
     }
 
