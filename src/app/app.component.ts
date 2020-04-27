@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
 
 import { faTwitterSquare, faGitter } from '@fortawesome/free-brands-svg-icons';
-import { faBook, faEnvelopeSquare } from '@fortawesome/free-solid-svg-icons'
+import { faBook, faEnvelopeSquare, faLeaf } from '@fortawesome/free-solid-svg-icons'
 import { faLifeRing } from '@fortawesome/free-regular-svg-icons'
 
 @Component({
@@ -23,6 +23,7 @@ export class AppComponent implements AfterContentInit {
   faBook = faBook;
   faGitter = faGitter;
   faTwitterSquare = faTwitterSquare;
+  faTrend = faLeaf;
 
   isNnihLogoActive = false;
   isOsuLogoActive = false;

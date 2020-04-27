@@ -1,102 +1,184 @@
 .row
-    h5 Overview
-    p The microbial signal transduction (MiST) database was established as a comprehensive signal transduction classification system and has served as a useful community resource since 2007 (1,2). The updated MiST database provides a comprehensive classification of microbial signal transduction systems of all the genomes deposited in NCBI RefSeq database. MiST 3.0 is a result of a substantial scaling to accommodate constantly growing microbial genomic data. 
-    h5 Signal transduction classification shemes
-    p The current version of MiST utilizes two classification schemes: to categorize signal transduction proteins (provided as “Genomic distribution of signal transduction proteins” tables) and to catalog signal transduction domains (provided as a “Signal transduction profile” graph). 
-    h5 Classification of signal transduction proteins
-    p For signal transduction proteins, we use the “complexity” scheme – one-component, two-component, and chemosensory systems. In addition to classifying pathway components, this scheme allows separating intracellular and extracellular signal transduction pathways: more than 97% of one-component systems are intracellular sensors and the vast majority of two-component systems contain extracellular sensors. The disadvantage of this scheme is that it does not provide a clear separation by protein function for some categories and, in contrast, splits some of the functionally related proteins into different categories. For example, the majority of transcription factors and serine/threonine kinases would be found in the same category of one-component systems; on the other hand, c-di-GMP-cyclases will be split between the three main categories (one-component, two-component or chemosensory) depending on their associated domains and pathways.
-    p An alternative scheme involves classification by protein function, e.g. placing chemoreceptors, histidine kinases, c-di-GMP-cyclases and phosphodiesterases, ser/thr kinases and other key signal transduction proteins in separate categories. While this scheme might seem more attractive, because it emphasizes the functional role of a protein, it has its own shortcomings. For example, the same category of response regulators contains such functionally unrelated proteins as transcription factors and c-di-GMP-cyclases, as long as they are associated with the receiver domain.  In the case of chemosensory pathways, the current functional classification scheme splits their components between several categories providing no connection between the elements of the same pathway. 
-    p Our protein classification scheme does provide functional categorization for several major signal transduction families: chemoreceptors, histidine kinases, response regulators, and extracytoplasmic sigma factors. In the future, we plan to implement a classification scheme based exclusively on the protein function, in addition to our current scheme, so the users can chose which option to use based on the nature of their inquiry. 
-    h5 Signal transduction profiles generation
-    p Signal transduction pathways contain various protein domains: many of them are unique to signal transduction, whereas others can play roles in other processes. Here again, there is no simple and unambiguous way for their classification. We present a summary of signal transduction domains for each genome as a graph titled “Signal transduction profile”. We classified these domains in seven major categories:  
-    ol
-        li Input (sensory)
-            ul
-                li Cofactor-binding (e.g BLUF domains)
-                li Enzymatic (enzyme-like ligand-binding domains)
-                li Protein-protein interactions (e.g. TPR domains)
-                li Signaling
-                li Small-ligand binding (e.g. Cache domains)
-                li Unknown (any input domain, whose role in signal transduction is not understood, but it is found in association with a known signal transduction domain)
-        li Output (regulatory)
-            ul
-                li DNA binding (the majority of transcription factors)
-                li RNA binding (e.g. ANTAR domain)
-                li Enzymatic (EAL, GGDEF, Guanylate_cyc domains)
-                li Protein-protein interactions (e.g. a stand-alone receiver domain)
-        li Chemotaxis (domains specific to chemosensory pathways)
-        li Transmitter (transmit information from Input)
-        li Receiver (receive information from Transmitter)
-        li ECF
-        li Unknown (any domain, whose role in signal transduction is not understood, but it is found in association with a known signal transduction domain)
-    p To classify the extracytoplasmic function (ECF) sigma factor proteins we used the profile HMMs described in&nbsp;
-        a(href="https://www.ncbi.nlm.nih.gov/pubmed/19737356" target="_blank") Staron et al.
-    p Because this scheme classifies domains, not proteins, the same protein would appear in various categories. For example, if a protein has a domain, whose role in signal transduction is unknown, and a well-annotated signal transduction domain (e.g. GGDEF), it will be listed both in the Unknown subcategory of the Input category and in the Enzymatic subcategory of the Output category. Systematic exploring of the Unknown subcategories might lead to the discovery of novel signal transduction domains and understanding the roles of other domains in signal transduction. Below is a list of signal transduction domains and their annotations used for domains classificatoin.
-    button(*ngIf="signalDomainsAndMembers" class="mist-button-smaller" mat-button (click)="toggleTable()") Signal Transduction Domains
-       mat-icon(aria-hidden="true") {{ arrow }}
-    br
-    br
-    table.signal-domains-table(*ngIf="signalDomainsAndMembers && showTable")
-        thead
-            tr
-            th Clan&nbsp;Number
-            th Clan
-            th Superfamily
-            th Kind
-            th Function
-            th Domain name
-            th Description
-            th Signal transduction specific?
-            th Source
-            th PubMed Ids  
-        tbody
-            ng-template(
-                ngFor
-                let-signalDomain
-                [ngForOf]="signalDomainsAndMembers"
-                let-i="index"
-            )
-                ng-template(
-                    ngFor
-                    let-signalDomainMember
-                    [ngForOf]="signalDomain.SignalDomainMembers"
-                )
+    .ten.columns
+        div(*ngIf="links.get('help')")
+            h4 Help
+            br
+            h5 Overview
+            p The microbial signal transduction (MiST) database was established as a comprehensive signal transduction classification system and has served as a useful community resource since 2007 (1,2). The updated MiST database provides a comprehensive classification of microbial signal transduction systems of all the genomes deposited in NCBI RefSeq database. MiST 3.0 is a result of a substantial scaling to accommodate constantly growing microbial genomic data. 
+            h5 Signal transduction classification shemes
+            p The current version of MiST utilizes two classification schemes: to categorize signal transduction proteins (provided as “Genomic distribution of signal transduction proteins” tables) and to catalog signal transduction domains (provided as a “Signal transduction profile” graph). 
+            h5 Classification of signal transduction proteins
+            p For signal transduction proteins, we use the “complexity” scheme – one-component, two-component, and chemosensory systems. In addition to classifying pathway components, this scheme allows separating intracellular and extracellular signal transduction pathways: more than 97% of one-component systems are intracellular sensors and the vast majority of two-component systems contain extracellular sensors. The disadvantage of this scheme is that it does not provide a clear separation by protein function for some categories and, in contrast, splits some of the functionally related proteins into different categories. For example, the majority of transcription factors and serine/threonine kinases would be found in the same category of one-component systems; on the other hand, c-di-GMP-cyclases will be split between the three main categories (one-component, two-component or chemosensory) depending on their associated domains and pathways.
+            p An alternative scheme involves classification by protein function, e.g. placing chemoreceptors, histidine kinases, c-di-GMP-cyclases and phosphodiesterases, ser/thr kinases and other key signal transduction proteins in separate categories. While this scheme might seem more attractive, because it emphasizes the functional role of a protein, it has its own shortcomings. For example, the same category of response regulators contains such functionally unrelated proteins as transcription factors and c-di-GMP-cyclases, as long as they are associated with the receiver domain.  In the case of chemosensory pathways, the current functional classification scheme splits their components between several categories providing no connection between the elements of the same pathway. 
+            p Our protein classification scheme does provide functional categorization for several major signal transduction families: chemoreceptors, histidine kinases, response regulators, and extracytoplasmic sigma factors. In the future, we plan to implement a classification scheme based exclusively on the protein function, in addition to our current scheme, so the users can chose which option to use based on the nature of their inquiry. 
+            h5 Signal transduction profiles generation
+            p Signal transduction pathways contain various protein domains: many of them are unique to signal transduction, whereas others can play roles in other processes. Here again, there is no simple and unambiguous way for their classification. We present a summary of signal transduction domains for each genome as a graph titled “Signal transduction profile”. We classified these domains in seven major categories:  
+            ol
+                li Input (sensory)
+                    ul
+                        li Cofactor-binding (e.g BLUF domains)
+                        li Enzymatic (enzyme-like ligand-binding domains)
+                        li Protein-protein interactions (e.g. TPR domains)
+                        li Signaling
+                        li Small-ligand binding (e.g. Cache domains)
+                        li Unknown (any input domain, whose role in signal transduction is not understood, but it is found in association with a known signal transduction domain)
+                li Output (regulatory)
+                    ul
+                        li DNA binding (the majority of transcription factors)
+                        li RNA binding (e.g. ANTAR domain)
+                        li Enzymatic (EAL, GGDEF, Guanylate_cyc domains)
+                        li Protein-protein interactions (e.g. a stand-alone receiver domain)
+                li Chemotaxis (domains specific to chemosensory pathways)
+                li Transmitter (transmit information from Input)
+                li Receiver (receive information from Transmitter)
+                li ECF
+                li Unknown (any domain, whose role in signal transduction is not understood, but it is found in association with a known signal transduction domain)
+            p To classify the extracytoplasmic function (ECF) sigma factor proteins we used the profile HMMs described in&nbsp;
+                a(href="https://www.ncbi.nlm.nih.gov/pubmed/19737356" target="_blank") Staron et al.
+            p Because this scheme classifies domains, not proteins, the same protein would appear in various categories. For example, if a protein has a domain, whose role in signal transduction is unknown, and a well-annotated signal transduction domain (e.g. GGDEF), it will be listed both in the Unknown subcategory of the Input category and in the Enzymatic subcategory of the Output category. Systematic exploring of the Unknown subcategories might lead to the discovery of novel signal transduction domains and understanding the roles of other domains in signal transduction. Below is a list of signal transduction domains and their annotations used for domains classificatoin.
+            button(*ngIf="signalDomainsAndMembers" class="mist-button-smaller" mat-button (click)="toggleTable()") Signal Transduction Domains
+            mat-icon(aria-hidden="true") {{ arrow }}
+            br
+            br
+            table.signal-domains-table(*ngIf="signalDomainsAndMembers && showTable")
+                thead
                     tr
-                        td {{ i + 1 }}
-                        td {{ signalDomain.name }}
-                        td {{ signalDomainMember.superfamily }}
-                        td {{ signalDomain.kind }}
-                        td {{ signalDomain.function }}
-                        td(*ngIf="signalDomain.name.substring(0,4) != 'ECF_' && signalDomainMember.source != 'agfam'; else notUrlBlock")
-                            a(href="https://pfam.xfam.org/search/keyword?query={{ signalDomainMember.name }}" target="_blank") {{ signalDomainMember.name }}
-                        ng-template(#notUrlBlock) 
-                            td {{ signalDomainMember.name }}
-                        td {{ signalDomainMember.description }}
-                        td {{ signalDomainMember.specific }}
-                        td {{ signalDomainMember.source }}
-                        td {{ signalDomainMember.pubmed_ids }}
+                    th Clan&nbsp;Number
+                    th Clan
+                    th Superfamily
+                    th Kind
+                    th Function
+                    th Domain name
+                    th Description
+                    th Signal transduction specific?
+                    th Source
+                    th PubMed Ids  
+                tbody
+                    ng-template(
+                        ngFor
+                        let-signalDomain
+                        [ngForOf]="signalDomainsAndMembers"
+                        let-i="index"
+                    )
+                        ng-template(
+                            ngFor
+                            let-signalDomainMember
+                            [ngForOf]="signalDomain.SignalDomainMembers"
+                        )
+                            tr
+                                td {{ i + 1 }}
+                                td {{ signalDomain.name }}
+                                td {{ signalDomainMember.superfamily }}
+                                td {{ signalDomain.kind }}
+                                td {{ signalDomain.function }}
+                                td(*ngIf="signalDomain.name.substring(0,4) != 'ECF_' && signalDomainMember.source != 'agfam'; else notUrlBlock")
+                                    a(href="https://pfam.xfam.org/search/keyword?query={{ signalDomainMember.name }}" target="_blank") {{ signalDomainMember.name }}
+                                ng-template(#notUrlBlock) 
+                                    td {{ signalDomainMember.name }}
+                                td {{ signalDomainMember.description }}
+                                td {{ signalDomainMember.specific }}
+                                td {{ signalDomainMember.source }}
+                                td {{ signalDomainMember.pubmed_ids }}
 
 
-    h5 Signal Transduction specific profile HMMs
-    p Genomic evidence suggested that MCPs of certain heptad classes interact preferentially with certain chemosensory pathway classes defined based on evolutionary considerations (3). Specific profile Hidden Markov models (HMMs) were built for nineteen classes of chemosensory pathways (3) and twelve classes of MCPs (4). Furthermore, a new class of signal transduction proteins called MAC (methyl-accepting coiled-coil proteins) was identified (3), for which no profile HMM is available.
-    p We integrated profile HMMs for different MCP classes, namely 64H, 58H, 52H, 48H, 44H, 42H, 40H, 38H, 36H, 34H, 28H and 24H, into the MiST3 database. We also integrated HMM profiles for components specific to each chemosensory class (CheA, CheB, CheC, CheD, CheR, CheV and CheZ) (3) and newly built profiles for MAC1 and MAC2 protein families. Thus MiST 3.0 offers a comprehensive set of chemosensory pathway-specific HMMs. Using these new profiles in combination with genome neighborhood analysis a complete chemosensory repertoire of any bacterial and archaeal genome can now be reconstructed. 
-    h5 Genomes
-    p To search for genomes select ‘Genomes’ in the search area and type an organism name, any taxonomy level (genus, family, etc.), RefSeq accession and version, NCBI taxonomy ID or genome assembly level. Genomes can be filtered by taxonomy and assembly level using either embedded filter or selecting corresponding taxonomic name in the drop-down list on the search results table. 
-    p On the genome detail page a comprehensive information about the selected genome is provided including its Bioproject identifier, submitter, and complete description of the signal transduction systems. The signal transduction profile of a genome is presented as a graph of functional domains together with their counts and a table showing distribution of signal transduction proteins across OCS, TCS and chemosensory systems. The chemosensory systems table shows the chemosensory pathways encoded in the given genome. Clicking on the graph bars and on the gene counts in the table leads to the list of corresponding signal transduction proteins.
-    h5 Genes
-    p To search for genes or proteins select ‘Genes/Proteins’ in the search area and type a gene product name, genome locus (using both old and new tags), protein RefSeq identifier, or using our unique internal stable identifier, which includes the genome RefSeq ID and gene locus. A gene/protein detail page contains information about the selected gene, its encoded product, protein domain architecture including details of predicted protein features, and a gene neighborhood graphical representation.
-    h5 Scope
-    p To search for genes/proteins inside the genome of interest use ‘Scope’ field on the ‘Genes/Proteins’  search page. When a genome name or an identifier is entered in the field called ‘Scope’ on the gene/protein search page, a list of corresponding organisms appears. Clicking on one of them will set it as a genome to search for specified genes and proteins in. The scope can also be set on a genome detail page.
-    h5 Cart
-    p Genomes and genes can be added to the cart and analyzed in detail and encoded protein sequences can be downloaded. The download format is fasta. A protein title includes RefSeq protein Id, gene locus, MiST stable Id, protein annotation and organism name. Genomes and genes added to the cart are marked on the search page to help keep track of the added items. The items added to the cart are stored there for 30 days. Currently up to 500 items can be added to the cart.
-    h5 RESTful API
-    p The API provides (i) programmatic access to all the data using a variety of identifiers and parameters and (ii) large-scale analysis of bacterial and archaeal signal transduction systems.  Another function of API is flexibility of interaction with the data. The requested data is returned in JSON format. A well-documented description of MiST3 data structure together with the detailed query examples in several popular programming languages is given on the&nbsp;
-        a(href="https://api.mistdb.caltech.edu/" target="_blank") API page.
+            h5 Signal Transduction specific profile HMMs
+            p Genomic evidence suggested that MCPs of certain heptad classes interact preferentially with certain chemosensory pathway classes defined based on evolutionary considerations (3). Specific profile Hidden Markov models (HMMs) were built for nineteen classes of chemosensory pathways (3) and twelve classes of MCPs (4). Furthermore, a new class of signal transduction proteins called MAC (methyl-accepting coiled-coil proteins) was identified (3), for which no profile HMM is available.
+            p We integrated profile HMMs for different MCP classes, namely 64H, 58H, 52H, 48H, 44H, 42H, 40H, 38H, 36H, 34H, 28H and 24H, into the MiST3 database. We also integrated HMM profiles for components specific to each chemosensory class (CheA, CheB, CheC, CheD, CheR, CheV and CheZ) (3) and newly built profiles for MAC1 and MAC2 protein families. Thus MiST 3.0 offers a comprehensive set of chemosensory pathway-specific HMMs. Using these new profiles in combination with genome neighborhood analysis a complete chemosensory repertoire of any bacterial and archaeal genome can now be reconstructed. 
+            h5 Genomes
+            p To search for genomes select ‘Genomes’ in the search area and type an organism name, any taxonomy level (genus, family, etc.), RefSeq accession and version, NCBI taxonomy ID or genome assembly level. Genomes can be filtered by taxonomy and assembly level using either embedded filter or selecting corresponding taxonomic name in the drop-down list on the search results table. 
+            p On the genome detail page a comprehensive information about the selected genome is provided including its Bioproject identifier, submitter, and complete description of the signal transduction systems. The signal transduction profile of a genome is presented as a graph of functional domains together with their counts and a table showing distribution of signal transduction proteins across OCS, TCS and chemosensory systems. The chemosensory systems table shows the chemosensory pathways encoded in the given genome. Clicking on the graph bars and on the gene counts in the table leads to the list of corresponding signal transduction proteins.
+            h5 Genes
+            p To search for genes or proteins select ‘Genes/Proteins’ in the search area and type a gene product name, genome locus (using both old and new tags), protein RefSeq identifier, or using our unique internal stable identifier, which includes the genome RefSeq ID and gene locus. A gene/protein detail page contains information about the selected gene, its encoded product, protein domain architecture including details of predicted protein features, and a gene neighborhood graphical representation.
+            h5 Scope
+            p To search for genes/proteins inside the genome of interest use ‘Scope’ field on the ‘Genes/Proteins’  search page. When a genome name or an identifier is entered in the field called ‘Scope’ on the gene/protein search page, a list of corresponding organisms appears. Clicking on one of them will set it as a genome to search for specified genes and proteins in. The scope can also be set on a genome detail page.
+            h5 Cart
+            p Genomes and genes can be added to the cart and analyzed in detail and encoded protein sequences can be downloaded. The download format is fasta. A protein title includes RefSeq protein Id, gene locus, MiST stable Id, protein annotation and organism name. Genomes and genes added to the cart are marked on the search page to help keep track of the added items. The items added to the cart are stored there for 30 days. Currently up to 500 items can be added to the cart.
+            h5 RESTful API
+            p The API provides (i) programmatic access to all the data using a variety of identifiers and parameters and (ii) large-scale analysis of bacterial and archaeal signal transduction systems.  Another function of API is flexibility of interaction with the data. The requested data is returned in JSON format. A well-documented description of MiST3 data structure together with the detailed query examples in several popular programming languages is given on the&nbsp;
+                a(href="https://api.mistdb.caltech.edu/" target="_blank") API page.
 
-.row  
-    br
-    p References
-    p 1. Ulrich, L.E. and Zhulin, I.B. (2007) MiST: a microbial signal transduction database. Nucleic Acids Res, 35, D386-390.
-    p 2. Ulrich, L.E. and Zhulin, I.B. (2010) The MiST2 database: a comprehensive genomics resource on microbial signal transduction. Nucleic Acids Res, 38, D401-407.
-    p 3. Wuichet, K. and Zhulin, I.B. (2010) Origins and diversification of a complex signal transduction system in prokaryotes. Science signaling, 3, ra50.
-    p 4. Alexander, R.P. and Zhulin, I.B. (2007) Evolutionary genomics reveals conserved structural determinants of signaling and adaptation in microbial chemoreceptors. Proceedings of the National Academy of Sciences of the United States of America, 104, 2885-2890.
+            br
+            p References
+            p 1. Ulrich, L.E. and Zhulin, I.B. (2007) MiST: a microbial signal transduction database. Nucleic Acids Res, 35, D386-390.
+            p 2. Ulrich, L.E. and Zhulin, I.B. (2010) The MiST2 database: a comprehensive genomics resource on microbial signal transduction. Nucleic Acids Res, 38, D401-407.
+            p 3. Wuichet, K. and Zhulin, I.B. (2010) Origins and diversification of a complex signal transduction system in prokaryotes. Science signaling, 3, ra50.
+            p 4. Alexander, R.P. and Zhulin, I.B. (2007) Evolutionary genomics reveals conserved structural determinants of signaling and adaptation in microbial chemoreceptors. Proceedings of the National Academy of Sciences of the United States of America, 104, 2885-2890.
+        
+        div(*ngIf="links.get('codeOfConduct')")
+            h4 MiST Code of Conduct
+            p A primary goal of the MiST team and community is to provide convenient and free access to all  genomic information stored in the MiST database. We are committed to providing a friendly, safe and welcoming environment for all, regardless of gender, sexual orientation, ability, ethnicity, socioeconomic status, and religion (or lack thereof).
+            p Diversity is one of our huge strengths, but it can also lead to communication issues and unhappiness. To that end, we have a few ground rules that we ask people to adhere to. This code applies equally to founders, developers, mentors, and those seeking help and guidance.
+            p This isn’t an exhaustive list of things that you can’t do. Rather, take it in the spirit in which it’s intended - a guide to make it easier to enrich all of us and the technical communities in which we participate.
+            p This code of conduct applies to all spaces managed by the MiST project. In addition, violations of this code outside these spaces may affect a person's ability to participate within them.
+            p If you believe someone is violating the code of conduct, we ask that you report it by emailing mist.db@gmail.com. For more details please see our 
+                span.boldStlye((click)="linkClicked('guide')" [ngStyle]="styles.get('codeOfConduct')") Reporting Guidelines.
+            ul.sectinos-list
+                li
+                    span.boldStlye Be friendly and patient.
+                li
+                    span.boldStlye Be welcoming.
+                    | We strive to be a community that welcomes and supports people of all backgrounds and identities. This includes, but is not limited to members of any race, ethnicity, culture, national origin, color, immigration status, social and economic class, educational level, sex, sexual orientation, gender identity and expression, age, size, family status, political belief, religion, and mental and physical ability.
+                li
+                    span.boldStlye Be considerate.
+                    | Your work will be used by other people, and you in turn will depend on the work of others. Any decision you take will affect users and colleagues, and you should take those consequences into account when making decisions. Remember that we're a world-wide community, so you might not be communicating in someone else's primary language.
+                li
+                    span.boldStlye Be respectful.
+                    | Not all of us will agree all the time, but disagreement is no excuse for poor behavior and poor manners. We might all experience some frustration now and then, but we cannot allow that frustration to turn into a personal attack. It’s important to remember that a community where people feel uncomfortable or threatened is not a productive one. Members of the MiST community should be respectful when dealing with other members as well as with people outside the MiST community.
+                li
+                    span.boldStlye Be careful in the words that you choose.
+                    | We are a community of professionals, and we conduct ourselves professionally. Be kind to others. Do not insult or put down other participants. Harassment and other exclusionary behavior aren't acceptable. This includes, but is not limited to:
+                    ul.sectinos-list
+                        li Violent threats or language directed against another person.
+                        li Discriminatory jokes and language.
+                        li Posting sexually explicit or violent material.
+                        li Posting (or threatening to post) other people's personally identifying information ("doxing").
+                        li Personal insults, especially those using racist or sexist terms.
+                        li Unwelcome sexual attention.
+                        li Advocating for, or encouraging, any of the above behavior.
+                        li Repeated harassment of others. In general, if someone asks you to stop, then stop.
+                li
+                    span.boldStlye When we disagree, try to understand why. 
+                    | Disagreements, both social and technical, happen all the time and MiST is no exception. It is important that we resolve disagreements and differing views constructively. Remember that we’re different. The strength of MiST comes from its varied community, people from a wide range of backgrounds. Different people have different perspectives on issues. Being unable to understand why someone holds a viewpoint doesn’t mean that they’re wrong. Don’t forget that it is human to err and blaming each other doesn’t get us anywhere. Instead, focus on helping to resolve issues and learning from mistakes.
+            p Based on Django 
+                a(href="https://www.djangoproject.com/conduct/", target="_blank") Code of Conduct
+                
+        div(*ngIf="links.get('guide')")
+            h4 MiST Code of Conduct. Reporting Guide
+            p If you believe someone is violating the code of conduct we ask that you report it to MiST by emailing mist.db@gmail.com. All reports will be kept confidential. In some cases we may determine that a public statement will need to be made. If that's the case, the identities of all victims and reporters will remain confidential unless those individuals instruct us otherwise.
+            p If you believe anyone is in physical danger, please notify appropriate law enforcement first. If you are unsure what law enforcement agency is appropriate, please include this in your report and we will attempt to notify them.
+            p If you are unsure whether the incident is a violation, or whether the space where it happened is covered by this Code of Conduct, we encourage you to still report it. We would much rather have a few extra reports where we decide to take no action, rather than miss a report of an actual violation. We do not look negatively on you if we find the incident is not a violation. And knowing about incidents that are not violations, or happen outside our spaces, can also help us to improve the Code of Conduct or the processes surrounding it.
+            p In your report please include:
+            ul.sectinos-list
+                li Your contact info (so we can get in touch with you if we need to follow up)
+                li Names (real, nicknames, or pseudonyms) of any individuals involved. If there were other witnesses besides you, please try to include them as well.
+                li When and where the incident occurred. Please be as specific as possible.
+                li Your account of what occurred. If there is a publicly available record (e.g. twitter, gitter) please include a link.
+                li Any extra context you believe existed for the incident.
+                li If you believe this incident is ongoing.
+                li Any other information you believe we should have.
+            h5 What happens after you file a report?
+            p You will receive an email from mist.db@gmail.com acknowledging receipt immediately. We promise to acknowledge receipt within 24 hours (and will aim for much quicker than that). We will immediately meet to review the incident and determine:
+            ul.sectinos-list
+                li What happened.
+                li Whether this event constitutes a code of conduct violation.
+                li Who the bad actor was.
+                li Whether this is an ongoing situation, or if there is a threat to anyone's physical safety.
+            p If this is determined to be an ongoing incident or a threat to physical safety, our immediate priority will be to protect everyone involved. This means we may delay an "official" response until we believe that the situation has ended and that everyone is physically safe. Once we have a complete account of the events we’ll make a decision as to how to response. Responses may include:
+            ul.sectinos-list
+                li Nothing (if we determine no violation occurred).
+                li A private reprimand from the working group to the individual(s) involved.
+                li A public reprimand.
+                li An imposed vacation (i.e. asking someone to "take a week off" from a mailing list or IRC).
+                li A permanent or temporary ban from some or all MiST spaces (twitter, gitter, email support, etc.)
+                li A request for a public or private apology.
+            p We'll respond within one week to the person who filed the report with either a resolution or an explanation of why the situation is not yet resolved. Once we've determined our final action, we'll contact the original reporter to let them know what action (if any) we'll be taking. We'll take into account feedback from the reporter on the appropriateness of our response, but we don't guarantee we'll act on it. We may choose to a public report of the incident.
+            h5 Reconsideration
+            p Any of the parties directly involved or affected can request reconsideration of the decision. To make such a request, contact us at mist.db@gmail.com with your request and motivation and the we’ll review the case.
+    
+    .two.columns
+        ul.infoLinks
+            li((click)="linkClicked('help')" [ngStyle]="styles.get('help')")  Help
+            hr
+            li((click)="linkClicked('codeOfConduct')" [ngStyle]="styles.get('codeOfConduct')")  Code of Conduct
+            hr
+            li((click)="linkClicked('guide')" [ngStyle]="styles.get('guide')")  Reporting Guide

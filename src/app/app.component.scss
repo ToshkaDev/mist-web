@@ -157,22 +157,17 @@ footer {
 }
 .logo-nih-active {
   @extend %nih;
-  filter:  brightness(2);
 }
 
 %netlify {
-  max-width: 150px;
-  max-height: 50px;
-  min-width: 150px;
-  min-height: 50px;
+  transform: scale(1.3);
 }
 .logo-netlify {
   @extend %netlify;
-  filter: grayscale(100%) brightness(1.9);
+  filter: grayscale(100%) opacity(0.5);
 }
 .logo-netlify-active {
   @extend %netlify;
-  filter: brightness(2);
 }
 
 %osu {
@@ -187,7 +182,6 @@ footer {
 }
 .logo-osu-active {
   @extend %osu;
-  filter: brightness(1.2);
 }
 
 %caltech {
@@ -216,7 +210,6 @@ footer {
 }
 .logo-sabanci-active {
   @extend %sabanci;
-  filter: brightness(1) opacity(0.9);
 }
 
 .breadcrumbs {
@@ -225,7 +218,6 @@ footer {
 a.citation {
   margin-top: 60px;
   color: white;
-  text-decoration: underline;
 }
 
 a.citation:hover {

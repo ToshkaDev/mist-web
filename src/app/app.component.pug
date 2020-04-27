@@ -15,17 +15,25 @@ header
         span(style="font-style:italic") &nbsp;Nucleic Acid Research 48: D459–D464.
     .three.columns.notice.social-icons
       br
-      a.social(routerLink="/help")
+      a.social(routerLink="/help"
+          matTooltip="Help" [matTooltipPosition]="'below'" matTooltipClass="tooltipClass")
         fa-icon([icon]="faLifeRing")
-      a.social(href="mailto:gumerov.1@osu.edu" target="_blank")
+      a.social(href="mailto:gumerov.1@osu.edu" target="_blank"
+          matTooltip="Contact" [matTooltipPosition]="'below'" matTooltipClass="tooltipClass")
         fa-icon([icon]="faEnvelopeSquare")
-      a.social(href="https://api.mistdb.caltech.edu/" target="_blank")
+      a.social(href="https://api.mistdb.caltech.edu/" target="_blank"
+          matTooltip="API" [matTooltipPosition]="'below'" matTooltipClass="tooltipClass")
         fa-icon([icon]="faBook")
       br
-      a.social(href="https://twitter.com/mist3db" target="_blank")
+      a.social(href="https://twitter.com/mist3db" target="_blank"
+          matTooltip="Twitter" [matTooltipPosition]="'below'" matTooltipClass="tooltipClass")
         fa-icon([icon]="faTwitterSquare")
-      a.social(href="https://gitter.im/MiST-db/community" target="_blank")
+      a.social(href="https://gitter.im/MiST-db/community" target="_blank"
+          matTooltip="Gitter" [matTooltipPosition]="'below'" matTooltipClass="tooltipClass")
         fa-icon([icon]="faGitter")
+      a.social(href="http://trend.zhulinlab.org/" target="_blank"
+          matTooltip="TREND" [matTooltipPosition]="'below'" matTooltipClass="tooltipClass")
+        fa-icon([icon]="faTrend")
 
 .content
   .breadcrumbs
@@ -53,7 +61,7 @@ footer
       img(src="assets/images/sabanci_universitesi_logo.png"
         [class.logo-sabanci]="isSabanciLogoActive == false"
         [class.logo-sabanci-active]="isSabanciLogoActive" #sabanciLogo)
-    a.footer-style(href="https://www.netlify.com/" target="_blank")
-      img(src="assets/images/netlify.png"
+    a.footer-style(href="https://www.netlify.com" target="_blank")
+      img(src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg"
         [class.logo-netlify]="isNetlifyLogoActive == false"
-        [class.logo-netlify-active]="isNetlifyLogoActive" #netlifyLogo)
+        [class.logo-netlify-active]="isNetlifyLogoActive" alt="Deploys by Netlify" #netlifyLogo)
