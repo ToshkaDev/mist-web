@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MistApi } from '../core/services/mist-api.service';
 import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute } from '@angular/router';
 
 export enum InfoLinks {
   HELP = "help",
@@ -18,6 +19,7 @@ export class HelpComponent {
   private showTable: boolean = false;
   readonly arrowObject = {0: "keyboard_arrow_downc", 1:  "keyboard_arrow_upc"};
   private arrow = "keyboard_arrow_downc";
+  private codeOfConduct = this.route.snapshot.queryParams['code-of-conduct'];
 
   private links: Map<string, boolean> = new Map([
     [InfoLinks.HELP, true],
@@ -34,12 +36,16 @@ export class HelpComponent {
     ['guide', {...this.stylesCommon, 'color':this.nonActiveColor}],
   ]);
 
-  constructor(private mistApi: MistApi) {}
+  constructor(private mistApi: MistApi, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.mistApi.fetchSignalDomainsAndMembers().subscribe(result => {
       this.signalDomainsAndMembers = result;
     });
+    if (this.codeOfConduct == 'true') {
+      this.linkClicked(InfoLinks.CODE_OF_CONDUCT);
+      window.scrollTo(0,0);
+    }
   }
 
   private toggleTable(show: boolean = false) {
