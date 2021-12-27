@@ -42,8 +42,8 @@ export default class DrawNeighborGenes {
     static readonly reverseGeneInfoBoxY = DrawNeighborGenes.reverseGeneFigureTopY-150;
     static readonly textPositionFactorDirectY = 189;
     static readonly textPositionFactorReverseY = 131;
-    static readonly textPositionFactorX = -20;
-    static readonly textPositionFactorXLast = -44;
+    static readonly textPositionFactorX = -30;
+    static readonly textPositionFactorXLast = -54;
     static readonly xShiftLeft = 0.03;
     static readonly xShiftLeftLast = 0.05;
     static readonly clusterOffsetLeft = 0.05;
@@ -117,11 +117,11 @@ export default class DrawNeighborGenes {
             let geneCoordinates = format.replace("coords", gene.start + ".." + gene.stop);
             return `<div><a routerLink href="/genes/${gene.stable_id}">${gene.stable_id}</a></div>` +
                 `<div>${gene.version}</div><div>${geneCoordinates}</div>` +
-                `<div style="word-wrap: break-word; width: 285px; height: 100px;"><span style="font-weight: bold;">Gene product: </span>${gene.product}<div/>`;
+                `<div style="word-wrap: break-word; width: 270px; height: 100px;"><span style="font-weight: bold;">Product: </span>${gene.product}<div/>`;
         })
         return divs;
     }
-    
+
     private createFrameAndAppendGroupTags(containerGroup, neighbourGenes, clusterPictureWidth) {
         let clusterFrameHeight = this.clusterFrameHeight;
         let clusterFrameWidth = clusterPictureWidth+10;
