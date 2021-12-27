@@ -82,7 +82,7 @@ export default class GenomeViewModel {
             if (element.value in genomeData && genomeData[element.value]) {
                 element.value = genomeData[element.value];
                 if (element.ftp_path && genomeData.ftp_path)
-                    element.ftp_path = genomeData.ftp_path;
+                    element.ftp_path = genomeData.ftp_path.replace("ftp://", "https://");
                 if (element.name === "Organism")
                     this.genome.name = element.value;
                 if (element.name === "RefSeq version")

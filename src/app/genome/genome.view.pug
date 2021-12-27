@@ -14,7 +14,7 @@
                         tr(*ngFor="let property of genomeViewModel.mainInfo")
                             td(style="font-weight: bold;") {{ property.name }}
                             td(*ngIf="property.ftp_path; else notFtpBlock")
-                                a(href="{{property.ftp_path}}") {{ property.value }}
+                                a(href="{{property.ftp_path}}", target="_blank") {{ property.value }}
                             ng-template(#notFtpBlock)
                                 td {{ property.value }}
     .pull-right.add-to-cart-button

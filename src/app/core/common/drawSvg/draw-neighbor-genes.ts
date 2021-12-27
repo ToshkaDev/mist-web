@@ -117,11 +117,11 @@ export default class DrawNeighborGenes {
             let geneCoordinates = format.replace("coords", gene.start + ".." + gene.stop);
             return `<div><a routerLink href="/genes/${gene.stable_id}">${gene.stable_id}</a></div>` +
                 `<div>${gene.version}</div><div>${geneCoordinates}</div>` +
-                `<div>${gene.product}<div/>`;
+                `<div style="word-wrap: break-word; width: 285px; height: 100px;"><span style="font-weight: bold;">Gene product: </span>${gene.product}<div/>`;
         })
         return divs;
     }
-
+    
     private createFrameAndAppendGroupTags(containerGroup, neighbourGenes, clusterPictureWidth) {
         let clusterFrameHeight = this.clusterFrameHeight;
         let clusterFrameWidth = clusterPictureWidth+10;
