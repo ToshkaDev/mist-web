@@ -17,8 +17,8 @@ export class AseqComponent implements OnInit {
     readonly arrowObject = {0: "keyboard_arrow_downc", 1:  "keyboard_arrow_upc"};
     private arrow = "keyboard_arrow_downc";
     readonly buttonColor = 'white';
-    readonly selectedButtonColor = '#28b8bd';
-    readonly buttonTextColor = '#197477';
+    readonly selectedButtonColor = '#70A4CD';
+    readonly buttonTextColor = '#0B4F6C';
     readonly selectedButtonTextColor = 'white';
     private buttonStyle = {'background-color': this.buttonColor, 'color': this.buttonTextColor};
     private styles = {

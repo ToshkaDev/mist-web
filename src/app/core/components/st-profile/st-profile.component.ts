@@ -10,9 +10,9 @@ const ucFirst = (value) => value[0].toUpperCase() + value.substr(1);
 const COLORS_BY_KIND = {
   chemotaxis: '#ef5b5b',
   ecf: '#5f455b',
-  input: '#ffba49',
-  output: '#20a39e',
-  receiver: '#0075f2',
+  input: '#EAB464',
+  output: '#70A4CD',
+  receiver: '#18769e',
   transmitter: '#a5907e',
   unknown: '#a4a9ad',
 };

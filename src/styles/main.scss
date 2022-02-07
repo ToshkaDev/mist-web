@@ -6,7 +6,7 @@
 
  @import "material-theme";
 
- $linkColorHover: #96c75c;
+ $linkColorHover: #EAB464;
  $bacground-color: #ece9e9;
  $text-color: rgb(138, 136, 136);
 
@@ -119,21 +119,21 @@ a {
 
 .mist-button, .mist-button:hover, .mist-button:active, .mist-button:focus  {
     color: white !important;
-    background-color: #28b8bd;
+    background-color: #70A4CD;
 }
 
 .mist-button-standard {
-    color: #197477 !important;
+    color: #0B4F6C !important;
     background-color: white;
 }
 
 .mist-button-standard:hover, .mist-button-standard:active {
     color: white !important;
-    background-color: #28b8bd;
+    background-color: #70A4CD;
 }
 
 .mist-button-smaller  {
-    color: #197477 !important;
+    color: #0B4F6C !important;
     background-color: white;
     border-radius: 2em;
     /deep/ .mat-button-ripple {
@@ -143,7 +143,7 @@ a {
 
 .mist-button-smaller:hover, .mist-button-smaller:active {
     color: white !important;
-    background-color: #28b8bd;
+    background-color: #70A4CD;
     border-radius: 2em;
 }
 
@@ -153,10 +153,10 @@ a {
 }
 
 .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
-    background-color: #28b8bd;
+    background-color: #EAB464;
 }
 .mat-checkbox .mat-ripple-element {
-    background-color: rgba(40, 184, 189, 0.2) !important;
+    background-color: rgba(234, 180, 100, 0.2) !important;
 }
 // end of customize checkbox
 
@@ -173,7 +173,7 @@ a {
 }
 
 .summary {
-    background-color: #889999;
+    background-color: #DAD2BC;
     border-radius: 7px 7px 0 0;
     margin: -1px;
 }
@@ -188,7 +188,7 @@ a {
 .detail-box {
     border-style: solid;
     border-radius: 7px;
-    border-color: #889999;
+    border-color: #DAD2BC;
     border-width: 2px;
 }
 
@@ -223,12 +223,12 @@ a {
 .gene-detail {
     margin-top: 4%;
     margin-bottom: -5px;
-    color: #197477;
+    color: #0B4F6C;
     font-weight: bold;
 }
 
 .usual-header {
-    color: #197477;
+    color: #0B4F6C;
 }
 
 // Utility classes
@@ -243,7 +243,7 @@ a {
 // Distribution table
 .distribution-table {
     h4 {
-        color: #197477;
+        color: #0B4F6C;
         margin: .5em 1.4em;
         font-size: 24px;
     }
@@ -291,7 +291,7 @@ a {
 }
 
 h5, h4 {
-    color: #197477;
+    color: #0B4F6C;
     font-weight: bold;
 }
 

@@ -33,8 +33,8 @@ export default class DrawProteinFeature {
         "domain"        : "rgba(255,255,255,0.8)",
         "domainStroke"  : "rgba(0,0,0,0.8)",
         "tm"            : "rgba(0,126,204,0.7)",
-        "coils"         : "rgba(46,139,87,0.7)",
-        "lcr"           : "rgba(199,21,133,0.7)"
+        "coils"         : "#21A179",
+        "lcr"           : "#A23B72"
     };
 
     // Computed constants

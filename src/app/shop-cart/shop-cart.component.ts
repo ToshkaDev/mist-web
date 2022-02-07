@@ -14,8 +14,8 @@ export class ShopCartComponent implements OnInit {
   isGenesActive = false;
   genomesCartElementsIsSet = false;
   genesCartElementsIsSet = false;
-  readonly buttonColor = '#b2c798';
-  readonly selectedButtonColor = '#96c75c';
+  readonly buttonColor = '#f2ca8f';
+  readonly selectedButtonColor = '#f5bb64';
   readonly buttonTextColor = 'white';
   private buttonStyle = {'background-color': this.buttonColor, 'color': this.buttonTextColor};
   private styles = {

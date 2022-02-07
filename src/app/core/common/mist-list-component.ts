@@ -16,7 +16,7 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
     idToIsChecked: any = {};
     shopCartIdToIsChecked: any = {};
     checked: string = null;
-    readonly fileNamePrefix= "MIST3_";
+    readonly fileNamePrefix= "MIST4_";
     isIndeterminate: boolean = false;
     resultsNumber: number;
     checkedAll: boolean = false;

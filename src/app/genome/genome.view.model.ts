@@ -63,7 +63,7 @@ export default class GenomeViewModel {
 
     private getWorkerModuelStyle(state: string): any {
         return state === "done"
-            ? {"color": "white", "background-color": "#28b8bd"}
+            ? {"color": "white", "background-color": "#70A4CD"}
             : {"color": "white", "background-color": "#C0BDBD"};
     }
 

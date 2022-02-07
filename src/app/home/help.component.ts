@@ -27,7 +27,7 @@ export class HelpComponent {
     [InfoLinks.GUIDE, false],
   ]);
   
-  private activeColor = '#197477';
+  private activeColor = '#0B4F6C';
   private nonActiveColor = '#889999';
   private stylesCommon = {'cursor': 'pointer'};
   private styles: Map<string, any> = new Map([
