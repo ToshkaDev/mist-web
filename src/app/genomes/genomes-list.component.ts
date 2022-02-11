@@ -1,4 +1,5 @@
 import { Input, Output, EventEmitter, ChangeDetectionStrategy, Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { GenomesListMain } from './genomes-list.main';
 import { CartChangedService } from '../shop-cart/cart-changed.service';
@@ -11,13 +12,13 @@ import { CartChangedService } from '../shop-cart/cart-changed.service';
 })
 export class GenomesListComponent extends GenomesListMain {
   @Input() selected: string;
+
   @Output() taxonomyEvent = new EventEmitter<any>();
-  constructor(cartChangedService: CartChangedService) {
-    super(cartChangedService);
+  constructor(router: Router, cartChangedService: CartChangedService) {
+    super(router, cartChangedService);
   }
 
   taxonomyChanged(taxon: any) {
     this.taxonomyEvent.emit(taxon);
   }
-
 }

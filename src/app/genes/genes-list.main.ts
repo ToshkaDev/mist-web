@@ -1,5 +1,6 @@
 import { Input, ElementRef, OnInit, HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
 import { D3Service } from 'd3-ng2-service';
 import DrawProteinFeature from '../core/common/drawSvg/draw-protein-feature';
 import { Entities } from '../core/common/entities';
@@ -24,8 +25,8 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
   @Input() isLcrChecked = false;
   @Input() isCoiledCoilsChecked = false;
     
-  constructor(private elementRef: ElementRef, private d3Service: D3Service, cartChangedService: CartChangedService, private toggleChanegsService: ToggleChangedService, isShopCart: boolean = false) {
-    super(cartChangedService, Entities.GENES, isShopCart);
+  constructor(router: Router, private elementRef: ElementRef, private d3Service: D3Service, cartChangedService: CartChangedService, private toggleChanegsService: ToggleChangedService, isShopCart: boolean = false) {
+    super(router, cartChangedService, Entities.GENES, isShopCart);
   }
  
   ngOnInit() {

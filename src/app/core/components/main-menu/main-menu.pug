@@ -1,5 +1,5 @@
 .row
-  .eight.columns
+  .five.columns
     mat-form-field
       mat-select([(value)]="selectedComponent" (change)="entityChanged($event)")
         mat-option(value="genomes") Genomes
@@ -19,6 +19,10 @@
       span.example(*ngFor="let example of examples; last as isLast")
         a(routerLink="{{ example.link }}" (click)="putQuery(example.queryString)") {{ example.queryString }}
         span(*ngIf="!isLast") {{ "; " }}
+
+  .three.columns
+    button.mist-switch-button(mat-button (click)="mistSwitchDatabaseClicked('mist')" *ngIf="mist.mist-metagenomes") Switch to MiST
+    button.mist-switch-button(mat-button (click)="mistSwitchDatabaseClicked('mist-metagenomes')" *ngIf="mist.mist") Switch to MiST Metagenomes
 
   .four.columns.pull-right
     mat-icon.cart-icon

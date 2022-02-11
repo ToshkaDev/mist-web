@@ -47,28 +47,75 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   private genomesInCart: string;
   private scopeSetFromDetailPage: genomeScopeInterface;
 
-  private routeToSmallMenuDisplay = new Map<string, string>([
-    ["/", "visible"],
-    ["/help", "visible"],
-    ["/member-genomes", "hidden"],
-    ["/api", "hidden"],
-    ["/shop-cart", "hidden"],
-    [`/${Entities.GENOMES}`, "hidden"],
-    [`/${Entities.GENES}`, "hidden"],
-    //["/protein-features", ""],
-  ]);
+  private mist: any = {"mist": true, "mist-metagenomes": false};
+  private database: string = "mist";
+
+
+  // private routeToSmallMenuDisplay = new Map<string, string>([
+  //   ["/", "visible"],
+  //   ["/help", "visible"],
+  //   ["/member-genomes", "hidden"],
+  //   ["/api", "hidden"],
+  //   ["/shop-cart", "hidden"],
+  //   [`/${Entities.GENOMES}`, "hidden"],
+  //   [`/${Entities.GENES}`, "hidden"],
+  //   //["/protein-features", ""],
+  // ]);
+  // private routeToSmallMenuDisplay2 = new Map<string, string>([
+  //   ["/", "visible"],
+  //   ["/mist", "visible"],
+  //   ["/mist-metagenomes", "visible"],
+
+  //   ["/mist/help", "visible"],
+  //   ["/mist-metagenomes/help", "visible"],
+
+  //   ["/mist/member-genomes", "hidden"],
+  //   ["/mist-metagenomes/member-genomes", "hidden"],
+
+  //   ["/mist/api", "hidden"],
+  //   ["/mist-metagenomes/api", "hidden"],
+    
+  //   ["/shop-cart", "hidden"],
+  //   [`/${Entities.GENOMES}`, "hidden"],
+  //   [`/${Entities.GENES}`, "hidden"],
+  //   //["/protein-features", ""],
+  // ]);
 
   private selectionOptionToRoute = new Map<string, string>([
     [Entities.GENOMES, `/${Entities.GENOMES}`],
     [Entities.GENES, `/${Entities.GENES}`],
     //["protein-features", ""],
   ]);
+  private selectionOptionToRoute2 = new Map<string, Map<string, string>> ([
+    ["mist", new Map([
+      [Entities.GENOMES, `/mist/${Entities.GENOMES}`],
+      [Entities.GENES, `/mist/${Entities.GENES}`],
+    ])],
+    ["mist-metagenomes", new Map([
+      [Entities.GENOMES, `/mist-metagenomes/${Entities.GENOMES}`],
+      [Entities.GENES, `/mist-metagenomes/${Entities.GENES}`],
+    ])]
+  ]);
+
 
   private routeToSelectionOption = new Map<string, string>([
     [`/${Entities.GENOMES}`, Entities.GENOMES],
     [`/${Entities.GENES}`, Entities.GENES],
     //["/protein-features", ""],
   ]);
+  private routeToSelectionOption2 = new Map<string, Map<string, string>> ([
+    ["mist", new Map([
+        [`/mist/${Entities.GENOMES}`, Entities.GENOMES],
+        [`/mist/${Entities.GENES}`, Entities.GENES],
+      ])
+    ],
+    ["mist-metagenomes", new Map([
+        [`/mist-metagenomes/${Entities.GENOMES}`, Entities.GENOMES],
+        [`/mist-metagenomes/${Entities.GENES}`, Entities.GENES],
+      ])
+    ]
+  ]);
+
 
   private selectionOptionToActionType = new Map<string, string>([
     [Entities.GENOMES, MistAction.SEARCH_GENOMES],
@@ -134,6 +181,39 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     ],
     //["/protein-features", ""]
   ]);
+  private entityToExamples2 = new Map<string, Map<string, any[]>>([
+    ["mist", new Map([
+        [Entities.GENOMES, [
+            {"queryString": "Vibrionales", "link": `/mist/${Entities.GENOMES}`},
+            {"queryString": "Escherichia coli", "link": `/mist/${Entities.GENOMES}`},
+            {"queryString": "GCF_001315015.1", "link": `/mist/${Entities.GENOMES}`}
+          ]
+        ],
+        [Entities.GENES, [
+            {"queryString": "GCF_001315015.1-AMK58_RS20975", "link": `/mist/${Entities.GENES}`},
+            {"queryString": "NP_415938.1", "link": `/mist/${Entities.GENES}`},
+            {"queryString": "PA1098", "link": `/mist/${Entities.GENES}`}
+          ]
+        ]
+      ])
+    ],
+    ["mist-metagenomes", new Map([
+        [Entities.GENOMES, [
+            {"queryString": "Vibrionales", "link": `/mist-metagenomes/${Entities.GENOMES}`},
+            {"queryString": "Escherichia coli", "link": `/mist-metagenomes/${Entities.GENOMES}`},
+            {"queryString": "GCF_001315015.1", "link": `/mist-metagenomes/${Entities.GENOMES}`}
+          ]
+        ],
+        [Entities.GENES, [
+            {"queryString": "GCF_001315015.1-AMK58_RS20975", "link": `/mist-metagenomes/${Entities.GENES}`},
+            {"queryString": "NP_415938.1", "link": `/mist-metagenomes/${Entities.GENES}`},
+            {"queryString": "PA1098", "link": `/mist-metagenomes/${Entities.GENES}`}
+          ]
+        ]
+      ])
+    ]
+  ]);
+
 
   private examples: any[] = this.entityToExamples.has(this.selectedComponent)
     ? this.entityToExamples.get(this.selectedComponent)
@@ -148,14 +228,19 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     this.router.events.subscribe(() => {
-      let currentUrl = this.getCurrentUrl();
-      this.smallMenuDisplay['visibility'] = this.routeToSmallMenuDisplay.get(currentUrl);
+
+      let currentDatabase = this.getCurrentDatabase();
+      let currentUrl = this.getCurrentUrl2();
+      //this.smallMenuDisplay['visibility'] = this.routeToSmallMenuDisplay2.get(currentUrl);
+      console.log("A this.getCurrentUrl2() " + currentUrl)
+      console.log("A this.currentDatabase() " + currentDatabase)
       this.changeScopeTo(false);
-      if (this.routeToSelectionOption.has(currentUrl)) {
-        this.selectedComponent = this.routeToSelectionOption.get(currentUrl);
-        this.assignObservables(currentUrl);
-        this.examples = this.entityToExamples.has(this.selectedComponent)
-          ? this.entityToExamples.get(this.selectedComponent)
+    
+      if (this.routeToSelectionOption2.get(currentDatabase).has(currentUrl)) {
+        this.selectedComponent = this.routeToSelectionOption2.get(currentDatabase).get(currentUrl);
+        this.assignObservables(currentDatabase, currentUrl);
+        this.examples = this.entityToExamples2.get(currentDatabase).has(this.selectedComponent)
+          ? this.entityToExamples2.get(currentDatabase).get(this.selectedComponent)
           : null;
       }
       else
@@ -166,14 +251,14 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
       // 2) selectScope(...) gets called in order to initiate a search with the new scope.
       // 3) scopeSetFromDetailPage need to be set to null after that,
       // so that a new scope object could be processed when it gets set by a user
-      if (this.scopeSetFromDetailPage && this.getCurrentUrl() === `/${Entities.GENES}`) {
+      if (this.scopeSetFromDetailPage && this.getCurrentUrl2() === `/${currentDatabase}/${Entities.GENES}`) {
         this.scopeService.selectGenomeName(this.scopeSetFromDetailPage.name);
         this.selectScope(this.scopeSetFromDetailPage.refSeqVersion);
         this.scopeSetFromDetailPage = null;
       }
 
       // Set isSearchPerformed to null when not in search mode
-      if (!this.routeToSelectionOption.has(currentUrl)) {
+      if (!this.routeToSelectionOption2.get(currentDatabase).has(currentUrl)) {
         this.isSearchPerformed$ = null;
       }
     });
@@ -201,6 +286,8 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.scopeService.selectedScope$.subscribe(selectedScope => this.selectScope(selectedScope));
   }
 
+
+  
   ngAfterContentChecked() {
     // put this.scopeName to the obesrvable in scopeService otherwise it's no accesible if a user selected another
     // entity (Genomes or another future component) and returned back to Genes component
@@ -209,9 +296,9 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   }
 
   putQuery(query: string = this.query) {
-    this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
+    this.router.navigate([this.selectionOptionToRoute2.get(this.getCurrentDatabase()).get(this.selectedComponent)]);
     this.changeScopeTo(false);
-    this.assignObservables(this.getCurrentUrl());
+    this.assignObservables(this.getCurrentDatabase(), this.getCurrentUrl2());
     // Don't send repeated requests. We don't use distinctUntilChanged() in SearchInputComponent
     // because the search term can't be deleted in this case by clicking close icon.
     if (query && this.query === query && this.compntHasScopeAndResIsLoaded()) {
@@ -239,6 +326,23 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
         // If we are going from another page we need to navigate to /genes and reasign observables
         this.entityChanged({'value': Entities.GENES});
         this.launchScopeSearch(scope);
+    }
+  }
+
+  // entityChanged(entity: any) {
+  //   this.selectedComponent = entity.value;
+  //   this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
+  // }
+
+  mistSwitchDatabaseClicked (database: string) {
+    this.database = database;
+    this.router.navigate([this.selectionOptionToRoute2.get(database).get(this.selectedComponent)]);
+    if (database === "main") {
+      this.mist.main = true;
+      this.mist.metagenomes = false;
+    } else if (database === "metagenomes")  {
+      this.mist.main = false;
+      this.mist.metagenomes = true;
     }
   }
 
@@ -316,14 +420,14 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
 
   entityChanged(entity: any) {
     this.selectedComponent = entity.value;
-    this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
+    this.router.navigate([this.selectionOptionToRoute2.get(this.getCurrentDatabase()).get(this.selectedComponent)]);
   }
 
-  assignObservables(currentUrl: string) {
+  assignObservables(currentDatabase: string, currentUrl: string) {
     this.query$ = null;
     this.scopeName$ = null;
     this.result$ = null;
-    if (this.routeToSelectionOption.has(currentUrl)) {
+    if (this.routeToSelectionOption2.get(currentDatabase).has(currentUrl)) {
       this.query$ = this.store.select(this.SelectorsQuery.get(this.selectedComponent));
       this.query$.subscribe(query => query ? this.query = query : this.query = null);
       this.scopeName$ = this.SelectorsScope.get(this.selectedComponent) ? this.scopeService.selectedScopeGenomeName$ : null;
@@ -346,12 +450,32 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.errorMessage$ = this.store.select(fromScope.getSearchErrorMessage);
   }
 
+  private getCurrentDatabase(): string {
+    if (this.router.url) {
+      const rootUrl = this.router.url.split("/")[1];
+      if (rootUrl === "")
+        return "mist";
+      else if (rootUrl === "mist" || rootUrl === "mist-metagenomes")
+        return rootUrl;
+    } 
+    return null;
+  }
+
   private getCurrentUrl(): string {
     return this.router.url ? `/${this.router.url.split("/")[1]}` : null;
   }
+  private getCurrentUrl2(): string {
+    if (this.router.url) {
+      if (this.router.url.split("/").length >= 3)
+        return `/${this.router.url.split("/")[1]}/${this.router.url.split("/")[2]}`;
+      else if (this.router.url.split("/").length < 3)
+        return `/${this.router.url.split("/")[1]}`;
+    }
+    return null;
+  }
 
   private getScope(): string {
-    if (this.getCurrentUrl() === this.selectionOptionToRoute.get(Entities.GENES)) {
+    if (this.getCurrentUrl() === this.selectionOptionToRoute2.get(this.getCurrentDatabase()).get(Entities.GENES)) {
       if (this.scope === MainMenuComponent.allGenomesScope) {
         this.scopeService.selectGenomeName(MainMenuComponent.allGenomesScope);
       }
@@ -366,7 +490,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   }
 
   private componentHasScope() {
-    return this.SelectorsResults.has(this.routeToSelectionOption.get(this.getCurrentUrl()));
+    return this.SelectorsResults.has(this.routeToSelectionOption2.get(this.getCurrentDatabase()).get(this.getCurrentUrl()));
   }
 
   // should be called after assignObservables() was called. This happens naturally. Just a warning.

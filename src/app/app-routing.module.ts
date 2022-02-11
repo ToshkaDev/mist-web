@@ -20,60 +20,199 @@ const routes: Routes = [
         path: '',
         component: HomeComponent
       },
-      { path: 'help',
-        component: HelpComponent,
-        data: { breadcrumbs: 'Help' }
-      },
+      //MiST database
       {
-        path: 'shop-cart',
-        component: ShopCartComponent,
-        data: { breadcrumbs: 'Shopping Cart' }
-      },
-      {
-        path: 'genomes',
-        data: { breadcrumbs: 'Genomes' },
+        path: 'mist',
         children: [
           {
             path: '',
-            component: GenomesComponent
+            component: HomeComponent
+          },         
+          { path: 'help',
+            component: HelpComponent,
+            data: { breadcrumbs: 'Help' }
           },
           {
-            path: ':version',
-            data: { breadcrumbs: '{{ genome.version }}' },
-            resolve: { genome: GenomeResolver },
+            path: 'shop-cart',
+            component: ShopCartComponent,
+            data: { breadcrumbs: 'Shopping Cart' }
+          },
+          {
+            path: 'genomes',
+            data: { breadcrumbs: 'Genomes' },
             children: [
               {
                 path: '',
-                component: GenomeComponent
+                component: GenomesComponent
               },
               {
-                path: 'signal-genes',
-                component: SignalGenesComponent,
-                data: { breadcrumbs: 'Signal Genes' }
+                path: ':version',
+                data: { breadcrumbs: '{{ genome.version }}' },
+                resolve: { genome: GenomeResolver },
+                children: [
+                  {
+                    path: '',
+                    component: GenomeComponent
+                  },
+                  {
+                    path: 'signal-genes',
+                    component: SignalGenesComponent,
+                    data: { breadcrumbs: 'Signal Genes' }
+                  }
+                ]
+              },
+            ],
+          },
+          {
+            path: 'genes',
+            data: { breadcrumbs: 'Genes' },
+            children: [
+              {
+                path: '',
+                component: GenesComponent
+              },
+              {
+                path: ':stable_id',
+                component: GeneComponent,
+                data: { breadcrumbs: '{{ gene.stableId }}' },
+                resolve: { gene: GeneResolver }
               }
             ]
-          },
-        ],
+          }
+
+        ]
       },
+      //MiST database END
+
+      //MiST-Metagenomes database
       {
-        path: 'genes',
-        data: { breadcrumbs: 'Genes' },
+        path: 'mist-metagenomes',
         children: [
           {
             path: '',
-            component: GenesComponent
+            component: HomeComponent
+          },
+          { path: 'help',
+            component: HelpComponent,
+            data: { breadcrumbs: 'Help' }
           },
           {
-            path: ':stable_id',
-            component: GeneComponent,
-            data: { breadcrumbs: '{{ gene.stableId }}' },
-            resolve: { gene: GeneResolver }
-          }
+            path: 'shop-cart',
+            component: ShopCartComponent,
+            data: { breadcrumbs: 'Shopping Cart' }
+          },
+          {
+            path: 'genomes',
+            data: { breadcrumbs: 'Genomes' },
+            children: [
+              {
+                path: '',
+                component: GenomesComponent
+              },
+              {
+                path: ':version',
+                data: { breadcrumbs: '{{ genome.version }}' },
+                resolve: { genome: GenomeResolver },
+                children: [
+                  {
+                    path: '',
+                    component: GenomeComponent
+                  },
+                  {
+                    path: 'signal-genes',
+                    component: SignalGenesComponent,
+                    data: { breadcrumbs: 'Signal Genes' }
+                  }
+                ]
+              },
+            ],
+          },
+          {
+            path: 'genes',
+            data: { breadcrumbs: 'Genes' },
+            children: [
+              {
+                path: '',
+                component: GenesComponent
+              },
+              {
+                path: ':stable_id',
+                component: GeneComponent,
+                data: { breadcrumbs: '{{ gene.stableId }}' },
+                resolve: { gene: GeneResolver }
+              }
+            ]
+          }          
         ]
+        
       }
+      //MiST-Metagenomes database End
     ]
   }
 ];
+
+// const routes: Routes = [
+//   { path: '',
+//     data: { breadcrumbs: 'Home' },
+//     children: [
+//       {
+//         path: '',
+//         component: HomeComponent
+//       },
+//       { path: 'help',
+//         component: HelpComponent,
+//         data: { breadcrumbs: 'Help' }
+//       },
+//       {
+//         path: 'shop-cart',
+//         component: ShopCartComponent,
+//         data: { breadcrumbs: 'Shopping Cart' }
+//       },
+//       {
+//         path: 'genomes',
+//         data: { breadcrumbs: 'Genomes' },
+//         children: [
+//           {
+//             path: '',
+//             component: GenomesComponent
+//           },
+//           {
+//             path: ':version',
+//             data: { breadcrumbs: '{{ genome.version }}' },
+//             resolve: { genome: GenomeResolver },
+//             children: [
+//               {
+//                 path: '',
+//                 component: GenomeComponent
+//               },
+//               {
+//                 path: 'signal-genes',
+//                 component: SignalGenesComponent,
+//                 data: { breadcrumbs: 'Signal Genes' }
+//               }
+//             ]
+//           },
+//         ],
+//       },
+//       {
+//         path: 'genes',
+//         data: { breadcrumbs: 'Genes' },
+//         children: [
+//           {
+//             path: '',
+//             component: GenesComponent
+//           },
+//           {
+//             path: ':stable_id',
+//             component: GeneComponent,
+//             data: { breadcrumbs: '{{ gene.stableId }}' },
+//             resolve: { gene: GeneResolver }
+//           }
+//         ]
+//       }
+//     ]
+//   }
+// ];
 
 @NgModule({
   exports: [

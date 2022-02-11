@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { GenomesListMain } from '../genomes/genomes-list.main';
 import { CartChangedService } from './cart-changed.service';
@@ -12,8 +13,8 @@ import { CartChangedService } from './cart-changed.service';
 export class ShopCartGenomesList extends GenomesListMain {
   readonly cart = {"add": false, "remove": true, "download": false};
   
-  constructor(cartChangedService: CartChangedService) {
-    super(cartChangedService, true);
+  constructor(router: Router, cartChangedService: CartChangedService) {
+    super(router, cartChangedService, true);
   }
 
 }
