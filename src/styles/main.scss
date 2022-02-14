@@ -117,6 +117,11 @@ a {
     justify-content: center;
 }
 
+.mist-button-switcher, .mist-button-switcher:hover, .mist-button-switcher:active, .mist-button-switcher:focus {
+    color: white !important;
+    background-color: #70A4CD;
+    border-radius: 12px !important; 
+}
 .mist-button, .mist-button:hover, .mist-button:active, .mist-button:focus  {
     color: white !important;
     background-color: #70A4CD;

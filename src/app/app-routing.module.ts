@@ -20,18 +20,20 @@ const routes: Routes = [
         path: '',
         component: HomeComponent
       },
+      { 
+        path: 'help',
+        component: HelpComponent,
+        data: { breadcrumbs: 'Help' }
+      },
       //MiST database
       {
         path: 'mist',
+        data: { breadcrumbs: 'MiST' },
         children: [
           {
             path: '',
             component: HomeComponent
           },         
-          { path: 'help',
-            component: HelpComponent,
-            data: { breadcrumbs: 'Help' }
-          },
           {
             path: 'shop-cart',
             component: ShopCartComponent,
@@ -87,14 +89,11 @@ const routes: Routes = [
       //MiST-Metagenomes database
       {
         path: 'mist-metagenomes',
+        data: { breadcrumbs: 'MiST-Metagenomes' },
         children: [
           {
             path: '',
             component: HomeComponent
-          },
-          { path: 'help',
-            component: HelpComponent,
-            data: { breadcrumbs: 'Help' }
           },
           {
             path: 'shop-cart',

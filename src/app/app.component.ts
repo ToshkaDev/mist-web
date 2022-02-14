@@ -5,7 +5,6 @@ import 'rxjs/add/observable/fromEvent';
 import { faTwitterSquare, faGitter } from '@fortawesome/free-brands-svg-icons';
 import { faBook, faEnvelopeSquare, faLeaf } from '@fortawesome/free-solid-svg-icons'
 import { faLifeRing } from '@fortawesome/free-regular-svg-icons'
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -32,17 +31,16 @@ export class AppComponent implements AfterContentInit {
   isSabanciLogoActive = false;
   isNetlifyLogoActive = false;
 
-  header_color_main = "#0B4F6C";
-  header_color_metagenomes = "#48233C";
+  header_color_mist = "#0B4F6C";
+  footer_color_mist = "#DAD2BC";
+  header_color_mist_metagenomes = "#48233C";
+  footer_color_mist_metagenomes = "#DAD2BC";
 
   private styles = {
-    'background-color': this.header_color_main
+    'header': {'background-color': this.header_color_mist},
+    'footer': {'background-color': this.footer_color_mist},
   };
   
-  constructor(
-    private router: Router
-  ) {}
-
   ngAfterContentInit() {
     Observable.fromEvent(this.nihLogo.nativeElement, 'mouseenter').subscribe(() => this.isNnihLogoActive = true);
     Observable.fromEvent(this.nihLogo.nativeElement, 'mouseleave').subscribe(() => this.isNnihLogoActive = false);
@@ -58,13 +56,15 @@ export class AppComponent implements AfterContentInit {
 
     Observable.fromEvent(this.netlifyLogo.nativeElement, 'mouseenter').subscribe(() => this.isNetlifyLogoActive = true);
     Observable.fromEvent(this.netlifyLogo.nativeElement, 'mouseleave').subscribe(() => this.isNetlifyLogoActive = false);
-
-    console.log("getCurrentUrl() " + this.getCurrentUrl())
-    console.log("this.router.url " + this.router.url)
   }
 
-  private getCurrentUrl(): string {
-    return this.router.url ? `/${this.router.url.split("/")[1]}` : null;
+  setStyles(database: any) {
+    if (database === "mist") {
+      this.styles.header['background-color'] = this.header_color_mist;
+      this.styles.footer['background-color'] = this.footer_color_mist;
+    } else if (database === "mist-metagenomes") {
+      this.styles.header['background-color'] = this.header_color_mist_metagenomes;
+      this.styles.footer['background-color'] = this.footer_color_mist_metagenomes;
+    }
   }
-
 }

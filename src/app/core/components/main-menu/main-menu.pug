@@ -21,12 +21,12 @@
         span(*ngIf="!isLast") {{ "; " }}
 
   .three.columns
-    button.mist-switch-button(mat-button (click)="mistSwitchDatabaseClicked('mist')" *ngIf="mist.mist-metagenomes") Switch to MiST
-    button.mist-switch-button(mat-button (click)="mistSwitchDatabaseClicked('mist-metagenomes')" *ngIf="mist.mist") Switch to MiST Metagenomes
+    button.mist-button-switcher(mat-button (click)="mistSwitchDatabaseClicked('mist')" *ngIf="mist['mist-metagenomes']") Switch to MiST
+    button.mist-button-switcher(mat-button (click)="mistSwitchDatabaseClicked('mist-metagenomes')" *ngIf="mist['mist']") Switch to MiST Metagenomes
 
   .four.columns.pull-right
     mat-icon.cart-icon
-      a.non-decor-green(routerLink="/shop-cart") shopping_cart
+      a.non-decor-green(routerLink="/{{database}}/shop-cart") shopping_cart
     div.cart-details
       div {{ genesInCart }}
       div {{ genomesInCart }}
