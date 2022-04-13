@@ -171,9 +171,8 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.router.events.subscribe(() => {
 
       let currentDatabase = this.getCurrentDatabase();
-      let currentUrl = this.getCurrentUrl2();
-      //this.smallMenuDisplay['visibility'] = this.routeToSmallMenuDisplay2.get(currentUrl);
-      console.log("A this.getCurrentUrl2() " + currentUrl)
+      let currentUrl = this.getCurrentUrl();
+      console.log("A this.getCurrentUrl() " + currentUrl)
       console.log("A this.currentDatabase() " + currentDatabase)
       this.changeScopeTo(false);
       this.setExamples();
@@ -189,7 +188,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
       // 2) selectScope(...) gets called in order to initiate a search with the new scope.
       // 3) scopeSetFromDetailPage need to be set to null after that,
       // so that a new scope object could be processed when it gets set by a user
-      if (this.scopeSetFromDetailPage && this.getCurrentUrl2() === `/${currentDatabase}/${Entities.GENES}`) {
+      if (this.scopeSetFromDetailPage && this.getCurrentUrl() === `/${currentDatabase}/${Entities.GENES}`) {
         this.scopeService.selectGenomeName(this.scopeSetFromDetailPage.name);
         this.selectScope(this.scopeSetFromDetailPage.refSeqVersion);
         this.scopeSetFromDetailPage = null;
@@ -240,10 +239,10 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   putQuery(query: string = this.query) {
     this.router.navigate([this.selectionOptionToRoute.get(this.getCurrentDatabase()).get(this.selectedComponent)]);
     this.changeScopeTo(false);
-    this.assignObservables(this.getCurrentDatabase(), this.getCurrentUrl2());
+    this.assignObservables(this.getCurrentDatabase(), this.getCurrentUrl());
     // Don't send repeated requests. We don't use distinctUntilChanged() in SearchInputComponent
     // because the search term can't be deleted in this case by clicking close icon.
-    if (query && this.query === query && this.compntHasScopeAndResIsLoaded()) {
+    if (query && this.query === query && this.resultRetrievedAndLoaded()) {
       return;
     } else if (query && query.length >= this.minQueryLenght) {
         this.query = query;
@@ -381,7 +380,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
       this.scopeName$ = this.SelectorsScope.get(this.selectedComponent) ? this.scopeService.selectedScopeGenomeName$ : null;
       if (this.scopeName$)
         this.scopeName$.subscribe(scopeName => this.scopeName = scopeName);
-      if (this.componentHasScope()) {
+      if (this.resultAccessible()) {
         this.result$ = this.store.select(this.SelectorsResults.get(this.selectedComponent));
       }
     }
@@ -410,14 +409,12 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   }
 
   private getCurrentUrl(): string {
-    return this.router.url ? `/${this.router.url.split("/")[1]}` : null;
-  }
-  private getCurrentUrl2(): string {
     if (this.router.url) {
-      if (this.router.url.split("/").length >= 3)
-        return `/${this.router.url.split("/")[1]}/${this.router.url.split("/")[2]}`;
-      else if (this.router.url.split("/").length < 3)
-        return `/${this.router.url.split("/")[1]}`;
+      const splittedUrl = this.router.url.split("/");
+      if (splittedUrl.length >= 3)
+        return `/${splittedUrl[1]}/${splittedUrl[2]}`;
+      else if (splittedUrl.length < 3)
+        return `/${splittedUrl[1]}`;
     }
     return null;
   }
@@ -437,12 +434,12 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.isScope = isScope;
   }
 
-  private componentHasScope() {
+  private resultAccessible() {
     return this.SelectorsResults.has(this.routeToSelectionOption.get(this.getCurrentDatabase()).get(this.getCurrentUrl()));
   }
 
   // should be called after assignObservables() was called. This happens naturally. Just a warning.
-  private compntHasScopeAndResIsLoaded() {
+  private resultRetrievedAndLoaded() {
     let isResultLoaded = false;
     if (this.result$)
       this.result$.subscribe(result => { if (result && result.length > 0) isResultLoaded = true });

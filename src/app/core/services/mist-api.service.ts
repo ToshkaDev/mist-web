@@ -130,8 +130,8 @@ export class MistApi {
     if (this.router.url) {
       const rootUrl = this.router.url.split("/")[1];
       if (rootUrl === "")
-        return "mist";
-      else if (rootUrl === "mist" || rootUrl === "mist-metagenomes")
+        return Entities.MIST;
+      else if (rootUrl === Entities.MIST || rootUrl === Entities.MIST_METAGENOMES)
         return rootUrl;
     } 
     return null;
