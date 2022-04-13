@@ -7,5 +7,7 @@ export enum Entities {
     GENOMES_SHOPCART = "genomes_shopcart",
     GENOME = "genome",
     SCOPE = "scope",
-    SIGNAL_GENES = "signal_genes"
+    SIGNAL_GENES = "signal_genes",
+    MIST = "mist",
+    MIST_METAGENOMES = "mist-metagenomes"
 }

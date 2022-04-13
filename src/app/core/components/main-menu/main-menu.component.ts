@@ -46,64 +46,33 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   private genesInCart: string;
   private genomesInCart: string;
   private scopeSetFromDetailPage: genomeScopeInterface;
-  private mist: any = {"mist": true, "mist-metagenomes": false};
-  private database: string = "mist";
+  private mist: any = {[Entities.MIST]: true, [Entities.MIST_METAGENOMES]: false};
+  private database: string = Entities.MIST;
 
   @Output() databaseSwitchEvent = new EventEmitter<any>();
 
-
-  // private routeToSmallMenuDisplay = new Map<string, string>([
-  //   ["/", "visible"],
-  //   ["/help", "visible"],
-  //   ["/member-genomes", "hidden"],
-  //   ["/api", "hidden"],
-  //   ["/shop-cart", "hidden"],
-  //   [`/${Entities.GENOMES}`, "hidden"],
-  //   [`/${Entities.GENES}`, "hidden"],
-  //   //["/protein-features", ""],
-  // ]);
-  // private routeToSmallMenuDisplay2 = new Map<string, string>([
-  //   ["/", "visible"],
-  //   ["/mist", "visible"],
-  //   ["/mist-metagenomes", "visible"],
-
-  //   ["/mist/help", "visible"],
-  //   ["/mist-metagenomes/help", "visible"],
-
-  //   ["/mist/member-genomes", "hidden"],
-  //   ["/mist-metagenomes/member-genomes", "hidden"],
-
-  //   ["/mist/api", "hidden"],
-  //   ["/mist-metagenomes/api", "hidden"],
-    
-  //   ["/shop-cart", "hidden"],
-  //   [`/${Entities.GENOMES}`, "hidden"],
-  //   [`/${Entities.GENES}`, "hidden"],
-  //   //["/protein-features", ""],
-  // ]);
-
   private selectionOptionToRoute = new Map<string, Map<string, string>> ([
-    ["mist", new Map([
-      ["home", "/mist/"],
-      [Entities.GENOMES, `/mist/${Entities.GENOMES}`],
-      [Entities.GENES, `/mist/${Entities.GENES}`],
+    [Entities.MIST, new Map([
+      ["home", `/${Entities.MIST}/`],
+      [Entities.GENOMES, `/${Entities.MIST}/${Entities.GENOMES}`],
+      [Entities.GENES, `/${Entities.MIST}/${Entities.GENES}`],
     ])],
-    ["mist-metagenomes", new Map([
-      ["home", "/mist-metagenomes/"],
-      [Entities.GENOMES, `/mist-metagenomes/${Entities.GENOMES}`],
-      [Entities.GENES, `/mist-metagenomes/${Entities.GENES}`],
+    [Entities.MIST_METAGENOMES, new Map([
+      ["home", `/${Entities.MIST_METAGENOMES}/`],
+      [Entities.GENOMES, `/${Entities.MIST_METAGENOMES}/${Entities.GENOMES}`],
+      [Entities.GENES, `/${Entities.MIST_METAGENOMES}/${Entities.GENES}`],
     ])]
   ]);
 
   private routeToSelectionOption = new Map<string, Map<string, string>> ([
-    ["mist", new Map([
-        [`/mist/${Entities.GENOMES}`, Entities.GENOMES],
-        [`/mist/${Entities.GENES}`, Entities.GENES],
+    [Entities.MIST, new Map([
+        [`/${Entities.MIST}/${Entities.GENOMES}`, Entities.GENOMES],
+        [`/${Entities.MIST}/${Entities.GENES}`, Entities.GENES],
       ])
     ],
-    ["mist-metagenomes", new Map([
-        [`/mist-metagenomes/${Entities.GENOMES}`, Entities.GENOMES],
-        [`/mist-metagenomes/${Entities.GENES}`, Entities.GENES],
+    [Entities.MIST_METAGENOMES, new Map([
+        [`/${Entities.MIST_METAGENOMES}/${Entities.GENOMES}`, Entities.GENOMES],
+        [`/${Entities.MIST_METAGENOMES}/${Entities.GENES}`, Entities.GENES],
       ])
     ]
   ]);
@@ -157,42 +126,39 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   ]);
 
   private entityToExamples = new Map<string, Map<string, any[]>>([
-    ["mist", new Map([
+    [Entities.MIST, new Map([
         [Entities.GENOMES, [
-            {"queryString": "Vibrionales", "link": `/mist/${Entities.GENOMES}`},
-            {"queryString": "Escherichia coli", "link": `/mist/${Entities.GENOMES}`},
-            {"queryString": "GCF_001315015.1", "link": `/mist/${Entities.GENOMES}`}
+            {"queryString": "Vibrionales", "link": `/${Entities.MIST}/${Entities.GENOMES}`},
+            {"queryString": "Escherichia coli", "link": `/${Entities.MIST}/${Entities.GENOMES}`},
+            {"queryString": "GCF_001315015.1", "link": `/${Entities.MIST}/${Entities.GENOMES}`}
           ]
         ],
         [Entities.GENES, [
-            {"queryString": "GCF_001315015.1-AMK58_RS20975", "link": `/mist/${Entities.GENES}`},
-            {"queryString": "NP_415938.1", "link": `/mist/${Entities.GENES}`},
-            {"queryString": "PA1098", "link": `/mist/${Entities.GENES}`}
+            {"queryString": "GCF_001315015.1-AMK58_RS20975", "link": `/${Entities.MIST}/${Entities.GENES}`},
+            {"queryString": "NP_415938.1", "link": `/${Entities.MIST}/${Entities.GENES}`},
+            {"queryString": "PA1098", "link": `/${Entities.MIST}/${Entities.GENES}`}
           ]
         ]
       ])
     ],
-    ["mist-metagenomes", new Map([
+    [Entities.MIST_METAGENOMES, new Map([
         [Entities.GENOMES, [
-            {"queryString": "Vibrionales", "link": `/mist-metagenomes/${Entities.GENOMES}`},
-            {"queryString": "Escherichia coli", "link": `/mist-metagenomes/${Entities.GENOMES}`},
-            {"queryString": "GCA_003661005.1", "link": `/mist-metagenomes/${Entities.GENOMES}`}
+            {"queryString": "Pseudomonadaceae", "link": `/${Entities.MIST_METAGENOMES}/${Entities.GENOMES}`},
+            {"queryString": "Methanococcus maripaludis", "link": `/${Entities.MIST_METAGENOMES}/${Entities.GENOMES}`},
+            {"queryString": "GCA_003661005.1", "link": `/${Entities.MIST_METAGENOMES}/${Entities.GENOMES}`}
           ]
         ],
         [Entities.GENES, [
-            {"queryString": "GCF_001315015.1-AMK58_RS20975", "link": `/mist-metagenomes/${Entities.GENES}`},
-            {"queryString": "NP_415938.1", "link": `/mist-metagenomes/${Entities.GENES}`},
-            {"queryString": "PA1098", "link": `/mist-metagenomes/${Entities.GENES}`}
+            {"queryString": "GCA_003648675.1-DRI93_04610", "link": `/${Entities.MIST_METAGENOMES}/${Entities.GENES}`},
+            {"queryString": "CCX43969.1", "link": `/${Entities.MIST_METAGENOMES}/${Entities.GENES}`},
+            {"queryString": "BN456_00532", "link": `/${Entities.MIST_METAGENOMES}/${Entities.GENES}`}
           ]
         ]
       ])
     ]
   ]);
 
-
-  private examples: any[] = this.entityToExamples.get(this.getCurrentDatabase()).has(this.selectedComponent)
-    ? this.entityToExamples.get(this.getCurrentDatabase()).get(this.selectedComponent)
-    : null;
+  private examples: any[];
 
   constructor(
     private router: Router,
@@ -210,13 +176,10 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
       console.log("A this.getCurrentUrl2() " + currentUrl)
       console.log("A this.currentDatabase() " + currentDatabase)
       this.changeScopeTo(false);
-    
+      this.setExamples();
       if (this.routeToSelectionOption.get(currentDatabase).has(currentUrl)) {
         this.selectedComponent = this.routeToSelectionOption.get(currentDatabase).get(currentUrl);
         this.assignObservables(currentDatabase, currentUrl);
-        this.examples = this.entityToExamples.get(currentDatabase).has(this.selectedComponent)
-          ? this.entityToExamples.get(currentDatabase).get(this.selectedComponent)
-          : null;
       }
       else
         this.query$ = null;
@@ -261,8 +224,12 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.scopeService.selectedScope$.subscribe(selectedScope => this.selectScope(selectedScope));
   }
 
+  setExamples() {
+    this.examples = this.entityToExamples.get(this.getCurrentDatabase()).has(this.selectedComponent)
+    ? this.entityToExamples.get(this.getCurrentDatabase()).get(this.selectedComponent)
+    : null;
+  }
 
-  
   ngAfterContentChecked() {
     // put this.scopeName to the obesrvable in scopeService otherwise it's no accesible if a user selected another
     // entity (Genomes or another future component) and returned back to Genes component
@@ -313,12 +280,12 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.database = database;
     if (this.selectionOptionToRoute.get(database)) {
       this.router.navigate([this.selectionOptionToRoute.get(database).get("home")]);
-      if (database === "mist") {
-        this.mist.mist = true;
-        this.mist['mist-metagenomes'] = false;
-      } else if (database === "mist-metagenomes") {
-        this.mist.mist = false;
-        this.mist['mist-metagenomes'] = true;
+      if (database === Entities.MIST) {
+        this.mist[Entities.MIST] = true;
+        this.mist[Entities.MIST_METAGENOMES] = false;
+      } else if (database === Entities.MIST_METAGENOMES) {
+        this.mist[Entities.MIST] = false;
+        this.mist[Entities.MIST_METAGENOMES] = true;
       }
       this.databaseSwitchEvent.emit(database);
       // this.examples = this.entityToExamples.get(this.getCurrentDatabase()).has(this.selectedComponent)
@@ -435,8 +402,8 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     if (this.router.url) {
       const rootUrl = this.router.url.split("/")[1];
       if (rootUrl === "")
-        return "mist";
-      else if (rootUrl === "mist" || rootUrl === "mist-metagenomes")
+        return Entities.MIST;
+      else if (rootUrl === Entities.MIST || rootUrl === Entities.MIST_METAGENOMES)
         return rootUrl;
     } 
     return null;
