@@ -11,7 +11,7 @@ mat-table([dataSource]="result" class="gene-table")
   ng-container(matColumnDef="Mist Id")
     mat-header-cell(*matHeaderCellDef class="gene-header table-txt-size") Mist Id
     mat-cell(*matCellDef="let gene" class="gene-cell")
-      a(routerLink="/genes/{{gene.stable_id}}") {{ gene.stable_id }}
+      a(routerLink="/{{currentDatabase}}/genes/{{gene.stable_id}}") {{ gene.stable_id }}
   ng-container(matColumnDef="Protein Id")
     mat-header-cell(*matHeaderCellDef class="proteinId-header table-txt-size") Protein Id
     mat-cell(*matCellDef="let gene" class="proteinId-cell") {{ gene.version }}

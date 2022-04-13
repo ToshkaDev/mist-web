@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { CartChangedService } from '../shop-cart/cart-changed.service';
 import { MistSingleComponent } from '../core/common/mist-signle-component';
@@ -12,8 +13,8 @@ import { Entities } from '../core/common/entities';
 export class GeneViewComponent extends MistSingleComponent {
   @Input() geneViewModel: any;
 
-  constructor(cartChangedService: CartChangedService)  {
-    super(cartChangedService, Entities.GENES)
+  constructor(private router: Router, cartChangedService: CartChangedService)  {
+    super(router, cartChangedService, Entities.GENES)
   }
 
 }

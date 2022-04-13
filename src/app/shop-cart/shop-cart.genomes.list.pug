@@ -8,7 +8,7 @@ mat-table([dataSource]="result" class="genome-table")
   ng-container(matColumnDef="Genome")
     mat-header-cell(*matHeaderCellDef class="genome-header table-txt-size") Genome
     mat-cell(*matCellDef="let genome" class="genome-cell")
-      a(routerLink="/genomes/{{genome.version}}") {{genome.name}}
+      a(routerLink="/{{currentDatabase}}/genomes/{{genome.version}}") {{genome.name}}
   ng-container(matColumnDef="Taxonomy ID")
     mat-header-cell(*matHeaderCellDef class="taxonomy-id-header table-txt-size") Taxonomy ID
     mat-cell(*matCellDef="let genome" class="taxonomy-id-cell" ) {{ genome.taxonomy_id }}

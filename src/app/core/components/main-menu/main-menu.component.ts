@@ -10,6 +10,7 @@ import { State } from '../../../app.reducers';
 import { Entities } from '../../common/entities';
 import { ScopeService } from './scope.service';
 import { CartChangedService } from '../../../shop-cart/cart-changed.service';
+import {MistDatabaseGetter } from '../../common/mist-database-getter';
 
 import * as MistAction from '../../common/mist-actions';
 import { genomeScopeInterface } from '../../../genome/genome.view.model';
@@ -19,7 +20,7 @@ import { genomeScopeInterface } from '../../../genome/genome.view.model';
   styleUrls: ['./main-menu.scss'],
   templateUrl: './main-menu.pug',
 })
-export class MainMenuComponent implements OnInit, AfterContentChecked {
+export class MainMenuComponent extends MistDatabaseGetter implements OnInit, AfterContentChecked {
   private query: string;
   static readonly allGenomesScope = "All Genomes";
   private scope: string = MainMenuComponent.allGenomesScope;
@@ -165,13 +166,15 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     private store: Store<any>,
     private scopeService: ScopeService,
     private cartChangedService: CartChangedService
-  ) {}
+  ) {
+    super(router);
+  }
 
   ngOnInit() {
     this.router.events.subscribe(() => {
 
-      let currentDatabase = this.getCurrentDatabase();
-      let currentUrl = this.getCurrentUrl();
+      const currentDatabase = super.getCurrentDatabase();
+      const currentUrl = this.getCurrentUrl();
       console.log("A this.getCurrentUrl() " + currentUrl)
       console.log("A this.currentDatabase() " + currentDatabase)
       this.changeScopeTo(false);
@@ -224,8 +227,8 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   }
 
   setExamples() {
-    this.examples = this.entityToExamples.get(this.getCurrentDatabase()).has(this.selectedComponent)
-    ? this.entityToExamples.get(this.getCurrentDatabase()).get(this.selectedComponent)
+    this.examples = this.entityToExamples.get(super.getCurrentDatabase()).has(this.selectedComponent)
+    ? this.entityToExamples.get(super.getCurrentDatabase()).get(this.selectedComponent)
     : null;
   }
 
@@ -237,9 +240,9 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   }
 
   putQuery(query: string = this.query) {
-    this.router.navigate([this.selectionOptionToRoute.get(this.getCurrentDatabase()).get(this.selectedComponent)]);
+    this.router.navigate([this.selectionOptionToRoute.get(super.getCurrentDatabase()).get(this.selectedComponent)]);
     this.changeScopeTo(false);
-    this.assignObservables(this.getCurrentDatabase(), this.getCurrentUrl());
+    this.assignObservables(super.getCurrentDatabase(), this.getCurrentUrl());
     // Don't send repeated requests. We don't use distinctUntilChanged() in SearchInputComponent
     // because the search term can't be deleted in this case by clicking close icon.
     if (query && this.query === query && this.resultRetrievedAndLoaded()) {
@@ -287,8 +290,8 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
         this.mist[Entities.MIST_METAGENOMES] = true;
       }
       this.databaseSwitchEvent.emit(database);
-      // this.examples = this.entityToExamples.get(this.getCurrentDatabase()).has(this.selectedComponent)
-      // ? this.entityToExamples.get(this.getCurrentDatabase()).get(this.selectedComponent)
+      // this.examples = this.entityToExamples.get(super.getCurrentDatabase()).has(this.selectedComponent)
+      // ? this.entityToExamples.get(super.getCurrentDatabase()).get(this.selectedComponent)
       // : null;
     }
   }
@@ -367,7 +370,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
 
   entityChanged(entity: any) {
     this.selectedComponent = entity.value;
-    this.router.navigate([this.selectionOptionToRoute.get(this.getCurrentDatabase()).get(this.selectedComponent)]);
+    this.router.navigate([this.selectionOptionToRoute.get(super.getCurrentDatabase()).get(this.selectedComponent)]);
   }
 
   assignObservables(currentDatabase: string, currentUrl: string) {
@@ -397,17 +400,6 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
     this.errorMessage$ = this.store.select(fromScope.getSearchErrorMessage);
   }
 
-  private getCurrentDatabase(): string {
-    if (this.router.url) {
-      const rootUrl = this.router.url.split("/")[1];
-      if (rootUrl === "")
-        return Entities.MIST;
-      else if (rootUrl === Entities.MIST || rootUrl === Entities.MIST_METAGENOMES)
-        return rootUrl;
-    } 
-    return null;
-  }
-
   private getCurrentUrl(): string {
     if (this.router.url) {
       const splittedUrl = this.router.url.split("/");
@@ -420,7 +412,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   }
 
   private getScope(): string {
-    if (this.getCurrentUrl() === this.selectionOptionToRoute.get(this.getCurrentDatabase()).get(Entities.GENES)) {
+    if (this.getCurrentUrl() === this.selectionOptionToRoute.get(super.getCurrentDatabase()).get(Entities.GENES)) {
       if (this.scope === MainMenuComponent.allGenomesScope) {
         this.scopeService.selectGenomeName(MainMenuComponent.allGenomesScope);
       }
@@ -435,7 +427,7 @@ export class MainMenuComponent implements OnInit, AfterContentChecked {
   }
 
   private resultAccessible() {
-    return this.SelectorsResults.has(this.routeToSelectionOption.get(this.getCurrentDatabase()).get(this.getCurrentUrl()));
+    return this.SelectorsResults.has(this.routeToSelectionOption.get(super.getCurrentDatabase()).get(this.getCurrentUrl()));
   }
 
   // should be called after assignObservables() was called. This happens naturally. Just a warning.

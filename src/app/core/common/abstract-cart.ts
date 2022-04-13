@@ -1,12 +1,13 @@
-import { Misc } from './misc-enum';
+import { Router } from '@angular/router';
+import { MistDatabaseGetter } from './mist-database-getter';
 
-export abstract class AbstractCart  {
-    readonly cartPrefix = Misc.SHOP_CART_PREFIX; 
+export abstract class AbstractCart extends MistDatabaseGetter {
     readonly cartMaxQuantity = 500;
     readonly shopCartIndicators = {"add": false, "remove": true, "download": true}; 
     cart: any = {"add": true, "remove": false, "download": false};
 
-    constructor(isShopCart = null) {
+    constructor(router: Router, isShopCart = null) {
+        super(router);
         if (isShopCart) 
             this.cart = this.shopCartIndicators;
     }

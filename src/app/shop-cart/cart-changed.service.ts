@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject }    from 'rxjs';
-import { Misc } from '../core/common/misc-enum';
+import { databaseToCookies as DatabaseToCookies} from '../core/common/databaseToCookies';
+import { MistDatabaseGetter } from '../core/common/mist-database-getter';
  
 @Injectable()
-export class CartChangedService {
+export class CartChangedService extends MistDatabaseGetter {
   private cartChangedSource = new Subject<string>();
   private isItemsAddedOrChangedSource = new Subject<boolean>();
   cartChanged$ = this.cartChangedSource.asObservable();
   isItemsAddedOrChanged$ = this.isItemsAddedOrChangedSource.asObservable();
   private webStorageLifeDays: number = 30; 
-  private milliSecsInOneDay: number = 8.64e+7; 
+  private milliSecsInOneDay: number = 8.64e+7;
+
+  constructor(private router: Router)  {
+    super(router);
+  }
 
   notify(message: string) {
     this.cartChangedSource.next(message);
@@ -20,7 +26,7 @@ export class CartChangedService {
   }
  
   getWebStorageItemString(entity: string): string {
-    let dateString = localStorage.getItem(`${Misc.SHOP_CART_PREFIX}${entity}time`);
+    let dateString = localStorage.getItem(`${super.getCartCookie()}${entity}time`);
     let date: number = dateString ? Date.parse(dateString) : null;
     // adding 5 to increase the 'now' value in very small ammount to show that now happend after the item was set
     let now: number = Date.parse(new Date().toUTCString()) + 5;
@@ -34,7 +40,7 @@ export class CartChangedService {
         return null;
     } else
         return null;
-    return localStorage.getItem(`${Misc.SHOP_CART_PREFIX}${entity}`);
+    return localStorage.getItem(`${super.getCartCookie()}${entity}`);
   }
 
   getWebStorageItem(entity: string): string[] {
@@ -46,14 +52,14 @@ export class CartChangedService {
   }
 
   setWebStorageItem(entity: string, ids: string) {
-    localStorage.setItem(`${Misc.SHOP_CART_PREFIX}${entity}`, ids);
+    localStorage.setItem(`${super.getCartCookie()}${entity}`, ids);
     let date = new Date().toUTCString();
-    localStorage.setItem(`${Misc.SHOP_CART_PREFIX}${entity}time`, date);
+    localStorage.setItem(`${super.getCartCookie()}${entity}time`, date);
   }
 
   removeWebStorageItem(entity: string) {
-    localStorage.removeItem(`${Misc.SHOP_CART_PREFIX}${entity}`);
-    localStorage.removeItem(`${Misc.SHOP_CART_PREFIX}${entity}time`);
+    localStorage.removeItem(`${super.getCartCookie()}${entity}`);
+    localStorage.removeItem(`${super.getCartCookie()}${entity}time`);
   }
 
   webStorageItemIsSet(entity: string): boolean {

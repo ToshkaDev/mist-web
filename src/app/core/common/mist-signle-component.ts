@@ -1,5 +1,6 @@
 import { Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
 
 import { AbstractCart } from './abstract-cart';
 import { CartChangedService } from '../../shop-cart/cart-changed.service';
@@ -10,8 +11,8 @@ export abstract class MistSingleComponent extends AbstractCart  {
     readonly cartRemove = {"add": false, "remove": true, "download": false};
     readonly cartAdd = {"add": true, "remove": false, "download": false};
 
-    constructor(private cartChangedService: CartChangedService, private listEntity: string)  {
-        super();
+    constructor(router: Router, private cartChangedService: CartChangedService, private listEntity: string)  {
+        super(router);
     }
 
     ngOnInit() {

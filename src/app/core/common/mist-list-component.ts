@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import MistDataSource from './mist.datasource';
 import { saveAs } from 'file-saver';
 import { Entities } from './entities';
-import {AbstractCart } from './abstract-cart';
+import { AbstractCart } from './abstract-cart';
 
 
 export abstract class MistListComponent extends AbstractCart implements OnChanges {
@@ -24,8 +24,8 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
     currentDatabase: string = "mist";
     
     constructor(private router: Router, private cartChangedService: CartChangedService, private entity: string, private isShopCart: boolean = false)  {
-        super(isShopCart);
-        this.currentDatabase = this.getCurrentDatabase();
+        super(router, isShopCart);
+        this.currentDatabase = super.getCurrentDatabase();
     }
 
     ngOnChanges() {
@@ -215,15 +215,4 @@ export abstract class MistListComponent extends AbstractCart implements OnChange
         let file = new File([mistFile], `${this.fileNamePrefix}${this.entity}`, {type: "text/plain;charset=utf-8"});
         saveAs(file);
     }
-
-    private getCurrentDatabase(): string {
-        if (this.router.url) {
-          const rootUrl = this.router.url.split("/")[1];
-          if (rootUrl === "")
-            return "mist";
-          else if (rootUrl === "mist" || rootUrl === "mist-metagenomes")
-            return rootUrl;
-        } 
-        return null;
-      }
 }

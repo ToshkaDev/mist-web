@@ -4,6 +4,7 @@ import { fieldMap as FieldMap } from '../common/fields';
 import { Entities } from '../common/entities';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
+import { MistDatabaseGetter } from '../common/mist-database-getter';
 
 export enum SignalDomainKind {
   Chemotaxis = 'chemotaxis',
@@ -73,7 +74,7 @@ export interface GenomeStpMatrix {
 }
 
 @Injectable()
-export class MistApi {
+export class MistApi extends MistDatabaseGetter {
   // static BASE_URL = 'https://api.mistdb.com/v1';
   // static BASE_URL = 'http://localhost:5000/v1';
   static BASE_URL = 'https://api.mistdb.caltech.edu/v1';
@@ -85,20 +86,8 @@ export class MistApi {
   static paginationParams = "page=%pageNumber%&per_page=%perPage%";
   static allGenomesScope = "All Genomes";
 
-  static ENTITY_TO_BASEURL: Map<string, string> = new Map([
-      [Entities.GENOMES, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
-      [Entities.GENOMES_SHOPCART, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
-      [Entities.SCOPE, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
-      [Entities.GENOME, MistApi.BASE_URL + MistApi.GENOMES_ROOT],
-      [Entities.GENES, MistApi.BASE_URL + MistApi.GENES_ROOT],
-      [Entities.GENES_SHOPCART, MistApi.BASE_URL + MistApi.GENES_ROOT],
-      [Entities.GENE, MistApi.BASE_URL + MistApi.GENES_ROOT],
-      [Entities.NEIGHBOUR_GENES, MistApi.BASE_URL + MistApi.GENES_ROOT],
-      [Entities.SIGNAL_GENES, MistApi.BASE_URL + MistApi.GENOMES_ROOT]
-  ]);
-
-  static ENTITY_TO_BASEURL2: Map<string, Map<string, string>> = new Map([
-    ["mist", new Map([
+  static ENTITY_TO_BASEURL: Map<string, Map<string, string>> = new Map([
+    [Entities.MIST, new Map([
       [Entities.GENOMES, MistApi.BASE_URL_MIST + MistApi.GENOMES_ROOT],
       [Entities.GENOMES_SHOPCART, MistApi.BASE_URL_MIST + MistApi.GENOMES_ROOT],
       [Entities.SCOPE, MistApi.BASE_URL_MIST + MistApi.GENOMES_ROOT],
@@ -110,7 +99,7 @@ export class MistApi {
       [Entities.SIGNAL_GENES, MistApi.BASE_URL_MIST + MistApi.GENOMES_ROOT]
       ])
     ],
-    ["mist-metagenomes", new Map([
+    [Entities.MIST_METAGENOMES, new Map([
       [Entities.GENOMES, MistApi.BASE_URL_METAGENOMES + MistApi.GENOMES_ROOT],
       [Entities.GENOMES_SHOPCART, MistApi.BASE_URL_METAGENOMES + MistApi.GENOMES_ROOT],
       [Entities.SCOPE, MistApi.BASE_URL_METAGENOMES + MistApi.GENOMES_ROOT],
@@ -124,17 +113,8 @@ export class MistApi {
     ]
   ]);
 
-  constructor(private router: Router, private http: HttpClient) {}
-
-  private getCurrentDatabase(): string {
-    if (this.router.url) {
-      const rootUrl = this.router.url.split("/")[1];
-      if (rootUrl === "")
-        return Entities.MIST;
-      else if (rootUrl === Entities.MIST || rootUrl === Entities.MIST_METAGENOMES)
-        return rootUrl;
-    } 
-    return null;
+  constructor(private router: Router, private http: HttpClient) {
+    super(router);
   }
 
   searchWithPaginationUrl(query: any, entity: string): string {
@@ -216,7 +196,7 @@ export class MistApi {
   }
 
   getBaseUrl(entity: string) {
-    return MistApi.ENTITY_TO_BASEURL2.get(this.getCurrentDatabase()).get(entity);
+    return MistApi.ENTITY_TO_BASEURL.get(super.getCurrentDatabase()).get(entity);
   }
 
   fetchStProfileData(genomeVersion): Observable<SignalProfileCount[]> {
