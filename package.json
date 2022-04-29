@@ -36,7 +36,7 @@
     "core-js": "^2.4.1",
     "d3-ng2-service": "^2.0.0",
     "file-saver": "2.0.0",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.21",
     "ngx-breadcrumbs": "0.0.3",
     "query-string": "^5.0.1",
     "rxjs": "^5.5.2",
