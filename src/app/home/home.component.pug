@@ -1,36 +1,26 @@
 .row
-  .six.columns
-    h4 Complete signal transduction profile
-    p MiST 3.0 provides signal transduction profiles of more than 125,000 bacterial and archaeal genomes. This release of the database is a result of a substantial scaling to accommodate constantly growing microbial genomic data. 
-    p The database can be explored using the web-interface or a&nbsp;
-      a(href="https://api.mistdb.caltech.edu/") REST API
-      | , which both powers this website and provides programmatic access to the underlying data.
-    p The first version of MiST database was issued in 2007 to identify and document signal transduction systems in microbes and provide a convenient portal for scientists to explore this knowledge.
-    p Although MiST3 is primarily focused on signal transduction, it stores precomputed features of all proteins encoded in NCBI RefSeq genomes. All NCBI RefSeq genomes and the encoded proteins can be explored using convenient features implemented in MiST without running external software. 
+  .six.columns(class="left-content")
+    .bottom-margin
+      h3 Genomes
+      p This is the largest part of the database. We have uploaded and processed many more bacterial and archaeal genomes and prepared their complete signal transdcution profiles. Go ahead and explore them.
+      ul(style="list-style-type: none")
+        li
+          strong 125,000+
+          |  genomes
+        li
+          strong 13 million
+          |  replicons / contigs
+        li
+          strong 516 million
+          |  genes
+        li
+          strong 100 million
+          |  unique protein sequences
+      button.mist-button(mat-button routerLink="/mist/")  Explore Genomes
 
-  .six.columns  
-    p: img(src="assets/images/profile.png" style="width: 520px;")
-
-.row
-  .six.columns
-    h4 Signal transduction systems classification
-    p  MiST 3.0 provides a comprehensive classification of signal transduction systems and distribution of signal transduction proteins across OCS, TCS and chemosensory systems. The chemosensory systems table shows the chemosensory pathways encoded in the given genome. 
-  .six.columns 
-    br 
-    p: img(src="assets/images/st_tables.png" style="width: 600px;")
-  
-.row
-  .six.columns
-    h4 Signal transduction proteins exploration
-    p  Convenient instruments for signal transduction proteins exploration. Identification of protein domains, low-complexity regions and coiled-coils and mapping them on the protein.  
-  .six.columns 
-    br 
-    p: img(src="assets/images/st_proteins.png" style="width: 600px;")
-  
-.row
-  .six.columns
-    h4 Statistics
-    p The database is streamlined to easily and regularly assimilate new genomes and predict their signal transduction properties in a distributed fashion.
+  .six.columns(class="right-content")
+    h3 Metagenomes
+    p Metagenomes represent a rich source of unique and unxeplored signal transduction information. We have integrated metagenomic data in MiST to lay the foundation for the research in metagenomic signal transduction.   
     ul(style="list-style-type: none")
       li
         strong 125,000+
@@ -44,11 +34,13 @@
       li
         strong 100 million
         |  unique protein sequences
-  .six.columns
-    h4 Citation
+    button.mist-button(mat-button routerLink="/mist-metagenomes/")  Explore Metagenomes
+
+.row
+  .six.columns(class="left-content")
+    h5 Citation
     p Gumerov VM, Ortega DR, Adebali O, Ulrich LE, and Zhulin IB (2020) MiST 3.0: an updated microbial signal transduction database with an emphasis on chemosensory systems. 
       a(href="https://doi.org/10.1093/nar/gkz988", target="_blank") 
         span(style="font-style:italic")  Nucleic Acids Research,
           span(style="font-style:normal") 48: D459–D464.
     a(routerLink="/help" [queryParams]="{'code-of-conduct': 'true'}") MiST Code Of Conduct
- 

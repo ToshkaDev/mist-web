@@ -25,3 +25,47 @@ mat-form-field {
 .cart-details {
     color: #4d4d4d;
 }
+
+.db-switcher {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.db-toggle {
+    margin: 0 15px;
+}
+
+.toggle-element {
+    // change inactive toggle colours
+    /deep/ .mat-slide-toggle:not(.mat-checked):not(.mat-disabled) .mat-slide-toggle-bar {
+        background-color: #7db6e3;
+    }
+    /deep/ .mat-slide-toggle:not(.mat-checked):not(.mat-disabled) .mat-slide-toggle-thumb {
+        background-color: #0B4F6C;
+    }
+    /deep/ .mat-slide-toggle:not(.mat-disabled) .mat-ripple-element {
+        background-color: rgba(11, 79, 108, 0.2) !important;
+    }
+
+    // change active toggle colours
+    /deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+        background-color: #AF7EA0;
+    }
+    /deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+        background-color: #48233B;
+    }
+    /deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-ripple-element {
+        background-color: rgba(96, 5, 72, 0.20) !important;
+    }
+}
+
+.db-switcher-lable {
+    font-size: 1.4em;
+    padding-bottom: 10px;
+    color: grey;
+}
+
+.mat-slide-toggle {
+    transform: scale(1.1);
+}

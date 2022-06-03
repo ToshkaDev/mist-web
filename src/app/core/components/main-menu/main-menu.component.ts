@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, AfterContentChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store, MemoizedSelector} from '@ngrx/store';
@@ -10,6 +10,7 @@ import { State } from '../../../app.reducers';
 import { Entities } from '../../common/entities';
 import { ScopeService } from './scope.service';
 import { CartChangedService } from '../../../shop-cart/cart-changed.service';
+import { ToggleChangedService } from '../protein-feature-toggle/toggle-changed.service';
 import {MistDatabaseGetter } from '../../common/mist-database-getter';
 
 import * as MistAction from '../../common/mist-actions';
@@ -47,10 +48,18 @@ export class MainMenuComponent extends MistDatabaseGetter implements OnInit, Aft
   private genesInCart: string;
   private genomesInCart: string;
   private scopeSetFromDetailPage: genomeScopeInterface;
-  private mist: any = {[Entities.MIST]: true, [Entities.MIST_METAGENOMES]: false};
   private database: string = Entities.MIST;
 
+  // colors
+  private dbNameColorActive = "black";
+  private dbNameColorInactive = "gray";
+  private dbNameColor = {
+    'mist': {'color': this.dbNameColorActive},
+    'mist-metagenomes': {'color': this.dbNameColorInactive},
+  };
+
   @Output() databaseSwitchEvent = new EventEmitter<any>();
+  @Input() databaseChecked = false;
 
   private selectionOptionToRoute = new Map<string, Map<string, string>> ([
     [Entities.MIST, new Map([
@@ -165,18 +174,16 @@ export class MainMenuComponent extends MistDatabaseGetter implements OnInit, Aft
     private router: Router,
     private store: Store<any>,
     private scopeService: ScopeService,
-    private cartChangedService: CartChangedService
+    private cartChangedService: CartChangedService,
+    private toggleChanegsService: ToggleChangedService
   ) {
     super(router);
   }
 
   ngOnInit() {
     this.router.events.subscribe(() => {
-
       const currentDatabase = super.getCurrentDatabase();
       const currentUrl = this.getCurrentUrl();
-      console.log("A this.getCurrentUrl() " + currentUrl)
-      console.log("A this.currentDatabase() " + currentDatabase)
       this.changeScopeTo(false);
       this.setExamples();
       if (this.routeToSelectionOption.get(currentDatabase).has(currentUrl)) {
@@ -196,11 +203,13 @@ export class MainMenuComponent extends MistDatabaseGetter implements OnInit, Aft
         this.selectScope(this.scopeSetFromDetailPage.refSeqVersion);
         this.scopeSetFromDetailPage = null;
       }
-
       // Set isSearchPerformed to null when not in search mode
       if (!this.routeToSelectionOption.get(currentDatabase).has(currentUrl)) {
         this.isSearchPerformed$ = null;
       }
+      // Finally, update the object database and set styles corresponding to the selected database
+      this.database = currentDatabase;
+      this.mistSetStyles();
     });
 
     // (A)
@@ -215,7 +224,13 @@ export class MainMenuComponent extends MistDatabaseGetter implements OnInit, Aft
         this.entityChanged({'value': Entities.GENES});
       }
     });
-
+    
+    // subscribe to database toggle even and make corresponding updates upon even detection
+    this.toggleChanegsService.databaseChanged$.subscribe(isChecked => {
+      this.databaseChecked = isChecked; 
+      this.mistSetDatabase();
+    });
+    
     this.genesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENES);
     this.genomesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENOMES);
 
@@ -273,27 +288,28 @@ export class MainMenuComponent extends MistDatabaseGetter implements OnInit, Aft
     }
   }
 
-  // entityChanged(entity: any) {
-  //   this.selectedComponent = entity.value;
-  //   this.router.navigate([this.selectionOptionToRoute.get(this.selectedComponent)]);
-  // }
+  mistSwitchDatabaseClicked($event) {
+    this.toggleChanegsService.databaseChanged($event.checked);
+  }
 
-  mistSwitchDatabaseClicked (database: any) {
-    this.database = database;
-    if (this.selectionOptionToRoute.get(database)) {
-      this.router.navigate([this.selectionOptionToRoute.get(database).get("home")]);
-      if (database === Entities.MIST) {
-        this.mist[Entities.MIST] = true;
-        this.mist[Entities.MIST_METAGENOMES] = false;
-      } else if (database === Entities.MIST_METAGENOMES) {
-        this.mist[Entities.MIST] = false;
-        this.mist[Entities.MIST_METAGENOMES] = true;
-      }
-      this.databaseSwitchEvent.emit(database);
-      // this.examples = this.entityToExamples.get(super.getCurrentDatabase()).has(this.selectedComponent)
-      // ? this.entityToExamples.get(super.getCurrentDatabase()).get(this.selectedComponent)
-      // : null;
+  mistSetDatabase() {
+    this.databaseChecked ? this.database = Entities.MIST_METAGENOMES : this.database = Entities.MIST;
+    if (this.selectionOptionToRoute.get(this.database)) {
+      this.router.navigate([this.selectionOptionToRoute.get(this.database).get("home")]);
     }
+  }
+  
+  mistSetStyles() {
+    if (this.database === Entities.MIST_METAGENOMES) {
+      this.databaseChecked = true
+      this.dbNameColor["mist-metagenomes"]["color"] = this.dbNameColorActive;
+      this.dbNameColor["mist"]["color"] = this.dbNameColorInactive;
+    } else {
+      this.databaseChecked = false;
+      this.dbNameColor["mist"]["color"] = this.dbNameColorActive;
+      this.dbNameColor["mist-metagenomes"]["color"] = this.dbNameColorInactive;
+    }
+    this.databaseSwitchEvent.emit(this.database);
   }
 
   clearAndPrepare() {

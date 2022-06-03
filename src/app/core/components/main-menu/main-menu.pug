@@ -21,8 +21,11 @@
         span(*ngIf="!isLast") {{ "; " }}
 
   .three.columns
-    button.mist-button-switcher(mat-button (click)="mistSwitchDatabaseClicked('mist')" *ngIf="mist['mist-metagenomes']") Switch to MiST
-    button.mist-button-switcher(mat-button (click)="mistSwitchDatabaseClicked('mist-metagenomes')" *ngIf="mist['mist']") Switch to MiST Metagenomes
+    .db-switcher
+      .db-switcher-lable([ngStyle]="dbNameColor['mist']") Genomes
+      .toggle-element
+        mat-slide-toggle.db-toggle((change)="mistSwitchDatabaseClicked($event)" [checked]="databaseChecked") 
+      .db-switcher-lable([ngStyle]="dbNameColor['mist-metagenomes']") Metagenomes
 
   .four.columns.pull-right
     mat-icon.cart-icon

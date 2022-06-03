@@ -5,6 +5,8 @@ import { Subject }    from 'rxjs';
 export class ToggleChangedService {
     private lcrChangedSource = new Subject<boolean>();
     private coiledCoilsChangedSource = new Subject<boolean>();
+    private databaseChangedSource = new Subject<boolean>();
+    databaseChanged$ = this.databaseChangedSource.asObservable()
     lcrChanged$ = this.lcrChangedSource.asObservable();
     coiledCoilsChanged$ = this.coiledCoilsChangedSource.asObservable();
 
@@ -14,5 +16,9 @@ export class ToggleChangedService {
 
     coiledCoilsChanged(isChecked: boolean) {
         this.coiledCoilsChangedSource.next(isChecked);
+    }
+
+    databaseChanged(isChecked: boolean) {
+        this.databaseChangedSource.next(isChecked);
     }
 }
