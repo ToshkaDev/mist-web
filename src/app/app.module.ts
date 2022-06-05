@@ -51,6 +51,8 @@ import { NeighborGenesView } from  './gene/neighbor-genes/neighbor-genes.view.co
 import { GenomeEffects } from './genome/genome.effects';
 import { GeneEffects } from './gene/gene.effects';
 import { HomeComponent } from './home/home.component';
+import { HomeMistComponent } from './home/home-mist.component';
+import { HomeMistMetagenomesComponent } from './home/home-mist-metagenomes.component';
 import { HelpComponent } from './home/help.component';
 import { GenomeResolver } from './genome/genome.resolver';
 import { GeneResolver } from './gene/gene.resolver';
@@ -94,6 +96,8 @@ import { ToggleChangedService } from './core/components/protein-feature-toggle/t
     NeighborGenes,
     NeighborGenesView,
     HomeComponent,
+    HomeMistComponent,
+    HomeMistMetagenomesComponent,
     HelpComponent,
     MainMenuComponent,
     SearchInputComponent,
