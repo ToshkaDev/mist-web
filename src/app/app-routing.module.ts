@@ -22,11 +22,6 @@ const routes: Routes = [
         path: '',
         component: HomeComponent
       },
-      { 
-        path: 'help',
-        component: HelpComponent,
-        data: { breadcrumbs: 'Help' }
-      },
       //MiST database
       {
         path: 'mist',
@@ -35,6 +30,11 @@ const routes: Routes = [
           {
             path: '',
             component: HomeMistComponent
+          },
+          { 
+            path: 'help',
+            component: HelpComponent,
+            data: { breadcrumbs: 'Help' }
           },         
           {
             path: 'shop-cart',
