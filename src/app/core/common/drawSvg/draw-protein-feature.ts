@@ -17,17 +17,19 @@ export default class DrawProteinFeature {
     // Constants
     private kSvgWidth = 500;
     private kSvgHeight = 100;
-    static readonly kBackboneHeight = 10;
-    static readonly kDomainHeight = 40;
-    static readonly kDomainStrokeWidth = 3;
+    private maxProteinLength = 1000;
+    static readonly kBackboneHeight = 5;
+    static readonly kDomainHeight = 30;
+    static readonly kDomainStrokeWidth = 2;
     static readonly kPartialPixel = 3;
-    static readonly kTransmembraneHeight = 60;
-    static readonly kCoilsHeight = 45;
-    static readonly kLcrHeight = 45;
+    static readonly kTransmembraneHeight = 35;
+    static readonly kCoilsHeight = 35;
+    static readonly kLcrHeight = 35;
     static readonly kDomainTextMargin = 5;
-    static readonly kNameLengthToPixelFactor = 10;
+    static readonly kNameLengthToPixelFactor = 7;
+    static readonly yTranslationOfSvg = 75;
     static readonly kFontFamily = "Verdana";
-    static readonly kFontSize = 18;
+    static readonly kFontSize = 16;
     static readonly nonDomainFeaturesSet = new Set([DataType.TM, DataType.COILED_COILS, DataType.LOW_COMPLEXITY]);
     static readonly domainColors = {
         "domain"        : "rgba(255,255,255,0.8)",
@@ -46,9 +48,10 @@ export default class DrawProteinFeature {
     private kCoilsYstart = this.kMiddleY - (DrawProteinFeature.kCoilsHeight/2);
     private kLcrYstart = this.kMiddleY - (DrawProteinFeature.kLcrHeight/2);
 
-    constructor(element: ElementRef, d3Service: D3Service) {
+    constructor(element: ElementRef, d3Service: D3Service, maxProteinLength: number) {
         this.d3 = d3Service.getD3();
         this.parentNativeElement = element.nativeElement;
+        this.maxProteinLength = maxProteinLength ? maxProteinLength : this.maxProteinLength;
     }
 
     setSvgSize(svgWidth: number, svgHeight: number = null) {
@@ -78,8 +81,8 @@ export default class DrawProteinFeature {
         let d3ParentElement = d3.select(this.parentNativeElement);
         this.d3Element = d3ParentElement.select<HTMLBaseElement>(htmlElement);
         let featureScale = d3.scaleLinear()
-        .domain([0, data[0].length])
-        .range([0, kSvgWidth]);
+        .domain([0, this.maxProteinLength])
+        .range([2, kSvgWidth]);
 
         let container = this.d3Element
             .selectAll()
@@ -88,7 +91,7 @@ export default class DrawProteinFeature {
             .append('svg')
             .attr("class", "protein-feature")
             .attr("height", kSvgHeight)
-            .attr("width", function(d) { return d.length ? featureScale(d.length) : 0 + 1 })
+            .attr("width", function(d) { return d.length ? featureScale(d.length) : 0 })
             .append('g');
 
         // Draw backbone
@@ -100,6 +103,10 @@ export default class DrawProteinFeature {
             .attr("width", function(d) { return featureScale(d.length)})
             .attr("height", DrawProteinFeature.kBackboneHeight)
             .attr("fill", "gray");
+        
+        container.append("g").attr("class", "protein-axis")
+            .attr("transform", `translate(0,${DrawProteinFeature.yTranslationOfSvg})`)
+            .call(d3.axisBottom(featureScale).tickSizeOuter(0).ticks(6));
 
         let drawCoiledCoils = this.drawCoiledCoils;
         let drawLowComplexityRegion = this.drawLowComplexityRegion;

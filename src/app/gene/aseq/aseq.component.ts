@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { D3Service } from 'd3-ng2-service';
 import DrawProteinFeature from '../../core/common/drawSvg/draw-protein-feature';
 import { AseqViewModel } from './aseq.view.model';
+import { MiscEnum } from '../../core/common/misc-enum';
 
 @Component({
     selector: 'mist-aseq',
@@ -50,11 +51,13 @@ export class AseqComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service);
-        let svgWidth = this.getSvgWidth();
-        this.drawProteinFeature.setSvgSize(svgWidth);
         this.gene$.skip(1).take(1).subscribe(result => {
             if (result && result.Aseq) {
+                let maxProtLength = result.Aseq.length <= MiscEnum.MAX_PROTEIN_LENGTH ? MiscEnum.MAX_PROTEIN_LENGTH : result.Aseq.length;
+                this.drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service, maxProtLength);
+                let svgWidth = this.getSvgWidth();
+                this.drawProteinFeature.setSvgSize(svgWidth);
+
                 result.Aseq.pfam31 && result.Aseq.pfam31.length ? this.domainsPresent = true : this.domainsPresent = false;
                 result.Aseq.segs && result.Aseq.segs.length ? this.lcrPresent = true : this.lcrPresent = false;
                 result.Aseq.coils && result.Aseq.coils.length ? this.coiledCoilesPresent = true : this.coiledCoilesPresent = false;

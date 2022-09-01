@@ -7,6 +7,7 @@ import { Entities } from '../core/common/entities';
 import { MistListComponent } from '../core/common/mist-list-component';
 import { CartChangedService } from '../shop-cart/cart-changed.service';
 import { ToggleChangedService } from '../core/components/protein-feature-toggle/toggle-changed.service';
+import { MiscEnum } from '../core/common/misc-enum';
 
 
 export abstract class GenesListMain extends MistListComponent implements OnInit {
@@ -21,6 +22,7 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
   private geneToProteinObject = new Map<string, DrawProteinFeature>();
 
   private htmlElement: string = "div";
+  private maxProteinLength = MiscEnum.MAX_PROTEIN_LENGTH;
 
   @Input() isLcrChecked = false;
   @Input() isCoiledCoilsChecked = false;
@@ -35,14 +37,19 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
         this.geneToAseq.clear();
         this.geneIsDrawn.clear();
         this.geneToProteinObject.clear();
+        let proteinLenghts = new Array<number>();
         for (let gene of result) {
           if (gene.Aseq || (gene.Gene && gene.Gene.Aseq) ) {
             let geneId = gene.Aseq ? gene.id : gene.Gene.id;
             let aseq = gene.Aseq ? gene.Aseq : gene.Gene.Aseq;
             this.geneToAseq.set(geneId, aseq);
             this.geneIsDrawn.set(geneId, false);
+            proteinLenghts.push(gene.Aseq ? gene.Aseq.length : gene.Gene.Aseq.length);
           }
         }
+        this.maxProteinLength = Math.max(...proteinLenghts.map(protLen => protLen));
+        if (this.maxProteinLength <= MiscEnum.MAX_PROTEIN_LENGTH)
+          this.maxProteinLength = MiscEnum.MAX_PROTEIN_LENGTH;
       }
     });
     this.toggleChanegsService.lcrChanged$.subscribe(isChecked => {
@@ -60,7 +67,7 @@ export abstract class GenesListMain extends MistListComponent implements OnInit 
     let aseqData = this.geneToAseq.get(geneId);
     // !this.geneIsDrawn.get(geneId) is an additional guard preventing repeated rendering
     if (aseqData && !this.geneIsDrawn.get(geneId)) {
-      let drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service);
+      let drawProteinFeature = new DrawProteinFeature(this.elementRef, this.d3Service, this.maxProteinLength);
       drawProteinFeature.setSvgSize(svgWidth);
       drawProteinFeature.drawProteinFeature(`${this.htmlElement}.gene${geneId}`, [aseqData], this.isLcrChecked, this.isCoiledCoilsChecked);
       this.geneToProteinObject.set(geneId, drawProteinFeature);
