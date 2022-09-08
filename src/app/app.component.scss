@@ -184,34 +184,6 @@ footer {
   @extend %osu;
 }
 
-%caltech {
-  max-width: 100px;
-  max-height: 25px;
-  min-width: 100px;
-  min-height: 25px;
-}
-.logo-caltech {
-  @extend %caltech;
-  filter: grayscale(95%) brightness(1.1);
-}
-.logo-caltech-active {
-  @extend %caltech;
-}
-
-%sabanci {
-  max-width: 160px;
-  max-height: 70px;
-  min-width: 160px;
-  min-height: 70px;
-}
-.logo-sabanci {
-  @extend %sabanci;
-  filter: grayscale(100%) brightness(1) opacity(0.6);
-}
-.logo-sabanci-active {
-  @extend %sabanci;
-}
-
 .breadcrumbs {
   margin-left: 22px;
 }

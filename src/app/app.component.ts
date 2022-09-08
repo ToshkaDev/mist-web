@@ -27,8 +27,8 @@ export class AppComponent implements AfterContentInit {
 
   isNnihLogoActive = false;
   isOsuLogoActive = false;
-  isCaltechLogoActive = false;
-  isSabanciLogoActive = false;
+  // isCaltechLogoActive = false;
+  // isSabanciLogoActive = false;
   isNetlifyLogoActive = false;
 
   header_color_mist = "#0B4F6C";
@@ -47,12 +47,6 @@ export class AppComponent implements AfterContentInit {
 
     Observable.fromEvent(this.osuLogo.nativeElement, 'mouseenter').subscribe(() => this.isOsuLogoActive = true);
     Observable.fromEvent(this.osuLogo.nativeElement, 'mouseleave').subscribe(() => this.isOsuLogoActive = false);
-
-    Observable.fromEvent(this.caltechLogo.nativeElement, 'mouseenter').subscribe(() => this.isCaltechLogoActive = true);
-    Observable.fromEvent(this.caltechLogo.nativeElement, 'mouseleave').subscribe(() => this.isCaltechLogoActive = false);
-
-    Observable.fromEvent(this.sabanciLogo.nativeElement, 'mouseenter').subscribe(() => this.isSabanciLogoActive = true);
-    Observable.fromEvent(this.sabanciLogo.nativeElement, 'mouseleave').subscribe(() => this.isSabanciLogoActive = false);
 
     Observable.fromEvent(this.netlifyLogo.nativeElement, 'mouseenter').subscribe(() => this.isNetlifyLogoActive = true);
     Observable.fromEvent(this.netlifyLogo.nativeElement, 'mouseleave').subscribe(() => this.isNetlifyLogoActive = false);

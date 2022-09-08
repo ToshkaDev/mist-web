@@ -53,14 +53,6 @@ footer([ngStyle]="styles.footer")
       img(src="assets/images/OSU.png"
         [class.logo-osu]="isOsuLogoActive == false"
         [class.logo-osu-active]="isOsuLogoActive" #osuLogo)
-    a.footer-style(href="http://www.caltech.edu/" target="_blank")
-      img(src="assets/images/Caltech_LOGO-Orange_RGB.png"
-        [class.logo-caltech]="isCaltechLogoActive == false"
-        [class.logo-caltech-active]="isCaltechLogoActive" #caltechLogo)
-    a.footer-style(href="https://www.sabanciuniv.edu/en" target="_blank")
-      img(src="assets/images/sabanci_universitesi_logo.png"
-        [class.logo-sabanci]="isSabanciLogoActive == false"
-        [class.logo-sabanci-active]="isSabanciLogoActive" #sabanciLogo)
     a.footer-style(href="https://www.netlify.com" target="_blank")
       img(src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg"
         [class.logo-netlify]="isNetlifyLogoActive == false"
