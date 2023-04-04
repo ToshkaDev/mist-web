@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ElementRef, HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
 import { D3Service } from 'd3-ng2-service';
 import DrawNeighborGenes from '../../core/common/drawSvg/draw-neighbor-genes';
 
@@ -22,7 +23,7 @@ export class NeighborGenesView implements OnInit {
     private itemNumber = 1;
     private isDrawn = false;
 
-    constructor(private elementRef: ElementRef, private d3Service: D3Service) {
+    constructor(private elementRef: ElementRef, private d3Service: D3Service, private router: Router) {
     }
 
     ngOnInit() {
@@ -35,7 +36,7 @@ export class NeighborGenesView implements OnInit {
         else if (geneClusterSvgWidth > 1900)
             geneClusterSvgWidth = 1900;
 
-        this.drawNeighborGenesObject = new DrawNeighborGenes(this.elementRef, this.d3Service);
+        this.drawNeighborGenesObject = new DrawNeighborGenes(this.elementRef, this.d3Service, this.router);
         this.drawNeighborGenesObject.setSvgSize(geneClusterSvgWidth);
         this.itemNumber = 1;
         this.isDrawn = false;

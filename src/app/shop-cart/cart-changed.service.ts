@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject }    from 'rxjs';
-import { databaseToCookies as DatabaseToCookies} from '../core/common/databaseToCookies';
 import { MistDatabaseGetter } from '../core/common/mist-database-getter';
  
 @Injectable()

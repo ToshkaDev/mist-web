@@ -1,7 +1,9 @@
 import {  ElementRef } from '@angular/core';
 import { D3Service, D3, Selection } from 'd3-ng2-service';
+import { Router } from '@angular/router';
+import { MistDatabaseGetter } from '../mist-database-getter';
 
-export default class DrawNeighborGenes {
+export default class DrawNeighborGenes extends MistDatabaseGetter {
     private d3: D3;
     private parentNativeElement: any;
     private d3Element: Selection<HTMLBaseElement, any, null, undefined>;
@@ -50,7 +52,8 @@ export default class DrawNeighborGenes {
     static readonly clusterOffsetRight = 0.084;
 
 
-    constructor(element: ElementRef, d3Service: D3Service) {
+    constructor(element: ElementRef, d3Service: D3Service, router: Router) {
+        super(router);
         this.d3 = d3Service.getD3();
         this.parentNativeElement = element.nativeElement;
     }
@@ -68,6 +71,7 @@ export default class DrawNeighborGenes {
     }
 
     drawNeighborGenes(htmlElement, gene: any, neighbGenes: any[]) {
+        let currentDB = super.getCurrentDatabase();
         let d3 = this.d3;
         let svgWidth = this.svgWidth;
         let svgHeight = this.svgHeight;
@@ -95,12 +99,13 @@ export default class DrawNeighborGenes {
         .attr("transform", `translate(0,${DrawNeighborGenes.yTranslationOfSvg})`)
         .call(d3.axisBottom(geneScale).tickSizeOuter(0).ticks(11));
         //create divs with gene descriptions
-        let divs = this.addHtml([...neighbGenes, gene], d3ParentElement);
+        let divs = this.addHtml([...neighbGenes, gene], d3ParentElement, currentDB);
         this.addEventListeneres(geneCluster, d3, geneScale);
         this.addHtmlEventListeneres(divs, d3, geneScale);
     }
 
-    private addHtml(neighbourGenes, d3ParentElement) {
+    private addHtml(neighbourGenes, d3ParentElement, currentDB) {
+        console.log("currentDB " + currentDB)
         let divs = d3ParentElement
         .selectAll('div')
         // seems like the first item from neighbourGenes gets bind up to d3ParentElement; so adding an additional dummy item
@@ -115,7 +120,7 @@ export default class DrawNeighborGenes {
         .html(function(gene) {
             let format = gene.strand === "-" ? "complement(coords)" : "(coords)";
             let geneCoordinates = format.replace("coords", gene.start + ".." + gene.stop);
-            return `<div><a routerLink href="/genes/${gene.stable_id}">${gene.stable_id}</a></div>` +
+            return `<div><a routerLink href="${currentDB}/genes/${gene.stable_id}">${gene.stable_id}</a></div>` +
                 `<div>${gene.version}</div><div>${geneCoordinates}</div>` +
                 `<div style="word-wrap: break-word; width: 270px; height: 100px;"><span style="font-weight: bold;">Product: </span>${gene.product}<div/>`;
         })
