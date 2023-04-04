@@ -35,7 +35,7 @@ div.detail-uber
                         td(*ngFor="let element of proteinFeature; let i = index")
                             div(*ngIf="aseqViewModel.activeProperties.type != 'sequence'; else sequenceBlock")
                                 div(*ngIf="i == 1 && aseqViewModel.activeProperties.type == 'pfam'; else nonUrBlock")
-                                    a(href="https://pfam.xfam.org/search/keyword?query={{ element }}", target="_blank")
+                                    a(href="https://www.ebi.ac.uk/interpro/search/text/{{ element }}", target="_blank")
                                         span.gText {{ element }}
                                 ng-template(#nonUrBlock)
                                     span.gText {{ element }}
