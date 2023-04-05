@@ -15,13 +15,13 @@ export abstract class MistDatabaseGetter {
   }
 
   getCurrentDatabase(): string {
-      if (this.mistRouter.url) {
-        const rootUrl = this.mistRouter.url.split("/")[1];
-        if (rootUrl === "")
-          return "mist";
-        else if (rootUrl === "mist" || rootUrl === "mist-metagenomes")
-          return rootUrl;
-      } 
-      return null;
+    if (this.mistRouter.url) {
+      const rootUrl = this.mistRouter.url.split("/")[1];
+      if (rootUrl === "")
+        return "mist";
+      else if (rootUrl === "mist" || rootUrl === "mist-metagenomes")
+        return rootUrl;
     }
+    return null;
+  }
 }

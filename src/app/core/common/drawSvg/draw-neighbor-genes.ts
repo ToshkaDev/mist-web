@@ -105,7 +105,6 @@ export default class DrawNeighborGenes extends MistDatabaseGetter {
     }
 
     private addHtml(neighbourGenes, d3ParentElement, currentDB) {
-        console.log("currentDB " + currentDB)
         let divs = d3ParentElement
         .selectAll('div')
         // seems like the first item from neighbourGenes gets bind up to d3ParentElement; so adding an additional dummy item

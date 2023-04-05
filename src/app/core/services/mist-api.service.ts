@@ -77,7 +77,7 @@ export interface GenomeStpMatrix {
 export class MistApi extends MistDatabaseGetter {
   // static BASE_URL = 'https://api.mistdb.com/v1';
   // static BASE_URL = 'http://localhost:5000/v1';
-  static BASE_URL = 'https://api.mistdb.caltech.edu/v1';
+  //static BASE_URL = 'https://api.mistdb.caltech.edu/v1';
   static BASE_URL_MIST = 'https://mib-jouline-db.asc.ohio-state.edu/v1';
   static BASE_URL_METAGENOMES = 'https://metagenomes.asc.ohio-state.edu/v1';
   

@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input, AfterContentChecked } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd, Event as NavigationEvent } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store, MemoizedSelector} from '@ngrx/store';
 import GenomesFilter from '../../../genomes/genomes.filter';
@@ -225,10 +225,21 @@ export class MainMenuComponent extends MistDatabaseGetter implements OnInit, Aft
       }
     });
     
-    // subscribe to database toggle even and make corresponding updates upon even detection
+    // subscribe to database toggle event and make corresponding updates upon the event detection,
+    // including naviagting to a corresponding url
     this.toggleChanegsService.databaseChanged$.subscribe(isChecked => {
-      this.databaseChecked = isChecked; 
+      this.databaseChecked = isChecked;
       this.mistSetDatabase();
+    });
+
+    // subscribe to navigation events in order to update the shop-cart item counts upon navigation end event
+    // updating upon navifation end event is done to show correct counts for the selected database
+    this.router.events.subscribe(
+      (event: NavigationEvent) => {
+        if(event instanceof NavigationEnd) {
+          this.genesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENES);
+          this.genomesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENOMES);
+      }
     });
     
     this.genesInCart = this.cartChangedService.refreshWebStorageItemCounter(Entities.GENES);
