@@ -17,6 +17,12 @@
                                 a(href="{{property.ftp_path}}", target="_blank") {{ property.value }}
                             ng-template(#notFtpBlock)
                                 td {{ property.value }}
+                        ng-template([ngIf]="showBioSampleDetails")
+                            tr(*ngFor="let property of genomeViewModel.biosampleDetailsFields")
+                                td(style="font-weight: bold; padding-left: 5%;") {{ property.name }}
+                                td {{ property.value }}
+                        button(class="mist-button-smaller" mat-button (click)="toggleBioSampleDetails()") BioSample Details
+                            mat-icon(aria-hidden="true") {{ arrow }}
     .pull-right.add-to-cart-button
         cart-select-buttons((selectClickEvent)='onAddRemoveClickEvent($event)' [cart]="cart")
         button.mist-button.scope-button(mat-raised-button (click)="putScope(genomeViewModel.genome)") Set To Scope

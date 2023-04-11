@@ -8,6 +8,7 @@ export default class GenomeViewModel {
     private objectKeys = Object.keys;
     private mainInfo: any[] = [];
     private taxonomy: any[] = [];
+
     private workerModules: any = {
         "Stp": "unknown",
         "agfam2": "unknown",
@@ -19,6 +20,7 @@ export default class GenomeViewModel {
         "GeneClusters": "unknown",
         "Taxonomy": "unknown",
         "NCBICoreData": "unknown",
+        "BioSample": "unknown"
     };
 
     private workerModulesTooltips: any = {
@@ -31,7 +33,8 @@ export default class GenomeViewModel {
         "tmhmm2": "Transmembrane Predictions with TMHMM is not complete.",
         "GeneClusters": "Gene neighborhoods identification is not complete.",
         "Taxonomy": "Taxonomic classification is not complete.",
-        "NCBICoreData": "NCBI core genomic data parsing is not complete."
+        "NCBICoreData": "NCBI core genomic data parsing is not complete.",
+        "BioSample": "BioSample data parsing is not complete."
     };
     private mainInfoFields: any[] = [
         {"name": "Organism", "value": "name"},
@@ -39,11 +42,13 @@ export default class GenomeViewModel {
         {"name": "Assembly level", "value": "assembly_level"},
         {"name": "RefSeq version", "value": "version", "ftp_path": "ftp_path"},
         {"name": "Submitter", "value": "submitter"},
+        {"name": "Master project", "value": "wgs_master"},
+        {"name": "Refseq Category", "value": "refseq_category"},
         {"name": "Bioproject", "value": "bioproject"},
         {"name": "Biosample", "value": "biosample"},
-        {"name": "Master project", "value": "wgs_master"},
-        {"name": "Refseq Category", "value": "refseq_category"}
     ];
+    private biosampleDetailsFields: any[] = [
+    ]
     private taxonomyFields: any[] = [
         {"level": "superkingdom", "value": "superkingdom"},
         {"level": "phylum", "value": "phylum"},
@@ -58,7 +63,20 @@ export default class GenomeViewModel {
             this.initializeProperties(genomeData, this.mainInfo, this.mainInfoFields);
             this.initializeProperties(genomeData, this.taxonomy, this.taxonomyFields);
             this.initializeWorkerModulesStates(genomeData.WorkerModules);
+            this.populateBiosampleDetailsFields(genomeData, this.biosampleDetailsFields);
         }
+    }
+
+    private populateBiosampleDetailsFields(genomeData: any, biosampleDetailsFields: any[]) {
+        Object.entries(genomeData.BioSample).forEach(([key, value]) => {
+            if (typeof value !== 'object' && value !== null && key !== 'id')
+            biosampleDetailsFields.push({"name": key, "value": value})
+            else if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+                Object.entries(value).forEach(([key, value]) => {
+                    biosampleDetailsFields.push({"name": key, "value": value})
+                });
+            }
+        });
     }
 
     private getWorkerModuelStyle(state: string): any {

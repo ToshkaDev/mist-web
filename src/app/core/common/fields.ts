@@ -1,7 +1,7 @@
 const fieldMap = new Map<string, string>([
     ["genomes", "id,name,taxonomy_id,superkingdom,phylum,class,order,family,genus,genbank_version,version,assembly_level"],
     ["genomes_shopcart", "id,name,taxonomy_id,superkingdom,phylum,class,order,family,genus,genbank_version,version,assembly_level"],
-    ["genome", "&fields.WorkerModule"],
+    ["genome", "&fields.WorkerModule&fields.BioSample"],
     ["genes", "id,stable_id,version,names,locus,location,product&fields.Component=version,definition&fields.Aseq"],
     ["genes_inside_genome", "id,stable_id,version,names,locus,location,product&fields.Aseq"],
     ["genes_shopcart", "id,stable_id,version,names,locus,location,product&fields.Component=version,definition&fields.Aseq"],

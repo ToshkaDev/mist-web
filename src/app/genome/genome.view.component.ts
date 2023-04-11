@@ -13,6 +13,9 @@ import { ScopeService } from '../core/components/main-menu/scope.service';
 })
 export class GenomeViewComponent extends MistSingleComponent {
   @Input() genomeViewModel: any;
+  private showBioSampleDetails: boolean = false;
+  readonly arrowObject = {0: "keyboard_arrow_downc", 1:  "keyboard_arrow_upc"};
+  private arrow = "keyboard_arrow_downc";
 
   constructor(private router: Router, private scopeService: ScopeService, cartChangedService: CartChangedService)  {
     super(router, cartChangedService, Entities.GENOMES)
@@ -21,5 +24,10 @@ export class GenomeViewComponent extends MistSingleComponent {
   private putScope(event: any) {
     this.scopeService.putScope(event);
   }
+
+  private toggleBioSampleDetails(show: boolean = false) {
+    show ? this.showBioSampleDetails = true : this.showBioSampleDetails = !this.showBioSampleDetails;
+    this.arrow = this.arrowObject[+this.showBioSampleDetails];
+}
 
 }
