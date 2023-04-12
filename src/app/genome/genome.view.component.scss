@@ -10,3 +10,22 @@
 .scope-button {
     margin-left: 3px;
 }
+
+.mist-button-biosample  {
+    margin-top: 0.5em;
+    color: white !important;
+    background-color: #DAD2BC;
+    border-radius: 0.5em;
+    /deep/ .mat-button-ripple {
+        border-radius: 0.5em;
+    }
+}
+
+.mist-button-biosample :hover, .mist-button-biosample :active {
+    color: white !important;
+    background-color: #DAD2BC;
+    border-radius: 0.5em;
+    /deep/ .mat-button-ripple {
+        border-radius: 0.5em;
+    }
+}
