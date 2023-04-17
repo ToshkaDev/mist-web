@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { FetchGene } from './gene.actions';
@@ -19,7 +19,7 @@ export class GeneComponent implements OnInit {
     private signalGene: any;
     private ecfArray: string[] = [];
 
-    constructor(private store: Store<any>, private route: ActivatedRoute) {
+    constructor(private store: Store<any>, private route: ActivatedRoute, private router: Router) {
     }
 
     ngOnInit() {
@@ -38,7 +38,7 @@ export class GeneComponent implements OnInit {
                 }
             }
 
-            return result ? this.geneViewModel = new GeneView(result) : this.geneViewModel = null;
+            return result ? this.geneViewModel = new GeneView(result, this.router) : this.geneViewModel = null;
         });
     }
 

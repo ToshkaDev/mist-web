@@ -1,6 +1,9 @@
 import _ from "lodash";
+import { Router } from '@angular/router';
+import { MistDatabaseGetter } from '../core/common/mist-database-getter';
 
-export default class GeneViewModel {
+
+export default class GeneViewModel extends MistDatabaseGetter {
     private proteinInfo: any[] = [];
     private geneInfo: any[] = [];
     private geneInfoFields: any[] = [
@@ -21,7 +24,8 @@ export default class GeneViewModel {
         {"name": "Names", "value": "names"}
     ];
 
-    constructor(geneData: any) {
+    constructor(geneData: any, router: Router) {
+        super(router);
         if (geneData) {
             this.initializePropertis(geneData, this.proteinInfo, this.proteinInfoFields);
             this.initializePropertis(geneData, this.geneInfo, this.geneInfoFields);
@@ -36,6 +40,7 @@ export default class GeneViewModel {
                 if (element.name === "Source") {
                     element.value = elementValue;
                     element.genome_version = _.get(geneData, element.additional);
+                    element.database = super.getCurrentDatabase();
                 } else if (element.name === "Protein") {
                     let additional = _.get(geneData, element.additional);
                     element.value = `${additional} aa ` + `(${elementValue} bp)`

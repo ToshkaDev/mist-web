@@ -10,7 +10,7 @@
                             tr(*ngFor="let property of geneViewModel.geneInfo")
                                 td(style="font-weight: bold;") {{ property.name }}
                                 td(*ngIf="property.genome_version; else notUrlBlock") 
-                                    a(routerLink="/genomes/{{property.genome_version}}") {{ property.value }}
+                                    a(routerLink="/{{property.database}}/genomes/{{property.genome_version}}") {{ property.value }}
                                 ng-template(#notUrlBlock) 
                                     td {{ property.value }}
                 div(class="six columns")
