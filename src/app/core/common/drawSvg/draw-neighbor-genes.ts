@@ -120,7 +120,7 @@ export default class DrawNeighborGenes extends MistDatabaseGetter {
             let format = gene.strand === "-" ? "complement(coords)" : "(coords)";
             let geneCoordinates = format.replace("coords", gene.start + ".." + gene.stop);
             return `<div><a routerLink href="${currentDB}/genes/${gene.stable_id}">${gene.stable_id}</a></div>` +
-                `<div>${gene.version}</div><div>${geneCoordinates}</div>` +
+                `<div><a href="https://www.ncbi.nlm.nih.gov/protein/${gene.version}", target="_blank">${gene.version}</a></div><div>${geneCoordinates}</div>` +
                 `<div style="word-wrap: break-word; width: 270px; height: 100px;"><span style="font-weight: bold;">Product: </span>${gene.product}<div/>`;
         })
         return divs;

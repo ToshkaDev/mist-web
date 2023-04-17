@@ -18,6 +18,9 @@
                         tbody
                             tr(*ngFor="let property of geneViewModel.proteinInfo")
                                 td(style="font-weight: bold;") {{ property.name }}
-                                td {{ property.value }}
+                                td(*ngIf="property.name === 'Protein Accession'; else notUrlBlock")
+                                    a(href="https://www.ncbi.nlm.nih.gov/protein/{{property.value}}", target="_blank") {{ property.value }}
+                                ng-template(#notUrlBlock)
+                                    td {{ property.value }}
         .pull-right.add-to-cart-button
             cart-select-buttons((selectClickEvent)='onAddRemoveClickEvent($event)' [cart]="cart")
