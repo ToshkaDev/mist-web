@@ -37,7 +37,7 @@
                 a(href="https://www.ncbi.nlm.nih.gov/pubmed/19737356" target="_blank") Staron et al.
             p Because this scheme classifies domains, not proteins, the same protein would appear in various categories. For example, if a protein has a domain, whose role in signal transduction is unknown, and a well-annotated signal transduction domain (e.g. GGDEF), it will be listed both in the Unknown subcategory of the Input category and in the Enzymatic subcategory of the Output category. Systematic exploring of the Unknown subcategories might lead to the discovery of novel signal transduction domains and understanding the roles of other domains in signal transduction. Below is a list of signal transduction domains and their annotations used for domains classificatoin.
             button(*ngIf="signalDomainsAndMembers" class="mist-button-smaller" mat-button (click)="toggleTable()") Signal Transduction Domains
-            mat-icon(aria-hidden="true") {{ arrow }}
+                mat-icon(aria-hidden="true") {{ arrow }}
             br
             br
             table.signal-domains-table(*ngIf="signalDomainsAndMembers && showTable")
