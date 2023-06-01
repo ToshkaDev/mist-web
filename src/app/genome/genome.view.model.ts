@@ -68,15 +68,17 @@ export default class GenomeViewModel {
     }
 
     private populateBiosampleDetailsFields(genomeData: any, biosampleDetailsFields: any[]) {
-        Object.entries(genomeData.BioSample).forEach(([key, value]) => {
-            if (typeof value !== 'object' && value !== null && key !== 'id')
-            biosampleDetailsFields.push({"name": key, "value": value})
-            else if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-                Object.entries(value).forEach(([key, value]) => {
+        if (genomeData.BioSample) {
+            Object.entries(genomeData.BioSample).forEach(([key, value]) => {
+                if (typeof value !== 'object' && value !== null && key !== 'id')
                     biosampleDetailsFields.push({"name": key, "value": value})
-                });
-            }
-        });
+                else if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+                    Object.entries(value).forEach(([key, value]) => {
+                        biosampleDetailsFields.push({"name": key, "value": value})
+                    });
+                }
+            });
+        }
     }
 
     private getWorkerModuelStyle(state: string): any {

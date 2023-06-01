@@ -27,8 +27,6 @@ export class AppComponent implements AfterContentInit {
 
   isNnihLogoActive = false;
   isOsuLogoActive = false;
-  // isCaltechLogoActive = false;
-  // isSabanciLogoActive = false;
   isNetlifyLogoActive = false;
 
   header_color_mist = "#0B4F6C";

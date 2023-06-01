@@ -8,7 +8,7 @@ import { Router, Route, ActivatedRoute } from '@angular/router';
 const ucFirst = (value) => value[0].toUpperCase() + value.substr(1);
 
 const COLORS_BY_KIND = {
-  chemotaxis: '#ef5b5b',
+  chemotaxis: '#AF7EA0',
   ecf: '#5f455b',
   input: '#EAB464',
   output: '#70A4CD',
