@@ -29,3 +29,13 @@
         border-radius: 0.5em;
     }
 }
+
+#biosample a {
+    color: black;
+    text-decoration: none;
+}
+
+#biosample :hover {
+    color: gray;
+    cursor: pointer;
+}

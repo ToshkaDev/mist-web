@@ -12,7 +12,11 @@
                                     span(*ngIf="taxon.level != 'genus'; else genusBlock" ) {{ taxon.value }},{{" "}}
                                     ng-template(#genusBlock) {{ taxon.value }}
                         tr(*ngFor="let property of genomeViewModel.mainInfo")
-                            td(style="font-weight: bold;") {{ property.name }}
+                            td(*ngIf="property.name !== 'Biosample'; else biosampleBlock") {{ property.name }}
+                            ng-template(#biosampleBlock)
+                                td#biosample((click)="toggleBioSampleDetails()")
+                                    a {{ property.name }}
+                                        mat-icon(aria-hidden="true" style="vertical-align: middle") {{ arrow }}
                             td(*ngIf="property.ftp_path; else notFtpBlock")
                                 a(href="{{property.ftp_path}}", target="_blank") {{ property.value }}
                             ng-template(#notFtpBlock)
@@ -21,8 +25,6 @@
                             tr(*ngFor="let property of genomeViewModel.biosampleDetailsFields")
                                 td(style="font-weight: bold; padding-left: 5%;") {{ property.name }}
                                 td {{ property.value }}
-                        button.mist-button-biosample(mat-button (click)="toggleBioSampleDetails()") BioSample Details
-                            mat-icon(aria-hidden="true") {{ arrow }}
     .pull-right.add-to-cart-button
         cart-select-buttons((selectClickEvent)='onAddRemoveClickEvent($event)' [cart]="cart")
         button.mist-button.scope-button(mat-raised-button (click)="putScope(genomeViewModel.genome)") Set To Scope
