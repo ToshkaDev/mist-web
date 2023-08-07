@@ -4,8 +4,9 @@
             h4 Help
             br
             h5 Overview
-            p The microbial signal transduction (MiST) database was established as a comprehensive signal transduction classification system and has served as a useful community resource since 2007 (1,2). The updated MiST database provides a comprehensive classification of microbial signal transduction systems of all the genomes deposited in NCBI RefSeq database. MiST 3.0 is a result of a substantial scaling to accommodate constantly growing microbial genomic data.
-            h5 Signal transduction classification shemes
+            p The Microbial Signal Transduction (MiST) database provides a comprehensive classification of signal transduction systems of bacterial and archaeal genomes deposited in the NCBI RefSeq database. MiST 3.0 was a result of substantial scaling to accommodate constantly growing microbial genomic data. The database was built from ground up using modern technologies.
+            p The new version of the database, MiST 4.0, features over 10,000 metagenome-assembled genomes and their signal transduction profiles, scaled representation of proteins, and detailed BioSample information. The database provides a seamless transition between Genomes and Metagenomes, thus allowing for comparative analysis.
+            h5 Signal transduction classification schemes
             p The current version of MiST utilizes two classification schemes: to categorize signal transduction proteins (provided as “Genomic distribution of signal transduction proteins” tables) and to catalog signal transduction domains (provided as a “Signal transduction profile” graph).
             h5 Classification of signal transduction proteins
             p For signal transduction proteins, we use the “complexity” scheme – one-component, two-component, and chemosensory systems. In addition to classifying pathway components, this scheme allows separating intracellular and extracellular signal transduction pathways: more than 97% of one-component systems are intracellular sensors and the vast majority of two-component systems contain extracellular sensors. The disadvantage of this scheme is that it does not provide a clear separation by protein function for some categories and, in contrast, splits some of the functionally related proteins into different categories. For example, the majority of transcription factors and serine/threonine kinases would be found in the same category of one-component systems; on the other hand, c-di-GMP-cyclases will be split between the three main categories (one-component, two-component or chemosensory) depending on their associated domains and pathways.
@@ -82,8 +83,8 @@
 
 
             h5 Signal Transduction specific profile HMMs
-            p Genomic evidence suggested that MCPs of certain heptad classes interact preferentially with certain chemosensory pathway classes defined based on evolutionary considerations (3). Specific profile Hidden Markov models (HMMs) were built for nineteen classes of chemosensory pathways (3) and twelve classes of MCPs (4, 5). Furthermore, a new class of signal transduction proteins called MAC (methyl-accepting coiled-coil proteins) was identified (3), for which no profile HMM is available.
-            p We integrated profile HMMs for different MCP classes, namely 64H, 58H, 52H, 48H, 44H, 42H, 40H, 38H, 36H, 34H, 28H and 24H, into the MiST3 database. We also integrated HMM profiles for components specific to each chemosensory class (CheA, CheB, CheC, CheD, CheR, CheV and CheZ) (3) and newly built profiles for MAC1 and MAC2 protein families. Thus MiST 3.0 offers a comprehensive set of chemosensory pathway-specific HMMs. Using these new profiles in combination with genome neighborhood analysis a complete chemosensory repertoire of any bacterial and archaeal genome can now be reconstructed.
+            p Genomic evidence suggested that MCPs of certain heptad classes interact preferentially with certain chemosensory pathway classes defined based on evolutionary considerations (1). Specific profile Hidden Markov models (HMMs) were built for nineteen classes of chemosensory pathways (1) and twelve classes of MCPs (2, 3). Furthermore, a new class of signal transduction proteins called MAC (methyl-accepting coiled-coil proteins) was identified (1), for which no profile HMM is available.
+            p We integrated profile HMMs for different MCP classes, namely 64H, 58H, 52H, 48H, 44H, 42H, 40H, 38H, 36H, 34H, 28H and 24H, into the MiST3 database. We also integrated HMM profiles for components specific to each chemosensory class (CheA, CheB, CheC, CheD, CheR, CheV and CheZ) (1) and newly built profiles for MAC1 and MAC2 protein families. Thus MiST 3.0 offers a comprehensive set of chemosensory pathway-specific HMMs. Using these new profiles in combination with genome neighborhood analysis a complete chemosensory repertoire of any bacterial and archaeal genome can now be reconstructed.
             p The profiles can be found&nbsp;
               a(href="https://github.com/biowonks/chemotaxis-models" target="_blank") here.
             h5 Genomes
@@ -101,11 +102,9 @@
 
             br
             p References
-            p 1. Ulrich, L.E. and Zhulin, I.B. (2007) MiST: a microbial signal transduction database. Nucleic Acids Res, 35, D386-390.
-            p 2. Ulrich, L.E. and Zhulin, I.B. (2010) The MiST2 database: a comprehensive genomics resource on microbial signal transduction. Nucleic Acids Res, 38, D401-407.
-            p 3. Wuichet, K. and Zhulin, I.B. (2010) Origins and diversification of a complex signal transduction system in prokaryotes. Science signaling, 3, ra50.
-            p 4. Alexander, R.P. and Zhulin, I.B. (2007) Evolutionary genomics reveals conserved structural determinants of signaling and adaptation in microbial chemoreceptors. Proceedings of the National Academy of Sciences of the United States of America, 104, 2885-2890.
-            p 5. Ortega, D.R. and Zhulin I.B. (2018) Phylogenetic and Protein Sequence Analysis of Bacterial Chemoreceptors. in Bacterial Chemosensing: Methods and Protocols (ed. Manson, M. D.), Springer New York, 373–385, doi:10.1007/978-1-4939-7577-8_29.
+            p 1. Wuichet, K. and Zhulin, I.B. (2010) Origins and diversification of a complex signal transduction system in prokaryotes. Science signaling, 3, ra50.
+            p 2. Alexander, R.P. and Zhulin, I.B. (2007) Evolutionary genomics reveals conserved structural determinants of signaling and adaptation in microbial chemoreceptors. Proceedings of the National Academy of Sciences of the United States of America, 104, 2885-2890.
+            p 3. Ortega, D.R. and Zhulin I.B. (2018) Phylogenetic and Protein Sequence Analysis of Bacterial Chemoreceptors. in Bacterial Chemosensing: Methods and Protocols (ed. Manson, M. D.), Springer New York, 373–385, doi:10.1007/978-1-4939-7577-8_29.
 
         div(*ngIf="links.get('codeOfConduct')")
             h4 MiST Code of Conduct
