@@ -6,6 +6,24 @@
             h5 Overview
             p The Microbial Signal Transduction (MiST) database provides a comprehensive classification of signal transduction systems of bacterial and archaeal genomes deposited in the NCBI RefSeq database. MiST 3.0 was a result of substantial scaling to accommodate constantly growing microbial genomic data. The database was built from ground up using modern technologies.
             p The new version of the database, MiST 4.0, features over 10,000 metagenome-assembled genomes and their signal transduction profiles, scaled representation of proteins, and detailed BioSample information. The database provides a seamless transition between Genomes and Metagenomes, thus allowing for comparative analysis.
+            h5 Taxonomy Update
+            p Starting from MiST 4.0 the database incorporates updates to the NCBI taxonomy reflecting the inclusion of the rank "phylum" in the International Code of Nomenclature for Prokaryotes, which involved changes to 42 taxa (
+                a(href="https://doi.org/10.1099/ijsem.0.005056" target="_blank") Link to the paper
+                span ).
+            p In addition, the database includes several changes within certain phyla in line with the NCBI Taxonomy.
+            button(class="mist-button-smaller" mat-button (click)="toggleTaxChangesTable()") Taxonomy Changes
+                mat-icon(aria-hidden="true") {{ arrow }}
+            br
+            br
+            table(*ngIf="showTaxChangesTable" style="border-collapse: collapse")
+                tbody
+                    tr
+                        td(style="font-weight: bold;") New Name
+                        td(style="font-weight: bold;") Old Name
+                    tr(*ngFor="let taxon of newToOldTaxonomy")
+                        td {{ taxon.new }}
+                        td {{ taxon.old }}
+
             h5 Signal transduction classification schemes
             p The current version of MiST utilizes two classification schemes: to categorize signal transduction proteins (provided as “Genomic distribution of signal transduction proteins” tables) and to catalog signal transduction domains (provided as a “Signal transduction profile” graph).
             h5 Classification of signal transduction proteins
@@ -38,7 +56,7 @@
                 a(href="https://www.ncbi.nlm.nih.gov/pubmed/19737356" target="_blank") Staron et al.
             p Because this scheme classifies domains, not proteins, the same protein would appear in various categories. For example, if a protein has a domain, whose role in signal transduction is unknown, and a well-annotated signal transduction domain (e.g. GGDEF), it will be listed both in the Unknown subcategory of the Input category and in the Enzymatic subcategory of the Output category. Systematic exploring of the Unknown subcategories might lead to the discovery of novel signal transduction domains and understanding the roles of other domains in signal transduction. Below is a list of signal transduction domains and their annotations used for domains classificatoin.
             button(*ngIf="signalDomainsAndMembers" class="mist-button-smaller" mat-button (click)="toggleTable()") Signal Transduction Domains
-                mat-icon(aria-hidden="true") {{ arrow }}
+                mat-icon(aria-hidden="true") {{ arrowT }}
             br
             br
             table.signal-domains-table(*ngIf="signalDomainsAndMembers && showTable")
