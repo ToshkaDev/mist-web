@@ -12,7 +12,7 @@
                 span ).
             p In addition, the database includes several changes within certain phyla in line with the NCBI Taxonomy.
             button(class="mist-button-smaller" mat-button (click)="toggleTaxChangesTable()") Taxonomy Changes
-                mat-icon(aria-hidden="true") {{ arrow }}
+                mat-icon(aria-hidden="true") {{ arrowT }}
             br
             br
             table(*ngIf="showTaxChangesTable" style="border-collapse: collapse")
@@ -29,7 +29,7 @@
             h5 Classification of signal transduction proteins
             p For signal transduction proteins, we use the “complexity” scheme – one-component, two-component, and chemosensory systems. In addition to classifying pathway components, this scheme allows separating intracellular and extracellular signal transduction pathways: more than 97% of one-component systems are intracellular sensors and the vast majority of two-component systems contain extracellular sensors. The disadvantage of this scheme is that it does not provide a clear separation by protein function for some categories and, in contrast, splits some of the functionally related proteins into different categories. For example, the majority of transcription factors and serine/threonine kinases would be found in the same category of one-component systems; on the other hand, c-di-GMP-cyclases will be split between the three main categories (one-component, two-component or chemosensory) depending on their associated domains and pathways.
             p An alternative scheme involves classification by protein function, e.g. placing chemoreceptors, histidine kinases, c-di-GMP-cyclases and phosphodiesterases, ser/thr kinases and other key signal transduction proteins in separate categories. While this scheme might seem more attractive, because it emphasizes the functional role of a protein, it has its own shortcomings. For example, the same category of response regulators contains such functionally unrelated proteins as transcription factors and c-di-GMP-cyclases, as long as they are associated with the receiver domain.  In the case of chemosensory pathways, the current functional classification scheme splits their components between several categories providing no connection between the elements of the same pathway.
-            p Our protein classification scheme does provide functional categorization for several major signal transduction families: chemoreceptors, histidine kinases, response regulators, and extracytoplasmic sigma factors. In the future, we plan to implement a classification scheme based exclusively on the protein function, in addition to our current scheme, so the users can chose which option to use based on the nature of their inquiry.
+            p Our protein classification scheme does provide functional categorization for several major signal transduction families: chemoreceptors, histidine kinases, response regulators, and extracytoplasmic sigma factors. Data in the MiST database are predictions and are not curated. In the future, we plan to implement a classification scheme based exclusively on the protein function, in addition to our current scheme, so the users can chose which option to use based on the nature of their inquiry.
             h5 Signal transduction profiles generation
             p Signal transduction pathways contain various protein domains: many of them are unique to signal transduction, whereas others can play roles in other processes. Here again, there is no simple and unambiguous way for their classification. We present a summary of signal transduction domains for each genome as a graph titled “Signal transduction profile”. We classified these domains in seven major categories:
             ol
@@ -56,7 +56,7 @@
                 a(href="https://www.ncbi.nlm.nih.gov/pubmed/19737356" target="_blank") Staron et al.
             p Because this scheme classifies domains, not proteins, the same protein would appear in various categories. For example, if a protein has a domain, whose role in signal transduction is unknown, and a well-annotated signal transduction domain (e.g. GGDEF), it will be listed both in the Unknown subcategory of the Input category and in the Enzymatic subcategory of the Output category. Systematic exploring of the Unknown subcategories might lead to the discovery of novel signal transduction domains and understanding the roles of other domains in signal transduction. Below is a list of signal transduction domains and their annotations used for domains classificatoin.
             button(*ngIf="signalDomainsAndMembers" class="mist-button-smaller" mat-button (click)="toggleTable()") Signal Transduction Domains
-                mat-icon(aria-hidden="true") {{ arrowT }}
+                mat-icon(aria-hidden="true") {{ arrow }}
             br
             br
             table.signal-domains-table(*ngIf="signalDomainsAndMembers && showTable")

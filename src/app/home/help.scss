@@ -30,3 +30,7 @@
 .sectinos-list {
     list-style-type: disc;
 }
+
+::ng-deep .mat-button-ripple {
+    border-radius: 2em;
+}

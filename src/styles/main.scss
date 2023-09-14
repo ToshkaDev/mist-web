@@ -141,9 +141,6 @@ a {
     color: #0B4F6C !important;
     background-color: white;
     border-radius: 2em;
-    /deep/ .mat-button-ripple {
-        border-radius: 2em;
-    }
 }
 
 .mist-button-smaller:hover, .mist-button-smaller:active {

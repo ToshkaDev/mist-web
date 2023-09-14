@@ -36,16 +36,16 @@ export default class DrawNeighborGenes extends MistDatabaseGetter {
     //Gene info box
     //Need to make textPositionFactorDirect, textPositionFactorReverse,
     //substractions from directGeneInfoBoxY and reverseGeneInfoBoxY calculable, not hard-coded
-    static readonly infoBoxWidth = 300;
-    private infoBoxHeight = this.svgHeight*0.5;
+    static readonly infoBoxWidth = 400;
+    private infoBoxHeight = this.svgHeight*0.57;
     static readonly infoBoxRectXRadius = 3;
     static readonly infoBoxRectYRadius = 3;
     static readonly directGeneInfoBoxY = DrawNeighborGenes.directGeneFigureTopY-148;
     static readonly reverseGeneInfoBoxY = DrawNeighborGenes.reverseGeneFigureTopY-150;
-    static readonly textPositionFactorDirectY = 189;
-    static readonly textPositionFactorReverseY = 131;
-    static readonly textPositionFactorX = -30;
-    static readonly textPositionFactorXLast = -54;
+    static readonly textPositionFactorDirectY = 178;
+    static readonly textPositionFactorReverseY = 120;
+    static readonly textPositionFactorX = -15;
+    static readonly textPositionFactorXLast = -34;
     static readonly xShiftLeft = 0.03;
     static readonly xShiftLeftLast = 0.05;
     static readonly clusterOffsetLeft = 0.05;
@@ -121,7 +121,7 @@ export default class DrawNeighborGenes extends MistDatabaseGetter {
             let geneCoordinates = format.replace("coords", gene.start + ".." + gene.stop);
             return `<div><a routerLink href="${currentDB}/genes/${gene.stable_id}">${gene.stable_id}</a></div>` +
                 `<div><a href="https://www.ncbi.nlm.nih.gov/protein/${gene.version}", target="_blank">${gene.version}</a></div><div>${geneCoordinates}</div>` +
-                `<div style="word-wrap: break-word; width: 270px; height: 100px;"><span style="font-weight: bold;">Product: </span>${gene.product}<div/>`;
+                `<div style="word-wrap: break-word; width: 360px; height: 100px;"><span style="font-weight: bold;">Product: </span>${gene.product}<div/>`;
         })
         return divs;
     }
