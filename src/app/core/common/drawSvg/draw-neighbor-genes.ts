@@ -40,8 +40,8 @@ export default class DrawNeighborGenes extends MistDatabaseGetter {
     private infoBoxHeight = this.svgHeight*0.57;
     static readonly infoBoxRectXRadius = 3;
     static readonly infoBoxRectYRadius = 3;
-    static readonly directGeneInfoBoxY = DrawNeighborGenes.directGeneFigureTopY-148;
-    static readonly reverseGeneInfoBoxY = DrawNeighborGenes.reverseGeneFigureTopY-150;
+    static readonly directGeneInfoBoxY = DrawNeighborGenes.directGeneFigureTopY-150;
+    static readonly reverseGeneInfoBoxY = DrawNeighborGenes.reverseGeneFigureTopY-152;
     static readonly textPositionFactorDirectY = 178;
     static readonly textPositionFactorReverseY = 120;
     static readonly textPositionFactorX = -15;
