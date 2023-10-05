@@ -48,7 +48,7 @@ export class HelpComponent {
     {"new": "Bacillota", "old": "Firmicutes"},
     {"new": "Bacteroidota", "old": "Bacteroidetes"},
     {"new": "Balneolota", "old": "Balneolaeota"},
-    {"new": "Bdellovibrionota", "old": "Formerly part of Proteobacteria"},
+    {"new": "Bdellovibrionota", "old": "Formerly part of Deltaproteobacteria"},
     {"new": "Caldisericota", "old": "Caldiserica"},
     {"new": "Calditrichota", "old": "Calditrichaeota"},
     {"new": "Campylobacterota", "old": "Formely Epsilonproteobacteria"},
