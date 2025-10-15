@@ -1,4 +1,4 @@
-# MiST4.0 Frontend — A Modern Interface for Exploring Microbial Signal Transduction
+# MiST4.0 Frontend — An Interactive Platform for Exploring Microbial Signal Transduction
 
 ![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
 ![Angular Material](https://img.shields.io/badge/Angular%20Material-757575?style=for-the-badge&logo=angular&logoColor=white)
@@ -16,7 +16,7 @@
 
 This is the frontend application of the MiST4.0 database, a comprehensive platform for the analysis and exploration of bacterial and archaeal signal transduction systems.
 
-Built with modern technologies, the application delivers a modern, intuitive, and responsive user experience for biomedical researchers and bioinformaticians.
+Built with modern technologies, the application delivers an intuitive and responsive user experience for biomedical researchers and bioinformaticians.
 
 The web application is available at [mistdb.com](https://mistdb.com)
 
@@ -49,7 +49,7 @@ D3.js and custom packages for data visualization
 
 SCSS • PUG • HTML • Font Awesome
 
-Explore the frontend powering a cutting-edge microbial informatics platform—designed for performance, clarity, and scientific insight.
+Explore the frontend powering a cutting-edge microbial informatics platform - designed for performance, clarity, and scientific insight.
 
 ## Development server
 
